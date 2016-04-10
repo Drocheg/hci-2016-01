@@ -1,0 +1,21 @@
+/* Custom Stylesheet */
+.icon-block {
+  padding: 0 15px;
+}
+.icon-block .material-icons {
+	font-size: inherit;
+}
+
+#flightSearch {
+    /*Make it float around the center of the slider*/
+    position:absolute;
+    z-index:3;
+    width:50%;
+    left:25%;
+    
+    /*Make it purty*/
+    background-color:white;
+    border-radius:5px;
+    margin-top:100px;
+    opacity:0.9;
+}
