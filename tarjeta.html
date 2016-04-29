@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
+        <title>Test Tarjeta - Página de Vuelos</title>
+        
+        <!-- CSS  -->
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <link href="css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+        <link href="css/style.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+    </head>
+    <body>
+        
+        <div class="row">
+            <div class="col s12">
+                <div id="flightsCard" class="card-panel blue white-text" style="padding:5px;">
+                    <div class="row">
+                        <div class="col s10">
+                            <!--Ida-->
+                            <div class="row">
+                                <div class="col s6">
+                                    EZE <span class="material-icons">forward</span> JFK
+                                </div>
+                                <div class="col s6">
+                                    $560
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col s6">
+                                    (L) AR #1603
+                                </div>
+                                <div class="col s6">
+                                    <button class="btn">Cambiar</button>
+                                </div>
+                            </div>
+                            <!--/Ida-->
+                            <div class="divider" style="margin:10px"></div>
+                            <!--Vuelta-->
+                            <div class="row">
+                                <div class="col s6">
+                                    JFK <span class="material-icons">forward</span> EZE
+                                </div>
+                                <div class="col s6">
+                                    $500
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col s6">
+                                    (L) AR #1604
+                                </div>
+                                <div class="col s6">
+                                    <button class="btn disabled">Cambiar</button>
+                                </div>
+                            </div>
+                            <!--/Vuelta-->
+                        </div>
+                        <div class="col s2 center">
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Total: $1060
+                            <br />
+                            <button class="btn red">Seleccionar &gt;</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        
+        <!--  Scripts-->
+        <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+        <script src="js/materialize.js"></script>
+        <script src="js/init.js"></script>
+        
+    </body>
+</html>

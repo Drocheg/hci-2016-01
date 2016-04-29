@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
+        <title>Vuelos - Página de Vuelos</title>
+        
+        <!-- CSS  -->
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <link href="css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+        <link href="css/style.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+    </head>
+    <body>
+        <nav class="light-blue lighten-1" role="navigation">
+            <div class="nav-wrapper container">
+                <a id="logo-container" href="#" class="brand-logo">Logo</a>
+                <span style="position:absolute; margin-left:45%;">Pesos Argentinos $<span class="material-icons">arrow_drop_down_circle</span></span>
+<!--                <ul class="right hide-on-med-and-down">
+                    <li><a href="#" class="active">Home</a></li>
+                    <li><a href="#">Reseñas</a></li>
+                </ul>-->
+                
+                <ul id="nav-mobile" class="side-nav">
+                    <li><a href="#">Navbar Link</a></li>
+                </ul>
+                <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
+            </div>
+        </nav>
+        <!-- Flight Search -->
+        <!--        <div id="homeSlider" class="section">
+                    <div id="flightSearch">
+                        <h5 class="center">Búsqueda de Vuelos</h5>
+                        <form id="flightSearchForm">
+                            <div class="row">
+                                <div class="input-field col s6">
+                                    <input id="from" type="text" class="validate">
+                                    <label for="from">Origen</label>
+                                </div>
+                                <div class="input-field col s6">
+                                    <input id="to" type="text" class="validate">
+                                    <label for="to">Destino</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="input-field col s5">
+                                    <input id="depart" type="date" class="datepicker">
+                                    <label for="depart">Ida</label>
+                                </div>
+                                <div class="input-field col s2">
+                                    <input id="soloIda" type="checkbox">
+                                    <label for="soloIda">Sólo Ida</label>
+                                </div>
+                                <div class="input-field col s5">
+                                    <input id="return" type="date" class="datepicker">
+                                    <label for="return">Vuelta</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="input-field col s4">
+                                    <input id="adults" type="number" class="validate" value="1">
+                                    <label for="adults">Adultos (12 o más años)</label>
+                                </div>
+                                <div class="input-field col s4">
+                                    <input id="children" type="number" class="validate" value="0">
+                                    <label for="children">Niños (2-11 años)</label>
+                                </div>
+                                <div class="input-field col s4">
+                                    <input id="infants" type="number" class="validate" value="0">
+                                    <label for="infants">Infantes (0-2 años)</label>
+                                </div>
+                                <a class="input-field col s4 offset-s4 waves-effect waves-light btn-large">
+                                    Buscar<i class="material-icons right">arrow_right</i>
+                                    Advanced Options<i class="material-icons right">arrow_drop_up</i>
+                                </a>
+                            </div>
+                                                <div class="row">
+                                                    <div class="input-field col s12">
+                                                        <input id="email" type="email" class="validate">
+                                                        <label for="email">Email</label>
+                                                    </div>
+                                                </div>
+                        </form>
+                    </div>
+                </div>-->
+        <!--/Flight Search-->
+        
+        <div class="section" style="min-height: 1300px;">
+            <div class="row">
+                <div class="col s4" style="position: absolute;">
+                    <div class="row">
+                        <div class="col s12">
+                            <div class="card-panel white black-text" id="searchParams">
+                                <div class="row">
+                                    <h5 class="center">Su Búsqueda</h5>
+                                </div>
+                                <div class="row">    
+                                    <form id="flightSearchForm">
+                                        <div class="input-field col s12">
+                                            <input id="from" type="text" class="validate">
+                                            <label for="from">Origen</label>
+                                        </div>
+                                        <div class="input-field col s12">
+                                            <input id="to" type="text" class="validate">
+                                            <label for="to">Destino</label>
+                                        </div>
+                                        <div class="input-field col s12">
+                                            <input id="depart" type="date" class="datepicker">
+                                            <label for="depart">Ida</label>
+                                        </div>
+                                        <div class="input-field col s12">
+                                            <input id="soloIda" type="checkbox">
+                                            <label for="soloIda">Sólo Ida</label>
+                                        </div>
+                                        <div class="input-field col s12">
+                                            <input id="return" type="date" class="datepicker">
+                                            <label for="return">Vuelta</label>
+                                        </div>
+                                        <div class="input-field col s12">
+                                            <input id="adults" type="number" class="validate" value="1">
+                                            <label for="adults">Adultos (12 o más años)</label>
+                                        </div>
+                                        <div class="input-field col s12">
+                                            <input id="children" type="number" class="validate" value="0">
+                                            <label for="children">Niños (2-11 años)</label>
+                                        </div>
+                                        <div class="input-field col s12">
+                                            <input id="infants" type="number" class="validate" value="0">
+                                            <label for="infants">Infantes (0-2 años)</label>
+                                        </div>
+                                        <a class="input-field col s8 offset-s2 waves-effect waves-light btn-large" href="vuelos-1.html">
+                                            Buscar de Nuevo<i class="material-icons right">arrow_right</i>
+                                        </a>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col s12">
+                            <div class="card-panel white black-text">
+                                <p class="center">Ordenar Por</p>
+                                <div class="row">
+                                    <div class="input-field col s6">
+                                        <select>
+                                            <option selected>Precio</option>
+                                            <option>Precio</option>
+                                            <option>Precio</option>
+                                        </select>
+                                    </div>
+                                    <div class="input-field col s6">
+                                        <select>
+                                            <option selected>Ascendente</option>
+                                            <option>Descendente</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <button class="col s8 offset-s2 btn">Aplicar</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col s12">
+                            <div class="card-panel white black-text">
+                                <p class="center">Vuelos por página</p>
+                                <div class="row">
+                                    <div class="input-field col s6 offset-s3">
+                                        <select>
+                                            <option selected>25</option>
+                                            <option>50</option>
+                                            <option>42</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <button class="col s8 offset-s2 btn">Aplicar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col s8 offset-s4">
+                    <div class="col s8">
+                        <div class="card-panel grey lighten-1 white-text center" style="border-color:grey; border-style: dashed;">
+                            Ida
+                        </div>
+                    </div>
+                    <div class="col s4 center">
+                        <h5 style="margin-top: 35px;">
+                            <b>Total: $0</b>
+                        </h5>
+                    </div>
+                    <div class="col s8">
+                        <div class="card-panel grey lighten-1 white-text center" style="border-color:grey; border-style: dashed;">
+                            Vuelta
+                        </div>
+                    </div>
+                    <div class="col s4 center">
+                        <button class="btn disabled" style="margin-top: 20px;">Elegir Vuelta <i class="material-icons right">arrow_right</i></button>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col s12 divider"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col s12 center"><span style="font-size: large;">1358 vuelos encontrados</span></div>
+                    </div>
+                    
+                    <!--VUELOS-->
+                    <div class="col s12">
+                        <ul class="collapsible" data-collapsible="accordion">
+                            <li class="grey">
+                                <div class="collapsible-header">
+                                    <div class="col s4">
+                                        <i class="material-icons">airplanemode_active</i>TAM #1132, TAM #1558
+                                    </div>
+                                    <div class="col s3">
+                                        EZE (09:50)<span class="material-icons">forward</span>JFK (22:28)
+                                    </div>
+                                    <div class="col s1">
+                                        1 Escala
+                                    </div>
+                                    <div class="col s2 right-align">
+                                        $517
+                                    </div>
+                                    <div class="col s2 right-align">
+                                        <button class='btn'>Seleccionar</button>
+                                    </div>
+                                </div>
+                                <div class="collapsible-body">
+                                    <p style="height:100px;padding: 5px;padding-left: 10px;">
+                                        <span class="col s4 center">
+                                            Calificación: 7.3/10
+                                            <br />
+                                            (promedio tramos)
+                                            <br />
+                                            <button class="btn">Ver Comentarios</button>
+                                        </span>
+                                        <span class="col s3">
+                                            EZE (09:50) <span class="material-icons">forward</span> GRU (13:02)
+                                            <br />
+                                            GRU (13:45) <span class="material-icons">forward</span> JFK (23:50)
+                                        </span>
+                                        <span class="col s1 center">
+                                            Duración: 14:00
+                                        </span>
+                                        <span class="col s4 center">
+                                            Adultos: $250 x 2
+                                            <br />
+                                            Infantes: $15 x 1
+                                            <br />
+                                            Cargos e Impuestos: $2
+                                            <br />
+                                            <b>Total Pasajeros: $517</b>
+                                        </span>
+                                    </p>
+                                </div>
+                            </li>
+                            
+                            <li class="grey">
+                                <div class="collapsible-header">
+                                    <div class="col s4">
+                                        <i class="material-icons">airplanemode_active</i>LAN #3258
+                                    </div>
+                                    <div class="col s3">
+                                        EZE (08:35)<span class="material-icons">forward</span> JFK (14:50)
+                                    </div>
+                                    <div class="col s1">
+                                        Directo
+                                    </div>
+                                    <div class="col s2 right-align">
+                                        $617
+                                    </div>
+                                    <div class="col s2 right-align">
+                                        <button class='btn'>Seleccionar</button>
+                                    </div>
+                                </div>
+                                <div class="collapsible-body">
+                                    <p style="height:100px;padding: 5px;padding-left: 10px;">
+                                        <span class="col s4 center">
+                                            Calificación: 8/10
+                                            <br />
+                                            <button class="btn">Ver Comentarios</button>
+                                        </span>
+                                        <span class="col s3">
+                                            EZE (08:35)<span class="material-icons">forward</span> JFK (14:50)
+                                        </span>
+                                        <span class="col s1 center">
+                                            Duración: 11:15
+                                        </span>
+                                        <span class="col s4 center">
+                                            Adultos: $300 x 2
+                                            <br />
+                                            Infantes: $15 x 1
+                                            <br />
+                                            Cargos e Impuestos: $2
+                                            <br />
+                                            <b>Total Pasajeros: $617</b>
+                                        </span>
+                                    </p>
+                                </div>
+                            </li>
+                            
+                            <li class="grey">
+                                <div class="collapsible-header">
+                                    <div class="col s4">
+                                        <i class="material-icons">airplanemode_active</i>Aerolíneas Argentinas #667
+                                    </div>
+                                    <div class="col s3">
+                                        EZE (09:25)<span class="material-icons">forward</span> JFK (16:52)
+                                    </div>
+                                    <div class="col s1">
+                                        Directo
+                                    </div>
+                                    <div class="col s2 right-align">
+                                        $750
+                                    </div>
+                                    <div class="col s2 right-align">
+                                        <button class='btn'>Seleccionar</button>
+                                    </div>
+                                </div>
+                                <div class="collapsible-body">
+                                    <p style="height:100px;padding: 5px;padding-left: 10px;">
+                                        <span class="col s4 center">
+                                            Calificación: 8.36/10
+                                            <br />
+                                            <button class="btn">Ver Comentarios</button>
+                                        </span>
+                                        <span class="col s3">
+                                            EZE (08:35)<span class="material-icons">forward</span> JFK (14:50)
+                                        </span>
+                                        <span class="col s1 center">
+                                            Duración: 09:23
+                                        </span>
+                                        <span class="col s4 center">
+                                            Adultos: $367 x 2
+                                            <br />
+                                            Infantes: $15 x 1
+                                            <br />
+                                            Cargos e Impuestos: $1
+                                            <br />
+                                            <b>Total Pasajeros: $750</b>
+                                        </span>
+                                    </p>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                        
+<!--                    <div class="col s12 flight">
+                        <div class="card-panel orange white-text">
+                            <div class="row">
+                                (L) LAN #3258
+                            </div>
+                            <div class="divider"></div>
+                            <div class="row">
+                                <div class="col s6">
+                                    EZE <span class="material-icons">forward</span> JFK
+                                    <br />
+                                    08:35&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;19:50
+                                </div>
+                                <div class="col s2 center">
+                                    Duración: 11:15
+                                </div>
+                                <div class="col s4 center">
+                                    <b>Total Pasajeros: $1234</b>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col s6">
+                                    <a class='btn' style='padding:10px; line-height:initial;'>Ver Comentarios</a>
+                                    <a class='btn'>Ver Detalle<i class="tiny material-icons right">arrow_drop_down</i></a>
+                                </div>
+                                <div class="col s4 center offset-s2">
+                                    <a class='btn'>Seleccionar</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col s12 flight">
+                        <div class="card-panel orange white-text">
+                            <div class="row">
+                                (L) TAM #1132
+                                <br />
+                                (L) TAM #1558
+                            </div>
+                            <div class="divider"></div>
+                            <div class="row">
+                                <div class="col s6">
+                                    EZE <span class="material-icons">forward</span> 1 escala <span class="material-icons">forward</span> JFK
+                                    <br />
+                                    09:50&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;22:28
+                                </div>
+                                <div class="col s2 center">
+                                    Duración: 12:38
+                                </div>
+                                <div class="col s4 center">
+                                    <b>Total Pasajeros: $1234</b>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col s6">
+                                    <a class='btn' style='padding:10px; line-height:initial;'>Ver Comentarios</a>
+                                </div>
+                                <div class="col s4 center offset-s2">
+                                    <a class='btn'>Ver Detalle<i class="tiny material-icons right">arrow_drop_down</i></a>
+                                    <a class='btn'>Seleccionar</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    TARJETA SIN EXPANDER 
+                    <div class="col s12 flight">
+                        <div class="card-panel green white-text">
+                            <div class="row">
+                                (L) Aerolíneas Argentinas #667
+                                <br />
+                                (L) Aeromexico #6935
+                            </div>
+                            <div class="divider"></div>
+                            <div class="row">
+                                <div class="col s6">
+                                    EZE <span class="material-icons">forward</span> 1 escala <span class="material-icons">forward</span> JFK
+                                    <br />
+                                    09:25&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;23:50
+                                </div>
+                                <div class="col s2 center">
+                                    Duración: 14:25
+                                </div>
+                                <div class="col s4 center">
+                                    <b>Total Pasajeros: $1035</b>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col s6">
+                                    <a class='btn' style='padding:10px; line-height:initial;'>Ver Comentarios</a>
+                                </div>
+                                <div class="col s4 center offset-s2">
+                                    <a class='btn'>Cerrar Detalle<i class="tiny material-icons right">arrow_drop_up</i></a>
+                                    <a class='btn'>Seleccionar</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    /TARJETA SIN EXPANDER 
+                    TARJETA EXPANDIDA
+                    <div class="col s12 flight">
+                        <div class="card-panel blue white-text">
+                            <div class="row">
+                                (L) Aerolíneas Argentinas #667
+                                <br />
+                                (L) Aeromexico #6935
+                            </div>
+                            <div class="divider"></div>
+                            <div class="row">
+                                <div class="col s6">
+                                    EZE <span class="material-icons">forward</span> MEX
+                                    <br />
+                                    09:25&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;17:03
+                                    <br />
+                                    MEX <span class="material-icons">forward</span> JFK
+                                    <br />
+                                    18:36&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;23:50
+                                </div>
+                                <div class="col s2 center">
+                                    Duración: 14:25
+                                </div>
+                                <div class="col s4 center">
+                                    Adultos: $500 x 2
+                                    <br />
+                                    Infantes: $30 x 1
+                                    <br />
+                                    Cargos e Impuestos: $5
+                                    <br />
+                                    <b>Total Pasajeros: $1035</b>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col s6">
+                                    <a class='btn' style='padding:10px; line-height:initial;'>Ver Comentarios</a>
+                                    <br /><br />
+                                    Calificación: 7.35/10 (promedio tramos)
+                                </div>
+                                <div class="col s4 center offset-s2">
+                                    <a class='btn'>Cerrar Detalle<i class="tiny material-icons right">arrow_drop_up</i></a>
+                                    <a class='btn'>Seleccionar</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    /TARJETA EXPANDIDA
+                    <a href="tarjeta.html">la</a>-->
+                    <!--PAGINATION-->
+                    <div class="row">
+                        <div class="col s12 center">
+                            <ul class="pagination">
+                                <li class="disabled"><a href="#!"><i class="material-icons">chevron_left</i></a></li>
+                                <li class="active"><a href="#!">1</a></li>
+                                <li class="waves-effect"><a href="#!">2</a></li>
+                                <li class="waves-effect"><a href="#!">3</a></li>
+                                <li class="waves-effect"><a href="#!">4</a></li>
+                                <li class="waves-effect"><a href="#!">5</a></li>
+                                <li class="waves-effect"><a href="#!"><i class="material-icons">chevron_right</i></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!--/PAGINATION-->
+                </div>
+            </div>
+        </div>
+        
+        <footer class="page-footer blue">
+            <!--            <div class="container">
+                            <div class="row">
+                                <div class="col l6 s12">
+                                    <h5 class="white-text">Company Bio</h5>
+                                    <p class="grey-text text-lighten-4">We are a team of college students working on this project like it's our full time job. Any amount would help support and continue development on this project and is greatly appreciated.</p>
+                                    
+                                    
+                                </div>
+                                <div class="col l3 s12">
+                                    <h5 class="white-text">Settings</h5>
+                                    <ul>
+                                        <li><a class="white-text" href="#!">Link 1</a></li>
+                                        <li><a class="white-text" href="#!">Link 2</a></li>
+                                        <li><a class="white-text" href="#!">Link 3</a></li>
+                                        <li><a class="white-text" href="#!">Link 4</a></li>
+                                    </ul>
+                                </div>
+                                <div class="col l3 s12">
+                                    <h5 class="white-text">Connect</h5>
+                                    <ul>
+                                        <li><a class="white-text" href="#!">Link 1</a></li>
+                                        <li><a class="white-text" href="#!">Link 2</a></li>
+                                        <li><a class="white-text" href="#!">Link 3</a></li>
+                                        <li><a class="white-text" href="#!">Link 4</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>-->
+            <div class="footer-copyright">
+                <div class="container">
+                    &COPY; 2016, ITBA. Hecho con <a class="orange-text text-lighten-3" href="http://materializecss.com" target="_blank">Materialize</a>.
+                </div>
+            </div>
+        </footer>
+        
+        
+        <!--  Scripts-->
+        <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+        <script src="js/materialize.js"></script>
+        <script src="js/init.js"></script>
+        
+    </body>
+</html>
