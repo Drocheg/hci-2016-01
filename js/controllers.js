@@ -10,7 +10,7 @@
 var comentariosApps = angular.module('comentariosApps', []);
 
 comentariosApps.controller('controladorDeComentarios', function ($scope) {
-    $scope.comentarios1 = [
+    $scope.comentarios = [
         {'aerolinea': 'LAN',
             'numeroDeVuelo': '100A',
             'general': '10/10',
@@ -75,7 +75,7 @@ comentariosApps.controller('controladorDeComentarios', function ($scope) {
             'numeroDeVuelo': '100A',
             'general': '8/10',
             'recomendado': 'Si',
-            'comentarios': 'Me mire Human Centipede 2. Diversion para toda la familia',
+            'comentarios': 'Me mire Human Centipide 2. Diversion para toda la familia',
             'amabilidad': '8/10',
             'programaDeViajeroFrequente': '8/10',
             'comida': '8/10',
