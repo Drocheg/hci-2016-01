@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
+        <title>Información de Pago - Página de Vuelos</title>
+
+        <!-- CSS  -->
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <link href="css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+        <link href="css/style.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+    </head>
+    <body>
+        <header>
+            <nav class="light-blue lighten-1" role="navigation">
+                <div class="nav-wrapper container">
+                    <a id="logo-container" href="index.html" class="brand-logo left">Logo</a>
+                    <span style="position:absolute; margin-left:45%;">Pesos Argentinos $<span class="material-icons">arrow_drop_down_circle</span></span>
+                </div>
+            </nav>
+        </header>
+
+        <main>
+            <h1 class="center">Información de Pago</h1>
+            <div class='row'>
+                <div class='col s8 offset-s2 card-panel'>
+                    <form id='payment-form'>
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <input id="cardNumber" type="number" class="validate">
+                                <label for="cardNumber">Número de Tarjeta de Crédito</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="input-field col s6">
+                                <select id="cardExpiryMonth">
+                                    <option selected value="01">01</option>
+                                    <option value="02">02</option>
+                                    <option value="03">03</option>
+                                    <option value="04">04</option>
+                                    <option value="05">05</option>
+                                    <option value="05">05</option>
+                                    <option value="06">06</option>
+                                    <option value="07">07</option>
+                                    <option value="08">08</option>
+                                    <option value="09">09</option>
+                                    <option value="10">10</option>
+                                    <option value="11">11</option>
+                                    <option value="12">12</option>
+                                </select>
+                                <label for="cardExpiryMonth">Mes de Vencimiento</label>
+                            </div>
+                            <div class="input-field col s6">
+                                <select id="cardExpiryYear">
+                                    <option selected value="2016">2016</option>
+                                    <option value="2017">2017</option>
+                                    <option value="2018">2018</option>
+                                    <option value="2019">2019</option>
+                                    <option value="2020">2020</option>
+                                    <!--TODO agregar más?-->
+                                </select>
+                                <label for="cardExpiryYear">Año de Vencimiento</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <input id="name" type="text" class="validate">
+                                <label for="name">Nombre y Apellido del Titular</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <input id="cvv" type="number" class="validate">
+                                <label for="cvv">Código de Seguridad</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <input id="dni" type="number" class="validate">
+                                <label for="dni">DNI del Titular</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <input id="email" type="email" class="validate">
+                                <label for="email">E-mail</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <input type='button' class="btn-large waves-effect waves-light col s3 offset-s2" value='< Volver' />
+                            <input type='submit' class="btn-large waves-effect waves-light col s3 offset-s2" value='Confirmar >' />
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </main>
+
+        <footer class="page-footer blue">
+            <div class="footer-copyright">
+                <div class="container">
+                    &COPY; 2016, ITBA. Hecho con <a class="orange-text text-lighten-3" href="http://materializecss.com" target="_blank">Materialize</a>.
+                </div>
+            </div>
+        </footer>
+
+        <!--  Scripts-->
+        <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+        <script src="js/materialize.js"></script>
+        <script src="js/init.js"></script>
+    </body>
+</html>
