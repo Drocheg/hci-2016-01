@@ -24,6 +24,19 @@
         <div class="divider"></div> <!-- Sacar este divisor, está sólo para indicar donde termina header y donde empieza main -->
 
         <main>
+              <nav>
+                <div class="row blue light-blue lighten-1">
+                    <div class="col s10 offset-s1 light-blue lighten-1" >
+                        <a href="#!" class="breadcrumb">Index</a>
+                        <a href="#!" class="breadcrumb">Vuelos ida</a>
+                        <a href="#!" class="breadcrumb">Vuelos vuelta</a>
+                        <a href="#!" class="breadcrumb">Informacion de pago</a>
+                        <a href="#!" class="breadcrumb">Informacion de contacto</a>
+                        <a href="#!" class="breadcrumb">Resumen de compra</a>
+                    </div>
+                </div>
+            </nav>
+          
             <div class="row">
                 <div class="col s10 offset-s1">
                     <div class="card-panel blue lighten-4">
@@ -38,7 +51,7 @@
                         <p>Cantidad de pasajeros: 1 adulto</p>
                         <p>Subtotal: $10.000</p>
                         <p>Cargos e impuestos: $3.999</p>
-                        <p></p> <!-- Tirame despues una manera prolija de hacer esto juen -->
+                        <br>
                         <p><b>Total: $13.999</b></p>
                     </div>
                 </div>
@@ -57,7 +70,7 @@
                         <p>Cantidad de pasajeros: 1 adulto</p>
                         <p>Subtotal: $10.000</p>
                         <p>Cargos e impuestos: $3.999</p>
-                        <p></p> <!-- Tirame despues una manera prolija de hacer esto juen -->
+                        <br>
                         <p><b>Total: $13.999</b></p>
                     </div>
                 </div>
@@ -68,6 +81,7 @@
                         <h4>Información de pago</h4>
                         <p>Número de tarjeta: XXXX-XXXX-XXXX-0396</p>
                         <p>Nombre de titular: Facundo Gonzalez F</p>
+                        <br>
                         <p><b>Gran total: $27.998</b></p>
                     </div>
                 </div>
@@ -82,19 +96,19 @@
             </div>
             <div class="row" id="summaryActionButtons">
                 <div class="col s10 offset-s1 center">
-                    <a class="waves-effect waves-light btn">Modificar Ida</a>
-                    <a class="waves-effect waves-light btn">Modificar Vuelta</a>
+                    <a class="waves-effect waves-light btn" href="flys-5.html">Modificar Ida</a>
+                    <a class="waves-effect waves-light btn" href="flys-3.html">Modificar Vuelta</a>
                     <a class="waves-effect waves-light btn">Modificar Pasajeros</a>
-                    <a class="waves-effect waves-light btn">Modificar Pago</a>
+                    <a class="waves-effect waves-light btn" href="payment.html">Modificar Pago</a>
                     <a class="waves-effect waves-light btn">Modificar Contacto</a>
                 </div>
             </div>
             <div class="row">
                 <div class="col s10 offset-s1 center">
-                    <button class="btn-large waves-effect waves-light red" type="submit" name="action">
+                    <a class="btn-large waves-effect waves-light red" href="order-confirmation.html">
                         Confirmar
                         <i class="material-icons right">send</i>
-                    </button>
+                    </a>
                 </div>
             </div>
         </main>
