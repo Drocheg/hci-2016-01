@@ -45,41 +45,22 @@
             </div>
             <div class="row">
                 <div class="col s10 offset-s1">
-                    <div class="card-panel blue lighten-1">
-                        <h4>Vuelta</h4>
-                        <p>Vuelo: Delta #101</p>
-                        <p>Fecha: 23/01/2017</p>
-                        <p>Horario de salida: 09:15</p>
-                        <p>Horario de llegada: 16:30(-1)</p>
-                        <p>Escalas: 3</p>
-                        <p>Duración: 4:30</p>
-                        <p>Precio por adulto: $10.000</p>
-                        <p>Cantidad de pasajeros: 1 adulto</p>
-                        <p>Subtotal: $10.000</p>
-                        <p>Cargos e impuestos: $3.999</p>
-                        <br>
-                        <p><b>Total: $13.999</b></p>
+                    <div class="card-panel blue lighten-1" id="inbound">
                     </div>
                 </div>
             </div>
             <div class="row">
                 <div class="col s10 offset-s1">
-                    <div class="card-panel purple lighten-3">
-                        <h4>Información de pago</h4>
-                        <p>Número de tarjeta: XXXX-XXXX-XXXX-0396</p>
-                        <p>Nombre de titular: Facundo Gonzalez F</p>
-                        <br>
-                        <p><b>Gran total: $27.998</b></p>
+                    <div class="card-panel purple lighten-3" id="payment">
                     </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="col s10 offset-s1">
-                    <div class="card-panel purple lighten-4">
-                        <h4>Información de contacto</h4>
-                        <p>Email: facundogonzalezf@gmail.com</p>
-                    </div>
-                </div>
+                    
+                    <div class="row"> 
+                    <div class="col s10 offset-s1"> 
+                        <div class="card-panel purple lighten-4" id="contact"> 
+                        </div> 
+                     </div> 
+                </div> 
             </div>
             <div class="row" id="summaryActionButtons">
                 <div class="col s10 offset-s1 center">
@@ -114,25 +95,49 @@
         <script src="js/init.js"></script>
         <script type="text/javascript">
             $(function() {
+                var PaymentInfo = sessionStorage.paymentData;
                 var outboundFlightInfo = sessionStorage.dataz;
-                var ledataz2 = "";
-                ledataz2 += "<p>Vuelo: "+ 42 +'</p>';
-                ledataz2 += "<p>Fecha: "+ "nunca" +'</p>';
-                $("#outbound").html(ledataz2);
-                $("#outbound").html("<h4>IDA</h4> \
-                        <p>Vuelo: Delta #110</p> \
-                        <p>Fecha: "+(2+2)/*26/12/2016*/+"</p> \
-                        <p>Horario de salida: 21:15</p> \
-                        <p>Horario de llegada: 5:30(+1) 27/12/2016</p> \
+                $("#payment").html("\
+                            <h4>Información de pago</h4> \
+                            <p>Número de tarjeta: XXXX-XXXX-XXXX-0396</p> \
+                            <p>Nombre de titular: Facundo Gonzalez F</p> \
+                            <br> \
+                            <p><b>Gran total: $27.998</b></p> \
+                   ");
+                $("#contact").html("\
+                            <h4>Información de contacto</h4> \
+                            <p>Email: facundogonzalezf@gmail.com</p> \
+                    ");
+                $("#inbound").html("\
+                        <h4>Vuelta</h4> \
+                        <p>Vuelo: Delta #101</p> \
+                        <p>Fecha: 23/01/2017</p> \
+                        <p>Horario de salida: 09:15</p> \
+                        <p>Horario de llegada: 16:30(-1)</p> \
                         <p>Escalas: 3</p> \
                         <p>Duración: 4:30</p> \
-                        <p>Precio por adulto: $20.000</p> \
+                        <p>Precio por adulto: $10.000</p> \
                         <p>Cantidad de pasajeros: 1 adulto</p> \
                         <p>Subtotal: $10.000</p> \
                         <p>Cargos e impuestos: $3.999</p> \
                         <br> \
-                        <p><b>Total: $13.999</b></p>");
-            });
+                        <p><b>Total: $13.999</b></p> \
+                        ");
+                $("#outbound").html("<h4>IDA</h4> \
+                                <p>Vuelo: Delta #110</p> \
+                                <p>Fecha: "+(2+2)/*26/12/2016*/+"</p> \
+                                <p>Horario de salida: 21:15</p> \
+                                <p>Horario de llegada: 5:30(+1) 27/12/2016</p> \
+                                <p>Escalas: 3</p> \
+                                <p>Duración: 4:30</p> \
+                                <p>Precio por adulto: $20.000</p> \
+                                <p>Cantidad de pasajeros: 1 adulto</p> \
+                                <p>Subtotal: $10.000</p> \
+                                <p>Cargos e impuestos: $3.999</p> \
+                                <br> \
+                                <p><b>Total: $13.999</b></p>\
+                    ");
+                    });
         </script>
     </body>
 </html>
