@@ -43,13 +43,16 @@ $(function () {
             to: $("#to").val(),
             departDate: new Date($("input[name=departDate_submit]").val()),
             isOneWayTrip: $("#isOneWayTrip").is(":checked"),
-            returnDate: new Date($("input[name=returnDate_submit]").val()),
+            returnDate: $("#isOneWayTrip").is(":checked") ? new Date($("input[name=returnDate_submit]").val()) : null,
             numAdults: Number($("#numAdults").val()),
             numChildren: Number($("#numChildren").val()),
             numInfants: Number($("#numInfants").val())
         };
         //TODO validar info e ir a flights.html con estos parametros en texto, la página rellenará el formulario automáticamente
         //Y hará la búsqueda por API
-        console.log(data);
+        sessionStorage.dataz = JSON.stringify(data);
+//        sessionStorage.dataz = data;
+        console.log(JSON.parse(sessionStorage.dataz));
+        window.location = "flys-1.html";
     });
 });
