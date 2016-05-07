@@ -1,0 +1,2 @@
+- <noscript> tag en caso de que JavaScript esté apagado
+- Asegurar que la app no rompa si no hay internet (ya casi hecho)

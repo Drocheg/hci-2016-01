@@ -13,17 +13,13 @@
     <body>
         <nav class="light-blue lighten-1" role="navigation">
             <div class="nav-wrapper container">
-                <a id="logo-container" href="#" class="brand-logo">Logo</a>
+                <a id="logo-container" href="#" class="brand-logo left">Logo</a>
                 <span style="position:absolute; margin-left:45%;">Pesos Argentinos $<span class="material-icons">arrow_drop_down_circle</span></span>
-<!--                <ul class="right hide-on-med-and-down">
-                    <li><a href="#" class="active" style="text-decoration:underline;">Home</a></li>
-                    <li><a href="#">Reseñas</a></li>
-                </ul>-->
                 
-                <ul id="nav-mobile" class="side-nav">
+<!--                <ul id="nav-mobile" class="side-nav">
                     <li><a href="#">Navbar Link</a></li>
                 </ul>
-                <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
+                <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>-->
             </div>
         </nav>
         <!-- Flight Search -->
@@ -33,45 +29,44 @@
                 <form id="flightSearchForm">
                     <div class="row">
                         <div class="input-field col s6">
-                            <input id="from" type="text" class="validate">
+                            <input id="from" name="from" type="text" class="validate" required>
                             <label for="from">Origen</label>
                         </div>
                         <div class="input-field col s6">
-                            <input id="to" type="text" class="validate">
+                            <input id="to" name="to" type="text" class="validate" required>
                             <label for="to">Destino</label>
                         </div>
                     </div>
                     <div class="row">
                         <div class="input-field col s5">
-                            <input id="depart" type="date" class="datepicker">
-                            <label for="depart">Ida</label>
+                            <input id="departDate" name="departDate" type="date" class="datepicker" required>
+                            <label for="departDate">Ida</label>
                         </div>
                         <div class="input-field col s2">
-                            <input id="soloIda" type="checkbox">
-                            <label for="soloIda">Sólo Ida</label>
+                            <input id="isOneWayTrip" name="isOneWayTrip" type="checkbox">
+                            <label for="isOneWayTrip">Sólo Ida</label>
                         </div>
                         <div class="input-field col s5">
-                            <input id="return" type="date" class="datepicker">
-                            <label for="return">Vuelta</label>
+                            <input id="returnDate" name="returnDate" type="date" class="datepicker" required>
+                            <label for="returnDate">Vuelta</label>
                         </div>
                     </div>
                     <div class="row">
                         <div class="input-field col s4">
-                            <input id="adults" type="number" class="validate" value="1">
-                            <label for="adults">Adultos (12 o más años)</label>
+                            <input id="numAdults" name="numAdults" type="number" class="validate" value="1" min="0">
+                            <label for="numAdults">Adultos (12 o más años)</label>
                         </div>
                         <div class="input-field col s4">
-                            <input id="children" type="number" class="validate" value="0">
-                            <label for="children">Niños (2-11 años)</label>
+                            <input id="numChildren" name="numChildren" type="number" class="validate" value="0" min="0">
+                            <label for="numChildren">Niños (2-11 años)</label>
                         </div>
                         <div class="input-field col s4">
-                            <input id="infants" type="number" class="validate" value="0">
-                            <label for="infants">Infantes (0-2 años)</label>
+                            <input id="numInfants" name="numInfants" type="number" class="validate" value="0" min="0">
+                            <label for="numInfants">Infantes (0-2 años)</label>
                         </div>
-                        <a class="input-field col s4 offset-s4 waves-effect waves-light btn-large" href="vuelos-1.html">
+                        <button type="submit" class="input-field col s4 offset-s4 waves-effect waves-light btn-large">
                             Buscar<i class="material-icons right">arrow_right</i>
-                            <!--Advanced Options<i class="material-icons right">arrow_drop_up</i>-->
-                        </a>
+                        </button>
                     </div>
                     <!--                    <div class="row">
                                             <div class="input-field col s12">
@@ -162,6 +157,6 @@
         <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
         <script src="js/materialize.js"></script>
         <script src="js/init.js"></script>
-        
+        <script src="js/home.js"></script>
     </body>
 </html>
