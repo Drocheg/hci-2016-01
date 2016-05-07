@@ -53,6 +53,6 @@ $(function () {
         sessionStorage.dataz = JSON.stringify(data);
 //        sessionStorage.dataz = data;
         console.log(JSON.parse(sessionStorage.dataz));
-        window.location = "flys-1.html";
+        window.location = "flights-1.html";
     });
 });

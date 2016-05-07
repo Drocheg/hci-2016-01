@@ -27,14 +27,15 @@
                     <form id='payment-form'>
                         <div class="row">
                             <div class="input-field col s12">
-                                <input id="cardNumber" type="number" class="validate">
+                                <input id="cardNumber" type="number" min="0" class="validate" required>
                                 <label for="cardNumber">Número de Tarjeta de Crédito</label>
                             </div>
                         </div>
                         <div class="row">
                             <div class="input-field col s6">
                                 <select id="cardExpiryMonth">
-                                    <option selected value="01">01</option>
+                                    <option selected disabled value="">Seleccione</option>
+                                    <option value="01">01</option>
                                     <option value="02">02</option>
                                     <option value="03">03</option>
                                     <option value="04">04</option>
@@ -51,8 +52,9 @@
                                 <label for="cardExpiryMonth">Mes de Vencimiento</label>
                             </div>
                             <div class="input-field col s6">
-                                <select id="cardExpiryYear">
-                                    <option selected value="2016">2016</option>
+                                <select id="cardExpiryYear" required>
+                                    <option selected disabled value="">Seleccione</option>
+                                    <option value="2016">2016</option>
                                     <option value="2017">2017</option>
                                     <option value="2018">2018</option>
                                     <option value="2019">2019</option>
@@ -64,31 +66,35 @@
                         </div>
                         <div class="row">
                             <div class="input-field col s12">
-                                <input id="name" type="text" class="validate">
-                                <label for="name">Nombre y Apellido del Titular</label>
+                                <input id="cardholderName" type="text" class="validate" required>
+                                <label for="cardholderName">Nombre y Apellido del Titular</label>
                             </div>
                         </div>
                         <div class="row">
                             <div class="input-field col s12">
-                                <input id="cvv" type="number" class="validate">
+                                <input id="cvv" type="number" class="validate" required>
                                 <label for="cvv">Código de Seguridad</label>
                             </div>
                         </div>
                         <div class="row">
                             <div class="input-field col s12">
-                                <input id="dni" type="number" class="validate">
+                                <input id="dni" type="number" class="validate" min="0" required>
                                 <label for="dni">DNI del Titular</label>
                             </div>
                         </div>
                         <div class="row">
                             <div class="input-field col s12">
-                                <input id="email" type="email" class="validate">
+                                <input id="email" type="email" class="validate" required>
                                 <label for="email">E-mail</label>
                             </div>
                         </div>
                         <div class="row">
-                            <input type='button' class="btn-large waves-effect waves-light col s3 offset-s2" value='< Volver' />
-                            <input type='submit' class="btn-large waves-effect waves-light col s3 offset-s2" value='Confirmar >' />
+                            <button type='button' class="btn-large waves-effect waves-light col s3 offset-s2">
+                                < Volver
+                            </button>
+                            <button type='submit' class="btn-large waves-effect waves-light col s3 offset-s2" >
+                                Confirmar >
+                            </button>
                         </div>
                     </form>
                 </div>
@@ -107,5 +113,6 @@
         <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
         <script src="js/materialize.js"></script>
         <script src="js/init.js"></script>
+        <script src="js/payment.js"></script>
     </body>
 </html>
