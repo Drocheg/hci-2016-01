@@ -28,6 +28,15 @@ var sessionData = {
         currencyExchangeRate: 42,       //Calculated with API using currency
         language: "en",                 //In case we support multi-language site (probably won't)
         //what else?
-    }
+    },
+    passengers: [
+        {
+            firstName: "Jorge",
+            lastName: "Jorgez",
+            sex: "M",
+            birthday: new Date(),
+            DNI: 39393939393, //Podria ser otras cosas? Podria ser tipo de documento y despues el numero de ese tipo de documento.
+        }
+    ]
 };
 

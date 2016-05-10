@@ -6,11 +6,11 @@
 
 
 $(function() {
-    var session = JSON.parse(sessionStorage.sessionData);
+    var session = JSON.parse(sessionStorage.sessionData) || {};
     $("#from").val(session.search.from);
     $("#to").val(session.search.to);
     $("#depart").val(session.search.depart);
-    $("soloIda").prop('checked',session.search.isOneWayTrip);
+    $("#soloIda").prop('checked',session.search.isOneWayTrip);
     $("#return").val(session.search.return);
     $("#adults").val(session.search.adults);
     $("#infants").val(session.search.infants);
