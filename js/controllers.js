@@ -3,6 +3,15 @@
 var comentariosApps = angular.module('comentariosApps', []);
 
 comentariosApps.controller('controladorDeComentarios', function ($scope) {
+    
+    $scope.getFlightReviews = function(airlineID, flightNumber) {
+        $http.get("http://eiffel.itba.edu.ar/hci/service4/review.groovy?method=getairlinereviews&airline_id="+airlineID+"&flight_number="+flightNumber, { cache: true, timeout: 10000 })
+        .then(function(response) {
+           $scope.reviews = response.reviews;
+           $scope.reviewCount = response.total;
+        });
+    };
+    
     $scope.comentarios = [
         {'aerolinea': 'LAN',
             'numeroDeVuelo': '100A',

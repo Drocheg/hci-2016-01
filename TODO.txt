@@ -1,2 +1,3 @@
+-Poner "SOLO IDA" antes de elegir fecha de ida, así ya sabemos si auto-abrir el de vuelta o no
 - <noscript> tag en caso de que JavaScript esté apagado
 - Asegurar que la app no rompa si no hay internet (ya casi hecho)

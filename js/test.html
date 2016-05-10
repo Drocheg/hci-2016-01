@@ -11,6 +11,7 @@
         <script src="init.js"></script>
         <script src="Flight.js"></script>
         <script src="Trip.js"></script>
+        <script src="API.js"></script>
         <script type="text/javascript">
             var f1 = new Flight("EZE", "JFK", new Date(), new Date(2016, 04, 01, 21, 53, 05, 00), 420);
             document.write(f1.toString()+"<br />");
@@ -24,6 +25,11 @@
             document.write("<br />"+t.toString()+"<br />");
             var time3 = t.getResumedFlightTime();
             document.write("Total flight time: " + time3.hours + " hours, " + time3.minutes + " minutes.<br />");
+            
+            (API.getAllFlightReviews("AR", "5260", function(result) {
+                console.log("There are " + result.length + " reviews for AR 5260:");
+                console.log(JSON.stringify(result));
+            }));
         </script>
     </body>
 </html>
