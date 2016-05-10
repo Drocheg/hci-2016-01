@@ -27,67 +27,61 @@
             <div class="row"> <!-- esto cambia todas la tarjetas -->
                 <div class="col s1">
                     <label>Comentarios por pagina</label>
-                    <select class="browser-default">
+                    <select class="browser-default" ng-model="quantity">
                         <option value="5">5</option>
                         <option value="3">3</option>
                         <option value="1">1</option>
                     </select>
                 </div>
                 <ul class="collapsible col s6 offset-s2" data-collapsible="accordion">
-                    <li ng-repeat="review in reviews">
+                    <li ng-repeat="review in reviews | filter:query | limitTo:quantity">
                         <!--TODO change elements (e.g. review.aerolinea) to whatever the API returns-->
                         <div class="collapsible-header" >
                             <div class="row s4 center-align">
-                                {{review.aerolinea}} {{review.numeroDeVuelo}}
+                                 {{review.flight.airline.id}} {{review.flight.number}}
                             </div>
                             <div class="row s4">
                                 <div class="col s6 center-align">
-                                    General: {{review.general}}
+                                    General: {{review.rating.overall}}
                                 </div>
                                 <div class="col s6 center-align">
-                                    Recomendado: {{review.recomendado}}
+                                    Recomendado: {{review.yes_recommend}}
                                 </div>
                             </div>
                             <div class="row s4 center-align">
-                                Comentario: {{review.comentarios}}
+                                Comentario: {{review.comments}}
                             </div>
                         </div>
                         <div class="collapsible-body">
                             <div class="row s4">
                                 <div class="col s6">
-                                    Amabilidad: {{review.amabilidad}}
+                                    Amabilidad: {{review.rating.friendliness}}
                                 </div>
                                 <div class="col s6">
-                                    Programa de Viajero Frequente: {{review.programaDeViajeroFrequente}}
-                                </div>
-                            </div>
-                            <div class="row s4">
-                                <div class="col s6">
-                                    Comida: {{review.comida}}
-                                </div>
-                                <div class="col s6">
-                                    Comodidad: {{review.comodidad}}
+                                    Programa de Viajero Frequente: {{review.rating.millage_program}}
                                 </div>
                             </div>
                             <div class="row s4">
                                 <div class="col s6">
-                                    Puntualidad: {{review.puntualidad}}
+                                    Comida: {{review.rating.food}}
                                 </div>
                                 <div class="col s6">
-                                    Relación precio/calidad: {{review.relacionPrecioCalidad}}
+                                    Comodidad: {{review.rating.comfort}}
+                                </div>
+                            </div>
+                            <div class="row s4">
+                                <div class="col s6">
+                                    Puntualidad: {{review.rating.punctuality}}
+                                </div>
+                                <div class="col s6">
+                                    Relación precio/calidad: {{review.rating.quality_price}}
                                 </div>
                             </div>
                     </li>
                 </ul>
             </div>
             <ul class="pagination center-align">
-                <li class="disabled"><a href="#!"><i class="material-icons">chevron_left</i></a></li>
-                <li class="active"><a href="#!">1</a></li>
-                <li class="waves-effect"><a href="comments2.html">2</a></li>
-                <li class="waves-effect"><a href="#!">3</a></li>
-                <li class="waves-effect"><a href="#!">4</a></li>
-                <li class="waves-effect"><a href="#!">5</a></li>
-                <li class="waves-effect"><a href="comments2.html"><i class="material-icons">chevron_right</i></a></li>
+                <li ng-repeat="i in getFilledArray(reviewCount)"><a href="#!"><strong>{{i}}</strong></a></li>
             </ul>
         </main>
 
