@@ -63,8 +63,12 @@ app.controller('controller', function ($scope, $http, $log) {
     };
     
     $scope.pageNumber = 5;
-    $scope.getNumber = function(size) {
-        return new Array(size);   
+    $scope.getFilledArray = function(size) {
+        var arr = new Array(size);
+        for(var i = 1; i <= size; i++) {
+            arr[i-1] = i;
+        }
+        return arr;
     };
 
     /* *************************************************************************
