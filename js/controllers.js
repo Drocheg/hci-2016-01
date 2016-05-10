@@ -1,5 +1,6 @@
 var app = angular.module('app', []);
 app.controller('controller', function ($scope, $http, $log) {
+    var API_URL = 'http://eiffel.itba.edu.ar/hci/service4/';
     /* *************************************************************************
      *                          General functions
      * ************************************************************************/
@@ -13,9 +14,57 @@ app.controller('controller', function ($scope, $http, $log) {
                 });
         return groups;
     };
-
-    $scope.randomElement = function (array) {
-        return array[Math.floor((Math.random() * array.length))];
+    
+    $scope.getAllPagesFromRequest = function(service, params, destArray, responseKey, method) {
+        var done = false;
+        var page = 1;
+        params.page = page;
+        params.page_size = 1000;        //Try to get as many result as possible per page
+//        do {
+            $http({
+                url: API_URL+service+".groovy",
+                method: method || "GET",
+                params: params,
+                cache: true,
+                timeout: 10000
+                }).then(function (response) {
+                    if(response.data.length === 0) {
+                        done = true;
+                    }
+                    else {
+                        if(typeof responseKey !== 'undefined') {
+                            destArray.push(response.data[responseKey]);
+                        }
+                        else {
+                            destArray.push(response.data);
+                        }
+                        console.log(JSON.stringify(response.data));
+                        params.page = page++;
+                    }
+                });
+//        }while(!done);
+    };
+    
+    /* *************************************************************************
+     *                          Interaction functions
+     * ************************************************************************/
+    $scope.autocompletePlace = function(partialName) {
+        if(partialName.length <= 2) {  //Avoid excessively general queries
+            return;
+        }
+        $http.get("http://eiffel.itba.edu.ar/hci/service4/geo.groovy?method=getcitiesandairportsbyname&name="+partialName, {cache: true, timeout: 10000})
+                .then(function (response) {
+                    $scope.fromSuggestions = response.data.data;
+                    //TODO pregunar por qué devuelve pares
+                    $(response.data.data).each(function(index, value) {
+                        console.log(value);
+                    });
+                });
+    };
+    
+    $scope.pageNumber = 5;
+    $scope.getNumber = function(size) {
+        return new Array(size);   
     };
 
     /* *************************************************************************
@@ -32,10 +81,13 @@ app.controller('controller', function ($scope, $http, $log) {
     /* *************************************************************************
      *                          Flight functions
      * ************************************************************************/
+    $scope.deals = [];
+    
     $scope.getDeals = function (origin) {
-        $http.get("http://eiffel.itba.edu.ar/hci/service4/booking.groovy?method=getflightdeals&from=" + origin, {cache: true, timeout: 10000})
+        $http.get("http://eiffel.itba.edu.ar/hci/service4/booking.groovy?method=getflightdeals&from="+origin, {cache: true, timeout: 10000})
                 .then(function (response) {
-                    $scope.deals = $scope.separateIntoGroupsOf(3, response.data.deals);
+//                    $scope.deals = $scope.separateIntoGroupsOf(3, response.data.deals);
+                    $scope.deals = response.data.deals;
                 });
     };
 
