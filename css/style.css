@@ -6,6 +6,12 @@
 	font-size: inherit;
 }
 
+.flight-card-header{
+   line-height: 100px;
+   font-size: large;
+   height: 100px; 
+}
+
 #flightSearch {
     /*Place it in a nice place*/
     position:relative;

@@ -21,8 +21,7 @@
             <h1 class="center">Pagina de comentarios</h1>
         </header>
 
-        <div class="divider"></div> <!-- Sacar este divisor, está sólo para indicar donde termina header y donde empieza main -->
-
+        
         <main>
             <h2 class="center">Comentarios sobre vuelo : </h2>
             <div class="row"> <!-- esto cambia todas la tarjetas -->
@@ -36,7 +35,7 @@
                 </div>
                 <ul class="collapsible col s6 offset-s2" data-collapsible="accordion">
                     <li ng-repeat="comentario in comentarios">
-                        <div class="collapsible-header">
+                        <div class="collapsible-header" >
                             <div class="row s4 center-align">
                                 {{comentario.aerolinea}} {{comentario.numeroDeVuelo}}
                             </div>
