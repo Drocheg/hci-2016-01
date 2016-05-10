@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" ng-app="comentariosApps">
+<html lang="en" data-ng-app="app" data-ng-controller="controller" data-ng-init="getFlightReviews('AR', 5260)"> <!-- TODO remove when adding form -->
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
@@ -10,7 +10,7 @@
         <link href="css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection"/>
         <link href="css/style.css" type="text/css" rel="stylesheet" media="screen,projection"/>
     </head>
-    <body ng-controller="controladorDeComentarios">
+    <body>
         <header>
             <nav class="light-blue lighten-1" role="navigation">
                 <div class="nav-wrapper container">
@@ -34,46 +34,47 @@
                     </select>
                 </div>
                 <ul class="collapsible col s6 offset-s2" data-collapsible="accordion">
-                    <li ng-repeat="comentario in comentarios">
+                    <li ng-repeat="review in reviews">
+                        <!--TODO change elements (e.g. review.aerolinea) to whatever the API returns-->
                         <div class="collapsible-header" >
                             <div class="row s4 center-align">
-                                {{comentario.aerolinea}} {{comentario.numeroDeVuelo}}
+                                {{review.aerolinea}} {{review.numeroDeVuelo}}
                             </div>
                             <div class="row s4">
                                 <div class="col s6 center-align">
-                                    General: {{comentario.general}}
+                                    General: {{review.general}}
                                 </div>
                                 <div class="col s6 center-align">
-                                    Recomendado: {{comentario.recomendado}}
+                                    Recomendado: {{review.recomendado}}
                                 </div>
                             </div>
                             <div class="row s4 center-align">
-                                Comentario: {{comentario.comentarios}}
+                                Comentario: {{review.comentarios}}
                             </div>
                         </div>
                         <div class="collapsible-body">
                             <div class="row s4">
                                 <div class="col s6">
-                                    Amabilidad: {{comentario.amabilidad}}
+                                    Amabilidad: {{review.amabilidad}}
                                 </div>
                                 <div class="col s6">
-                                    Programa de Viajero Frequente: {{comentario.programaDeViajeroFrequente}}
-                                </div>
-                            </div>
-                            <div class="row s4">
-                                <div class="col s6">
-                                    Comida: {{comentario.comida}}
-                                </div>
-                                <div class="col s6">
-                                    Comodidad: {{comentario.comodidad}}
+                                    Programa de Viajero Frequente: {{review.programaDeViajeroFrequente}}
                                 </div>
                             </div>
                             <div class="row s4">
                                 <div class="col s6">
-                                    Puntualidad: {{comentario.puntualidad}}
+                                    Comida: {{review.comida}}
                                 </div>
                                 <div class="col s6">
-                                    Relación precio/calidad: {{comentario.relacionPrecioCalidad}}
+                                    Comodidad: {{review.comodidad}}
+                                </div>
+                            </div>
+                            <div class="row s4">
+                                <div class="col s6">
+                                    Puntualidad: {{review.puntualidad}}
+                                </div>
+                                <div class="col s6">
+                                    Relación precio/calidad: {{review.relacionPrecioCalidad}}
                                 </div>
                             </div>
                     </li>

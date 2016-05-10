@@ -9,27 +9,38 @@
         <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
         <script src="materialize.js"></script>
         <script src="init.js"></script>
-        <script src="Flight.js"></script>
-        <script src="Trip.js"></script>
-        <script src="API.js"></script>
-        <script type="text/javascript">
-            var f1 = new Flight("EZE", "JFK", new Date(), new Date(2016, 04, 01, 21, 53, 05, 00), 420);
-            document.write(f1.toString()+"<br />");
-            var time1 = f1.getResumedFlightTime();
-            document.write("Flight time: " + time1.hours + " hours, " + time1.minutes + " minutes.<br />");
-            var f2 = new Flight("JFK", "LAX", new Date(f1.landingTime.getTime() + 7200000), new Date(2016, 04, 02, 05, 18, 13, 00), 750);
-            document.write(f2.toString()+"<br />");
-            var time2 = f2.getResumedFlightTime();
-            document.write("Flight time: " + time2.hours + " hours, " + time2.minutes + " minutes.<br />");
-            var t = new Trip([f1, f2]);
-            document.write("<br />"+t.toString()+"<br />");
-            var time3 = t.getResumedFlightTime();
-            document.write("Total flight time: " + time3.hours + " hours, " + time3.minutes + " minutes.<br />");
-            
-            (API.getAllFlightReviews("AR", "5260", function(result) {
-                console.log("There are " + result.length + " reviews for AR 5260:");
-                console.log(JSON.stringify(result));
-            }));
-        </script>
+        
+        <script src="angular.min.js"></script>
+        <script src="controllers.js"></script>
+        <div data-ng-app="flightsApp" data-ng-controller="flightsController" data-ng-init="getDeals('BUE')">
+            <p>{{deals.length}} Deals Found:</p>
+            <ul>
+                <li data-ng-repeat="deal in deals">
+                    {{ deal.city.id + '(' + deal.city.name + ') for $' + deal.price }}
+                </li>
+            </ul>
+        </div>
     </body>
+    <!--        <script src="Flight.js"></script>
+                <script src="Trip.js"></script>
+                <script src="API.js"></script>
+                <script type="text/javascript">
+                    var f1 = new Flight("EZE", "JFK", new Date(), new Date(2016, 04, 01, 21, 53, 05, 00), 420);
+                    document.write(f1.toString()+"<br />");
+                    var time1 = f1.getResumedFlightTime();
+                    document.write("Flight time: " + time1.hours + " hours, " + time1.minutes + " minutes.<br />");
+                    var f2 = new Flight("JFK", "LAX", new Date(f1.landingTime.getTime() + 7200000), new Date(2016, 04, 02, 05, 18, 13, 00), 750);
+                    document.write(f2.toString()+"<br />");
+                    var time2 = f2.getResumedFlightTime();
+                    document.write("Flight time: " + time2.hours + " hours, " + time2.minutes + " minutes.<br />");
+                    var t = new Trip([f1, f2]);
+                    document.write("<br />"+t.toString()+"<br />");
+                    var time3 = t.getResumedFlightTime();
+                    document.write("Total flight time: " + time3.hours + " hours, " + time3.minutes + " minutes.<br />");
+                    
+                    (API.getAllFlightReviews("AR", "5260", function(result) {
+                        console.log("There are " + result.length + " reviews for AR 5260:");
+                        console.log(JSON.stringify(result));
+                    }));
+                </script>-->
 </html>

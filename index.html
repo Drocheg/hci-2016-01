@@ -4,7 +4,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
         <title>Home - Página de Vuelos</title>
-        
+
         <!-- CSS  -->
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         <link href="css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection"/>
@@ -15,11 +15,11 @@
             <div class="nav-wrapper container">
                 <a id="logo-container" href="#" class="brand-logo left">Logo</a>
                 <span style="position:absolute; margin-left:45%;">Pesos Argentinos $<span class="material-icons">arrow_drop_down_circle</span></span>
-                
-<!--                <ul id="nav-mobile" class="side-nav">
-                    <li><a href="#">Navbar Link</a></li>
-                </ul>
-                <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>-->
+
+                <!--                <ul id="nav-mobile" class="side-nav">
+                                    <li><a href="#">Navbar Link</a></li>
+                                </ul>
+                                <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>-->
             </div>
         </nav>
         <!-- Flight Search -->
@@ -78,15 +78,17 @@
             </div>
         </div>
         <!--/Flight Search-->
-        
-        <div class="container section no-pad-bot">
-            <div class="row center">
-                <div class="col s4">
-                    <div class="card-panel blue white-text">
-                        Viajes a Miami desde $200
+
+        <!-- http://stackoverflow.com/a/30128450 -->
+        <div class="container section no-pad-bot" data-ng-app="app" data-ng-controller="controller" data-ng-init="getDeals('BUE')">   <!-- TODO usar ciudad actual -->
+            <div class="row center" data-ng-repeat="dealGroup in deals"> <!-- separateIntoGroupsOf(3, deals) -->
+                <div class="col s4" data-ng-repeat="deal in dealGroup">
+                    <div class="card-panel white-text {{randomElement(['blue', 'green', 'purple', 'red', 'orange', 'pink'])}}">
+                        Viajes a {{deal.city.name}} desde ${{deal.price}}
                     </div>
                 </div>
-                <div class="col s4">
+            </div>
+<!--                <div class="col s4">
                     <div class="card-panel green white-text">
                         Viajes a Madrid desde $100
                     </div>
@@ -95,9 +97,8 @@
                     <div class="card-panel purple white-text">
                         Viajes a Rusia desde $180
                     </div>
-                </div>
-            </div>
-            <div class="row center">
+                </div>-->
+<!--            <div class="row center">
                 <div class="col s4">
                     <div class="card-panel red white-text">
                         Viajes a Belarús desde $50
@@ -113,50 +114,52 @@
                         Viajes a Lituania desde $250
                     </div>
                 </div>
-            </div>
-        </div>
-        
-        <footer class="page-footer blue">
-<!--            <div class="container">
-                <div class="row">
-                    <div class="col l6 s12">
-                        <h5 class="white-text">Company Bio</h5>
-                        <p class="grey-text text-lighten-4">We are a team of college students working on this project like it's our full time job. Any amount would help support and continue development on this project and is greatly appreciated.</p>
-                        
-                        
-                    </div>
-                    <div class="col l3 s12">
-                        <h5 class="white-text">Settings</h5>
-                        <ul>
-                            <li><a class="white-text" href="#!">Link 1</a></li>
-                            <li><a class="white-text" href="#!">Link 2</a></li>
-                            <li><a class="white-text" href="#!">Link 3</a></li>
-                            <li><a class="white-text" href="#!">Link 4</a></li>
-                        </ul>
-                    </div>
-                    <div class="col l3 s12">
-                        <h5 class="white-text">Connect</h5>
-                        <ul>
-                            <li><a class="white-text" href="#!">Link 1</a></li>
-                            <li><a class="white-text" href="#!">Link 2</a></li>
-                            <li><a class="white-text" href="#!">Link 3</a></li>
-                            <li><a class="white-text" href="#!">Link 4</a></li>
-                        </ul>
-                    </div>
-                </div>
             </div>-->
+        </div>
+
+        <footer class="page-footer blue">
+            <!--            <div class="container">
+                            <div class="row">
+                                <div class="col l6 s12">
+                                    <h5 class="white-text">Company Bio</h5>
+                                    <p class="grey-text text-lighten-4">We are a team of college students working on this project like it's our full time job. Any amount would help support and continue development on this project and is greatly appreciated.</p>
+                                    
+                                    
+                                </div>
+                                <div class="col l3 s12">
+                                    <h5 class="white-text">Settings</h5>
+                                    <ul>
+                                        <li><a class="white-text" href="#!">Link 1</a></li>
+                                        <li><a class="white-text" href="#!">Link 2</a></li>
+                                        <li><a class="white-text" href="#!">Link 3</a></li>
+                                        <li><a class="white-text" href="#!">Link 4</a></li>
+                                    </ul>
+                                </div>
+                                <div class="col l3 s12">
+                                    <h5 class="white-text">Connect</h5>
+                                    <ul>
+                                        <li><a class="white-text" href="#!">Link 1</a></li>
+                                        <li><a class="white-text" href="#!">Link 2</a></li>
+                                        <li><a class="white-text" href="#!">Link 3</a></li>
+                                        <li><a class="white-text" href="#!">Link 4</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>-->
             <div class="footer-copyright">
                 <div class="container">
                     &COPY; 2016, ITBA. Hecho con <a class="orange-text text-lighten-3" href="http://materializecss.com" target="_blank">Materialize</a>.
                 </div>
             </div>
         </footer>
-        
-        
+
+
         <!--  Scripts-->
         <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
         <script src="js/materialize.js"></script>
         <script src="js/init.js"></script>
         <script src="js/home.js"></script>
+        <script src='js/angular.min.js'></script>
+        <script src='js/controllers.js'></script>
     </body>
 </html>
