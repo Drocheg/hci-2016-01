@@ -49,10 +49,20 @@ $(function () {
             numInfants: Number($("#numInfants").val())
         };
         //TODO validar info e ir a flights.html con estos parametros en texto, la página rellenará el formulario automáticamente
-        //Y hará la búsqueda por API
-        sessionStorage.dataz = JSON.stringify(data);
-//        sessionStorage.dataz = data;
-        console.log(JSON.parse(sessionStorage.dataz));
+        
+        var session = {};
+        session.search.from = data.from;
+        session.search.to = data.to;
+        session.search.isOneWayTrip = data.isOneWayTrip;
+        session.search.depart = data.departDate;
+        session.search.return = data.returnDate;
+        session.search.adults = data.numAdults;
+        session.search.children = data.numChildren;
+        session.search.infants = data.numInfants;
+        
+        //Si el ckeck sale mal, no cargar ni redirect
+        sessionStorage.sessionData = JSON.stringify(session);
         window.location = "flights-1.html";
+        
     });
 });

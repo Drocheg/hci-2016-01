@@ -3,13 +3,18 @@ var session = JSON.parse(sessionStorage.sessionData);   //will return UNDEFINED 
 //TO SAVE IT AGAIN (make sure you got it first)
 sessionStorage.sessionData = JSON.stringify(session);
 
+
+
 var sessionData = {
     search: {
         from: "airport or city ID",
-        to: "airport or cityID",
+        to: "airport or cityID", 
         isOneWayTrip: false,
         depart: new Date(),         //date includes date and time
         return: new Date() || null, //null in case of one-way trip
+        adults: 3,
+        children: 1,
+        infants: 0,
         //what else?
     },
     flights: {
@@ -25,3 +30,4 @@ var sessionData = {
         //what else?
     }
 };
+
