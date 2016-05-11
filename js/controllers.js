@@ -112,6 +112,69 @@ app.controller('controller', function ($scope, $http, $log) {
      *                          Flight functions
      * ************************************************************************/
     $scope.deals = [];
+    $scope.flights = [];
+    
+    $scope.searchFlights = function() {
+        debugger;
+        var sessionData = JSON.parse(sessionStorage.sessionData);
+        var f = sessionData.search.from || null,    //If undefined, set to NULL
+            t = sessionData.search.to || null,
+            d = sessionData.search.depart || null,
+            a = typeof sessionData.search.adults === 'undefined' ? -1 : sessionData.search.adults,        //0 evaluates to false so we can't use the || here
+            c = typeof sessionData.search.children === 'undefined' ? -1 : sessionData.search.children,
+            i = typeof sessionData.search.infants === 'undefined' ? -1 : sessionData.search.infants;
+        if(!f || !t || !d || a < 0 || c < 0 || i < 0) {  //Any empty, null or undefined variable will return false
+            return;
+        }
+        //All info is present, search
+        $scope.getOneWayFlights(f, t, d, a, c, i);
+    };
+    
+    /**
+     * Gets one-way flights matching the specified criteria.
+     * 
+     * @param {string} from City or airport ID.
+     * @param {string} to City or airport ID.
+     * @param {string} departDate Departure date, yyyy-mm-dd format. <b>NOTE: </b>
+     * Must be at least 3 days from today. Otherwise use getLastMinuteDeals().
+     * @param {number} numAdults Number of adults flying.
+     * @param {number} numChildren Number of children flying. Children can
+     * travel without an adult.
+     * @param {number} numInfants Number of infants flying. Infants can't travel
+     * without an adult.
+     * @param {number} pageNum OPTIONAL. Page number of results to get. Defaults
+     * to 1.
+     * @param {number} pageSize OPTIONAL. Results per page. Defaults to 30.
+     * @param {string} sortKey OPTIONAL. Sorting key of results. Valid values:
+     * fare, total, stopovers, airline, duration. Defaults to undefined.
+     * @param {string} sortOrder OPTIONAL. Valid values: asc, desc. Defaults to
+     * asc.
+     * @returns {undefined}
+     */
+    $scope.getOneWayFlights = function(from, to, departDate, numAdults, numChildren, numInfants, pageNum, pageSize, sortKey, sortOrder) {
+        var params = {
+            method: "getonewayflights",
+            from: from,
+            to: to,
+            dep_date: departDate,
+            adults: numAdults,
+            children: numChildren,
+            infants: numInfants,
+            page: pageNum || undefined, //API defaults to 1
+            page_size: pageSize || undefined,   //API defaults to 30
+            sort_key: sortKey || undefined,
+            sort_order: sortOrder || undefined
+        };
+        $http({
+            url: "http://eiffel.itba.edu.ar/hci/service4/booking.groovy",
+            method: "GET",
+            params: params,
+            cache: true,
+            timeout: 10000
+        }).then(function (response) {
+            $scope.flights = response.data.flights;
+        });
+    };
 
     $scope.getDeals = function (origin) {
         $http.get("http://eiffel.itba.edu.ar/hci/service4/booking.groovy?method=getflightdeals&from=" + origin, {cache: true, timeout: 10000})
@@ -121,7 +184,7 @@ app.controller('controller', function ($scope, $http, $log) {
                 });
     };
 
-    $scope.getLastMinuteFlightDeals = function (origin) {
+    $scope.getLastMinuteDeals = function (origin) {
         $http.get("http://eiffel.itba.edu.ar/hci/service4/booking.groovy?method=getlastminuteflightdeals&from=" + origin, {cache: true, timeout: 10000})
                 .then(function (response) {
                     $scope.deals = response.data.deals;

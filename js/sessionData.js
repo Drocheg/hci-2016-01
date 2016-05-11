@@ -4,7 +4,8 @@ var session = JSON.parse(sessionStorage.sessionData);   //will return UNDEFINED 
 sessionStorage.sessionData = JSON.stringify(session);
 
 
-
+//This is a MODEL of what the sessionData object we store will look like.
+//Avisar al grupo si se cambia, agrega o saca algo, todos dependemos de este objetito
 var sessionData = {
     search: {
         from: "airport or city ID",
@@ -37,6 +38,15 @@ var sessionData = {
             birthday: "yyyy-mm-dd",
             DNI: 39393939393, //Podria ser otras cosas? Podria ser tipo de documento y despues el numero de ese tipo de documento.
         }
-    ]
+    ],
+    payment: {
+        //acá hay que poner # de tarjeta, vencimiento, etc. etc. etc.
+    },
+    state: {
+        hasOutboundFlight: false,               //Si ya seleccionó algún vuelo de ida
+        hasInboundFlight: false || null,        //Si ya seleccionó algún vuelo de vuelta o NULL si es de sólo ida
+        hasPassengers: false,                   //Si ya cargó la info de TODOS los pasajeros y es válida
+        hasPayment: false,                      //Si ya cargó info de método de pago y es válida
+    }
 };
 

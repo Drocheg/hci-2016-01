@@ -94,7 +94,7 @@ $(function () {
         session.search.isOneWayTrip = data.isOneWayTrip;
         session.search.depart = data.departDate;
         session.search.return = data.returnDate;
-        if (data.departDate > data.returnDate) {
+        if (!data.isOneWayTrip && new Date(data.returnDate) < new Date(data.departDate) ) {
             Materialize.toast("Fecha vuelta deberia ser inferior a fecha ida.", 5000); //El calendario no debería permitirlo pero por las dudas
             return;
         }
@@ -109,6 +109,6 @@ $(function () {
         }
         //Valid, store data and go to next page
         sessionStorage.sessionData = JSON.stringify(session);
-        window.location = "flights-1.html";
+        window.location = "flights.html";
     });
 });
