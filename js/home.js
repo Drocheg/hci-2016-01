@@ -81,16 +81,28 @@ $(function () {
             numInfants: Number($("#numInfants").val())
         };
         //TODO validar info e ir a flights.html con estos parametros en texto, la página rellenará el formulario automáticamente
-        
+        debugger;
         var session = {};
+        session.search = {};
+        session.flights = {};
+        session.preferences={};
         session.search.from = data.from;
         session.search.to = data.to;
         session.search.isOneWayTrip = data.isOneWayTrip;
         session.search.depart = data.departDate;
         session.search.return = data.returnDate;
+        if(data.departDate>data.returnDate){
+             Materialize.toast("Fecha vuelta deberia ser inferior a fecha ida.", 5000); //Al pedo? Se deberia hacer antes de que mandes submit
+        }
+        
         session.search.adults = data.numAdults;
         session.search.children = data.numChildren;
         session.search.infants = data.numInfants;
+        //Tampoco se deberia poder que sean negativos
+        if(data.numAdults==0 && data.numChildren==0 && data.numInfants==0){
+            Materialize.toast("Tiene que ingresar al menos un pasajero.", 5000); //Se puede hacer antes?
+        }
+        
         
         //Si el ckeck sale mal, no cargar ni redirect
         sessionStorage.sessionData = JSON.stringify(session);
