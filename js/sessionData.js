@@ -10,8 +10,8 @@ var sessionData = {
         from: "airport or city ID",
         to: "airport or cityID", 
         isOneWayTrip: false,
-        depart: new Date(),         //date includes date and time
-        return: new Date() || null, //null in case of one-way trip
+        depart: "yyyy-mm-dd",           //Store as string, not date, gets serialized to ISO string in session
+        return: "yyyy-mm-dd" || null,   //null in case of one-way trip
         adults: 3,
         children: 1,
         infants: 0,
@@ -34,7 +34,7 @@ var sessionData = {
             firstName: "Jorge",
             lastName: "Jorgez",
             sex: "M",
-            birthday: new Date(),
+            birthday: "yyyy-mm-dd",
             DNI: 39393939393, //Podria ser otras cosas? Podria ser tipo de documento y despues el numero de ese tipo de documento.
         }
     ]
