@@ -18,20 +18,30 @@ var sessionData = {
         infants: 0,
         //what else?
     },
-    flights: { //Wouldnt be prettier if we had outboundFlight object and inboundFlight object? Variables would have shorter and clearer names
-        outboundFlights: [new Flight(), new Flight()],          //more than 1 flight if there are stopovers
-        inboundFlights: [new Flight(), new Flight()] || null,    //can be null if one-way trip, otherwise same as outboundFlights
-        total: 42,                                              //Can be calculated by adding flights' cost, provided for convenience
-        
-        //what else? If taxes are somewhere else and al the fligt info can be gathered from new Flight() then it should be fine
+//    flights: { //Wouldnt be prettier if we had outboundFlight object and inboundFlight object? Variables would have shorter and clearer names
+//        outboundFlights: [new Flight(), new Flight()],          //more than 1 flight if there are stopovers
+//        inboundFlights: [new Flight(), new Flight()] || null,    //can be null if one-way trip, otherwise same as outboundFlights
+//        total: 42,                                              //Can be calculated by adding flights' cost, provided for convenience
+//        
+//        //what else? If taxes are somewhere else and al the fligt info can be gathered from new Flight() then it should be fine
+//    },
+    flight: { //No los diferencie en outbound e inbound por el tema escalas, pensar que hacer
+        departureTime: "",
+        arrivalTime: "",
+        adultCost: "$",
+        childCost: "$",
+        infantCost: "$",
+        taxes: "$", //?
+        flightNumber: 42
     },
+    
     preferences: {
         currency: "currencyCode",       //Default to USD? Or current location?
         currencyExchangeRate: 42,       //Calculated with API using currency
         language: "en",                 //In case we support multi-language site (probably won't)
         //what else?
     },
-    passengers: [
+    passengers: [ 
         {
             firstName: "Jorge",
             lastName: "Jorgez",
