@@ -1,5 +1,5 @@
 //TO GET THE OBJECT
-var session = JSON.parse(sessionStorage.sessionData);   //will return UNDEFINED if it doesn't exist yet
+var session = JSON.parse(sessionStorage.sessionData);   //will return UNDEFINED if it doesn't exist 
 //TO SAVE IT AGAIN (make sure you got it first)
 sessionStorage.sessionData = JSON.stringify(session);
 
@@ -18,11 +18,12 @@ var sessionData = {
         infants: 0,
         //what else?
     },
-    flights: {
+    flights: { //Wouldnt be prettier if we had outboundFlight object and inboundFlight object? Variables would have shorter and clearer names
         outboundFlights: [new Flight(), new Flight()],          //more than 1 flight if there are stopovers
-        inboundFlights: [new Flight(), new Fligh()] || null,    //can be null if one-way trip, otherwise same as outboundFlights
+        inboundFlights: [new Flight(), new Flight()] || null,    //can be null if one-way trip, otherwise same as outboundFlights
         total: 42,                                              //Can be calculated by adding flights' cost, provided for convenience
-        //what else?
+        
+        //what else? If taxes are somewhere else and al the fligt info can be gathered from new Flight() then it should be fine
     },
     preferences: {
         currency: "currencyCode",       //Default to USD? Or current location?
@@ -41,6 +42,13 @@ var sessionData = {
     ],
     payment: {
         //acá hay que poner # de tarjeta, vencimiento, etc. etc. etc.
+        // Puse cosas, soy Flacu, esta bien?
+        cardNumber: 1111-2222-3333-4444,
+        cardExpiryMonth: 02,
+        cardholderName: "Facundo Gonzalez F",
+        cvv: 132,
+        dni: 38995760,
+        email: "facundogonzalezf@gmail.com"
     },
     state: {
         hasOutboundFlight: false,               //Si ya seleccionó algún vuelo de ida
