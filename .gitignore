@@ -1,5 +1,3 @@
-*/nbproject/*
-/NodeJsWebApplication/nbproject/private/
-/HTML5Application/nbproject/private/
+nbproject/*
+netbeans/*
 *.dropbox.attr
-/nbproject/private/

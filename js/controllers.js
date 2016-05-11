@@ -14,59 +14,85 @@ app.controller('controller', function ($scope, $http, $log) {
                 });
         return groups;
     };
-    
-    $scope.getAllPagesFromRequest = function(service, params, destArray, responseKey, method) {
+
+    $scope.getAllPagesFromRequest = function (service, params, destArray, responseKey, method) {
         var done = false;
         var page = 1;
         params.page = page;
         params.page_size = 1000;        //Try to get as many result as possible per page
 //        do {
-            $http({
-                url: API_URL+service+".groovy",
-                method: method || "GET",
-                params: params,
-                cache: true,
-                timeout: 10000
-                }).then(function (response) {
-                    if(response.data.length === 0) {
-                        done = true;
-                    }
-                    else {
-                        if(typeof responseKey !== 'undefined') {
-                            destArray.push(response.data[responseKey]);
-                        }
-                        else {
-                            destArray.push(response.data);
-                        }
-                        console.log(JSON.stringify(response.data));
-                        params.page = page++;
-                    }
-                });
+        $http({
+            url: API_URL + service + ".groovy",
+            method: method || "GET",
+            params: params,
+            cache: true,
+            timeout: 10000
+        }).then(function (response) {
+            if (response.data.length === 0) {
+                done = true;
+            } else {
+                if (typeof responseKey !== 'undefined') {
+                    destArray.push(response.data[responseKey]);
+                } else {
+                    destArray.push(response.data);
+                }
+                console.log(JSON.stringify(response.data));
+                params.page = page++;
+            }
+        });
 //        }while(!done);
     };
-    
+
     /* *************************************************************************
      *                          Interaction functions
      * ************************************************************************/
-    $scope.autocompletePlace = function(partialName) {
-        if(partialName.length <= 2) {  //Avoid excessively general queries
+    /**
+     * Finds cities and airports matching part of the specified query.
+     * 
+     * @param {string} partialName Partial or complete name of city/airport.
+     * Must be at least 3 characters long.
+     * @param {string} destArrayName Name of $scope variable where to store the
+     * result. Will store an object of type {cities: [], airports: []}.
+     * @param {string} destStatusName Name of $scope variable where to store the
+     * status of the query (true when a query is running, false otherwise). Used
+     * to cancel previous queries if present.
+     * @returns {undefined}
+     */
+    $scope.findSuggestions = function (partialName, destArrayName, destStatusName) {
+        if (partialName && partialName.length <= 2) {  //Avoid excessively general queries
             return;
         }
-        $http.get("http://eiffel.itba.edu.ar/hci/service4/geo.groovy?method=getcitiesandairportsbyname&name="+partialName, {cache: true, timeout: 10000})
-                .then(function (response) {
-                    $scope.fromSuggestions = response.data.data;
-                    //TODO pregunar por qué devuelve pares
-                    $(response.data.data).each(function(index, value) {
-                        console.log(value);
-                    });
-                });
+        $scope[destStatusName] = true;  //Mark active query
+        //TODO cancel previous query if $scope[destStatusName] === true
+        $http({
+            url: "http://eiffel.itba.edu.ar/hci/service4/geo.groovy",
+            method: "GET",
+            headers: {"Accept":"application/json; charset=utf-8", 'Content-Type' : 'application/json; charset=UTF-8'},  //TODO España still returns weird, is it encoding or DB error?
+            params: {method: "getcitiesandairportsbyname", name: partialName},
+            cache: true,
+            timeout: 10000
+        }).then(function (response) {
+            $scope[destStatusName] = false; //Query finished
+            var result = {cities: [], airports: []};
+            $(response.data.data).each(function (index, entry) {
+                if (entry.type === 'city') {
+                    result.cities.push(entry);
+                } else if (entry.type === 'airport') {
+                    result.airports.push(entry);
+                } else {
+                    console.log("Unrecognized city/airport entry:");
+                    console.log(entry); //TODO shouldn't happen
+                }
+            });
+            $scope[destArrayName] = result;
+        });
     };
-    
+
     $scope.pageNumber = 5;
-    $scope.getFilledArray = function(size) {
+    $scope.getFilledArray = function (size) {
         var arr = new Array(size);
-        for(var i = 1; i <= size; i++) {
-            arr[i-1] = i;
+        for (var i = 1; i <= size; i++) {
+            arr[i - 1] = i;
         }
         return arr;
     };
@@ -86,9 +112,9 @@ app.controller('controller', function ($scope, $http, $log) {
      *                          Flight functions
      * ************************************************************************/
     $scope.deals = [];
-    
+
     $scope.getDeals = function (origin) {
-        $http.get("http://eiffel.itba.edu.ar/hci/service4/booking.groovy?method=getflightdeals&from="+origin, {cache: true, timeout: 10000})
+        $http.get("http://eiffel.itba.edu.ar/hci/service4/booking.groovy?method=getflightdeals&from=" + origin, {cache: true, timeout: 10000})
                 .then(function (response) {
 //                    $scope.deals = $scope.separateIntoGroupsOf(3, response.data.deals);
                     $scope.deals = response.data.deals;

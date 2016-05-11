@@ -50,6 +50,38 @@
     /*margin:5px;*/
 }
 
+#fromSuggestions {
+    position: absolute;
+    z-index:2;
+    background-color: white;
+    top:50px;
+}
+
+#toSuggestions {
+    position: absolute;
+    z-index:2;
+    background-color: white;
+    top:50px;
+}
+
+.suggestions ul {
+    margin: 0;
+    height: auto;
+    max-height: 200px;
+    width: auto;
+    overflow-y: auto;
+}
+
+.suggestions ul li {
+    border: 1px solid black;
+/*    height:25px;
+    line-height:25px;*/
+}
+
+#flightSearchForm {
+    z-index: 1;
+}
+
 /* Sticky footer */
 body {
     display: flex;

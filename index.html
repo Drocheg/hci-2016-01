@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-ng-app="app" data-ng-controller="controller">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
@@ -29,22 +29,48 @@
                 <form id="flightSearchForm">
                     <div class="row">
                         <div class="input-field col s6">
-                            <input id="from" name="from" type="text" class="validate" required>
+                            <input id="from" name="from" type="text" class="validate" autocomplete="off" required data-ng-model="from" data-ng-change="findSuggestions(from, 'fromSuggestions', 'fromStatus')">
                             <label for="from">Origen</label>
+                            <!--Show only if there's at least 2 characters on the input field-->
+                            <div id="fromSuggestions" class="suggestions" data-ng-hide="from.length <= 2">
+                                <!--Show if there are matches-->
+                                <ul data-ng-show="fromSuggestions.airports.length > 0 || fromSuggestions.cities.length > 0">
+                                    <!--Show airports, then cities-->
+                                    <li data-value="{{s.id}}" data-ng-repeat="s in fromSuggestions.airports">(A) {{s.id}} - {{s.description}}</li>
+                                    <li data-value="{{s.id}}" data-ng-repeat="s in fromSuggestions.cities">(C) {{s.id}} - {{s.name}}</li>
+                                </ul>
+                                <!--Show if there are no matches and a search has been peformed-->
+                                <ul data-ng-show="from.length > 2 && fromStatus === false && fromSuggestions.airports.length === 0 && fromSuggestions.cities.length === 0">
+                                    <li>Sin Resultados</li>
+                                </ul>
+                            </div>
                         </div>
                         <div class="input-field col s6">
-                            <input id="to" name="to" type="text" class="validate" required>
+                            <input id="to" name="to" type="text" class="validate" autocomplete="off" required data-ng-model="to" data-ng-change="findSuggestions(to, 'toSuggestions', 'toStatus')">
                             <label for="to">Destino</label>
+                            <!--Show only if there's at least 2 characters on the input field-->
+                            <div id="toSuggestions" class="suggestions" data-ng-hide="to.length <= 2">
+                                <!--Show if there are matches-->
+                                <ul data-ng-show="toSuggestions.airports.length > 0 || toSuggestions.cities.length > 0">
+                                    <!--Show airports, then cities-->
+                                    <li data-value="{{s.id}}" data-ng-repeat="s in toSuggestions.airports">(A) {{s.id}} - {{s.description}}</li>
+                                    <li data-value="{{s.id}}" data-ng-repeat="s in toSuggestions.cities">(C) {{s.id}} - {{s.name}}</li>
+                                </ul>
+                                <!--Show if there are no matches and a search has been peformed-->
+                                <ul data-ng-show="to.length > 2 && toStatus === false && toSuggestions.airports.length === 0 && toSuggestions.cities.length === 0">
+                                    <li>Sin Resultados</li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="input-field col s5">
-                            <input id="departDate" name="departDate" type="date" class="datepicker" required>
-                            <label for="departDate">Ida</label>
-                        </div>
                         <div class="input-field col s2">
                             <input id="isOneWayTrip" name="isOneWayTrip" type="checkbox">
                             <label for="isOneWayTrip">Sólo Ida</label>
+                        </div>
+                        <div class="input-field col s5">
+                            <input id="departDate" name="departDate" type="date" class="datepicker" required>
+                            <label for="departDate">Ida</label>
                         </div>
                         <div class="input-field col s5">
                             <input id="returnDate" name="returnDate" type="date" class="datepicker" required>
@@ -68,52 +94,19 @@
                             Buscar<i class="material-icons right">arrow_right</i>
                         </button>
                     </div>
-                    <!--                    <div class="row">
-                                            <div class="input-field col s12">
-                                                <input id="email" type="email" class="validate">
-                                                <label for="email">Email</label>
-                                            </div>
-                                        </div>-->
                 </form>
             </div>
         </div>
         <!--/Flight Search-->
 
         <!-- http://stackoverflow.com/a/30128450 -->
-        <div class="container section no-pad-bot" data-ng-app="app" data-ng-controller="controller" data-ng-init="getDeals('BUE')">   <!-- TODO usar ciudad actual -->
-            <div class="row center" data-ng-repeat="dealGroup in deals"> <!-- separateIntoGroupsOf(3, deals) -->
-                <div class="col s4" data-ng-repeat="deal in dealGroup">
-                    <div class="card-panel white-text {{randomElement(['blue', 'green', 'purple', 'red', 'orange', 'pink'])}}">
-                        Viajes a {{deal.city.name}} desde ${{deal.price}}
-                    </div>
+        <div class="container section no-pad-bot" data-ng-init="getDeals('BUE')">   <!-- TODO usar ciudad actual -->
+            <div class="col s4" data-ng-repeat="deal in deals">
+                <div class="card-panel white-text blue">
+                    Viajes a {{deal.city.name}} desde ${{deal.price}}
                 </div>
             </div>
-<!--                <div class="col s4">
-                    <div class="card-panel green white-text">
-                        Viajes a Madrid desde $100
-                    </div>
-                </div>
-                <div class="col s4">
-                    <div class="card-panel purple white-text">
-                        Viajes a Rusia desde $180
-                    </div>
-                </div>-->
-<!--            <div class="row center">
-                <div class="col s4">
-                    <div class="card-panel red white-text">
-                        Viajes a Belarús desde $50
-                    </div>
-                </div>
-                <div class="col s4">
-                    <div class="card-panel orange white-text">
-                        Viajes a Roma desde $1000
-                    </div>
-                </div>
-                <div class="col s4">
-                    <div class="card-panel pink white-text">
-                        Viajes a Lituania desde $250
-                    </div>
-                </div>
+<!--            <div class="row center" data-ng-repeat="dealGroup in deals">  separateIntoGroupsOf(3, deals) 
             </div>-->
         </div>
 
