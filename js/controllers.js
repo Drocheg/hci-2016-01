@@ -213,8 +213,28 @@ app.controller('controller', function ($scope, $http, $log) {
        return 2;
     };
    
-    $scope.number = 5;
-$scope.getNumber = function(num) {
-    return new Array(num);   
-}
+    $scope.sexos = [
+        {name:'Masculino'},
+        {name:'Femenino'},
+        {name:'Apache Helicopter'}
+    ];
+    
+    $scope.mySexo = $scope.sexos[2]; 
+    
+    $scope.getNumber = function(num) {
+        return new Array(num);   
+    };
+    
+    $scope.getColors = function(){
+        return $scope.colors;
+    };
+    
+     $scope.colors = [
+      {name:'black', shade:'dark'},
+      {name:'white', shade:'light', notAnOption: true},
+      {name:'red', shade:'dark'},
+      {name:'blue', shade:'dark', notAnOption: true},
+      {name:'yellow', shade:'light', notAnOption: false}
+    ];
+    $scope.myColor = $scope.colors[2]; // red
 });
