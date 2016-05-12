@@ -21,4 +21,6 @@ $(function() {  //Es alto copypasta de payment. Diego: Hay que agregar que puede
         session.payment = data;
         sessionStorage.sessionData = JSON.stringify(session);
     });
+    
+    
 });
