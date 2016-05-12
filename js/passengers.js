@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-$(function() {  //Es alto copypasta de payment
+$(function() {  //Es alto copypasta de payment. Diego: Hay que agregar que pueden haber varios pasajeros. Hacemos que bajes infinito? Limite de pasajeros?
     $("#passengers-form").on("submit", function(event) {
         event.preventDefault();
         var data = {

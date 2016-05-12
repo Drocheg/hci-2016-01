@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en"  data-ng-app="app" data-ng-controller="controller">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
@@ -19,13 +19,28 @@
                 </div>
             </nav>
         </header>
-
-        <div class="divider"></div> <!-- Sacar este divisor, está sólo para indicar donde termina header y donde empieza main -->
-
+       
+        <ul> 
+            <li ng-repeat="i in getNumber(getAdults()) track by $index">
+                <span>{{$index+1}}</span>
+            </li>
+       </ul>
+        
+        
         <main>
             <h1 class="center">Datos de pasajeros</h1>
+            <h2 class="center">Adultos</h2>
             <div class="row center">
-                <div class="col s4 offset-s4"> 
+                <div class="col s4 offset-s4">
+                    
+                   
+                 
+                    
+                    
+
+
+
+
                     <div class="row">
                         <p> Pasajero 1 de x </p>
                         <p> (Adulto|Niño|Infante) </p>
@@ -79,6 +94,7 @@
                             </li>
                         </ul>
                     </div>
+                    
                 </div>
                 <div class="row">
                     <div class="col s10 offset-s1">
