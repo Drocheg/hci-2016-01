@@ -1,4 +1,4 @@
-var app = angular.module('app', []);
+var app = angular.module('app', ['ui.materialize']);    //Include angular-materialize plugin
 app.controller('controller', function ($scope, $http, $log) {
     var API_URL = 'http://eiffel.itba.edu.ar/hci/service4/';
     /* *************************************************************************
