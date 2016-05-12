@@ -1,5 +1,5 @@
 //TO GET THE OBJECT
-var session = JSON.parse(sessionStorage.sessionData);   //will return UNDEFINED if it doesn't exist yet
+var session = JSON.parse(sessionStorage.sessionData);   //will return UNDEFINED if it doesn't exist 
 //TO SAVE IT AGAIN (make sure you got it first)
 sessionStorage.sessionData = JSON.stringify(session);
 
@@ -18,29 +18,67 @@ var sessionData = {
         infants: 0,
         //what else?
     },
-    flights: {
-        outboundFlights: [new Flight(), new Flight()],          //more than 1 flight if there are stopovers
-        inboundFlights: [new Flight(), new Fligh()] || null,    //can be null if one-way trip, otherwise same as outboundFlights
-        total: 42,                                              //Can be calculated by adding flights' cost, provided for convenience
-        //what else?
+//    flights: { //Wouldnt be prettier if we had outboundFlight object and inboundFlight object? Variables would have shorter and clearer names
+//        outboundFlights: [new Flight(), new Flight()],          //more than 1 flight if there are stopovers
+//        inboundFlights: [new Flight(), new Flight()] || null,    //can be null if one-way trip, otherwise same as outboundFlights
+//        total: 42,                                              //Can be calculated by adding flights' cost, provided for convenience
+//        
+//        //what else? If taxes are somewhere else and al the fligt info can be gathered from new Flight() then it should be fine
+//    },
+    flight: { //No los diferencie en outbound e inbound por el tema escalas, pensar que hacer
+        departureTime: "",
+        arrivalTime: "",
+        adultCost: "$",
+        childCost: "$",
+        infantCost: "$",
+        taxes: "$", //?
+        flightNumber: 42
     },
+    
     preferences: {
         currency: "currencyCode",       //Default to USD? Or current location?
         currencyExchangeRate: 42,       //Calculated with API using currency
         language: "en",                 //In case we support multi-language site (probably won't)
         //what else?
     },
-    passengers: [
-        {
-            firstName: "Jorge",
-            lastName: "Jorgez",
-            sex: "M",
-            birthday: "yyyy-mm-dd",
-            DNI: 39393939393, //Podria ser otras cosas? Podria ser tipo de documento y despues el numero de ese tipo de documento.
-        }
-    ],
+    passengers: {
+        adults: [ 
+            {
+                firstName: "Jorge",
+                lastName: "Jorgez",
+                sex: "M",
+                birthday: "yyyy-mm-dd",
+                DNI: 39393939393, //Podria ser otras cosas? Podria ser tipo de documento y despues el numero de ese tipo de documento.
+            }
+        ],
+        children:[ 
+            {
+                firstName: "Jorge",
+                lastName: "Jorgez",
+                sex: "M",
+                birthday: "yyyy-mm-dd",
+                DNI: 39393939393, //Podria ser otras cosas? Podria ser tipo de documento y despues el numero de ese tipo de documento.
+            }
+        ],
+        infants:[ 
+            {
+                firstName: "Jorge",
+                lastName: "Jorgez",
+                sex: "M",
+                birthday: "yyyy-mm-dd",
+                DNI: 39393939393, //Podria ser otras cosas? Podria ser tipo de documento y despues el numero de ese tipo de documento.
+            }
+        ]
+    },
     payment: {
         //acá hay que poner # de tarjeta, vencimiento, etc. etc. etc.
+        // Puse cosas, soy Flacu, esta bien?
+        cardNumber: 1111-2222-3333-4444,
+        cardExpiryMonth: 02,
+        cardholderName: "Facundo Gonzalez F",
+        cvv: 132,
+        dni: 38995760,
+        email: "facundogonzalezf@gmail.com"
     },
     state: {
         hasOutboundFlight: false,               //Si ya seleccionó algún vuelo de ida

@@ -201,4 +201,20 @@ app.controller('controller', function ($scope, $http, $log) {
                     }
                 });
     };
+    
+    
+    /* *************************************************************************
+     *                          Passengers functions
+     * ************************************************************************/
+   
+    $scope.getAdults = function(){
+       // var session = JSON.parse(sessionStorage.sessionData); 
+       // return session.search.adults;
+       return 2;
+    };
+   
+    $scope.number = 5;
+$scope.getNumber = function(num) {
+    return new Array(num);   
+}
 });
