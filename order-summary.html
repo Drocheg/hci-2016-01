@@ -12,16 +12,8 @@
     </head>
     <body>
         <header>
-            <nav class="light-blue lighten-1" role="navigation">
-                <div class="nav-wrapper container">
-                    <a id="logo-container" href="index.html" class="brand-logo left">Logo</a>
-                    <span style="position:absolute; margin-left:45%;">Pesos Argentinos $<span class="material-icons">arrow_drop_down_circle</span></span>
-                </div>
-            </nav>
-            <h1 class="center">Resumen de Compra</h1>
+            <nav class="light-blue lighten-1" role="navigation" data-ng-include="'includes/nav.html'"></nav>
         </header>
-
-        <div class="divider"></div> <!-- Sacar este divisor, está sólo para indicar donde termina header y donde empieza main -->
 
         <main>       
             <div class="row">
@@ -68,22 +60,21 @@
             </div>
         </main>
 
-        <footer class="page-footer blue">
-            <div class="footer-copyright">
-                <div class="container">
-                    &COPY; 2016, ITBA. Hecho con <a class="orange-text text-lighten-3" href="http://materializecss.com" target="_blank">Materialize</a>.
-                </div>
-            </div>
-        </footer>
+        <footer class="page-footer blue" data-ng-include="'includes/footer.html'"></footer>
 
         <!--  Scripts-->
         <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
         <script src="js/materialize.js"></script>
         <script src="js/init.js"></script>
+        <script src='js/angular.min.js'></script>
+        <script src='js/controllers.js'></script>
+        <script src="js/angular-materialize.js"></script>
+        
         <script type="text/javascript">
             $(function () {
                 //TO GET THE OBJECT
                 var session = JSON.parse(sessionStorage.sessionData);   //will return UNDEFINED if it doesn't exist yet
+                //
 //                var session = {payment: {
 //                        //acá hay que poner # de tarjeta, vencimiento, etc. etc. etc.
 //                        // Puse cosas, soy Flacu, esta bien?

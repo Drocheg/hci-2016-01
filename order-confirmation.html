@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-ng-app="app" data-ng-controller="controller">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
-        <title>Template - Página de Vuelos</title>
+        <title>Compra Finalizada - Página de Vuelos</title>
 
         <!-- CSS  -->
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
@@ -12,13 +12,7 @@
     </head>
     <body>
         <header>
-            <nav class="light-blue lighten-1" role="navigation">
-                <div class="nav-wrapper container">
-                    <a id="logo-container" href="index.html" class="brand-logo left">Logo</a>
-                    <span style="position:absolute; margin-left:45%;">Pesos Argentinos $<span class="material-icons">arrow_drop_down_circle</span></span>
-                </div>
-            </nav>
-
+            <nav class="light-blue lighten-1" role="navigation" data-ng-include="'includes/nav.html'"></nav>
         </header>
 
         <main class="center">
@@ -29,18 +23,15 @@
             </div>
         </main>
 
-
-        <footer class="page-footer blue">
-            <div class="footer-copyright">s
-                <div class="container">
-                    &COPY; 2016, ITBA. Hecho con <a class="orange-text text-lighten-3" href="http://materializecss.com" target="_blank">Materialize</a>.
-                </div>
-            </div>
-        </footer>
+        <footer class="page-footer blue" data-ng-include="'includes/footer.html'"></footer>
 
         <!--  Scripts-->
         <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
         <script src="js/materialize.js"></script>
         <script src="js/init.js"></script>
+        <script src='js/angular.min.js'></script>
+        <script src='js/controllers.js'></script>
+        <script src="js/angular-materialize.js"></script>
+        
     </body>
 </html>

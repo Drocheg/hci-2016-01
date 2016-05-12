@@ -12,13 +12,13 @@
     </head>
     <body>
         <header>
-            <div ng-include="'header.html'"></div>
+            <nav class="light-blue lighten-1" role="navigation" data-ng-include="'includes/nav.html'"></nav>
             <h1 class="center">Pagina de comentarios</h1>
         </header>
 
 
         <main>
-            <h2 class="center">Comentarios sobre vuelo : </h2>
+            <h2 class="center">Comentarios sobre vuelo: </h2>
             <div class="row"> <!-- esto cambia todas la tarjetas -->
                 <div class="col s1">
                     <label>Comentarios por pagina</label>
@@ -84,7 +84,7 @@
             </ul>
         </main>
 
-        <footer ng-include="'footer.html'" class="page-footer blue"></footer>
+        <footer class="page-footer blue" data-ng-include="'includes/footer.html'"></footer>
 
         <!--  Scripts-->
         <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>

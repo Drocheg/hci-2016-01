@@ -9,6 +9,6 @@ $(function () {  //Document.ready
     }
     //Initialize the sessionData object if not present
     if (typeof sessionStorage.sessionData === "undefined") {
-        sessionStorage.sessionData = {};
+        sessionStorage.sessionData = JSON.stringify({});
     }
 });
