@@ -12,16 +12,11 @@
     </head>
     <body>
         <header>
-            <nav class="light-blue lighten-1" role="navigation">
-                <div class="nav-wrapper container">
-                    <a id="logo-container" href="index.html" class="brand-logo left">Logo</a>
-                    <span style="position:absolute; margin-left:45%;">Pesos Argentinos $<span class="material-icons">arrow_drop_down_circle</span></span>
-                </div>
-            </nav>
+            <div ng-include="'header.html'"></div>
             <h1 class="center">Pagina de comentarios</h1>
         </header>
 
-        
+
         <main>
             <h2 class="center">Comentarios sobre vuelo : </h2>
             <div class="row"> <!-- esto cambia todas la tarjetas -->
@@ -33,12 +28,16 @@
                         <option value="1">1</option>
                     </select>
                 </div>
+                <div class="col s1">
+                    <input id="filtro" type="text" class="validate" ng-model="query">
+                    <label for="filtro">Filtro</label>
+                </div>
                 <ul class="collapsible col s6 offset-s2" data-collapsible="accordion">
-                    <li ng-repeat="review in reviews | filter:query | limitTo:quantity">
+                    <li ng-repeat="review in reviews| filter:query | limitTo:quantity">
                         <!--TODO change elements (e.g. review.aerolinea) to whatever the API returns-->
                         <div class="collapsible-header" >
                             <div class="row s4 center-align">
-                                 {{review.flight.airline.id}} {{review.flight.number}}
+                                {{review.flight.airline.id}} {{review.flight.number}}
                             </div>
                             <div class="row s4">
                                 <div class="col s6 center-align">
@@ -85,13 +84,7 @@
             </ul>
         </main>
 
-        <footer class="page-footer blue">
-            <div class="footer-copyright">
-                <div class="container">
-                    &COPY; 2016, ITBA. Hecho con <a class="orange-text text-lighten-3" href="http://materializecss.com" target="_blank">Materialize</a>.
-                </div>
-            </div>
-        </footer>
+        <footer ng-include="'footer.html'"></footer>
 
         <!--  Scripts-->
         <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
