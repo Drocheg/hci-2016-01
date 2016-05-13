@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-ng-app="app" data-ng-controller="controller" data-ng-init="searchFlights()">
+<html lang="en" data-ng-app="app" data-ng-controller="controller" data-ng-init="searchFlights('total', 'asc')">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
@@ -72,21 +72,21 @@
                                     <p class="center">Ordenar Por</p>
                                     <div class="row">
                                         <div class="input-field col s6">
-                                            <select>
-                                                <option selected>Precio</option>
-                                                <option>Precio</option>
-                                                <option>Precio</option>
+                                            <select data-ng-model="criteria">
+                                                <option selected value="total">Precio</option>
+                                                <option value="airline">Aerolinea</option>
+                                                <option value="duration">Duración</option>
                                             </select>
                                         </div>
                                         <div class="input-field col s6">
-                                            <select>
-                                                <option selected>Ascendente</option>
-                                                <option>Descendente</option>
+                                            <select id="order" data-ng-model="order" >
+                                                <option selected value="asc">Ascendente</option>
+                                                <option value="desc">Descendente</option>
                                             </select>
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <button class="col s8 offset-s2 btn">Aplicar</button>
+                                        <button class="col s8 offset-s2 btn" data-ng-click="searchFlights(criteria, order)">Aplicar</button>
                                     </div>
                                 </div>
                             </div>
@@ -133,12 +133,12 @@
                             <div class="col s12 divider"></div>
                         </div>
                         <div class="row">
-                            <div class="col s12 center"><span style="font-size: large;">{{flights.length}} vuelos encontrados</span></div>
+                            <div class="col s12 center"><span style="font-size: large;">{{flights.total}} vuelos encontrados</span></div>
                         </div>
 
                         <!--VUELOS-->
-                        <div class="card-panel blue white-text" data-ng-repeat="flight in flights">
-                            ${{flight.price.total.total}}
+                        <div class="card-panel blue white-text" data-ng-repeat="flight in flights.flights">
+                            ${{flight.price.total.total}} {{flight.outbound_routes[0].segments[0].airline.name}} {{flight.outbound_routes[0].duration}} 
                         </div>
 
 

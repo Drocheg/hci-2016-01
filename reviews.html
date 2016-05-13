@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-ng-app="app" data-ng-controller="controller" data-ng-init="getFlightReviews('AR', 5260)"> <!-- TODO remove when adding form -->
+<html lang="en" data-ng-app="app" data-ng-controller="controller" data-ng-init="getFlightReviews(getGETParams().airlineId, getGETParams().flightNum)"> <!-- TODO remove when adding form -->
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
@@ -28,10 +28,6 @@
                         <option value="1">1</option>
                     </select>
                 </div>
-                <div class="col s1">
-                    <input id="filtro" type="text" class="validate" ng-model="query">
-                    <label for="filtro">Filtro</label>
-                </div>
                 <ul class="collapsible col s6 offset-s2" data-collapsible="accordion">
                     <li ng-repeat="review in reviews| filter:query | limitTo:quantity">
                         <!--TODO change elements (e.g. review.aerolinea) to whatever the API returns-->
@@ -44,7 +40,7 @@
                                     General: {{review.rating.overall}}
                                 </div>
                                 <div class="col s6 center-align">
-                                    Recomendado: {{review.yes_recommend}}
+                                    Recomendado: {{review.yes_recommend ? "Yes" : "No"}}
                                 </div>
                             </div>
                             <div class="row s4 center-align">
