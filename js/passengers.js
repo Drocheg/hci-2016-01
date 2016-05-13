@@ -17,9 +17,9 @@ $(function() {  //Es alto copypasta de payment. Diego: Hay que agregar que puede
         };
         //Validar
         
-        var session = JSON.parse(sessionStorage.sessionData);   //will return UNDEFINED if it doesn't exist yet
-        session.payment = data;
-        sessionStorage.sessionData = JSON.stringify(session);
+        var session = getSessionData();
+        session.passengers = data;      //THIS SHOULD BE AN ARRAY OF OBJECTS, even if it's just 1 object
+        setSessionData(session);
     });
     
     

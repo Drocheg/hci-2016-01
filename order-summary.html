@@ -46,7 +46,7 @@
                     <a class="waves-effect waves-light btn" href="flights-5.html">Modificar Ida</a>
                     <a class="waves-effect waves-light btn" href="flights-3.html">Modificar Vuelta</a>
                     <a class="waves-effect waves-light btn">Modificar Pasajeros</a>
-                    <a class="waves-effect waves-light btn" href="payment-information.html">Modificar Pago</a>
+                    <a class="waves-effect waves-light btn" href="payment.html">Modificar Pago</a>
                     <a class="waves-effect waves-light btn">Modificar Contacto</a>
                 </div>
             </div>
@@ -72,8 +72,7 @@
         
         <script type="text/javascript">
             $(function () {
-                //TO GET THE OBJECT
-                var session = JSON.parse(sessionStorage.sessionData);   //will return UNDEFINED if it doesn't exist yet
+                var session = getSessionData();
                 //
 //                var session = {payment: {
 //                        //acá hay que poner # de tarjeta, vencimiento, etc. etc. etc.
@@ -125,7 +124,6 @@
                                 <br> \
                                 <p><b>Total: $13.999</b></p>\
                     ");
-                sessionStorage.sessionData = JSON.stringify(session);
             });
         </script>
     </body>

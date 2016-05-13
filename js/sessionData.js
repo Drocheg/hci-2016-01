@@ -1,16 +1,10 @@
-//TO GET THE OBJECT
-var session = JSON.parse(sessionStorage.sessionData);   //will return UNDEFINED if it doesn't exist 
-//TO SAVE IT AGAIN (make sure you got it first)
-sessionStorage.sessionData = JSON.stringify(session);
-
-
 //This is a MODEL of what the sessionData object we store will look like.
 //Avisar al grupo si se cambia, agrega o saca algo, todos dependemos de este objetito
 var sessionData = {
     search: {
         from: "airport or city ID",
         to: "airport or cityID", 
-        isOneWayTrip: false,
+        oneWayTrip: false,
         depart: "yyyy-mm-dd",           //Store as string, not date, gets serialized to ISO string in session
         return: "yyyy-mm-dd" || null,   //null in case of one-way trip
         adults: 3,
@@ -73,10 +67,10 @@ var sessionData = {
     payment: {
         //acá hay que poner # de tarjeta, vencimiento, etc. etc. etc.
         // Puse cosas, soy Flacu, esta bien?
-        cardNumber: 1111-2222-3333-4444,
-        cardExpiryMonth: 02,
+        cardNumber: 1111222233334444,
+        cardExpiry: "MM/YY",
         cardholderName: "Facundo Gonzalez F",
-        cvv: 132,
+        cvv: 123 || 1234,
         dni: 38995760,
         email: "facundogonzalezf@gmail.com"
     },

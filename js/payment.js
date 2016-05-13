@@ -1,103 +1,197 @@
-function validateCard(cardNumber, expMonth, expYear, cvv) {
+/**
+ * Validates the specified credit card information. Puts the result on a hidden
+ * input field.
+ * 
+ * @param {number} cardNumber
+ * @param {string} expiry MM/YY
+ * @param {number} cvv
+ * @param {boolean} async Whether to run the validation asynchronously or not.
+ * @returns {undefined}
+ */
+function validateCard(cardNumber, expiry, cvv, async) {
+    var expiryBits = expiry.split("/");
+    expiry = (expiryBits[0].length === 1 ? "0"+expiryBits[0] : expiryBits[0]) + (expiryBits[1].length === 1 ? "0"+expiryBits[1] : expiryBits[1]);
     $.ajax({
         type: "GET",
         url: "http://eiffel.itba.edu.ar/hci/service4/booking.groovy",
         dataType: 'json',
-        data: {method: "validatecreditcard", number: cardNumber, exp_date: expMonth+""+expYear, sec_code: cvv}
+        data: {method: "validatecreditcard", number: cardNumber, exp_date: expiry, sec_code: cvv},
+        async: async || true
     })
-    .done(function(result) {
-        if(/*!error*/true) {    //TODO check API didn't throw error
-            if(typeof successCallback !== undefined) {
-                successCallback(result);
-            }
-        }
-        else {
-            if(typeof errorCallback !== undefined) {
-                errorCallback(result);
-            }
-        }
-    })
-    .fail(function(jqXHR, textStatus, errorThrown)
-    {
-        if(typeof failCallback !== undefined) {
-            failCallback(jqXHR, textStatus, errorThrown);
-        }
-        else {
-            API.defaultFailHandler(jqXHR, textStatus, errorThrown);
-        }
-    });
+            .done(function (result) {
+                var cardMsg = "",
+                    expiryMsg = "",
+                    cvvMsg = "";
+                if(result.error) {
+                    switch(result.error.code) { //TODO API sólo devuelve un error, si hay más de una cosa mal no lo va a decir
+                        case 6:
+                            cardMsg = "Por favor ingrese un número";
+                            break;
+                        case 7:
+                            expiryMsg = "Por favor ingrese una fecha de vencimiento";
+                            break;
+                        case 8:
+                            cvvMsg = "Por favor ingrese un código de seguridad";
+                            break;
+                        case 106:
+                            cardMsg = "Por favor ingrese un número válido";
+                            break;
+                        case 107:
+                            expiryMsg = "Por favor ingrese una fecha válida";
+                            break;
+                        case 108:
+                            cvvMsg = "Por favor ingrese 3 o 4 números para el código de seguridad";
+                            break;
+                        case 111:
+                            cvvMsg = "Por favor ingrese un código válido";
+                            break;
+                        default:
+                            Materialize.toast("Error validando su tarjeta, por favor intente de nuevo.", 5000);
+                            console.log(result.error);
+                            return;
+                    }
+                    if(cardMsg) {
+                        $("label[for=cardNumber]").attr("data-error", cardMsg);
+                        $("#cardNumber").removeClass("valid");
+                        $("#cardNumber").addClass("invalid");
+                    }
+                    else {
+                        $("#cardNumber").removeClass("invalid");
+                        $("#cardNumber").addClass("valid");
+                    }
+                    if(expiryMsg) {
+                        $("label[for=cardExpiry]").attr("data-error", expiryMsg);
+                        $("#cardExpiry").removeClass("valid");
+                        $("#cardExpiry").addClass("invalid");
+                    }
+                    else {
+                        $("#cardExpiry").removeClass("invalid");
+                        $("#cardExpiry").addClass("valid");
+                    }
+                    if(cvvMsg) {
+                        $("label[for=cvv]").attr("data-error", cvvMsg);
+                        $("#cvv").removeClass("valid");
+                        $("#cvv").addClass("invalid");
+                    }
+                    else {
+                        $("#cvv").removeClass("invalid");
+                        $("#cvv").addClass("valid");
+                    }
+                    $("#isValidCard").val(false);
+                }
+                else {
+                    $("#isValidCard").val(true);
+                    $("#cardNumber").removeClass("invalid");
+                    $("#cardNumber").addClass("valid");
+                    $("#cardExpiry").removeClass("invalid");
+                    $("#cardExpiry").addClass("valid");
+                    $("#cvv").removeClass("invalid");
+                    $("#cvv").addClass("valid");
+                }
+            })
+            .fail(function (jqXHR, textStatus, errorThrown)
+            {
+                Materialize.toast("Connection error, please try again.", 5000);
+                console.log("Connection error. Error data:");
+                console.log("jqXHR: " + JSON.stringify(jqXHR));
+                console.log("Text status: " + textStatus);
+                console.log("Error thrown: " + errorThrown);
+            });
 }
 
+/**
+ * Gets the corresponding credit card type form according to the specified
+ * credit card number.
+ * 
+ * @param {number} number The credit card number
+ * @returns {String|null} The corresponding name or NULL if no match is found.
+ */
 function getCardType(number) {
+    number = number.toString();
     var len = number.length;
-    if(number.charAt(0) === '4' && (len === 13 || len === 16)) {
-        return "Visa";
+    if (len < 13) {
+        return null;
     }
-    var firstTwoDigits = number.substr(0, 2);   //TODO use ints
-    if((firstTwoDigits === "34" || firstTwoDigits === "37") && len === 15) {
+    var firstTwoDigits = number.substr(0, 2);
+    if ((firstTwoDigits === "34" || firstTwoDigits === "37") && len === 15) {
         return "American Express";
-    }
-    else if(firstTwoDigits === "36" && len === 16) {
+    } else if (firstTwoDigits === "36" && len === 16) {
         return "Diners";
-    }
-    else if((firstTwoDigits === "51" || firstTwoDigits === "52" || firstTwoDigits === "53") && len === 16) {
+    } else if ((firstTwoDigits === "51" || firstTwoDigits === "52" || firstTwoDigits === "53") && len === 16) {
         return "MasterCard";
-    }
-    else {
+    } else if (number.charAt(0) === '4' && (len === 13 || len === 16)) {
+        return "Visa";
+    } else {
         return null;
     }
 }
 
 /**
- * Makes sure all the required fields are completed and valid (i.e. don't
- * contain letters in number fields), so the API can validate the info.
+ * Makes sure all the required fields are completed (but not necessarily valid),
+ * so the API can validate the info.
  * 
  * @returns {boolean}
  */
 function cardCanBeValidated() {
-    var num = $("#cardNumber").val(),
-        mon = $("#cardExpiryMonth").val(),
-        year = $("#cardExpiryYear").val(),
-        cvv = $("#cvv").val();
-    return 42; //TODO
+    return $("#cardNumber").val() && $("#cardExpiry").val() && $("#cvv").val();
 }
 
 
-$(function() {
-    $("#payment-form").on("submit", function(event) {
+$(function () {
+    //Try to validate card immediately
+    $("#cardNumber, #cardExpiry, #cvv").on("change", function (event) {
+        if (cardCanBeValidated()) {
+            validateCard($("#cardNumber").val(), $("#cardExpiry").val(), $("#cvv").val());
+        }
+    });
+    
+    //Remove invalid class when losing focus, will validate again when submitting
+//    $("#payment-form input").on("blur", function(){
+//        var id = $(this).attr("id");
+//        debugger;
+//        $("label[for="+id+"]").removeClass("invalid");
+//    });
+
+    //Handle submit
+    $("#payment-form").on("submit", function (event) {
         event.preventDefault();
+        var $submitBtn = $("#payment-form button[type=submit]");
+        $submitBtn.addClass("disabled");
+        $submitBtn.html("Validando...");
         var data = {
-            cardNumber: $("#cardNumber").val(),
-            cardExpiryMonth: $("#cardExpiryMonth").val(),
-            cardExpiryYear: $("#cardExpiryYear").val(),
+            cardNumber: Number($("#cardNumber").val()),
+            cardExpiry: $("#cardExpiry").val(),
             cardholderName: $("#cardholderName").val(),
-            cvv: $("#cvv").val(),
-            dni: $("#dni").val(),
+            cvv: Number($("#cvv").val()),
+            dni: Number($("#dni").val()),
             email: $("#email").val()
         };
-        //Validate
-        for(var entry in data) {
-            if(data.hasOwnProperty(entry)) {
-                if(!data[entry]) {  //Empty or invalid value
+        //Missing info?
+        for (var entry in data) {
+            if (data.hasOwnProperty(entry)) {
+                if (data[entry].length === 0) {
                     Materialize.toast("Por favor complete todos los campos.", 5000);
+                    $submitBtn.html("Confirmar >");
+                    $submitBtn.removeClass("disabled");
                     return;
                 }
             }
         }
-        if(data.dni.toString().length != 8){  //Me pide que sea !==, que onda?
-            Materialize.toast("Numero de DNI invalido, compruebe la longitud del mismo", 5000); //Copypasta de lo de juan. Esto no deberia pasar antes? Esta bien la validacion esta aca?
-            return;
+        //All data is in, validate credit card if needed
+        if($("#isValidCard").val() !== true) {
+            validateCard(data.cardNumber, data.cardExpiry, data.cvv, false);    //NOT async
+            if(!$("#isValidCard").val()) {
+                $submitBtn.html("Confirmar >");
+                $submitBtn.removeClass("disabled");
+                return;
+            }
         }
-        //All data is in, validate special fields
-        //TODO validate credit card
-        //TODO validate CVV
         //Valid, store
-        var session = JSON.parse(sessionStorage.sessionData);   //will return UNDEFINED if it doesn't exist yet
+        var session = getSessionData();
         session.payment = data;
-        sessionStorage.sessionData = JSON.stringify(session);
-    });
-    
-    $("#cardNumber, #cardExpiryMonth, #cardExpiryYear, #cvv").on("change", function() {
-        
+        session.state.hasPayment = true;
+        setSessionData(session);
+        //Done, go to next page
+        window.location = "order-summary.html";
     });
 });

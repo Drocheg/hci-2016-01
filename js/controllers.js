@@ -116,7 +116,7 @@ app.controller('controller', function ($scope, $http, $log) {
     
     $scope.searchFlights = function() {
         debugger;
-        var sessionData = JSON.parse(sessionStorage.sessionData);
+        var sessionData = getSessionData();
         var f = sessionData.search.from || null,    //If undefined, set to NULL
             t = sessionData.search.to || null,
             d = sessionData.search.depart || null,
@@ -208,7 +208,7 @@ app.controller('controller', function ($scope, $http, $log) {
      * ************************************************************************/
    
     $scope.getAdults = function(){
-       // var session = JSON.parse(sessionStorage.sessionData); 
+       // var session = getSessionData();
        // return session.search.adults;
        return 2;
     };

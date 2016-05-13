@@ -27,7 +27,7 @@ $(function () {
 
     //Hide/show return date picker when clicking one-way only
     //http://stackoverflow.com/a/7031408
-    $("#isOneWayTrip").on('change', function () {
+    $("#oneWayTrip").on('change', function () {
         if ($(this).is(":checked")) {
             $("#returnDate").fadeOut();
             $("#returnDate").removeAttr("required");
@@ -78,8 +78,8 @@ $(function () {
             from: $("#from").val(),
             to: $("#to").val(),
             departDate: $("input[name=departDate_submit]").val(),
-            isOneWayTrip: $("#isOneWayTrip").is(":checked"),
-            returnDate: $("#isOneWayTrip").is(":checked") ? $("input[name=returnDate_submit]").val() : null,
+            oneWayTrip: $("#oneWayTrip").is(":checked"),
+            returnDate: $("#oneWayTrip").is(":checked") ? $("input[name=returnDate_submit]").val() : null,
             numAdults: Number($("#numAdults").val()),
             numChildren: Number($("#numChildren").val()),
             numInfants: Number($("#numInfants").val())
@@ -91,10 +91,10 @@ $(function () {
         session.preferences = {};
         session.search.from = data.from;
         session.search.to = data.to;
-        session.search.isOneWayTrip = data.isOneWayTrip;
+        session.search.oneWayTrip = data.oneWayTrip;
         session.search.depart = data.departDate;
         session.search.return = data.returnDate;
-        if (!data.isOneWayTrip && new Date(data.returnDate) < new Date(data.departDate) ) {
+        if (!data.oneWayTrip && new Date(data.returnDate) < new Date(data.departDate) ) {
             Materialize.toast("Fecha vuelta deberia ser inferior a fecha ida.", 5000); //El calendario no debería permitirlo pero por las dudas
             return;
         }
@@ -108,7 +108,7 @@ $(function () {
             return;
         }
         //Valid, store data and go to next page
-        sessionStorage.sessionData = JSON.stringify(session);
+        setSessionData(session);
         window.location = "flights.html";
     });
 });

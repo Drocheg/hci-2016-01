@@ -1,10 +1,10 @@
 $(function() {
     //Autofill form
-    var session = JSON.parse(sessionStorage.sessionData) || {};
+    var session = getSessionData();
     $("#from").val(session.search.from);
     $("#to").val(session.search.to);
     $("#departDate").val(session.search.depart);
-    $("#isOneWayTrip").prop('checked',session.search.isOneWayTrip);
+    $("#oneWayTrip").prop('checked', session.search.oneWayTrip);
     $("#returnDate").val(session.search.return || "");
     $("#numAdults").val(session.search.adults);
     $("#numInfants").val(session.search.infants);
