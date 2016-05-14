@@ -95,7 +95,7 @@
 
             <!-- http://stackoverflow.com/a/30128450 -->
             <div class="container section no-pad-bot" data-ng-init="getDeals('BUE')">   <!-- TODO usar ciudad actual -->
-                <div class="col s4" data-ng-repeat="deal in deals">
+                <div class="col s4" data-ng-repeat="deal in deals | limitTo: 9">
                     <div class="card-panel white-text blue">
                         Viajes a {{deal.city.name}} desde ${{deal.price}}
                     </div>

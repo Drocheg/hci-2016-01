@@ -114,8 +114,7 @@ app.controller('controller', function ($scope, $http, $log) {
     $scope.deals = [];
     $scope.flights = [];
     
-    $scope.searchFlights = function() {
-        debugger;
+    $scope.searchFlights = function(criteria, order) {
         var sessionData = getSessionData();
         var f = sessionData.search.from || null,    //If undefined, set to NULL
             t = sessionData.search.to || null,
@@ -127,7 +126,7 @@ app.controller('controller', function ($scope, $http, $log) {
             return;
         }
         //All info is present, search
-        $scope.getOneWayFlights(f, t, d, a, c, i);
+        $scope.getOneWayFlights(f, t, d, a, c, i, undefined, undefined, criteria, order);
     };
     
     /**
