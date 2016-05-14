@@ -25,10 +25,10 @@
         <main>
             <h1 class="center">Nueva Reseña</h1>
             <div class="row">
-                <form id='payment-form' class="col s6 offset-s3">
+                <form id='review-form' class="col s6 offset-s3">
                     <fieldset>
                         <legend>Amigabilidad</legend>
-                        <input type="radio" name="friendliness" value="1" id="1"/><label for="1">1</label>
+                        <input type="radio" class="validate" required name="friendliness" value="1" id="1"/><label for="1">1</label>
                         <input type="radio" name="friendliness" value="2" id="2"/><label for="2">2</label>
                         <input type="radio" name="friendliness" value="3" id="3"/><label for="3">3</label>
                         <input type="radio" name="friendliness" value="4" id="4"/><label for="4">4</label>
@@ -92,7 +92,7 @@
                         <input type="radio" name="comfort" value="10" id="comfort10"/><label for="comfort10">10</label>
                     </fieldset>
                     <fieldset>
-                        <legend>Precio/Calidad</legend>
+                        <legend>Relación Precio a Calidad</legend>
                         <input type="radio" name="quality_price" value="1" id="quality_price1"/><label for="quality_price1">1</label>
                         <input type="radio" name="quality_price" value="2" id="quality_price2"/><label for="quality_price2">2</label>
                         <input type="radio" name="quality_price" value="3" id="quality_price3"/><label for="quality_price3">3</label>
@@ -105,10 +105,17 @@
                         <input type="radio" name="quality_price" value="10" id="quality_price10"/><label for="quality_price10">10</label>
                     </fieldset>
                     <fieldset>
-                        <legend>Recomendación</legend>
-                        <input type="checkbox" id="recommend" checked="checked" />
-                        <label for="recommend">¿Lo recomendarías?</label>
+                        <legend>¿Lo recomendarías?</legend>
+                        <input type="radio" name="recommend" value="true" id="recommend1"/><label for="recommend1">Sí</label>
+                        <input type="radio" name="recommend" value="false" id="recommend2"/><label for="recommend2">No</label>
                     </fieldset>
+                    <fieldset>
+                        <legend>Comentarios</legend>
+                        <input class="text" id="comment"/>
+                    </fieldset>
+                    <button type='submit' class="btn-large waves-effect waves-light col s4 offset-s4" >
+                        Confirmar >
+                    </button>
                 </form>
             </div>
         </main>
