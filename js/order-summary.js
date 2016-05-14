@@ -14,17 +14,16 @@ $(function () {
                             <P>Horario de llegada:</p>\n\
                             <p>Duracion:</p>\n\ ";  //Falta precio y cantidad de pasajeros
                                                     //lo pongo despues que necesita codigo
-                            if(session.passengers.adults > 0){
-                                html += "<p>Cantidad de adultos:"+session.passengers.adults+"</p>" ;
-                            }
-                             if(session.passengers.children > 0){
-                                html += "<p>Cantidad de ninios:"+session.passengers.children+"</p>" ;
-                            }
-                             if(session.passengers.infants > 0){
-                                html += "<p>Cantidad de infantes:"+session.passengers.infants+"</p>" ;
-                            }
-                    html += "<p> Precio por adulto:</p>\n\
-                            <p>Subtotal:</p>\n\
+                    if(session.search.adults > 0){
+                    html += "<p> Precio por adulto: $200x"+session.search.adults+"</p>"; 
+                } 
+                 if(session.search.children > 0){
+                    html += "<p> Precio por ninio: $200x"+session.search.children+"</p>"; 
+                } 
+                 if(session.search.infants > 0){
+                    html += "<p> Precio por infantes: $200x"+session.search.infants+"</p>"; 
+                } 
+                    html += "<p>Subtotal:</p>\n\
                             <p>Cargos e impuestos:</p>\n\
                             ";
                  }                                  
