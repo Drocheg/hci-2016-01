@@ -136,6 +136,7 @@ app.controller('controller', function ($scope, $http) {
         var optionalParams = "&page_size="+(pageSize||"")+"&page="+(pageNum||"")+"&sort_key="+(orderBy||"")+"&sort_order="+(ascOrDesc||"");
         $http.get("http://eiffel.itba.edu.ar/hci/service4/review.groovy?method=getairlinereviews&airline_id="+airlineID+"&flight_number="+flightNumber + optionalParams, {cache: true, timeout: 10000})
                 .then(function (response) {
+                    $scope.page = response.data.page;
                     $scope.reviews = response.data.reviews;
                     $scope.reviewCount = response.data.total;    // === $scope.reviews.length
                 });
@@ -190,7 +191,7 @@ app.controller('controller', function ($scope, $http) {
         $scope.total += $scope.flightTotal;
     };
 
-    $scope.searchFlights = function (criteria, order) {
+    $scope.searchFlights = function (page, pageSize, criteria, order) {
         var sessionData = getSessionData();
         var f = sessionData.search.from || null, //If undefined, set to NULL
                 t = sessionData.search.to || null,
@@ -202,7 +203,7 @@ app.controller('controller', function ($scope, $http) {
             return;
         }
         //All info is present, search
-        $scope.getOneWayFlights(f, t, d, a, c, i, undefined, undefined, criteria, order);
+        $scope.getOneWayFlights(f, t, d, a, c, i, page, pageSize, criteria, order);
     };
 
     /**
@@ -355,5 +356,19 @@ app.controller('controller', function ($scope, $http) {
     $scope.getColors = function () {
         return $scope.colors;
     };
-
+    
+        /* *************************************************************************
+     *                          ;ath functions
+     * ************************************************************************/
+    $scope.getNumberOfPages = function(totalResults, resultsPerPage) {
+        var numberOfPages = Number(totalResults) / Number(resultsPerPage);
+        debugger;
+        var nonCompletePage = Number(numberOfPages);
+        numberOfPages = Number(numberOfPages).toFixed(0);
+        if(numberOfPages < nonCompletePage){
+        debugger;
+        numberOfPages = Number(numberOfPages) + 1;
+    }debugger;
+        return numberOfPages;
+    };
 });
