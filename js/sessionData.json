@@ -1,0 +1,9 @@
+{
+    "search": {
+        "from": "airport or city ID",
+        "to": "airport or cityID",
+        "depart": new Date(),
+        
+    },
+    "name": "juan_"
+}
