@@ -9,9 +9,9 @@ $(function() {
        $('select').material_select();
     });
     //Para testing
-//    var sessionTest = getSessionData();
-//    sessionTest.search.adults = 1;
-//    setSessionData(sessionTest);
+    var sessionTest = getSessionData();
+    sessionTest.search.adults = 1;
+    setSessionData(sessionTest);
     
     //Try to validate date immediately??? TODO Borrar esto o hacerlo. Sirve aca?
     
@@ -133,7 +133,7 @@ $(function() {
     $("#backButton").on("click", function(event) {
         event.preventDefault();
         $("#backButton").addClass("disabled");
-        window.location = "flights.html"; //flight o flight 2
+        window.location = "payment.html"; //flight o flight 2
     });
     
     
@@ -163,7 +163,7 @@ $(function() {
                                     <div class='row'>\
                                         <div class='col s12 input-field'>\
                                             <select id="+groups[index]+"-"+i+"-"+'sex'+" class='validate' required>\
-                                                <option value='' disabled>Elegir sexo</option>\
+                                                <option value=''>Elegir sexo</option>\
                                                 <option value='Masculino'>Masculino</option>\
                                                 <option value='Femenino'>Femenino</option>\
                                             </select>\
