@@ -237,4 +237,15 @@ $(function () {
         //Done, go to next page
         window.location = session.state.hasPassengers ? "order-summary.html" : "passengers-information.html";
     });
+    
+    var session = getSessionData();
+    
+    if(session.state.hasPayment){
+         $("#cardNumber").val(session.payment.cardNumber);
+         $("#cardExpiry").val(session.payment.cardExpiry);
+         $("#cardholderName").val(session.payment.cardholderName);
+         $("#cvv").val(session.payment.cvv);
+         $("#dni").val(session.payment.dni);
+         $("#email").val(session.payment.email);
+    }
 });

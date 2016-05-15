@@ -326,5 +326,19 @@ app.controller('controller', function ($scope, $http) {
     $scope.getColors = function () {
         return $scope.colors;
     };
-
+    
+        /* *************************************************************************
+     *                          math functions
+     * ************************************************************************/
+    $scope.getNumberOfPages = function(totalResults, resultsPerPage) {
+        var numberOfPages = Number(totalResults) / Number(resultsPerPage);
+        debugger;
+        var nonCompletePage = Number(numberOfPages);
+        numberOfPages = Number(numberOfPages).toFixed(0);
+        if(numberOfPages < nonCompletePage){
+        debugger;
+        numberOfPages = Number(numberOfPages) + 1;
+        }debugger;
+        return Number(numberOfPages);
+    };
 });
