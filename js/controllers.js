@@ -133,10 +133,9 @@ app.controller('controller', function ($scope, $http) {
      *                          Review functions
      * ************************************************************************/
     $scope.getFlightReviews = function (airlineID, flightNumber, pageSize, pageNum, orderBy, ascOrDesc) {
-        var optionalParams = "&page_size="+(pageSize||"")+"&page="+(pageNum||"")+"&sort_key="+(orderBy||"")+"&sort_order="+(ascOrDesc||"");
-        $http.get("http://eiffel.itba.edu.ar/hci/service4/review.groovy?method=getairlinereviews&airline_id="+airlineID+"&flight_number="+flightNumber + optionalParams, {cache: true, timeout: 10000})
+        var optionalParams = "&page_size=" + (pageSize || "") + "&page=" + (pageNum || "") + "&sort_key=" + (orderBy || "") + "&sort_order=" + (ascOrDesc || "");
+        $http.get("http://eiffel.itba.edu.ar/hci/service4/review.groovy?method=getairlinereviews&airline_id=" + airlineID + "&flight_number=" + flightNumber + optionalParams, {cache: true, timeout: 10000})
                 .then(function (response) {
-                    $scope.page = response.data.page;
                     $scope.reviews = response.data.reviews;
                     $scope.reviewCount = response.data.total;    // === $scope.reviews.length
                 });
@@ -147,63 +146,34 @@ app.controller('controller', function ($scope, $http) {
      * ************************************************************************/
     $scope.deals = [];
     $scope.flights = [];
-    $scope.total = 0;
-    $scope.flightTotal = 0;
 
-    $scope.selectFlight = function (flightObj) {
-        $scope.total -= $scope.flightTotal;
+    $scope.selectFlight = function (flight) {
         //Store flight in session
         var session = getSessionData();
-        session.search.selectedFlight = flightObj;
+        if (session.search.selectedFlight !== null) {   //If there's already a selected flight, subtract its total first
+            session.payment.total -= getFlightTotal(session.search.selectedFlight);
+        }
+        session.payment.total += getFlightTotal(flight);
+        session.search.selectedFlight = flight;
         setSessionData(session);
-        var id;
-        switch (session.search.direction) {
-            case "outbound":
-                id = "selectedOutboundFlight";
-                break;
-            case "inbound":
-                id = "selectedInboundFlight";
-                break;
-            default:
-                console.log("Flight direction not stored in session, I don't know which box to put the flight in. Aborting.");  //TODO validate and remove
-                return;
-        }
-        //Airline code and flight number        
-        var html = '<div class="card-panel green" style="height: 70px; padding:2px;">';
-        html += '<div class="col s4"><p><i class="material-icons">airplanemode_active</i>' + flightObj.outbound_routes[0].segments[0].airline.name + " #" + flightObj.outbound_routes[0].segments[0].number + '</p></div>';
-        //Departure airport and time, arrival airport and time
-        var depDate = new Date(flightObj.outbound_routes[0].segments[0].departure.date);
-        var arrDate = new Date(flightObj.outbound_routes[0].segments[0].arrival.date);
-        html += '<div class="col s4"><p>' + flightObj.outbound_routes[0].segments[0].departure.airport.id + ' (' + depDate.getHours() + ':' + depDate.getMinutes() + ') <span class="material-icons">forward</span> ' + flightObj.outbound_routes[0].segments[0].arrival.airport.id + ' (' + arrDate.getHours() + ':' + arrDate.getMinutes() + ')</p></div>';
-        //Cost
-        html += '<div class="col s1 center"><p style="line-height: 35px;">$' + flightObj.price.total.total + '</p></div>';
-        //Change button - only allow changes if on a one-way trip or if the other part of the trip has already been chosen.
-        var changeFlightState = ' disabled';
-        if (session.search.direction === "outbound" && (session.search.oneWayTrip || session.state.hasInboundFlight)) {
-            changeFlightState = '';
-        } else if (session.search.direction === "inbound" && session.state.hasOutboundFlight) {
-            changeFlightState = '';
-        }
-        html += '<div class="col s3 right-align"><button class="btn' + changeFlightState + '" style="margin-top: 15px;">Cambiar</button></div>';
-        html += '</div>';
-        $("#" + id).html(html);
-        $scope.flightTotal = flightObj.price.total.total;
-        $scope.total += $scope.flightTotal;
-    };
+        markSelectedFlight(flight, session.search.direction);
+        $("#currentTotal").html(session.payment.total);
+        $("#nextStep > button").removeClass("disabled");
+    }
 
-    $scope.searchFlights = function (page, pageSize, criteria, order) {
-        var sessionData = getSessionData();
-        var f = sessionData.search.from || null, //If undefined, set to NULL
-                t = sessionData.search.to || null,
-                d = sessionData.search.depart || null,
-                a = typeof sessionData.search.adults === 'undefined' ? -1 : sessionData.search.adults, //0 evaluates to false so we can't use the || here
-                c = typeof sessionData.search.children === 'undefined' ? -1 : sessionData.search.children,
-                i = typeof sessionData.search.infants === 'undefined' ? -1 : sessionData.search.infants;
+    $scope.searchFlights = function (criteria, order) {
+        var session = getSessionData();
+        var f = session.search.oneWayTrip || !session.state.hasOutboundFlight ? session.search.from : session.search.to,
+                t = session.search.oneWayTrip || !session.state.hasOutboundFlight ? session.search.to : session.search.from,
+                d = session.search.oneWayTrip || !session.state.hasOutboundFlight ? session.search.depart : session.search.return,
+                a = session.search.adults,
+                c = session.search.children,
+                i = session.search.infants;
         if (!f || !t || !d || a < 0 || c < 0 || i < 0) {  //Any empty, null or undefined variable will return false
             return;
         }
         //All info is present, search
-        $scope.getOneWayFlights(f, t, d, a, c, i, page, pageSize, criteria, order);
+        $scope.getOneWayFlights(f, t, d, a, c, i, undefined, undefined, criteria, order);
     };
 
     /**
@@ -358,7 +328,7 @@ app.controller('controller', function ($scope, $http) {
     };
     
         /* *************************************************************************
-     *                          ;ath functions
+     *                          math functions
      * ************************************************************************/
     $scope.getNumberOfPages = function(totalResults, resultsPerPage) {
         var numberOfPages = Number(totalResults) / Number(resultsPerPage);
@@ -368,7 +338,7 @@ app.controller('controller', function ($scope, $http) {
         if(numberOfPages < nonCompletePage){
         debugger;
         numberOfPages = Number(numberOfPages) + 1;
-    }debugger;
-        return numberOfPages;
+        }debugger;
+        return Number(numberOfPages);
     };
 });
