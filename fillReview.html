@@ -25,7 +25,7 @@
         <main>
             <h1 class="center">Nueva Reseña</h1>
             <div class="row">
-                <form id='review-form' class="col s6 offset-s3">
+                <form id="review-form" class="col s6 offset-s3">
                     <fieldset>
                         <legend>Amigabilidad</legend>
                         <input type="radio" class="validate" required name="friendliness" value="1" id="1"/><label for="1">1</label>
@@ -41,7 +41,7 @@
                     </fieldset>
                     <fieldset>
                         <legend>Comida</legend>
-                        <input type="radio" name="food" value="1" id="food1"/><label for="food1">1</label>
+                        <input type="radio" class="validate" required name="food" value="1" id="food1"/><label for="food1">1</label>
                         <input type="radio" name="food" value="2" id="food2"/><label for="food2">2</label>
                         <input type="radio" name="food" value="3" id="food3"/><label for="food3">3</label>
                         <input type="radio" name="food" value="4" id="food4"/><label for="food4">4</label>
@@ -54,7 +54,7 @@
                     </fieldset>
                     <fieldset>
                         <legend>Puntualidad</legend>
-                        <input type="radio" name="punctuality" value="1" id="punctuality1"/><label for="punctuality1">1</label>
+                        <input type="radio" class="validate" required name="punctuality" value="1" id="punctuality1"/><label for="punctuality1">1</label>
                         <input type="radio" name="punctuality" value="2" id="punctuality2"/><label for="punctuality2">2</label>
                         <input type="radio" name="punctuality" value="3" id="punctuality3"/><label for="punctuality3">3</label>
                         <input type="radio" name="punctuality" value="4" id="punctuality4"/><label for="punctuality4">4</label>
@@ -67,7 +67,7 @@
                     </fieldset>
                     <fieldset>
                         <legend>Programa de viajero frequente</legend>
-                        <input type="radio" name="millage_program" value="1" id="millage_program1"/><label for="millage_program1">1</label>
+                        <input type="radio" class="validate" required name="millage_program" value="1" id="millage_program1"/><label for="millage_program1">1</label>
                         <input type="radio" name="millage_program" value="2" id="millage_program2"/><label for="millage_program2">2</label>
                         <input type="radio" name="millage_program" value="3" id="millage_program3"/><label for="millage_program3">3</label>
                         <input type="radio" name="millage_program" value="4" id="millage_program4"/><label for="millage_program4">4</label>
@@ -80,7 +80,7 @@
                     </fieldset>
                     <fieldset>
                         <legend>Comodidad</legend>
-                        <input type="radio" name="comfort" value="1" id="comfort1"/><label for="comfort1">1</label>
+                        <input type="radio" class="validate" required name="comfort" value="1" id="comfort1"/><label for="comfort1">1</label>
                         <input type="radio" name="comfort" value="2" id="comfort2"/><label for="comfort2">2</label>
                         <input type="radio" name="comfort" value="3" id="comfort3"/><label for="comfort3">3</label>
                         <input type="radio" name="comfort" value="4" id="comfort4"/><label for="comfort4">4</label>
@@ -93,7 +93,7 @@
                     </fieldset>
                     <fieldset>
                         <legend>Relación Precio a Calidad</legend>
-                        <input type="radio" name="quality_price" value="1" id="quality_price1"/><label for="quality_price1">1</label>
+                        <input type="radio" class="validate" required name="quality_price" value="1" id="quality_price1"/><label for="quality_price1">1</label>
                         <input type="radio" name="quality_price" value="2" id="quality_price2"/><label for="quality_price2">2</label>
                         <input type="radio" name="quality_price" value="3" id="quality_price3"/><label for="quality_price3">3</label>
                         <input type="radio" name="quality_price" value="4" id="quality_price4"/><label for="quality_price4">4</label>
@@ -106,12 +106,12 @@
                     </fieldset>
                     <fieldset>
                         <legend>¿Lo recomendarías?</legend>
-                        <input type="radio" name="recommend" value="true" id="recommend1"/><label for="recommend1">Sí</label>
+                        <input type="radio" class="validate" required name="recommend" value="true" id="recommend1"/><label for="recommend1">Sí</label>
                         <input type="radio" name="recommend" value="false" id="recommend2"/><label for="recommend2">No</label>
                     </fieldset>
                     <fieldset>
                         <legend>Comentarios</legend>
-                        <input class="text" id="comment"/>
+                        <input class="text required" id="comment" required/>
                     </fieldset>
                     <button type='submit' class="btn-large waves-effect waves-light col s4 offset-s4" >
                         Confirmar >
@@ -134,5 +134,6 @@
         <script src="js/init.js"></script>
         <script src="js/angular.min.js" type="text/javascript"></script>
         <script src="js/controllers.js" type="text/javascript"></script>
+        <script src="js/reviews.js" type="text/javascript"></script>
     </body>
 </html>

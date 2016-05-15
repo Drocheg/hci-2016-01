@@ -19,6 +19,8 @@ var sessionData = {
 //        
 //        //what else? If taxes are somewhere else and al the fligt info can be gathered from new Flight() then it should be fine
 //    },
+    outboundflight: null,
+    inboundflight: null,
     flights: { //No los diferencie en outbound e inbound por el tema escalas, pensar que hacer
         departureTime: "",
         arrivalTime: "",

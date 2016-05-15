@@ -17,10 +17,12 @@ function getSessionData() {
                 return: null,
                 adults: null,
                 children: null,
-                infants: null
+                infants: null,
+                selectedFlight: null,
+                direction: null //outbound when current search is for an outbound trip, inbound when inbound, null otherwise
             },
-            outboundFlights: [], //array of flight objects, will only have 1 if direct flight
-            inboundFlights: null, //If NOT choosing a one-way trip, fill with the same structure as outbound
+            outboundFlight: null, //if there are stopovers, will be inside the flight object
+            inboundFlight: null, //If NOT choosing a one-way trip, fill with the same structure as outbound
             preferences: {
                 currency: "USD"
             },
@@ -53,7 +55,8 @@ function getSessionData() {
                 cardholderName: null,
                 cvv: null,
                 dni: null,
-                email: null
+                email: null,
+                total: 0
             },
             state: {
                 hasOutboundFlight: false,
@@ -79,7 +82,7 @@ function setSessionData(sessionObj) {
 }
 
 $(function () {  //Document.ready
-    //Initialize select drop-downs, if any
+    //Enable dynamic addition of <select>s
     $('select').material_select();
     //Is there local storage?
     if (typeof (window.Storage) === "undefined") {
