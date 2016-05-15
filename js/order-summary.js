@@ -6,13 +6,13 @@
 $(function () {
                 var session = getSessionData();
                 var html ="<h3>IDA</h3>";
-                for(var i=1; i<4;i++){ //Supongo que el 3 son las escalas
+                for(var i=0; i<2;i++){ //Supongo que el 3 son las escalas
                     html += "<h5>Vuelo numero "+i+"</h5> \
-                            <p>Numero de vuelo:</p>\n\
-                            <p>Fecha:</p>\n\
+                            <p>Numero de vuelo: "+getFlightNumber(session.outboundFlight)+"</p>\n\
+                            <p>Fecha: "+(getDepartureDateObj(session.outboundFlight)).getDate()+"/"+getDepartureDateObj(session.outboundFlight).getMonth()+"</p>\n\
                             <p>Horario de salida:</p>\n\
                             <P>Horario de llegada:</p>\n\
-                            <p>Duracion:</p>\n\ ";  //Falta precio y cantidad de pasajeros
+                            <p>Duracion: "+getFlightDuration(session.outbound)+"</p>\n\ ";  //Falta precio y cantidad de pasajeros
                                                     //lo pongo despues que necesita codigo
                     if(session.search.adults > 0){
                     html += "<p> Precio por adulto: $200x"+session.search.adults+"</p>"; 
