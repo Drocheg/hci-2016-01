@@ -192,6 +192,6 @@ $(function () {
         session.state.hasPayment = true;
         setSessionData(session);
         //Done, go to next page
-        window.location = "order-summary.html";
+        window.location = session.state.hasPassengers ? "order-summary.html" : "passengers-information.html";
     });
 });
