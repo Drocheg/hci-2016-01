@@ -19,7 +19,7 @@ var sessionData = {
 //        
 //        //what else? If taxes are somewhere else and al the fligt info can be gathered from new Flight() then it should be fine
 //    },
-    flight: { //No los diferencie en outbound e inbound por el tema escalas, pensar que hacer
+    flights: { //No los diferencie en outbound e inbound por el tema escalas, pensar que hacer
         departureTime: "",
         arrivalTime: "",
         adultCost: "$",
@@ -27,8 +27,9 @@ var sessionData = {
         infantCost: "$",
         taxes: "$", //?
         flightNumber: 42
-    },
     
+    },
+
     preferences: {
         currency: "currencyCode",       //Default to USD? Or current location?
         currencyExchangeRate: 42,       //Calculated with API using currency
