@@ -50,6 +50,10 @@
     /*margin:5px;*/
 }
 
+#nextStepBtn {
+    margin-top: 20px;
+}
+
 #fromSuggestions {
     position: absolute;
     z-index:2;
@@ -81,6 +85,8 @@
 #flightSearchForm {
     z-index: 1;
 }
+
+.flight-card {}
 
 /* Sticky footer */
 body {

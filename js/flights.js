@@ -1,3 +1,55 @@
+function getOriginAirport(flight) {
+    return flight.outbound_routes[0].segments[0].departure.airport;
+}
+
+function getDepartureDateObj(flight) {
+    return new Date(flight.outbound_routes[0].segments[0].departure.date);
+}
+
+function getDestinationAirport(flight) {
+    return flight.outbound_routes[0].segments[0].departure.airport;
+}
+
+function getArrivalDateObj(flight) {
+    return new Date(flight.outbound_routes[0].segments[0].arrival.date);
+}
+
+function getStopovers(flight) {
+    return flight.outbound_routes[0].segments[0].stopovers;
+}
+
+function getStopoversCount(flight) {
+    return flight.outbound_routes[0].segments[0].stopovers.length;
+}
+
+function isDirectFlight(flight) {
+    return getStopovers(flight).length === 0;
+}
+
+function getFlightTotal(flight) {
+    return getFlightPriceBreakdown(flight).total.total;
+}
+
+function getFlightPriceBreakdown(flight) {
+    return flight.price;
+}
+
+function getFlightAirlineName(flight) {
+    return flight.outbound_routes[0].segments[0].airline.name;
+}
+
+function getFlightAirlineID(flight) {
+    return flight.outbound_routes[0].segments[0].airline.id;
+}
+
+function getFlightNumber(flight) {
+    return flight.outbound_routes[0].segments[0].number;
+}
+
+function getFlightDuration(flight) {
+    return flight.outbound_routes[0].duration;
+}
+
 $(function() {
     $(document).ready(function() {
         if ($("#oneWayTrip").is(":checked")) {
@@ -13,6 +65,14 @@ $(function() {
     
     //Autofill form
     var session = getSessionData();
+    //Unselect any previously selected flight
+    session.search.selectedFlight = null;
+    setSessionData(session);
+    //Redirect to home if no search has been performed.
+//    if(session.search.from === null) {
+//        window.location = ".";
+//    }
+    
     $("#from").val(session.search.from);
     $("#to").val(session.search.to);
     $("#departDate").val(session.search.depart);
@@ -49,6 +109,7 @@ $(function() {
     };
     $('.datepicker').pickadate(datePickerOptions);
     
+
     $("#oneWayTrip").on('change', function () {
         if ($(this).is(":checked")) {
             $("#returnDate").fadeOut();
@@ -60,7 +121,7 @@ $(function() {
             $("#returnDate").attr("required", "required");
         }
     });
-    
+
     $("#searchButton").on("click", function(event) {
         event.preventDefault();
         var data = {
@@ -98,5 +159,41 @@ $(function() {
         //Valid, store data and go to next page
         setSessionData(session);
         window.location = "flights.html"; //Como hago para recargar la pagina sino?
+    });
+
+    $("#nextStep").on("click", "> button", function() {
+        debugger;
+        //Make sure there's a selected flight
+        var session = getSessionData();
+        if(session.search.selectedFlight === null) {
+            return;
+        }
+        var flight = session.search.selectedFlight;
+        //Update session state
+        var direction = session.search.direction;
+        var nextPage = null;
+        if(direction === "outbound") {
+            session.outboundFlight = flight;
+            session.state.hasOutboundFlight = true;
+            if(session.search.oneWayTrip) {
+                nextPage = session.state.hasPayment ? (session.state.hasPassengers ? "order-summary.html" : "passengers-information.html") : "payment.html";
+            }
+            else {
+                nextPage = session.state.hasInboundFlight ? (session.state.hasPayment ? ((session.state.hasPassengers ? "order-summary.html" : "passengers-information.html")) : "payment.html") : "flights.html";
+            }
+        }
+        else if(direction === "inbound") {
+            session.inboundFlight = flight;
+            session.state.hasInboundFlight = true;
+            nextPage = session.state.hasPayment ? (session.state.hasPassengers ? "order-summary.html" : "passengers-information.html") : "payment.html";
+        }
+        else {
+            Materialize.toast("Invalid state. Direction is neither inbound nor outbound. Fix.");    //TODO fix
+        }
+        session.payment.total += getFlightTotal(flight);
+        session.search.selectedFlight = null;
+        setSessionData(session);
+        window.location = nextPage;
+
     });
 });

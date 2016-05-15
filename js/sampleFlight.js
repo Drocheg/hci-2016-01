@@ -1,4 +1,4 @@
-var flight = {
+var result = {
     "meta": {
         "uuid": "27a7bad8-7e8f-433b-b5a1-e4bc2a77e7f9",
         "time": "533.035ms"
@@ -178,6 +178,76 @@ var flight = {
             "key": "price",
             "min": 290,
             "max": 344.72
+        }
+    ]
+};
+
+
+var flight = {
+    "price": {
+        "adults": {
+            "base_fare": 278,
+            "quantity": 1
+        },
+        "children": null,
+        "infants": null,
+        "total": {
+            "charges": 11.12,
+            "taxes": 55.6,
+            "fare": 278,
+            "total": 344.72
+        }
+    },
+    "outbound_routes": [
+        {
+            "segments": [
+                {
+                    "arrival": {
+                        "date": "2016-12-25 07:09:00",
+                        "airport": {
+                            "id": "TUC",
+                            "description": "Aeropuerto Benjamin Matienzo, San Miguel de Tucuman, Argentina",
+                            "time_zone": "-03:00",
+                            "city": {
+                                "id": "TUC",
+                                "name": "San Miguel de Tucuman, Tucuman",
+                                "country": {
+                                    "id": "AR",
+                                    "name": "Argentina"
+                                }
+                            }
+                        }
+                    },
+                    "departure": {
+                        "date": "2016-12-25 05:50:00",
+                        "airport": {
+                            "id": "EZE",
+                            "description": "Aeropuerto Ezeiza Ministro Pistarini, Buenos Aires, Argentina",
+                            "time_zone": "-03:00",
+                            "city": {
+                                "id": "EZE",
+                                "name": "Buenos Aires, Ciudad de Buenos Aires",
+                                "country": {
+                                    "id": "AR",
+                                    "name": "Argentina"
+                                }
+                            }
+                        }
+                    },
+                    "id": 94588,
+                    "number": 8700,
+                    "cabin_type": "ECONOMY",
+                    "airline": {
+                        "id": "8R",
+                        "name": "SOL",
+                        "rating": null
+                    },
+                    "duration": "01:19",
+                    "stopovers": [
+                    ]
+                }
+            ],
+            "duration": "01:19"
         }
     ]
 };

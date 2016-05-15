@@ -39,9 +39,9 @@ function validateCard(cardNumber, expiry, cvv, async) {
                         case 107:
                             expiryMsg = "Por favor ingrese una fecha válida";
                             break;
-                        case 108:
-                            cvvMsg = "Por favor ingrese 3 o 4 números para el código de seguridad";
-                            break;
+//                        case 108:
+//                            cvvMsg = "Por favor ingrese 3 o 4 números para el código de seguridad";
+//                            break;
                         case 111:
                             cvvMsg = "Por favor ingrese un código válido";
                             break;

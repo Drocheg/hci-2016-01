@@ -1,9 +1,10 @@
 var app = angular.module('app', ['ui.materialize']);    //Include angular-materialize plugin
-app.controller('controller', function ($scope, $http, $log) {
-    var API_URL = 'http://eiffel.itba.edu.ar/hci/service4/';
+app.controller('controller', function ($scope, $http) {
     /* *************************************************************************
      *                          General functions
      * ************************************************************************/
+    $scope.session = getSessionData();
+
     //http://stackoverflow.com/a/19679493
     $scope.separateIntoGroupsOf = function (groupSize, array) {
         var groups = array.map(function (element, index) {
@@ -43,6 +44,37 @@ app.controller('controller', function ($scope, $http, $log) {
 //        }while(!done);
     };
 
+    $scope.stringToDate = function (dateString) {
+        return new Date(dateString);
+    };
+
+    /**
+     * Turns the window.search variable into an object of parameters.
+     * @returns {object}
+     * @see http://stackoverflow.com/a/5448635
+     */
+    $scope.getGETParams = function () {
+        var str = window.location.search.substr(1);
+        return str !== null && str !== "" ? $scope.URLStringToObj(str) : {};
+    };
+
+    /**
+     * Converts an URL-encoded string to an object.
+     * 
+     * @param {string} str
+     * @returns {object}
+     * @see http://stackoverflow.com/a/5448635
+     */
+    $scope.URLStringToObj = function (str) {
+        var params = {};
+        var prmarr = str.split("&");
+        for (var i = 0; i < prmarr.length; i++) {
+            var tmparr = prmarr[i].split("=");
+            params[tmparr[0]] = tmparr[1];
+        }
+        return params;
+    };
+
     /* *************************************************************************
      *                          Interaction functions
      * ************************************************************************/
@@ -67,7 +99,7 @@ app.controller('controller', function ($scope, $http, $log) {
         $http({
             url: "http://eiffel.itba.edu.ar/hci/service4/geo.groovy",
             method: "GET",
-            headers: {"Accept":"application/json; charset=utf-8", 'Content-Type' : 'application/json; charset=UTF-8'},  //TODO España still returns weird, is it encoding or DB error?
+            headers: {"Accept": "application/json; charset=utf-8", 'Content-Type': 'application/json; charset=UTF-8'}, //TODO España still returns weird, is it encoding or DB error?
             params: {method: "getcitiesandairportsbyname", name: partialName},
             cache: true,
             timeout: 10000
@@ -101,6 +133,9 @@ app.controller('controller', function ($scope, $http, $log) {
      *                          Review functions
      * ************************************************************************/
     $scope.getFlightReviews = function (airlineID, flightNumber) {
+        console.log("Airline ID: " + airlineID);
+        console.log("Flight: #" + flightNumber);
+
         $http.get("http://eiffel.itba.edu.ar/hci/service4/review.groovy?method=getairlinereviews&airline_id=" + airlineID + "&flight_number=" + flightNumber, {cache: true, timeout: 10000})
                 .then(function (response) {
                     $scope.reviews = response.data.reviews;
@@ -113,22 +148,65 @@ app.controller('controller', function ($scope, $http, $log) {
      * ************************************************************************/
     $scope.deals = [];
     $scope.flights = [];
-    
-    $scope.searchFlights = function(criteria, order) {
+    $scope.total = 0;
+    $scope.flightTotal = 0;
+
+    $scope.selectFlight = function (flightObj) {
+        $scope.total -= $scope.flightTotal;
+        //Store flight in session
+        var session = getSessionData();
+        session.search.selectedFlight = flightObj;
+        setSessionData(session);
+        var id;
+        switch (session.search.direction) {
+            case "outbound":
+                id = "selectedOutboundFlight";
+                break;
+            case "inbound":
+                id = "selectedInboundFlight";
+                break;
+            default:
+                console.log("Flight direction not stored in session, I don't know which box to put the flight in. Aborting.");  //TODO validate and remove
+                return;
+        }
+        //Airline code and flight number        
+        var html = '<div class="card-panel green" style="height: 70px; padding:2px;">';
+        html += '<div class="col s4"><p><i class="material-icons">airplanemode_active</i>' + flightObj.outbound_routes[0].segments[0].airline.name + " #" + flightObj.outbound_routes[0].segments[0].number + '</p></div>';
+        //Departure airport and time, arrival airport and time
+        var depDate = new Date(flightObj.outbound_routes[0].segments[0].departure.date);
+        var arrDate = new Date(flightObj.outbound_routes[0].segments[0].arrival.date);
+        html += '<div class="col s4"><p>' + flightObj.outbound_routes[0].segments[0].departure.airport.id + ' (' + depDate.getHours() + ':' + depDate.getMinutes() + ') <span class="material-icons">forward</span> ' + flightObj.outbound_routes[0].segments[0].arrival.airport.id + ' (' + arrDate.getHours() + ':' + arrDate.getMinutes() + ')</p></div>';
+        //Cost
+        html += '<div class="col s1 center"><p style="line-height: 35px;">$' + flightObj.price.total.total + '</p></div>';
+        //Change button - only allow changes if on a one-way trip or if the other part of the trip has already been chosen.
+        var changeFlightState = ' disabled';
+        if (session.search.direction === "outbound" && (session.search.oneWayTrip || session.state.hasInboundFlight)) {
+            changeFlightState = '';
+        } else if (session.search.direction === "inbound" && session.state.hasOutboundFlight) {
+            changeFlightState = '';
+        }
+        html += '<div class="col s3 right-align"><button class="btn' + changeFlightState + '" style="margin-top: 15px;">Cambiar</button></div>';
+        html += '</div>';
+        $("#" + id).html(html);
+        $scope.flightTotal = flightObj.price.total.total;
+        $scope.total += $scope.flightTotal;
+    };
+
+    $scope.searchFlights = function (criteria, order) {
         var sessionData = getSessionData();
-        var f = sessionData.search.from || null,    //If undefined, set to NULL
-            t = sessionData.search.to || null,
-            d = sessionData.search.depart || null,
-            a = typeof sessionData.search.adults === 'undefined' ? -1 : sessionData.search.adults,        //0 evaluates to false so we can't use the || here
-            c = typeof sessionData.search.children === 'undefined' ? -1 : sessionData.search.children,
-            i = typeof sessionData.search.infants === 'undefined' ? -1 : sessionData.search.infants;
-        if(!f || !t || !d || a < 0 || c < 0 || i < 0) {  //Any empty, null or undefined variable will return false
+        var f = sessionData.search.from || null, //If undefined, set to NULL
+                t = sessionData.search.to || null,
+                d = sessionData.search.depart || null,
+                a = typeof sessionData.search.adults === 'undefined' ? -1 : sessionData.search.adults, //0 evaluates to false so we can't use the || here
+                c = typeof sessionData.search.children === 'undefined' ? -1 : sessionData.search.children,
+                i = typeof sessionData.search.infants === 'undefined' ? -1 : sessionData.search.infants;
+        if (!f || !t || !d || a < 0 || c < 0 || i < 0) {  //Any empty, null or undefined variable will return false
             return;
         }
         //All info is present, search
         $scope.getOneWayFlights(f, t, d, a, c, i, undefined, undefined, criteria, order);
     };
-    
+
     /**
      * Gets one-way flights matching the specified criteria.
      * 
@@ -150,7 +228,7 @@ app.controller('controller', function ($scope, $http, $log) {
      * asc.
      * @returns {undefined}
      */
-    $scope.getOneWayFlights = function(from, to, departDate, numAdults, numChildren, numInfants, pageNum, pageSize, sortKey, sortOrder) {
+    $scope.getOneWayFlights = function (from, to, departDate, numAdults, numChildren, numInfants, pageNum, pageSize, sortKey, sortOrder) {
         var params = {
             method: "getonewayflights",
             from: from,
@@ -160,7 +238,7 @@ app.controller('controller', function ($scope, $http, $log) {
             children: numChildren,
             infants: numInfants,
             page: pageNum || undefined, //API defaults to 1
-            page_size: pageSize || undefined,   //API defaults to 30
+            page_size: pageSize || undefined, //API defaults to 30
             sort_key: sortKey || undefined,
             sort_order: sortOrder || undefined
         };
@@ -171,7 +249,7 @@ app.controller('controller', function ($scope, $http, $log) {
             cache: true,
             timeout: 10000
         }).then(function (response) {
-            $scope.flights = response.data.flights;
+            $scope.flights = response.data;
         });
     };
 
@@ -200,32 +278,84 @@ app.controller('controller', function ($scope, $http, $log) {
                     }
                 });
     };
-    
-    
+
+    $scope.getOriginAirport = function (flight) {
+        return flight.outbound_routes[0].segments[0].departure.airport;
+    };
+
+    $scope.getDepartureDateObj = function (flight) {
+        return new Date(flight.outbound_routes[0].segments[0].departure.date);
+    };
+
+    $scope.getDestinationAirport = function (flight) {
+        return flight.outbound_routes[0].segments[0].departure.airport;
+    };
+
+    $scope.getArrivalDateObj = function (flight) {
+        return new Date(flight.outbound_routes[0].segments[0].arrival.date);
+    };
+
+    $scope.getStopovers = function (flight) {
+        return flight.outbound_routes[0].segments[0].stopovers;
+    };
+
+    $scope.getStopoversCount = function (flight) {
+        return flight.outbound_routes[0].segments[0].stopovers.length;
+    };
+
+    $scope.isDirectFlight = function (flight) {
+        return $scope.getStopovers(flight).length === 0;
+    };
+
+    $scope.getFlightTotal = function (flight) {
+        return $scope.getFlightPriceBreakdown(flight).total.total;
+    };
+
+    $scope.getFlightPriceBreakdown = function (flight) {
+        return flight.price;
+    };
+
+    $scope.getFlightAirlineName = function (flight) {
+        return flight.outbound_routes[0].segments[0].airline.name;
+    };
+
+    $scope.getFlightAirlineID = function (flight) {
+        return flight.outbound_routes[0].segments[0].airline.id;
+    };
+
+    $scope.getFlightNumber = function (flight) {
+        return flight.outbound_routes[0].segments[0].number;
+    };
+
+    $scope.getFlightDuration = function (flight) {
+        return flight.outbound_routes[0].duration;
+    };
+
+
     /* *************************************************************************
      *                          Passengers functions
      * ************************************************************************/
-   
-    $scope.getAdults = function(){
-       // var session = getSessionData();
-       // return session.search.adults;
-       return 2;
+
+    $scope.getAdults = function () {
+        // var session = getSessionData();
+        // return session.search.adults;
+        return 2;
     };
-   
+
     $scope.sexos = [
-        {name:'Masculino'},
-        {name:'Femenino'},
-        {name:'Apache Helicopter'}
+        {name: 'Masculino'},
+        {name: 'Femenino'},
+        {name: 'Apache Helicopter'}
     ];
-    
-    $scope.mySexo = $scope.sexos[2]; 
-    
-    $scope.getNumber = function(num) {
-        return new Array(num);   
+
+    $scope.mySexo = $scope.sexos[2];
+
+    $scope.getNumber = function (num) {
+        return new Array(num);
     };
-    
-    $scope.getColors = function(){
+
+    $scope.getColors = function () {
         return $scope.colors;
     };
-    
+
 });

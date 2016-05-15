@@ -1,43 +1,4 @@
 $(function () {
-    var datePickerOptions = {
-        min: new Date(), //Can't travel in the past =(
-        selectMonths: true,
-        selectYears: 2, //Creates a dropdown of 2 years ahead to control year
-        //Spanish translation https://github.com/amsul/pickadate.js/blob/3.5.6/lib/translations/es_ES.js
-        monthsFull: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
-        monthsShort: ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'],
-        weekdaysFull: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
-        weekdaysShort: ['dom', 'lun', 'mar', 'mié', 'jue', 'vie', 'sáb'],
-        today: 'hoy',
-        clear: 'borrar',
-        close: 'cerrar',
-        firstDay: 1,
-        format: 'dddd d/m',
-        formatSubmit: 'yyyy-mm-dd',
-        //closeOnSelect is overriden by materialize, this is the workaround https://github.com/Dogfalo/materialize/issues/870
-        onSet: function (arg) {
-            if('select' in arg) { //prevent closing on selecting month/year
-                this.close();
-            }
-        }
-    };
-    $('.datepicker').pickadate(datePickerOptions);
-//    $('#returnDate').pickadate(datePickerOptions);
-//    $('#departDate').pickadate(datePickerOptions);
-
-    //Hide/show return date picker when clicking one-way only
-    //http://stackoverflow.com/a/7031408
-    $("#oneWayTrip").on('change', function () {
-        if ($(this).is(":checked")) {
-            $("#returnDate").fadeOut();
-            $("#returnDate").removeAttr("required");
-            $("label[for=returnDate]").fadeOut();
-        } else {
-            $("#returnDate").fadeIn();
-            $("label[for=returnDate]").fadeIn();
-            $("#returnDate").attr("required", "required");
-        }
-    });
 
 
     /* *************************************************************************
@@ -85,15 +46,13 @@ $(function () {
             numInfants: Number($("#numInfants").val())
         };
         
-        var session = {};
-        session.search = {};
-        session.flights = {};
-        session.preferences = {};
+        var session = getSessionData();
         session.search.from = data.from;
         session.search.to = data.to;
         session.search.oneWayTrip = data.oneWayTrip;
         session.search.depart = data.departDate;
         session.search.return = data.returnDate;
+        session.search.direction = "outbound";
         if (!data.oneWayTrip && new Date(data.returnDate) < new Date(data.departDate) ) {
             Materialize.toast("Fecha vuelta deberia ser inferior a fecha ida.", 5000); //El calendario no debería permitirlo pero por las dudas
             return;
