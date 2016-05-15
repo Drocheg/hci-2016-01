@@ -134,6 +134,7 @@ app.controller('controller', function ($scope, $http) {
      * ************************************************************************/
     $scope.getFlightReviews = function (airlineID, flightNumber, pageSize, pageNum, orderBy, ascOrDesc) {
         var optionalParams = "&page_size=" + (pageSize || "") + "&page=" + (pageNum || "") + "&sort_key=" + (orderBy || "") + "&sort_order=" + (ascOrDesc || "");
+        debugger;
         $http.get("http://eiffel.itba.edu.ar/hci/service4/review.groovy?method=getairlinereviews&airline_id=" + airlineID + "&flight_number=" + flightNumber + optionalParams, {cache: true, timeout: 10000})
                 .then(function (response) {
                     $scope.reviews = response.data.reviews;

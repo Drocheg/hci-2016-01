@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-ng-app="app" data-ng-controller="controller" data-ng-init="getFlightReviews(getGETParams().airlineId, getGETParams().flightNum)"> <!-- TODO remove when adding form -->
+<html lang="en" data-ng-app="app" data-ng-controller="controller" data-ng-init="resultsPerPage=10, getFlightReviews(getGETParams().airlineId, getGETParams().flightNum, resultsPerPage)"> <!-- TODO remove when adding form -->
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
@@ -23,10 +23,10 @@
             <div class="row"> <!-- esto cambia todas la tarjetas -->
                 <div class="col s1 fixed">
                     <label>Comentarios por pagina</label>
-                    <select class="browser-default fixed" ng-model="quantity" data-ng-change="getFlightReviews(getGETParams().airlineId, getGETParams().flightNum, quantity, 1)">
-                        <option  value=30>30</option>
-                        <option value=20>20</option>
+                    <select ng-model="resultsPerPage" data-ng-change="getFlightReviews(getGETParams().airlineId, getGETParams().flightNum, resultsPerPage, 1)">
                         <option selected value=10>10</option>
+                        <option value=20>20</option>
+                        <option  value=30>30</option>
                     </select>
                 </div>
                 <ul class="collapsible col s6 offset-s2" data-collapsible="accordion">
@@ -77,7 +77,7 @@
                 </ul>
             </div>
             <ul class="pagination center-align">
-                <li ng-repeat="i in getFilledArray(getNumberOfPages(reviewCount,quantity))"><a class="waves-button-input" data-ng-change="getFlightReviews(getGETParams().airlineId, getGETParams().flightNum, quantity, i"><strong>{{i}}</strong></a></li>
+                <li ng-repeat="i in getFilledArray(getNumberOfPages(reviewCount,resultsPerPage))"><button class="waves-button-input" data-ng-click="getFlightReviews(getGETParams().airlineId, getGETParams().flightNum, resultsPerPage, i)">{{i}}</button></li>
             </ul>
         </main>
 
