@@ -82,6 +82,7 @@ var sessionData = {
         hasInboundFlight: false || null,        //Si ya seleccionó algún vuelo de vuelta o NULL si es de sólo ida
         hasPassengers: false,                   //Si ya cargó la info de TODOS los pasajeros y es válida
         hasPayment: false,                      //Si ya cargó info de método de pago y es válida
+        hasContact : false
     }
 };
 

@@ -4,55 +4,55 @@
  * and open the template in the editor.
  */
 $(function () {
-                var session = getSessionData();
-                var html ="<h3>IDA</h3>";
-                for(var i=1; i<4;i++){ //Supongo que el 3 son las escalas
-                    html += "<h5>Vuelo numero "+i+"</h5> \
+    var session = getSessionData();
+    var html = "<h3>IDA</h3>";
+    for (var i = 1; i < 4; i++) { //Supongo que el 3 son las escalas
+        html += "<h5>Vuelo numero " + i + "</h5> \
                             <p>Numero de vuelo:</p>\n\
                             <p>Fecha:</p>\n\
                             <p>Horario de salida:</p>\n\
                             <P>Horario de llegada:</p>\n\
                             <p>Duracion:</p>\n\ ";  //Falta precio y cantidad de pasajeros
-                                                    //lo pongo despues que necesita codigo
-                    if(session.search.adults > 0){
-                    html += "<p> Precio por adulto: $200x"+session.search.adults+"</p>"; 
-                } 
-                 if(session.search.children > 0){
-                    html += "<p> Precio por ninio: $200x"+session.search.children+"</p>"; 
-                } 
-                 if(session.search.infants > 0){
-                    html += "<p> Precio por infantes: $200x"+session.search.infants+"</p>"; 
-                } 
-                    html += "<p>Subtotal:</p>\n\
+        //lo pongo despues que necesita codigo
+        if (session.search.adults > 0) {
+            html += "<p> Precio por adulto: $200x" + session.search.adults + "</p>";
+        }
+        if (session.search.children > 0) {
+            html += "<p> Precio por ninio: $200x" + session.search.children + "</p>";
+        }
+        if (session.search.infants > 0) {
+            html += "<p> Precio por infantes: $200x" + session.search.infants + "</p>";
+        }
+        html += "<p>Subtotal:</p>\n\
                             <p>Cargos e impuestos:</p>\n\
                             ";
-                 }                                  
-                 html += "<h5><b>Total:</b></h5>";
-                 $("#outbound").html(html);
-                
-                html = "<h3>VUELTA</h3>";
-                for(var i=1; i<4;i++){ //Supongo que el 3 son las escalas
-                    html += "<h5>Vuelo numero "+i+"</h5> \
+    }
+    html += "<h5><b>Total:</b></h5>";
+    $("#outbound").html(html);
+
+    html = "<h3>VUELTA</h3>";
+    for (var i = 1; i < 4; i++) { //Supongo que el 3 son las escalas
+        html += "<h5>Vuelo numero " + i + "</h5> \
                             <p>Numero de vuelo:</p>\n\
                             <p>Fecha:</p>\n\
                             <p>Horario de salida:</p>\n\
                             <P>Horario de llegada:</p>\n\
                             <p>Duracion:</p>\n\ ";  //Falta precio y cantidad de pasajeros
-                 }                           //lo pongo despues que necesita codigo
-                 html += "<h5><b>Total:</b></h5>";
-                 $("#inbound").html(html);
+    }                           //lo pongo despues que necesita codigo
+    html += "<h5><b>Total:</b></h5>";
+    $("#inbound").html(html);
 
 
-                $("#payment").html("\
+    $("#payment").html("\
                             <h4>Información de pago</h4> \
                             <p>Número de tarjeta: " + session.payment.cardNumber + "</p> \
-                            <p>Nombre de titular: "+ session.payment.cardholderName +"</p> \
+                            <p>Nombre de titular: " + session.payment.cardholderName + "</p> \
                             <br> \
                             <h5><b>Gran total: $27.998</b></h5> \
                    ");
-                $("#contact").html("\
+    $("#contact").html("\
                             <h4>Información de contacto</h4> \
-                            <p>Email: " + session.payment.email +"</p> \
+                            <p>Email: " + session.payment.email + "</p> \
                     ");
 //                $("#inbound").html("\
 //                        <h4>Vuelta</h4> \
@@ -83,6 +83,47 @@ $(function () {
 //                                <br> \
 //                                <p><b>Total: $13.999</b></p>\
 //                    ");
-            });
-            
+
+    $("#changeOutboundFlightBtn").on("click", function () {
+        var session = getSessionData();
+        var f = session.outboundFlight;
+        session.payment.total -= getFlightTotal(f);
+        session.state.hasOutboundFlight = false;
+        session.outboundFlight = null;
+        setSessionData(session);
+        window.location = "flights.html";
+    });
+
+    $("#changeInboundFlightBtn").on("click", function () {        
+        var session = getSessionData();
+        var f = session.inboundFlight;
+        session.payment.total -= getFlightTotal(f);
+        session.state.hasInboundFlight = false;
+        session.inboundFlight = null;
+        setSessionData(session);
+        window.location = "flights.html";
+    });
+
+    $("#changePassengersBtn").on("click", function () {
+        var session = getSessionData();
+        session.state.hasPassengers = false;
+        setSessionData(session);
+        window.location = "passengers-information.html";
+    });
+
+    $("#changePaymentBtn").on("click", function () {
+        var session = getSessionData();
+        session.state.hasPayment = false;
+        setSessionData(session);
+        window.location = "payment.html";
+    });
+
+    $("#changeContactBtn").on("click", function () {
+        var session = getSessionData();
+        session.state.hasContact = false;
+        setSessionData(session);
+        window.location = "payment.html";
+    });
+});
+
 

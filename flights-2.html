@@ -37,28 +37,28 @@
                                                 <label for="to">Destino</label>
                                             </div>
                                             <div class="input-field col s12">
-                                                <input id="depart" type="date" class="datepicker">
-                                                <label for="depart">Ida</label>
-                                            </div>
-                                            <div class="input-field col s12">
                                                 <input id="oneWayTrip" type="checkbox">
-                                                <label for="soloIda">Sólo Ida</label>
+                                                <label for="oneWayTrip">Sólo Ida</label>
                                             </div>
                                             <div class="input-field col s12">
-                                                <input id="return" type="date" class="datepicker">
-                                                <label for="return">Vuelta</label>
+                                                <input id="departDate" type="date" class="datepicker">
+                                                <label for="departDate">Ida</label>
+                                            </div>
+                                            <div class="input-field col s12">
+                                                <input id="returnDate" type="date" class="datepicker">
+                                                <label for="returnDate">Vuelta</label>
                                             </div>
                                             <div class="input-field col s12">
                                                 <input id="numAdults" type="number" class="validate" value="1">
-                                                <label for="adults">Adultos (12 o más años)</label>
+                                                <label for="numAdults">Adultos (12 o más años)</label>
                                             </div>
                                             <div class="input-field col s12">
                                                 <input id="numChildren" type="number" class="validate" value="0">
-                                                <label for="children">Niños (2-11 años)</label>
+                                                <label for="numChildren">Niños (2-11 años)</label>
                                             </div>
                                             <div class="input-field col s12">
                                                 <input id="numInfants" type="number" class="validate" value="0">
-                                                <label for="infants">Infantes (0-2 años)</label>
+                                                <label for="numInfants">Infantes (0-2 años)</label>
                                             </div>
                                             <button class="input-field col s8 offset-s2 waves-effect waves-light btn-large" type='button' id="searchButton">
                                                 Buscar de Nuevo<i class="material-icons right">arrow_right</i>
@@ -133,23 +133,16 @@
                                                 </div>-->
                         <div class="col s3 center">
                             <h5 style="margin-top: 35px;">
-                                <b>Total: ${{total}}</b>
+                                <b>Total: $<span id="currentTotal">0</span></b>
                             </h5>
                         </div>
-                        <div id="selectedInboundFlight" class="col s9">
+                        <div data-ng-if="!session.search.oneWayTrip" id="selectedInboundFlight" class="col s9">
                             <div class="card-panel grey lighten-1 white-text center" style="border-color:grey; border-style: dashed;">
                                 Vuelta
                             </div>
-                        </div>
+                        </div>                        
                         <div class="col s3 center" id="nextStep">
-                            <!--Comprar deshabilitado-->
-                            <button data-ng-if="flightTotal === 0 && (session.search.oneWayTrip || session.state.hasInboundFlight)" class="btn nextStepBtn waves-effect waves-light disabled">Comprar <i class="material-icons right">arrow_right</i></button>
-                            <!--Comprar habilitado-->
-                            <button data-ng-if="flightTotal !== 0 && (session.search.oneWayTrip || (session.state.hasInboundFlight && session.state.hasOutboundFlight))" class="btn nextStepBtn waves-effect waves-light">Comprar <i class="material-icons right">arrow_right</i></button>
-                            <!--Elegir vuelta deshabilitado-->
-                            <button data-ng-if="flightTotal === 0 && (!session.search.oneWayTrip && !session.state.hasOutboundFlight)" class="btn nextStepBtn waves-effect waves-light disabled">Elegir Vuelta <i class="material-icons right">arrow_right</i></button>
-                            <!--Elegir vuelta habilitado-->
-                            <button data-ng-if="flightTotal !== 0 && (!session.search.oneWayTrip && !session.state.hasOutboundFlight)" class="btn nextStepBtn waves-effect waves-light">Elegir Vuelta <i class="material-icons right">arrow_right</i></button>
+                            <button class="btn waves-effect waves-light disabled">{{session.search.oneWayTrip || session.state.hasOutboundFlight ? 'Comprar' : 'Elegir Vuelta'}}<i class="material-icons right">arrow_right</i></button>
                         </div>
 
                         <div class="row">

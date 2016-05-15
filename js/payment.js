@@ -232,6 +232,7 @@ $(function () {
         var session = getSessionData();
         session.payment = data;
         session.state.hasPayment = true;
+        session.state.hasContact = true;
         setSessionData(session);
         //Done, go to next page
         window.location = session.state.hasPassengers ? "order-summary.html" : "passengers-information.html";

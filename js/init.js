@@ -68,7 +68,8 @@ function getSessionData() {
                 hasOutboundFlight: false,
                 hasInboundFlight: false,
                 hasPassengers: false,
-                hasPayment: false
+                hasPayment: false,
+                hasContact : false
             }
         });
     }

@@ -50,7 +50,11 @@
     /*margin:5px;*/
 }
 
-#nextStepBtn {
+#nextStep {
+    margin-bottom: 20px;
+}
+
+#nextStep > button {
     margin-top: 20px;
 }
 
