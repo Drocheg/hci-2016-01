@@ -18,18 +18,19 @@
 
 
         <main>
-            <h2 class="center">Comentarios sobre vuelo: </h2>
+            <h2 class="center">Comentarios sobre vuelo: {{reviewCount}}</h2>
+            <div class="row s6 offset-s3"><a class="s6 center-block btn waves-effect waves-light" href="fillReviews.html?">Dejar un comentario</a></div>
             <div class="row"> <!-- esto cambia todas la tarjetas -->
-                <div class="col s1">
+                <div class="col s1 fixed">
                     <label>Comentarios por pagina</label>
-                    <select class="browser-default" ng-model="quantity">
-                        <option value="5">5</option>
-                        <option value="3">3</option>
-                        <option value="1">1</option>
+                    <select class="browser-default fixed" ng-model="quantity" data-ng-change="getFlightReviews(getGETParams().airlineId, getGETParams().flightNum, quantity, 1)">
+                        <option  value=30>30</option>
+                        <option value=20>20</option>
+                        <option selected value=10>10</option>
                     </select>
                 </div>
                 <ul class="collapsible col s6 offset-s2" data-collapsible="accordion">
-                    <li ng-repeat="review in reviews| filter:query | limitTo:quantity">
+                    <li ng-repeat="review in reviews">
                         <!--TODO change elements (e.g. review.aerolinea) to whatever the API returns-->
                         <div class="collapsible-header" >
                             <div class="row s4 center-align">
@@ -76,7 +77,7 @@
                 </ul>
             </div>
             <ul class="pagination center-align">
-                <li ng-repeat="i in getFilledArray(reviewCount)"><a href="#!"><strong>{{i}}</strong></a></li>
+                <li ng-repeat="i in getFilledArray(getNumberOfPages(reviewCount,quantity))"><a class="waves-button-input" data-ng-change="getFlightReviews(getGETParams().airlineId, getGETParams().flightNum, quantity, i"><strong>{{i}}</strong></a></li>
             </ul>
         </main>
 
