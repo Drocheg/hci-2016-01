@@ -133,7 +133,33 @@ function getCardType(number) {
  * @returns {boolean}
  */
 function cardCanBeValidated() {
-    return $("#cardNumber").val() && $("#cardExpiry").val() && $("#cvv").val();
+    return $("#cardNumber").val() && isValidDate($("#cardExpiry").val()) && isValidCVV($("#cvv").val());
+}
+
+/**
+ * Validates that a MM/YY formatted date is valid and corresponds to a future
+ * date. <b>NOTE:</b> Adds 2000 to YY, i.e. will take 98 as 2098.
+ * 
+ * @param {string} dateStr
+ * @returns {Boolean}
+ */
+function isValidDate(dateStr) {
+    if(dateStr.match(/[0-9]{2}\/[0-9]{2}/) === null) {
+        return false;
+    }
+    var bits = dateStr.split("/");
+    var today = new Date();
+    var m = (Number)(bits[0]), y = (Number)(bits[1]);
+    if(y+2000 === today.getFullYear()) {
+        return m >= today.getMonth() && m <= 12;
+    }
+    else {
+        return m >= 1 && m <= 12;
+    }
+}
+
+function isValidCVV(cvvStr) {
+    return cvvStr.match(/[0-9]{3,4}/) !== null;
 }
 
 
@@ -143,6 +169,22 @@ $(function () {
         if (cardCanBeValidated()) {
             validateCard($("#cardNumber").val(), $("#cardExpiry").val(), $("#cvv").val());
         }
+    });
+    
+    //Ensure that, if pattern matches, it's a calid date
+    $("#cardExpiry").on("change", function() {
+        var $field = $(this);
+        if(!isValidDate($field.val())) {
+            $("label[for=cardExpiry]").attr("data-error", "Por favor ingrese una fecha válida");
+            $field.removeClass("valid");
+            $field.addClass("invalid");
+        }
+        else {
+            $field.removeClass("invalid");
+            $field.addClass("valid");
+        }
+//        if($field.val().match(/[0-9]{2}\/[0-9]{2}/) !== null) {
+//        }
     });
     
     //Remove invalid class when losing focus, will validate again when submitting

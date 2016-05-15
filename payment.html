@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-ng-app="app" data-ng-controller="controller">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
@@ -33,8 +33,8 @@
                                 <label for="cardExpiry" data-error="">Fecha de Vencimiento</label>
                             </div>
                             <div class="input-field col s6">
-                                <input type="text" id="cvv" pattern="[0-9]{3,4}" required>
-                                <label for="cvv" data-error="">Código de Seguridad</label>
+                                <input type="text" id="cvv" pattern="[0-9]{3,4}" class="validate"  required>
+                                <label for="cvv" data-error="Por favor ingrese un código válido.">Código de Seguridad</label>
                             </div>
                         </div>
                         <div class="row">
