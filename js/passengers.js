@@ -124,9 +124,10 @@ $(function() {
             $submitBtn.removeClass("disabled");
             return;
         }
+        var nextPage = session.state.hasPayment ? "order-summary.html" : "payment.html";
         session.state.hasPassengers = true;
         setSessionData(session);
-        window.location = "payment.html";
+        window.location = nextPage;
     });
     
     $("#backButton").on("click", function(event) {
@@ -192,7 +193,7 @@ $(function() {
     $("#form").html(miHTML);
     $("select[required]").css({display: "inline", height: 0, padding: 0, width: 0});
     
-    if(session.state.hasPassengers){
+//    if(session.state.hasPassengers){ //Para que siempre intente. Pero ahora pueden haber cosas null
         $([session.search.adults,session.search.children,session.search.infants]).each(function(index, value) {
             for(var i = 0; i < value && i<session.passengers[groups[index]].length; i++) 
             {
@@ -209,7 +210,7 @@ $(function() {
             
         });
           
-    }
+//    }
     
 });
 

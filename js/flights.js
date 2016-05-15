@@ -1,4 +1,16 @@
 $(function() {
+    $(document).ready(function() {
+        if ($("#oneWayTrip").is(":checked")) {
+            $("#returnDate").fadeOut();
+            $("#returnDate").removeAttr("required");
+            $("label[for=returnDate]").fadeOut();
+        } else {
+            $("#returnDate").fadeIn();
+            $("label[for=returnDate]").fadeIn();
+            $("#returnDate").attr("required", "required");
+        }
+    });
+    
     //Autofill form
     var session = getSessionData();
     $("#from").val(session.search.from);
@@ -9,6 +21,8 @@ $(function() {
     $("#numAdults").val(session.search.adults);
     $("#numInfants").val(session.search.infants);
     $("#numChildren").val(session.search.children);
+   
+   
     
     //Set up datepickers
     var datePickerOptions = {
@@ -34,4 +48,55 @@ $(function() {
         }
     };
     $('.datepicker').pickadate(datePickerOptions);
+    
+    $("#oneWayTrip").on('change', function () {
+        if ($(this).is(":checked")) {
+            $("#returnDate").fadeOut();
+            $("#returnDate").removeAttr("required");
+            $("label[for=returnDate]").fadeOut();
+        } else {
+            $("#returnDate").fadeIn();
+            $("label[for=returnDate]").fadeIn();
+            $("#returnDate").attr("required", "required");
+        }
+    });
+    
+    $("#searchButton").on("click", function(event) {
+        event.preventDefault();
+        var data = {
+            from: $("#from").val(),
+            to: $("#to").val(),
+            departDate: $("input[name=departDate_submit]").val(),
+            oneWayTrip: $("#oneWayTrip").is(":checked"),
+            returnDate: $("#oneWayTrip").is(":checked") ? $("input[name=returnDate_submit]").val() : null,
+            numAdults: Number($("#numAdults").val()),
+            numChildren: Number($("#numChildren").val()),
+            numInfants: Number($("#numInfants").val())
+        };
+        
+        var session = {};
+        session.search = {};
+        session.flights = {};
+        session.search.from = data.from;
+        session.search.to = data.to;
+        session.search.oneWayTrip = data.oneWayTrip;
+        session.search.depart = data.departDate;
+        session.search.return = data.returnDate;
+        if (!data.oneWayTrip && new Date(data.returnDate) < new Date(data.departDate) ) {
+            Materialize.toast("Fecha vuelta deberia ser inferior a fecha ida.", 5000); //El calendario no debería permitirlo pero por las dudas
+            return;
+        }
+
+        session.search.adults = data.numAdults;
+        session.search.children = data.numChildren;
+        session.search.infants = data.numInfants;
+        //Tampoco se deberia poder que sean negativos
+        if (data.numAdults === 0 && data.numChildren === 0 && data.numInfants === 0) {
+            Materialize.toast("Tiene que ingresar al menos un pasajero.", 5000);    //No se puede validar antes, sólo se puede validar de que los 3 tengan como mínimo 0 con HTML
+            return;
+        }
+        //Valid, store data and go to next page
+        setSessionData(session);
+        window.location = "flights.html"; //Como hago para recargar la pagina sino?
+    });
 });

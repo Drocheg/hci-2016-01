@@ -25,27 +25,33 @@ function getSessionData() {
                 currency: "USD"
             },
             passengers: {
-                adults: [{
-                        firstName: null,
-                        lastName: null,
-                        sex: null,
-                        birthday: null,
-                        DNI: null      //TODO Podria ser otras cosas? Podria ser tipo de documento y despues el numero de ese tipo de documento.
-                    }], //More if there is more than 1 adult
-                children: [{
-                        firstName: null,
-                        lastName: null,
-                        sex: null,
-                        birthday: null,
-                        DNI: null      //TODO Podria ser otras cosas? Podria ser tipo de documento y despues el numero de ese tipo de documento.
-                    }], //More if there is more than 1 child
-                infants: [{
-                        firstName: null,
-                        lastName: null,
-                        sex: null,
-                        birthday: null,
-                        DNI: null      //TODO Podria ser otras cosas? Podria ser tipo de documento y despues el numero de ese tipo de documento.
-                    }]      //More if there is more than 1 infant
+                adults: [
+//                    {
+////                        firstName: null,
+////                        lastName: null,
+////                        sex: null,
+////                        birthday: null,
+////                        DNI: null      //TODO Podria ser otras cosas? Podria ser tipo de documento y despues el numero de ese tipo de documento.
+//                    }
+                ], //More if there is more than 1 adult
+                children: [
+//                    {
+//                        firstName: null,
+//                        lastName: null,
+//                        sex: null,
+//                        birthday: null,
+//                        DNI: null      //TODO Podria ser otras cosas? Podria ser tipo de documento y despues el numero de ese tipo de documento.
+//                    }
+                ], //More if there is more than 1 child
+                infants: [
+//                    {
+//                        firstName: null,
+//                        lastName: null,
+//                        sex: null,
+//                        birthday: null,
+//                        DNI: null      //TODO Podria ser otras cosas? Podria ser tipo de documento y despues el numero de ese tipo de documento.
+//                    }
+                ]      //More if there is more than 1 infant
             },
             payment: {
                 cardNumber: null,
