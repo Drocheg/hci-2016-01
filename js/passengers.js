@@ -8,7 +8,10 @@ $(function() {
     $(document).ready(function() {
        $('select').material_select();
     });
-   
+    //Para testing
+//    var sessionTest = getSessionData();
+//    sessionTest.search.adults = 1;
+//    setSessionData(sessionTest);
     
     //Try to validate date immediately??? TODO Borrar esto o hacerlo. Sirve aca?
     
@@ -21,9 +24,9 @@ $(function() {
         var groups = ["adults","children","infants"];
         var spanishGroups = ["Adultos","Niños","Infantes"];
         var session = getSessionData();
-        //$([session.search.adults,session.search.children,session.search.infants]).each(function(index, value) {
         var dataIsValid = true;
-        $([1,0,0]).each(function(index, value) { //Para testing
+        $([session.search.adults,session.search.children,session.search.infants]).each(function(index, value) {
+            //Si se hace corte se ahorra tiempo pero no se podrian poner los carteles.            
 //            if(!dataIsValid){
 //                return;
 //            }
@@ -121,19 +124,26 @@ $(function() {
             $submitBtn.removeClass("disabled");
             return;
         }
-              
+        session.state.hasPassengers = true;
         setSessionData(session);
         window.location = "payment.html";
     });
+    
+    $("#backButton").on("click", function(event) {
+        event.preventDefault();
+        $("#backButton").addClass("disabled");
+        window.location = "flights.html"; //flight o flight 2
+    });
+    
+    
     var session = getSessionData();
     var miHTML = "";
     var groups = ["adults","children","infants"];
     var spanishGroups = ["Adultos","Niños","Infantes"];
-    //$([session.search.adults,session.search.children,session.search.infants]).each(function(index, value) {
-    $([1,0,0]).each(function(index, value) { //Para testing
-        for(var i = 0; i < value; i++) //session.search.adults. Lo hago para testing.
+    $([session.search.adults,session.search.children,session.search.infants]).each(function(index, value) {
+        for(var i = 0; i < value; i++) 
         {
-            // miHTML += "este es mi form loco";
+            
             miHTML += spanishGroups[index] + " "+(i+1)+" de "+value; //TODO que el select sea required
             
             var form ="<div class='row'>\
@@ -152,7 +162,7 @@ $(function() {
                                     <div class='row'>\
                                         <div class='col s12 input-field'>\
                                             <select id="+groups[index]+"-"+i+"-"+'sex'+" class='validate' required>\
-                                                <option value='' disabled selected>Elegir sexo</option>\
+                                                <option value='' disabled>Elegir sexo</option>\
                                                 <option value='Masculino'>Masculino</option>\
                                                 <option value='Femenino'>Femenino</option>\
                                             </select>\
@@ -181,6 +191,26 @@ $(function() {
     });
     $("#form").html(miHTML);
     $("select[required]").css({display: "inline", height: 0, padding: 0, width: 0});
+    
+    if(session.state.hasPassengers){
+        $([session.search.adults,session.search.children,session.search.infants]).each(function(index, value) {
+            for(var i = 0; i < value && i<session.passengers[groups[index]].length; i++) 
+            {
+                $("#"+groups[index]+"-"+i+"-"+'firstName').val(session.passengers[groups[index]][i].firstName);
+                $("#"+groups[index]+"-"+i+"-"+'lastName').val(session.passengers[groups[index]][i].lastName);
+                $("#"+groups[index]+"-"+i+"-"+'DNI').val(session.passengers[groups[index]][i].DNI);
+                $("#"+groups[index]+"-"+i+"-"+'sex').val(session.passengers[groups[index]][i].sex);
+                $("#"+groups[index]+"-"+i+"-"+'sex').material_select();
+                var birthday = new Date(session.passengers[groups[index]][i].birthday);
+                $("#"+groups[index]+"-"+i+"-"+'day').val(birthday.getUTCDate());
+                $("#"+groups[index]+"-"+i+"-"+'month').val(birthday.getUTCMonth()+1);
+                $("#"+groups[index]+"-"+i+"-"+'year').val(birthday.getFullYear());
+            }
+            
+        });
+          
+    }
+    
 });
 
 function validateDate(date) { //TODO testear.
