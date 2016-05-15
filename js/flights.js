@@ -152,6 +152,11 @@ $(function() {
         session.search.children = data.numChildren;
         session.search.infants = data.numInfants;
         //Tampoco se deberia poder que sean negativos
+        if(data.numInfants > 0 && data.numAdults === 0){
+             Materialize.toast("Los infantes no pueden viajar sin adultos.", 5000);
+             return;
+        }
+                
         if (data.numAdults === 0 && data.numChildren === 0 && data.numInfants === 0) {
             Materialize.toast("Tiene que ingresar al menos un pasajero.", 5000);    //No se puede validar antes, sólo se puede validar de que los 3 tengan como mínimo 0 con HTML
             return;
