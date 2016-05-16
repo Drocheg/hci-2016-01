@@ -6,25 +6,25 @@
 $(function () {
                 var session = getSessionData();
                 var html ="<h3>IDA</h3>";
-                for(var i=0; i<2;i++){ //Supongo que el 3 son las escalas
-                    html += "<h5>Vuelo numero "+i+"</h5> \
+                for(var i=0; i<=getStopoversCount(session.outboundFlight);i++){ //Supongo que el 3 son las escalas
+                    html += "<h5>Vuelo numero "+i+1+"</h5> \
                             <p>Numero de vuelo: "+getFlightNumber(session.outboundFlight)+"</p>\n\
                             <p>Fecha: "+(getDepartureDateObj(session.outboundFlight)).getDate()+"/"+getDepartureDateObj(session.outboundFlight).getMonth()+"</p>\n\
-                            <p>Horario de salida:</p>\n\
-                            <P>Horario de llegada:</p>\n\
-                            <p>Duracion: "+getFlightDuration(session.outbound)+"</p>\n\ ";  //Falta precio y cantidad de pasajeros
+                            <p>Horario de salida: "+(getDepartureDateObj(session.outboundFlight)).getHours()+":"+getDepartureDateObj(session.outboundFlight).getMinutes()+"</p>\n\
+                            <P>Horario de llegada: "+(getArrivalDateObj(session.outboundFlight)).getHours()+":"+getArrivalDateObj(session.outboundFlight).getMinutes()+"</p>\n\
+                            <p>Duracion: "+getFlightDuration(session.outboundFlight)+"</p>\n\ ";  //Falta precio y cantidad de pasajeros
                                                     //lo pongo despues que necesita codigo
                     if(session.search.adults > 0){
-                    html += "<p> Precio por adulto: $200x"+session.search.adults+"</p>"; 
+                    html += "<p> Precio por adultos: $"+getFlightPriceBreakdown(session.outboundFlight).adults.base_fare+"x"+session.search.adults+"</p>"; 
                 } 
                  if(session.search.children > 0){
-                    html += "<p> Precio por ninio: $200x"+session.search.children+"</p>"; 
+                    html += "<p> Precio por ninio: $"+getFlightPriceBreakdown(session.outboundFlight).children.base_fare+"x"+session.search.children+"</p>"; 
                 } 
-                 if(session.search.infants > 0){
-                    html += "<p> Precio por infantes: $200x"+session.search.infants+"</p>"; 
+                  if(session.search.infants > 0){
+                    html += "<p> Precio por infantes: $"+getFlightPriceBreakdown(session.outboundFlight).infants.base_fare+"x"+session.search.infants+"</p>"; 
                 } 
-                    html += "<p>Subtotal:</p>\n\
-                            <p>Cargos e impuestos:</p>\n\
+                    html += "<p>Subtotal: "+getFlightPriceBreakdown(session.outboundFlight).total.fare+"</p>\n\
+                            <p>Cargos e impuestos: "+(getFlightPriceBreakdown(session.outboundFlight).total.charges+getFlightPriceBreakdown(session.outboundFlight).total.taxes)+"</p>\n\
                             ";
     }
     html += "<h5><b>Total:</b></h5>";
