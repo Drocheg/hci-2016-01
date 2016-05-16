@@ -71,22 +71,22 @@
                                 <div class="card-panel orange black-text">
                                     <p class="center">Ordenar Por</p>
                                     <div class="row">
-                                        <div class="input-field col s6">
-                                            <select>
-                                                <option selected>Precio</option>
-                                                <option>Precio</option>
-                                                <option>Precio</option>
+                                        <div class="input-field col s6" >
+                                            <select data-ng-model="criteria">
+                                                <option selected value="total">Precio</option>
+                                                <option value="airline">Airline</option>
+                                                <option value="duration">Duración</option>
                                             </select>
                                         </div>
                                         <div class="input-field col s6">
-                                            <select>
-                                                <option selected>Ascendente</option>
-                                                <option>Descendente</option>
+                                            <select  data-ng-model="order">
+                                                <option selected value="asc">Ascendente</option>
+                                                <option value="desc">Descendente</option>
                                             </select>
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <button class="col s8 offset-s2 btn">Aplicar</button>
+                                        <button class="col s8 offset-s2 btn" data-ng-click="searchFlights(criteria, order)">Aplicar</button>
                                     </div>
                                 </div>
                             </div>

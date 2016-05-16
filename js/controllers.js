@@ -163,6 +163,7 @@ app.controller('controller', function ($scope, $http) {
     }
 
     $scope.searchFlights = function (criteria, order) {
+        debugger;
         var session = getSessionData();
         var f = session.search.oneWayTrip || !session.state.hasOutboundFlight ? session.search.from : session.search.to,
                 t = session.search.oneWayTrip || !session.state.hasOutboundFlight ? session.search.to : session.search.from,
@@ -258,7 +259,7 @@ app.controller('controller', function ($scope, $http) {
     };
 
     $scope.getDestinationAirport = function (flight) {
-        return flight.outbound_routes[0].segments[0].departure.airport;
+        return flight.outbound_routes[0].segments[0].arrival.airport;
     };
 
     $scope.getArrivalDateObj = function (flight) {
