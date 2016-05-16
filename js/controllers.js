@@ -259,7 +259,7 @@ app.controller('controller', function ($scope, $http) {
     };
 
     $scope.getDestinationAirport = function (flight) {
-        return flight.outbound_routes[0].segments[0].departure.airport;
+        return flight.outbound_routes[0].segments[0].arrival.airport;
     };
 
     $scope.getArrivalDateObj = function (flight) {

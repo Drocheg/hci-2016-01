@@ -7,7 +7,7 @@ function getDepartureDateObj(flight) {
 }
 
 function getDestinationAirport(flight) {
-    return flight.outbound_routes[0].segments[0].departure.airport;
+    return flight.outbound_routes[0].segments[0].arrival.airport;
 }
 
 function getArrivalDateObj(flight) {
