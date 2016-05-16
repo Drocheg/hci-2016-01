@@ -11,12 +11,12 @@
         <link href="css/style.css" type="text/css" rel="stylesheet" media="screen,projection"/>
     </head>
     <body>
-
         <header>
             <nav class="light-blue lighten-1" role="navigation" data-ng-include="'includes/nav.html'"></nav>
         </header>
 
-        <main>        
+        <main>
+
             <div class="section" style="min-height: 1300px;">
                 <div class="row">
                     <div class="col s4" style="position: absolute;">
@@ -68,17 +68,18 @@
                                 </div>
                             </div>
                             <div class="col s12">
-                                <div class="card-panel white black-text">
+                                <div class="card-panel orange black-text">
                                     <p class="center">Ordenar Por</p>
                                     <div class="row">
-                                        <div class="input-field col s6">
-                                            <select id="criteria" data-ng-model="criteria">
-                                                <option selected value="asc">Ascendente</option>
-                                                <option value="desc">Descendente</option>
+                                        <div class="input-field col s6" >
+                                            <select data-ng-model="criteria">
+                                                <option selected value="total">Precio</option>
+                                                <option value="airline">Airline</option>
+                                                <option value="duration">Duración</option>
                                             </select>
                                         </div>
                                         <div class="input-field col s6">
-                                            <select id="order" data-ng-model="order" >
+                                            <select  data-ng-model="order">
                                                 <option selected value="asc">Ascendente</option>
                                                 <option value="desc">Descendente</option>
                                             </select>
@@ -90,7 +91,7 @@
                                 </div>
                             </div>
                             <div class="col s12">
-                                <div class="card-panel white black-text">
+                                <div class="card-panel purple white-text">
                                     <p class="center">Vuelos por página</p>
                                     <div class="row">
                                         <div class="input-field col s6 offset-s3">
@@ -109,23 +110,39 @@
                         </div>
                     </div>
                     <div class="col s8 offset-s4">
-                        <div class="col s8">
+                        <div id="selectedOutboundFlight" class="col s9">
                             <div class="card-panel grey lighten-1 white-text center" style="border-color:grey; border-style: dashed;">
                                 Ida
                             </div>
                         </div>
-                        <div class="col s4 center">
+                        <!--                        <div class="col s9">
+                                                    <div id="selectedOutboundFlight" class="card-panel green" style="height: 70px; padding:2px;">
+                                                        <div class="col s4">
+                                                            <p><i class="material-icons">airplanemode_active</i> LAN #3258</p>
+                                                        </div>
+                                                        <div class="col s4">
+                                                            <p>EZE (08:35)<span class="material-icons">forward</span> JFK (14:50)</p>
+                                                        </div>
+                                                        <div class="col s1 center">
+                                                            <p style="line-height: 35px;">$617</p>
+                                                        </div>
+                                                        <div class="col s3 right-align">
+                                                            <button class='btn disabled' style="margin-top: 15px;">Cambiar</button>
+                                                        </div>
+                                                    </div>
+                                                </div>-->
+                        <div class="col s3 center">
                             <h5 style="margin-top: 35px;">
-                                <b>Total: $0</b>
+                                <b>Total: $<span id="currentTotal">0</span></b>
                             </h5>
                         </div>
-                        <div class="col s8">
+                        <div data-ng-if="!session.search.oneWayTrip" id="selectedInboundFlight" class="col s9">
                             <div class="card-panel grey lighten-1 white-text center" style="border-color:grey; border-style: dashed;">
                                 Vuelta
                             </div>
-                        </div>
-                        <div class="col s4 center">
-                            <button class="btn disabled" style="margin-top: 20px;">Elegir Vuelta <i class="material-icons right">arrow_right</i></button>
+                        </div>                        
+                        <div class="col s3 center" id="nextStep">
+                            <button class="btn waves-effect waves-light disabled">{{session.search.oneWayTrip || session.state.hasOutboundFlight ? 'Comprar' : 'Elegir Vuelta'}}<i class="material-icons right">arrow_right</i></button>
                         </div>
 
                         <div class="row">
@@ -136,145 +153,72 @@
                         </div>
 
                         <!--VUELOS-->
-                        <div class="card-panel blue white-text" data-ng-repeat="flight in flights.flights">
-                            ${{flight.price.total.total}} {{flight.outbound_routes[0].segments[0].airline.name}} {{flight.outbound_routes[0].duration}} 
-                        </div>
-
-
-
                         <div class="col s12">
                             <ul class="collapsible" data-collapsible="accordion">
-                                <li class="grey">
-                                    <div class="collapsible-header flight-card-header">
+                                <li class="grey" data-ng-repeat="flight in flights.flights">
+                                    <div class="collapsible-header">
                                         <div class="col s4">
-                                            <i class="material-icons">airplanemode_active</i>TAM #1132, TAM #1558
+                                            <i class="material-icons">airplanemode_active</i>{{getFlightAirlineName(flight)}} #{{getFlightNumber(flight)}}
                                         </div>
                                         <div class="col s3">
-                                            EZE (09:50)<span class="material-icons">forward</span>JFK (22:28)
+                                            {{getOriginAirport(flight).id}} ({{getDepartureDateObj(flight) | date:'HH:mm'}})<span class="material-icons">forward</span>{{getDestinationAirport(flight).id}} ({{getArrivalDateObj(flight) | date: 'HH:mm'}})
                                         </div>
-                                        <div class="col s1">
+                                        <div data-ng-if="isDirectFlight(flight)" class="col s2">
+                                            Directo
+                                        </div>
+                                        <div data-ng-if="getStopoversCount(flight) === 1" class="col s2">
                                             1 Escala
                                         </div>
-                                        <div class="col s2 right-align">
-                                            $517
+                                        <div data-ng-if="getStopoversCount(flight) > 1" class="col s2">
+                                            {{getStopoversCount(flight)}} Escalas
+                                        </div>
+                                        <div class="col s1">
+                                            ${{getFlightTotal(flight) | number:0}}
                                         </div>
                                         <div class="col s2 right-align">
-                                            <button class='btn'>Seleccionar</button>
+                                            <button class='btn' data-ng-click="selectFlight(flight)">Seleccionar</button>
                                         </div>
                                     </div>
-                                    <div class="collapsible-body flight-card-body">
-                                        <p style="height:100px;padding: 5px;padding-left: 10px;">
+                                    <div class="collapsible-body">
+                                        <p style="height:100px; padding: 5px; padding-left: 10px;">
                                             <span class="col s4 center">
-                                                Calificación: 7.3/10
+                                                Calificación: gr8 8/8 m8 <!-- 7.3/10 -->
                                                 <br />
                                                 (promedio tramos)
                                                 <br />
-                                                <button class="btn"><a href="reviews.html">Ver Comentarios</a></button>
+                                                <a class="btn" href="reviews.html?airlineId={{getAirlineID(flight)}}&flightNum={{getFlightNumber(flight)}}">Ver Comentarios</a>
                                             </span>
                                             <span class="col s3">
-                                                EZE (09:50) <span class="material-icons">forward</span> GRU (13:02)
-                                                <br />
-                                                GRU (13:45) <span class="material-icons">forward</span> JFK (23:50)
+                                                <span data-ng-show="!isDirectFlight(flight)" data-ng-repeat="segment in getStopovers(flight)">
+                                                    {{getOriginAirport(segment).id}} ({{getDepartureDateObj(segment) | date:'HH:mm'}})
+                                                    <span class="material-icons">forward</span>
+                                                    {{getDestinationAirport(segment).id}} ({{getArrivalDateObj(segment) | date: 'HH:mm'}})
+                                                </span>
+                                                <span data-ng-if="isDirectFlight(flight)">
+                                                    {{getOriginAirport(flight).id}} ({{getDepartureDateObj(flight) | date: 'HH:mm'}})
+                                                    <span class="material-icons">forward</span>
+                                                    {{getDestinationAirport(flight).id}} ({{getArrivalDateObj(flight) | date: 'HH:mm'}})
+                                                </span>
                                             </span>
                                             <span class="col s1 center">
-                                                Duración: 14:00
+                                                Duración: {{getFlightDuration(flight)}}
                                             </span>
                                             <span class="col s4 center">
-                                                Adultos: $250 x 2
+                                                <span data-ng-show="flight.price.adults !== null">
+                                                Adultos: ${{flight.price.adults.base_fare | number:2}} x {{flight.price.adults.quantity}}
                                                 <br />
-                                                Infantes: $15 x 1
+                                                </span>
+                                                <span data-ng-show="flight.price.children !== null">
+                                                Niños: ${{flight.price.children.base_fare | number:2}} x {{flight.price.children.quantity}}
                                                 <br />
-                                                Cargos e Impuestos: $2
+                                                </span>
+                                                <span data-ng-show="flight.price.infants !== null">
+                                                Infantes: ${{flight.price.infants.base_fare | number:2}} x {{flight.price.infants.quantity}}
                                                 <br />
-                                                <b>Total Pasajeros: $517</b>
-                                            </span>
-                                        </p>
-                                    </div>
-                                </li>
-
-                                <li class="grey">
-                                    <div class="collapsible-header flight-card-header">
-                                        <div class="col s4">
-                                            <i class="material-icons">airplanemode_active</i>LAN #3258
-                                        </div>
-                                        <div class="col s3">
-                                            EZE (08:35)<span class="material-icons">forward</span> JFK (14:50)
-                                        </div>
-                                        <div class="col s1">
-                                            Directo
-                                        </div>
-                                        <div class="col s2 right-align">
-                                            $617
-                                        </div>
-                                        <div class="col s2 right-align">
-                                            <button class='btn'>Seleccionar</button>
-                                        </div>
-                                    </div>
-                                    <div class="collapsible-body">
-                                        <p style="height:100px;padding: 5px;padding-left: 10px;">
-                                            <span class="col s4 center">
-                                                Calificación: 8/10
+                                                </span>
+                                                Cargos e Impuestos: ${{(flight.price.total.charges+flight.price.total.taxes)  | number:2}}
                                                 <br />
-                                                <button class="btn">Ver Comentarios</button>
-                                            </span>
-                                            <span class="col s3">
-                                                EZE (08:35)<span class="material-icons">forward</span> JFK (14:50)
-                                            </span>
-                                            <span class="col s1 center">
-                                                Duración: 11:15
-                                            </span>
-                                            <span class="col s4 center">
-                                                Adultos: $300 x 2
-                                                <br />
-                                                Infantes: $15 x 1
-                                                <br />
-                                                Cargos e Impuestos: $2
-                                                <br />
-                                                <b>Total Pasajeros: $617</b>
-                                            </span>
-                                        </p>
-                                    </div>
-                                </li>
-
-                                <li class="grey">
-                                    <div class="collapsible-header flight-card-header">
-                                        <div class="col s4">
-                                            <i class="material-icons">airplanemode_active</i>Aerolíneas Argentinas #667
-                                        </div>
-                                        <div class="col s3">
-                                            EZE (09:25)<span class="material-icons">forward</span> JFK (16:52)
-                                        </div>
-                                        <div class="col s1">
-                                            Directo
-                                        </div>
-                                        <div class="col s2 right-align">
-                                            $750
-                                        </div>
-                                        <div class="col s2 right-align">
-                                            <button class='btn'>Seleccionar</button>
-                                        </div>
-                                    </div>
-                                    <div class="collapsible-body">
-                                        <p style="height:100px;padding: 5px;padding-left: 10px;">
-                                            <span class="col s4 center">
-                                                Calificación: 8.36/10
-                                                <br />
-                                                <button class="btn">Ver Comentarios</button>
-                                            </span>
-                                            <span class="col s3">
-                                                EZE (08:35)<span class="material-icons">forward</span> JFK (14:50)
-                                            </span>
-                                            <span class="col s1 center">
-                                                Duración: 09:23
-                                            </span>
-                                            <span class="col s4 center">
-                                                Adultos: $367 x 2
-                                                <br />
-                                                Infantes: $15 x 1
-                                                <br />
-                                                Cargos e Impuestos: $1
-                                                <br />
-                                                <b>Total Pasajeros: $750</b>
+                                                <b>Total Pasajeros: ${{getFlightTotal(flight) | number:2}}</b>
                                             </span>
                                         </p>
                                     </div>
@@ -312,6 +256,7 @@
         <script src='js/controllers.js'></script>
         <script src="js/angular-materialize.js"></script>
 
-        <script src="js/flights.js"></script>  
+        <script src='js/flights.js'></script>
+
     </body>
 </html>

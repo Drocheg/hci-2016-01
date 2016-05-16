@@ -9,9 +9,9 @@ $(function() {
        $('select').material_select();
     });
     //Para testing
-    var sessionTest = getSessionData();
-    sessionTest.search.adults = 1;
-    setSessionData(sessionTest);
+//    var sessionTest = getSessionData();
+//    sessionTest.search.adults = 1;
+//    setSessionData(sessionTest);
     
     //Try to validate date immediately??? TODO Borrar esto o hacerlo. Sirve aca?
     
@@ -237,13 +237,13 @@ function validateBirthday(birthday,index) {
         return false;
     }
     var age = _calculateAge(birthday);
-    if(index===2 && age>=3){
+    if(index===2 && age>=2){
         return false;
     }
-    if(index===1 && (age >=18 || age<3)){//TODO 18?
+    if(index===1 && (age >=12 || age<2)){//TODO 18?
         return false;
     }
-    if(index===0 && age<18){
+    if(index===0 && age<11){
         return false;
     }
     return true;

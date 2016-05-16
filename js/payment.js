@@ -248,4 +248,10 @@ $(function () {
          $("#dni").val(session.payment.dni);
          $("#email").val(session.payment.email);
     }
+    
+    $("#backButton").on("click", function(event) {
+        event.preventDefault();
+        $("#backButton").addClass("disabled");
+        window.location = "flights.html"; //flight o flight 2
+    });
 });

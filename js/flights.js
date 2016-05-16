@@ -223,7 +223,7 @@ $(function () {
         session.state.hasInboundFlight = false;
         session.payment.total = 0;
         setSessionData(session);
-        window.location = "flights-2.html";
+        window.location = "flights.html";
     });
 
     $("#nextStep").on("click", "> button", function () {
@@ -243,7 +243,7 @@ $(function () {
                 nextPage = session.state.hasPayment ? (session.state.hasPassengers ? "order-summary.html" : "passengers-information.html") : "payment.html";
                 session.search.direction = null;
             } else {
-                nextPage = session.state.hasInboundFlight ? (session.state.hasPayment ? ((session.state.hasPassengers ? "order-summary.html" : "passengers-information.html")) : "payment.html") : "flights-2.html";
+                nextPage = session.state.hasInboundFlight ? (session.state.hasPayment ? ((session.state.hasPassengers ? "order-summary.html" : "passengers-information.html")) : "payment.html") : "flights.html";
                 session.search.direction = session.state.hasInboundFlight ? null : "inbound";
             }
         } else if (direction === "inbound") {
