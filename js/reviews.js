@@ -51,7 +51,9 @@ function URLStringToObj(str) {
 }
 
 $(function () {
-    $('select').material_select();
+    $(document).ready(function() {
+       $('select').material_select();
+    });
 
 
     $("#review-form").on("submit", function (event) {

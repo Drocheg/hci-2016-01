@@ -329,6 +329,7 @@ app.controller('controller', function ($scope, $http) {
         return $scope.colors;
     };
     
+    $scope.resultsPerPage = 30;
         /* *************************************************************************
      *                          math functions
      * ************************************************************************/
