@@ -6,15 +6,21 @@
  */
 $(function() {  
     $(document).ready(function() {
+       
        $('select').material_select();
     });
+    
 //    Para testing
     var sessionTest = getSessionData();
-    sessionTest.search.adults = 1;
+    sessionTest.search.adults = 2;
     setSessionData(sessionTest);
     
     //Try to validate date immediately??? TODO Borrar esto o hacerlo. Sirve aca?
-    
+   
+//    $('select').change(function(){
+//        $(this[name=""]).attr('disabled', 'disabled');
+//        $(this).material_select();
+//    });
    
     $("#passengers-form").on("submit", function(event) {
         event.preventDefault();
@@ -148,59 +154,70 @@ $(function() {
             
             miHTML += spanishGroups[index] + " "+(i+1)+" de "+value; //TODO que el select sea required
             
-            var form ="<div class='row'>\
-                                        <input type='hidden' id="+groups[index]+"-"+i+"-"+'isValidDate'+" value='false' />\
-                                        <div class='col s12 input-field'>\
-                                            <label for="+groups[index]+"-"+i+"-"+'firstName'+" class='black-text' data-error='Por favor ingrese el nombre del pasajero'>Nombre</label>\
-                                            <input id="+groups[index]+"-"+i+"-"+'firstName'+" type='text' pattern='^([a-zA-Z ]{1,})$' class='validate' required>\
-                                        </div>\
-                                    </div>\
-                                    <div class='row'>\
-                                        <div class='col s12 input-field'>\
-                                            <label for="+groups[index]+"-"+i+"-"+'lastName'+" class='black-text' data data-error='Por favor ingrese el apellido del pasajero'>Apellido</label>\
-                                            <input id="+groups[index]+"-"+i+"-"+'lastName'+" type='text' pattern='^([a-zA-Z ]{1,})$' class='validate' required>\
-                                        </div>\
-                                    </div>   \
-                                    <div class='row'>\
-                                        <div class='col s12 input-field'>\
-                                            <select id="+groups[index]+"-"+i+"-"+'sex'+" class='validate' required>\
-                                                <option value=''>--Elegir sexo--</option>\
-                                                <option value='Masculino'>Masculino</option>\
-                                                <option value='Femenino'>Femenino</option>\
-                                            </select>\
-                                        </div>\
-                                    </div>    \
-                                    <div class='row'>\
-                                        <div class='input-field col s4'> \
-                                                <label for="+groups[index]+"-"+i+"-"+'day'+" class='black-text' data-error=''>Dia</label>\
-                                                <input id="+groups[index]+"-"+i+"-"+'day'+" type='text' pattern='[0-9]{1,2}' class='validate' required> \
-                                            </div>\
-                                           <div class='input-field col s4'> \
-                                                <label for="+groups[index]+"-"+i+"-"+'month'+" class='black-text'>Month</label> \
-                                                <input id="+groups[index]+"-"+i+"-"+'month'+" type='text' pattern='[0-9]{1,2}' class='validate' required> \
-                                            </div>\
-                                            <div class='input-field col s4'>\
-                                                <label for="+groups[index]+"-"+i+"-"+'year'+" class='black-text'>Año</label>\
-                                                <input id="+groups[index]+"-"+i+"-"+'year'+" type='text' pattern='[0-9]{4}' class='validate' required>\
-                                            </div>\
-                                            <div class='col s4 input-field'>\
-                                                <select id="+groups[index]+"-"+i+"-"+'documentType'+" class='validate' required>\
-                                                    <option value='DNI'>DNI</option>\
-                                                    <option value='Pasaporte'>Pasaporte</option>\
-                                                </select>\
-                                            </div>\
-                                            <div class='col s8 input-field'>\
-                                            <label for="+groups[index]+"-"+i+"-"+'document'+" class='black-text' data-error='Por favor ingrese el documento del pasajero'>Documento</label>\
-                                            <input id="+groups[index]+"-"+i+"-"+'document'+" type='text' pattern='^([0-9]{1,8})$' class='validate' required>\
-                                        </div>\
-                                         </div> ";   
+            var form = "<div class=card-panel>\
+                            <div class='row'>\
+                                <input type='hidden' id="+groups[index]+"-"+i+"-"+'isValidDate'+" value='false' />\
+                                <div class='col s6 input-field'>\
+                                    <label for="+groups[index]+"-"+i+"-"+'firstName'+" class='black-text' data-error='Por favor ingrese el nombre del pasajero'>Nombre</label>\
+                                    <input id="+groups[index]+"-"+i+"-"+'firstName'+" type='text' pattern='^([a-zA-Z ]{1,})$' class='validate' required>\
+                                </div>\
+                                <div class='col s6 input-field'>\
+                                    <label for="+groups[index]+"-"+i+"-"+'lastName'+" class='black-text' data data-error='Por favor ingrese el apellido del pasajero'>Apellido</label>\
+                                    <input id="+groups[index]+"-"+i+"-"+'lastName'+" type='text' pattern='^([a-zA-Z ]{1,})$' class='validate' required>\
+                                </div>\
+                            </div>   \
+                            <div class='row'>\
+                                <div class='input-field col s4'> \
+                                    <label for="+groups[index]+"-"+i+"-"+'day'+" class='black-text' data-error=''>Dia</label>\
+                                    <input id="+groups[index]+"-"+i+"-"+'day'+" type='text' pattern='[0-9]{1,2}' class='validate' required> \
+                                </div>\
+                                <div class='input-field col s4'> \
+                                    <label for="+groups[index]+"-"+i+"-"+'month'+" class='black-text'>Month</label> \
+                                    <input id="+groups[index]+"-"+i+"-"+'month'+" type='text' pattern='[0-9]{1,2}' class='validate' required> \
+                                </div>\
+                                <div class='input-field col s4'>\
+                                    <label for="+groups[index]+"-"+i+"-"+'year'+" class='black-text'>Año</label>\
+                                    <input id="+groups[index]+"-"+i+"-"+'year'+" type='text' pattern='[0-9]{4}' class='validate' required>\
+                                </div>\
+                            </div>    \
+                            <div class='row'>\
+                                <div class='col s3 input-field'>\
+                                    <select id="+groups[index]+"-"+i+"-"+'documentType'+" class='validate' required>\
+                                        <option value='DNI'>DNI</option>\
+                                        <option value='Pasaporte'>Pasaporte</option>\
+                                    </select>\
+                                </div>\
+                                <div class='col s5 input-field'>\
+                                    <label for="+groups[index]+"-"+i+"-"+'document'+" class='black-text' data-error='Por favor ingrese el documento del pasajero'>Documento</label>\
+                                    <input id="+groups[index]+"-"+i+"-"+'document'+" type='text' pattern='^([0-9]{1,8})$' class='validate' required>\
+                                </div>\
+                                <div class='col s4 input-field'>\
+                                    <select id="+groups[index]+"-"+i+"-"+'sex'+" class='validate' required>\
+                                        <option value=''>Elegir sexo</option>\
+                                        <option value='Masculino'>Masculino</option>\
+                                        <option value='Femenino'>Femenino</option>\
+                                    </select>\
+                                </div>\
+                            </div>\
+                             <div class='row'>\
+                             </div>\
+                             <div class='row'>\
+                             </div>\
+                        </div>\  ";   
                 miHTML += form;
         }
     });
-    $("#form").html(miHTML);
-    $("select[required]").css({display: "inline", height: 0, padding: 0, width: 0});
     
-//    if(session.state.hasPassengers){ //Para que siempre intente. Pero ahora pueden haber cosas null
+    
+    $("#form").html(miHTML);
+    
+    
+    $('select').val("");
+    $("select option:selected").attr('disabled','disabled');
+    //Tiene que pasar antes que lo de despues. Semaforos? 
+    //$("select[required]").css({display: "inline", height: 0, padding: 0, width: 0}); Ya no sirve creo
+    
+    //    if(session.state.hasPassengers){ //Para que siempre intente. Pero ahora pueden haber cosas null
         $([session.search.adults,session.search.children,session.search.infants]).each(function(index, value) {
             for(var i = 0; i < value && i<session.passengers[groups[index]].length; i++) 
             {
@@ -209,7 +226,7 @@ $(function() {
                 $("#"+groups[index]+"-"+i+"-"+'document').val(session.passengers[groups[index]][i].document);
                 $("#"+groups[index]+"-"+i+"-"+'documentType').val(session.passengers[groups[index]][i].documentType);
                 $("#"+groups[index]+"-"+i+"-"+'sex').val(session.passengers[groups[index]][i].sex);
-                $("#"+groups[index]+"-"+i+"-"+'sex').material_select();
+                $("#"+groups[index]+"-"+i+"-"+'sex').material_select(); //Creo que no sirve para nada
                 var birthday = new Date(session.passengers[groups[index]][i].birthday);
                 $("#"+groups[index]+"-"+i+"-"+'day').val(birthday.getUTCDate());
                 $("#"+groups[index]+"-"+i+"-"+'month').val(birthday.getUTCMonth()+1);
@@ -218,7 +235,8 @@ $(function() {
             
         });
           
-//    }
+//    } 
+
     
 });
 
