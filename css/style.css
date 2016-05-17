@@ -24,6 +24,20 @@
     padding-top: 10px;
 }
 
+.softlyPadded {
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.closelyMargined {
+    padding-top: 0px;
+    padding-bottom: 0px;
+}
+
+.scoreBar {
+    color:
+}
+
 .flight-card-header{
    line-height: 100px;
    font-size: large;
