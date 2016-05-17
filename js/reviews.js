@@ -9,9 +9,9 @@ function getGeneralScore(friendliness, food, punctuality, millage_program, comfo
 function submitReview(airlineID, flightNum, friend, food, punct, mileage, comfort, quality, recommend, comments) {
     $.ajax({
         type: "POST",
-        url: "http://eiffel.itba.edu.ar/hci/service4/review.groovy",
-        dataType: 'json',
-        data: {method: "reviewairline", flight: {airline: {id: airlineID}, number: flightNum}, rating: {friendliness: friend, food: food, punctuality: punct, mileage_program: mileage, comfort: comfort, quality_price: quality}, yes_recommend: recommend, comments: comments}
+        url: "http://eiffel.itba.edu.ar/hci/service4/review.groovy?method=reviewairline",
+        contentType: 'aplication/json', //TODO SACAR CABLEADO DE ID
+        data: JSON.stringify({flight: {airline: {id: "AR"}, number: flightNum}, rating: {friendliness: friend, food: food, punctuality: punct, mileage_program: mileage, comfort: comfort, quality_price: quality}, yes_recommend: recommend, comments: comments})
     })
             .done(function (result) {
                 if (result.error) {
