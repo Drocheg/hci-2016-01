@@ -5,6 +5,24 @@
 .icon-block .material-icons {
 	font-size: inherit;
 }
+#repetitionContainer {
+    border: 1px solid black;
+}
+
+#reviewCard {
+    margin-top: 2px; 
+    margin-bottom: 10px;
+    border: 3px solid black;
+}
+
+#seeMoreButton {
+    color: #00bcd4;
+    border: 3px solid #00acc1;
+}
+
+#repetitionContainer > li:first-child {
+    padding-top: 10px;
+}
 
 .flight-card-header{
    line-height: 100px;
