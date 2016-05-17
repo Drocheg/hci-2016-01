@@ -42,6 +42,11 @@ function getFlightAirlineID(flight) {
     return flight.outbound_routes[0].segments[0].airline.id;
 }
 
+function getFlightAirlineLogoURL(flight) {
+    var session = getSessionData();
+    return session.airlines[getFlightAirlineID(flight)].logo;
+}
+
 function getFlightNumber(flight) {
     return flight.outbound_routes[0].segments[0].number;
 }
@@ -125,14 +130,14 @@ $(function () {
 //    }
 //    
     //Autofill form
-    $("#from").val(session.search.from);
-    $("#to").val(session.search.to);
-    $("#departDate").val(session.search.depart);
-    $("#oneWayTrip").prop('checked', session.search.oneWayTrip);
-    $("#returnDate").val(session.search.return || "");
-    $("#numAdults").val(session.search.adults);
-    $("#numInfants").val(session.search.infants);
-    $("#numChildren").val(session.search.children);
+//    $("#from").val(session.search.from);
+//    $("#to").val(session.search.to);
+//    $("#departDate").val(session.search.depart);
+//    $("#oneWayTrip").prop('checked', session.search.oneWayTrip);
+//    $("#returnDate").val(session.search.return || "");
+//    $("#numAdults").val(session.search.adults);
+//    $("#numInfants").val(session.search.infants);
+//    $("#numChildren").val(session.search.children);
     //Mark current total
     $("#currentTotal").html(session.payment.total);
     //Mark any selected flights
@@ -204,6 +209,8 @@ $(function () {
             Materialize.toast("Tiene que ingresar al menos un pasajero.", 5000);    //No se puede validar antes, sólo se puede validar de que los 3 tengan como mínimo 0 con HTML
             return;
         }
+        
+        //TODO use invalid class rather than toasts
 
         //Valid, store data and go to flight search
         var session = getSessionData();

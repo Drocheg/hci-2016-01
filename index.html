@@ -12,7 +12,7 @@
     </head>
     <body>
         <header>
-            <nav class="light-blue lighten-1" role="navigation" data-ng-include="'includes/nav.html'"></nav>
+            <nav role="navigation" data-ng-include="'includes/nav.html'"></nav>
         </header>
 
         <main>
@@ -73,15 +73,15 @@
                         </div>
                         <div class="row">
                             <div class="input-field col s4">
-                                <input id="numAdults" name="numAdults" type="number" class="validate" value="1" min="0">
+                                <input id="numAdults" name="numAdults" type="text" pattern="[0-9]{1,}" class="validate" value="1">
                                 <label for="numAdults">Adultos (12 o más años)</label>
                             </div>
                             <div class="input-field col s4">
-                                <input id="numChildren" name="numChildren" type="number" class="validate" value="0" min="0">
+                                <input id="numChildren" name="numChildren" type="text" pattern="[0-9]{1,}" class="validate" value="0">
                                 <label for="numChildren">Niños (2-11 años)</label>
                             </div>
                             <div class="input-field col s4">
-                                <input id="numInfants" name="numInfants" type="number" class="validate" value="0" min="0">
+                                <input id="numInfants" name="numInfants" type="text" pattern="[0-9]{1,}" class="validate" value="0">
                                 <label for="numInfants">Infantes (0-2 años)</label>
                             </div>
                             <button id="searchButton" type="button" class="input-field col s4 offset-s4 waves-effect waves-light btn-large">
@@ -96,7 +96,7 @@
             <!-- http://stackoverflow.com/a/30128450 -->
             <div class="container section no-pad-bot" data-ng-init="getDeals('BUE')">   <!-- TODO usar ciudad actual -->
                 <div class="col s4" data-ng-repeat="deal in deals | limitTo: 9">
-                    <div class="card-panel white-text blue">
+                    <div class="card-panel white-text green">
                         Viajes a {{deal.city.name}} desde ${{deal.price}}
                     </div>
                 </div>
@@ -105,7 +105,7 @@
             </div>
         </main>
 
-        <footer class="page-footer blue" data-ng-include="'includes/footer.html'"></footer>
+        <footer class="page-footer" data-ng-include="'includes/footer.html'"></footer>
 
         <!--  Scripts-->
         <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>

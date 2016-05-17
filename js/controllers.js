@@ -146,7 +146,7 @@ app.controller('controller', function ($scope, $http) {
      *                          Flight functions
      * ************************************************************************/
     $scope.deals = [];
-    $scope.flights = [];
+    $scope.flights = null;
 
     $scope.selectFlight = function (flight) {
         //Store flight in session
@@ -163,7 +163,6 @@ app.controller('controller', function ($scope, $http) {
     }
 
     $scope.searchFlights = function (criteria, order) {
-        debugger;
         var session = getSessionData();
         var f = session.search.oneWayTrip || !session.state.hasOutboundFlight ? session.search.from : session.search.to,
                 t = session.search.oneWayTrip || !session.state.hasOutboundFlight ? session.search.to : session.search.from,
@@ -294,6 +293,11 @@ app.controller('controller', function ($scope, $http) {
         return flight.outbound_routes[0].segments[0].airline.id;
     };
 
+    $scope.getFlightAirlineLogoURL = function(flight) {
+        var session = getSessionData();
+        return session.airlines[getFlightAirlineID(flight)].logo;
+    };
+
     $scope.getFlightNumber = function (flight) {
         return flight.outbound_routes[0].segments[0].number;
     };
@@ -328,20 +332,21 @@ app.controller('controller', function ($scope, $http) {
     $scope.getColors = function () {
         return $scope.colors;
     };
-    
+
     $scope.resultsPerPage = 30;
-        /* *************************************************************************
+    /* *************************************************************************
      *                          math functions
      * ************************************************************************/
-    $scope.getNumberOfPages = function(totalResults, resultsPerPage) {
+    $scope.getNumberOfPages = function (totalResults, resultsPerPage) {
         var numberOfPages = Number(totalResults) / Number(resultsPerPage);
         debugger;
         var nonCompletePage = Number(numberOfPages);
         numberOfPages = Number(numberOfPages).toFixed(0);
-        if(numberOfPages < nonCompletePage){
+        if (numberOfPages < nonCompletePage) {
+            debugger;
+            numberOfPages = Number(numberOfPages) + 1;
+        }
         debugger;
-        numberOfPages = Number(numberOfPages) + 1;
-        }debugger;
         return Number(numberOfPages);
     };
 });
