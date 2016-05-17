@@ -33,7 +33,7 @@
                     <div class="softlyPadded"><strong>{{getGETParams().airlineId}} {{getGETParams().flightNum}}</strong></div>
                     <div class="col s6"> <!--Columna Izq-->
                         <div class="row">
-                            General: {{review.rating.overall}}<div class="progress"><div class="determinate" style="width: {{review.rating.overall * 10}}%"></div></div>                                
+                            General: {{review.rating.overall}}<div class="progress"><div class="determinate" style="width: {{review.rating.overall * 10}}%; background-color: {{(review.rating.overall > 7) ? 'green' : (review.rating.overall > 4) ? 'yellow' : 'red'}}"></div></div>                                
                         </div>
                         <div class="row">
                             Amabilidad: {{review.rating.friendliness}}<div class="progress"><div class="determinate" style="width: {{review.rating.friendliness * 10}}%"></div></div>                                
