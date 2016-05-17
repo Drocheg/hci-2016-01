@@ -12,7 +12,7 @@
     </head>
     <body>
         <header>
-            <nav class="light-blue lighten-1" role="navigation" data-ng-include="'includes/nav.html'"></nav>
+            <nav role="navigation" data-ng-include="'includes/nav.html'"></nav>
             <h1 class="center">Pagina de comentarios</h1>
         </header>
 
@@ -33,7 +33,7 @@
                     <div class="softlyPadded"><strong>{{getGETParams().airlineId}} {{getGETParams().flightNum}}</strong></div>
                     <div class="col s6"> <!--Columna Izq-->
                         <div class="row">
-                            General: {{review.rating.overall}}<div class="progress"><div class="determinate" style="width: {{review.rating.overall * 10}}%"></div></div>                                
+                            General: {{review.rating.overall}}<div class="progress"><div class="determinate" style="width: {{review.rating.overall * 10}}%; background-color: {{(review.rating.overall > 7) ? 'green' : (review.rating.overall > 4) ? 'yellow' : 'red'}}"></div></div>                                
                         </div>
                         <div class="row">
                             Amabilidad: {{review.rating.friendliness}}<div class="progress"><div class="determinate" style="width: {{review.rating.friendliness * 10}}%"></div></div>                                
@@ -70,7 +70,7 @@
                 </div>
         </main>
 
-        <footer class="page-footer blue" data-ng-include="'includes/footer.html'"></footer>
+        <footer class="page-footer" data-ng-include="'includes/footer.html'"></footer>
 
         <!--  Scripts-->
         <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>

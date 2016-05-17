@@ -42,6 +42,11 @@ function getFlightAirlineID(flight) {
     return flight.outbound_routes[0].segments[0].airline.id;
 }
 
+function getFlightAirlineLogoURL(flight) {
+    var session = getSessionData();
+    return session.airlines[getFlightAirlineID(flight)].logo;
+}
+
 function getFlightNumber(flight) {
     return flight.outbound_routes[0].segments[0].number;
 }
@@ -75,7 +80,7 @@ function markSelectedFlight(flight, direction) {
             return;
     }
     //Airline code and flight number        
-    var html = '<div class="card-panel green" style="height: 70px; padding:2px;">';
+    var html = '<div class="card-panel green lighten-2" style="height: 70px; padding:2px;">';
     html += '<div class="col s4"><p><i class="material-icons">airplanemode_active</i>' + getFlightAirlineName(flight) + " #" + getFlightNumber(flight) + '</p></div>';
     //Departure airport and time, arrival airport and time
     var depDate = getDepartureDateObj(flight);
@@ -125,16 +130,16 @@ $(function () {
 //    }
 //    
     //Autofill form
-    $("#from").val(session.search.from);
-    $("#to").val(session.search.to);
-    $("#departDate").val(session.search.depart);
-    $("#oneWayTrip").prop('checked', session.search.oneWayTrip);
-    $("#returnDate").val(session.search.return || "");
-    $("#numAdults").val(session.search.adults);
-    $("#numInfants").val(session.search.infants);
-    $("#numChildren").val(session.search.children);
+//    $("#from").val(session.search.from);
+//    $("#to").val(session.search.to);
+//    $("#departDate").val(session.search.depart);
+//    $("#oneWayTrip").prop('checked', session.search.oneWayTrip);
+//    $("#returnDate").val(session.search.return || "");
+//    $("#numAdults").val(session.search.adults);
+//    $("#numInfants").val(session.search.infants);
+//    $("#numChildren").val(session.search.children);
     //Mark current total
-    $("#currentTotal").html(session.payment.total);
+    $("#currentTotal").html(session.payment.total.toFixed(2));
     //Mark any selected flights
     markSelectedFlight(session.outboundFlight, 'outbound');
     markSelectedFlight(session.inboundFlight, 'inbound');
@@ -205,6 +210,7 @@ $(function () {
             return;
         }
         
+        //TODO use invalid class rather than toasts
 
         //Valid, store data and go to flight search
         var session = getSessionData();

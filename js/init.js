@@ -73,10 +73,31 @@ function getSessionData() {
                 hasPassengers: false,
                 hasPayment: false,
                 hasContact : false
-            }
+            },
+            airlines: null
         });
     }
     return JSON.parse(sessionStorage.sessionData);
+}
+
+function getAirlines() {
+    $.ajax({
+        type: "POST",
+        url: "http://eiffel.itba.edu.ar/hci/service4/misc.groovy?method=getairlines",
+        dataType: 'json'
+    })
+    .done(function(result) {
+        var session = getSessionData();
+        session.airlines = {};
+        for(var index in result.airlines) {
+            session.airlines[result.airlines[index].id] = result.airlines[index];
+        }
+        setSessionData(session);
+    })
+    .fail(function(jqXHR, textStatus, errorThrown)
+    {
+        Materialize.toast("Error getting airlines.");   //TODO handle failure
+    });
 }
 
 /**
@@ -97,5 +118,9 @@ $(function () {  //Document.ready
     //Is there local storage?
     if (typeof (window.Storage) === "undefined") {
         //TODO what to do without local storage? Nothing will work
+    }
+    var session = getSessionData();
+    if(session.airlines === null) {
+        getAirlines();
     }
 });
