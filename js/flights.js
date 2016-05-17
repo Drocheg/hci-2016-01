@@ -210,6 +210,11 @@ $(function () {
             return;
         }
         
+//        if($("#isValidTo").val()==="false" || $("#isValidFrom").val()==="false"){
+//            Materialize.toast("Tiene que ingresar origen y destino validos.", 5000);
+//            return;
+//        }
+        
         //TODO use invalid class rather than toasts
 
         //Valid, store data and go to flight search

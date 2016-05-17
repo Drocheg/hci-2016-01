@@ -23,6 +23,7 @@
                     <form id="flightSearchForm">
                         <div class="row">
                             <div class="input-field col s6">
+                                <input type="hidden" id="isValidFrom" value="false" />
                                 <input id="from" name="from" type="text" class="validate" autocomplete="off" required data-ng-model="from" data-ng-change="findSuggestions(from, 'fromSuggestions', 'fromStatus')">
                                 <label for="from">Origen</label>
                                 <!--Show only if there's at least 2 characters on the input field-->
@@ -40,6 +41,7 @@
                                 </div>
                             </div>
                             <div class="input-field col s6">
+                                <input type="hidden" id="isValidTo" value="false" />
                                 <input id="to" name="to" type="text" class="validate" autocomplete="off" required data-ng-model="to" data-ng-change="findSuggestions(to, 'toSuggestions', 'toStatus')">
                                 <label for="to">Destino</label>
                                 <!--Show only if there's at least 2 characters on the input field-->
