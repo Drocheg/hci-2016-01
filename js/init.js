@@ -33,7 +33,8 @@ function getSessionData() {
 ////                        lastName: null,
 ////                        sex: null,
 ////                        birthday: null,
-////                        DNI: null      //TODO Podria ser otras cosas? Podria ser tipo de documento y despues el numero de ese tipo de documento.
+//                          documentType: null
+////                        document: null      //TODO Podria ser otras cosas? Podria ser tipo de documento y despues el numero de ese tipo de documento.
 //                    }
                 ], //More if there is more than 1 adult
                 children: [
@@ -42,7 +43,8 @@ function getSessionData() {
 //                        lastName: null,
 //                        sex: null,
 //                        birthday: null,
-//                        DNI: null      //TODO Podria ser otras cosas? Podria ser tipo de documento y despues el numero de ese tipo de documento.
+//                        documentType: null
+////                      document: null       //TODO Podria ser otras cosas? Podria ser tipo de documento y despues el numero de ese tipo de documento.
 //                    }
                 ], //More if there is more than 1 child
                 infants: [
@@ -51,7 +53,8 @@ function getSessionData() {
 //                        lastName: null,
 //                        sex: null,
 //                        birthday: null,
-//                        DNI: null      //TODO Podria ser otras cosas? Podria ser tipo de documento y despues el numero de ese tipo de documento.
+//                        documentType: null
+////                      document: null       //TODO Podria ser otras cosas? Podria ser tipo de documento y despues el numero de ese tipo de documento.
 //                    }
                 ]      //More if there is more than 1 infant
             },

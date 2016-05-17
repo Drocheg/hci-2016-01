@@ -204,6 +204,7 @@ $(function () {
             Materialize.toast("Tiene que ingresar al menos un pasajero.", 5000);    //No se puede validar antes, sólo se puede validar de que los 3 tengan como mínimo 0 con HTML
             return;
         }
+        
 
         //Valid, store data and go to flight search
         var session = getSessionData();
@@ -223,6 +224,7 @@ $(function () {
         session.state.hasInboundFlight = false;
         session.payment.total = 0;
         setSessionData(session);
+        debugger;
         window.location = "flights.html";
     });
 
