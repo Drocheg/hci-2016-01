@@ -12,32 +12,73 @@
     </head>
     <body>
         <header>
-            <nav class="light-blue lighten-1" role="navigation" data-ng-include="'includes/nav.html'"></nav>
+            <nav role="navigation" data-ng-include="'includes/nav.html'"></nav>
         </header>
 
         <main>       
-            <div class="row">
-                <div class="col s10 offset-s1">
-                    <div class="card-panel blue lighten-4" id="outbound">
+            <div class="row"> 
+                <div data-ng-class="['col', (session.search.oneWayTrip ? 's2' : 's3'), (session.search.oneWayTrip ? 'offset-s2' : 'offset-s2')]" style="text-align: center;">
+                    <div class="card-panel green lighten-3 " id="outbound">
+                        <h3>IDA</h3>
+                        <p>Numero de vuelo: {{getFlightNumber(session.outboundFlight)}}</p>
+                        <p>Fecha: {{(getDepartureDateObj(session.outboundFlight)).getDate()}}/{{getDepartureDateObj(session.outboundFlight).getMonth()}}</p>
+                        <p>Horario de salida: {{(getDepartureDateObj(session.outboundFlight)).getHours()}}:{{getDepartureDateObj(session.outboundFlight).getMinutes()}}</p>
+                        <P>Horario de llegada: {{(getArrivalDateObj(session.outboundFlight)).getHours()}}:{{getArrivalDateObj(session.outboundFlight).getMinutes()}}</p>
+                        <p>Duracion: {{getFlightDuration(session.outboundFlight)}}</p>
+                        <p data-ng-if="session.search.adults > 0"> Precio por adultos: ${{getFlightPriceBreakdown(session.outboundFlight).adults.base_fare}}x{{session.search.adults}}</p>
+                        <p data-ng-if="session.search.children > 0"> Precio por ninios ${{getFlightPriceBreakdown(session.outboundFlight).children.base_fare}}x{{session.search.children}}</p>
+                        <p data-ng-if="session.search.infants > 0"> Precio por infantes: ${{getFlightPriceBreakdown(session.outboundFlight).infants.base_fare}}x{{session.search.infants}}</p>
+                        <h5><b>Total:</b></h5>
                     </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="col s10 offset-s1">
-                    <div class="card-panel blue lighten-1" id="inbound">
+                <div data-ng-if="!session.search.oneWayTrip"class="col s3 offset-s1" style="text-align: center;">
+                    <div class="card-panel green lighten-3" id="inbound">
+                        <h3>Vuelta</h3>
+                        <p>Numero de vuelo: {{getFlightNumber(session.inboundFlight)}}</p>
+                        <p>Fecha: {{(getDepartureDateObj(session.inboundFlight)).getDate()}}/{{getDepartureDateObj(session.inboundFlight).getMonth()}}</p>
+                        <p>Horario de salida: {{(getDepartureDateObj(session.inboundFlight)).getHours()}}:{{getDepartureDateObj(session.inboundFlight).getMinutes()}}</p>
+                        <P>Horario de llegada: {{(getArrivalDateObj(session.inboundFlight)).getHours()}}:{{getArrivalDateObj(session.inboundFlight).getMinutes()}}</p>
+                        <p>Duracion: {{getFlightDuration(session.inboundFlight)}}</p>
+                        <p data-ng-if="session.search.adults > 0"> Precio por adultos: ${{getFlightPriceBreakdown(session.inboundFlight).adults.base_fare}}x{{session.search.adults}}</p>
+                        <p data-ng-if="session.search.children > 0"> Precio por ninios ${{getFlightPriceBreakdown(session.inboundFlight).children.base_fare}}x{{session.search.children}}</p>
+                        <p data-ng-if="session.search.infants > 0"> Precio por infantes: ${{getFlightPriceBreakdown(session.inboundFlight).infants.base_fare}}x{{session.search.infants}}</p>
+                        <h5><b>Total:</b></h5>
                     </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="col s10 offset-s1">
-                    <div class="card-panel purple lighten-3" id="payment">
+                <div class="col s3">
+                    <div data-ng-if="session.search.oneWayTrip" class="col s12">
+                        <div class="card-panel green lighten-3" id="payment" style="text-align: center;">
+                            <h4>Pago</h4> 
+                            <p>Número de tarjeta: {{session.payment.cardNumber}}</p> 
+                            <p>Nombre de titular: {{session.payment.cardholderName}}</p> 
+                            <br> 
+                            <h5><b>Gran total: $27.998</b></h5> 
+                        </div>
                     </div>
-                </div>
-
-                <div class="row"> 
-                    <div class="col s10 offset-s1"> 
-                        <div class="card-panel purple lighten-4" id="contact"> 
+                    <div data-ng-if="session.search.oneWayTrip"class="col s12"> 
+                        <div class="card-panel green lighten-3" id="contact" style="text-align: center;"> 
+                            <h4>Contacto</h4>
+                            <p>Email: {{session.payment.email}}</p>
                         </div> 
+                    </div>
+                </div>
+            </div>
+
+
+            <div data-ng-if="!session.search.oneWayTrip" class="row">
+                <div class="col s3 offset-s2">
+                    <div class="card-panel green lighten-3" id="payment" style="text-align: center;">
+                        <h4>Pago</h4> 
+                        <p>Número de tarjeta: {{session.payment.cardNumber}}</p> 
+                        <p>Nombre de titular: {{session.payment.cardholderName}}</p> 
+                        <br> 
+                        <h5><b>Gran total: $27.998</b></h5> 
+                    </div>
+                </div>
+                <div data-ng-if="!session.search.oneWayTrip" class="col s3 offset-s1"> 
+                    <div class="card-panel green lighten-3" id="contact" style="text-align: center;"> 
+                        <h4>Contacto</h4>
+                        <p>Email: {{session.payment.email}}</p>
                     </div> 
                 </div> 
             </div>
@@ -52,7 +93,7 @@
             </div>
             <div class="row">
                 <div class="col s10 offset-s1 center">
-                    <a class="btn-large waves-effect waves-light red" href="order-confirmation.html">
+                    <a class="btn-large waves-effect waves cyan darken-1" href="order-confirmation.html">
                         Confirmar
                         <i class="material-icons right">send</i>
                     </a>
@@ -60,7 +101,7 @@
             </div>
         </main>
 
-        <footer class="page-footer blue" data-ng-include="'includes/footer.html'"></footer>
+        <footer class="page-footer" data-ng-include="'includes/footer.html'"></footer>
 
         <!--  Scripts-->
         <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>

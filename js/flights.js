@@ -230,6 +230,7 @@ $(function () {
         session.state.hasInboundFlight = false;
         session.payment.total = 0;
         setSessionData(session);
+        debugger;
         window.location = "flights.html";
     });
 

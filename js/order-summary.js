@@ -4,56 +4,70 @@
  * and open the template in the editor.
  */
 $(function () {
-                var session = getSessionData();
-                var html ="<h3>IDA</h3>";
-                for(var i=0; i<=getStopoversCount(session.outboundFlight);i++){ //Supongo que el 3 son las escalas
-                    html += "<h5>Vuelo numero "+i+1+"</h5> \
-                            <p>Numero de vuelo: "+getFlightNumber(session.outboundFlight)+"</p>\n\
-                            <p>Fecha: "+(getDepartureDateObj(session.outboundFlight)).getDate()+"/"+getDepartureDateObj(session.outboundFlight).getMonth()+"</p>\n\
-                            <p>Horario de salida: "+(getDepartureDateObj(session.outboundFlight)).getHours()+":"+getDepartureDateObj(session.outboundFlight).getMinutes()+"</p>\n\
-                            <P>Horario de llegada: "+(getArrivalDateObj(session.outboundFlight)).getHours()+":"+getArrivalDateObj(session.outboundFlight).getMinutes()+"</p>\n\
-                            <p>Duracion: "+getFlightDuration(session.outboundFlight)+"</p>\n\ ";  //Falta precio y cantidad de pasajeros
-                                                    //lo pongo despues que necesita codigo
-                    if(session.search.adults > 0){
-                    html += "<p> Precio por adultos: $"+getFlightPriceBreakdown(session.outboundFlight).adults.base_fare+"x"+session.search.adults+"</p>"; 
-                } 
-                 if(session.search.children > 0){
-                    html += "<p> Precio por ninio: $"+getFlightPriceBreakdown(session.outboundFlight).children.base_fare+"x"+session.search.children+"</p>"; 
-                } 
-                  if(session.search.infants > 0){
-                    html += "<p> Precio por infantes: $"+getFlightPriceBreakdown(session.outboundFlight).infants.base_fare+"x"+session.search.infants+"</p>"; 
-                } 
-                    html += "<p>Subtotal: "+getFlightPriceBreakdown(session.outboundFlight).total.fare+"</p>\n\
-                            <p>Cargos e impuestos: "+(getFlightPriceBreakdown(session.outboundFlight).total.charges+getFlightPriceBreakdown(session.outboundFlight).total.taxes)+"</p>\n\
-                            ";
-    }
-    html += "<h5><b>Total:</b></h5>";
-    $("#outbound").html(html);
-
-    html = "<h3>VUELTA</h3>";
-    for (var i = 1; i < 4; i++) { //Supongo que el 3 son las escalas
-        html += "<h5>Vuelo numero " + i + "</h5> \
-                            <p>Numero de vuelo:</p>\n\
-                            <p>Fecha:</p>\n\
-                            <p>Horario de salida:</p>\n\
-                            <P>Horario de llegada:</p>\n\
-                            <p>Duracion:</p>\n\ ";  //Falta precio y cantidad de pasajeros
-    }                           //lo pongo despues que necesita codigo
-    html += "<h5><b>Total:</b></h5>";
-    $("#inbound").html(html);
-
-
-    $("#payment").html("\
-                            <h4>Información de pago</h4> \
-                            <p>Número de tarjeta: " + session.payment.cardNumber + "</p> \
-                            <p>Nombre de titular: " + session.payment.cardholderName + "</p> \
-                            <br> \
-                            <h5><b>Gran total: $27.998</b></h5> \
-                   ");
-    $("#contact").html("\
-                            <h4>Información de contacto</h4> \
-                            <p>Email: " + session.payment.email + "</p> \
-                    ");
+//                var session = getSessionData();
+//                var html ="<h3>IDA</h3>";
+//                for(var i=0; i<=getStopoversCount(session.outboundFlight);i++){ //Supongo que el 3 son las escalas
+//                    html += "<h5>Vuelo numero "+i+1+"</h5> \
+//                            <p>Numero de vuelo: "+getFlightNumber(session.outboundFlight)+"</p>\n\
+//                            <p>Fecha: "+(getDepartureDateObj(session.outboundFlight)).getDate()+"/"+getDepartureDateObj(session.outboundFlight).getMonth()+"</p>\n\
+//                            <p>Horario de salida: "+(getDepartureDateObj(session.outboundFlight)).getHours()+":"+getDepartureDateObj(session.outboundFlight).getMinutes()+"</p>\n\
+//                            <P>Horario de llegada: "+(getArrivalDateObj(session.outboundFlight)).getHours()+":"+getArrivalDateObj(session.outboundFlight).getMinutes()+"</p>\n\
+//                            <p>Duracion: "+getFlightDuration(session.outboundFlight)+"</p>\n\ ";  //Falta precio y cantidad de pasajeros
+//                                                    //lo pongo despues que necesita codigo
+//                    if(session.search.adults > 0){
+//                    html += "<p> Precio por adultos: $"+getFlightPriceBreakdown(session.outboundFlight).adults.base_fare+"x"+session.search.adults+"</p>"; 
+//                } 
+//                 if(session.search.children > 0){
+//                    html += "<p> Precio por ninio: $"+getFlightPriceBreakdown(session.outboundFlight).children.base_fare+"x"+session.search.children+"</p>"; 
+//                } 
+//                  if(session.search.infants > 0){
+//                    html += "<p> Precio por infantes: $"+getFlightPriceBreakdown(session.outboundFlight).infants.base_fare+"x"+session.search.infants+"</p>"; 
+//                } 
+//                    html += "<p>Subtotal: "+getFlightPriceBreakdown(session.outboundFlight).total.fare+"</p>\n\
+//                            <p>Cargos e impuestos: "+(getFlightPriceBreakdown(session.outboundFlight).total.charges+getFlightPriceBreakdown(session.outboundFlight).total.taxes)+"</p>\n\
+//                            ";
+//    }
+//    html += "<h5><b>Total:</b></h5>";
+//    $("#outbound").html(html);
+//    
+//    if(!session.search.OneWayTrip)
+//    html = "<h3>VUELTA</h3>";
+//    for(var i=0; i<=getStopoversCount(session.outboundFlight);i++){ //Supongo que el 3 son las escalas
+//                    html += "<h5>Vuelo numero "+i+1+"</h5> \
+//                            <p>Numero de vuelo: "+getFlightNumber(session.outboundFlight)+"</p>\n\
+//                            <p>Fecha: "+(getDepartureDateObj(session.outboundFlight)).getDate()+"/"+getDepartureDateObj(session.outboundFlight).getMonth()+"</p>\n\
+//                            <p>Horario de salida: "+(getDepartureDateObj(session.outboundFlight)).getHours()+":"+getDepartureDateObj(session.outboundFlight).getMinutes()+"</p>\n\
+//                            <P>Horario de llegada: "+(getArrivalDateObj(session.outboundFlight)).getHours()+":"+getArrivalDateObj(session.outboundFlight).getMinutes()+"</p>\n\
+//                            <p>Duracion: "+getFlightDuration(session.outboundFlight)+"</p>\n\ ";  //Falta precio y cantidad de pasajeros
+//                                                    //lo pongo despues que necesita codigo
+//                    if(session.search.adults > 0){
+//                    html += "<p> Precio por adultos: $"+getFlightPriceBreakdown(session.outboundFlight).adults.base_fare+"x"+session.search.adults+"</p>"; 
+//                } 
+//                 if(session.search.children > 0){
+//                    html += "<p> Precio por ninio: $"+getFlightPriceBreakdown(session.outboundFlight).children.base_fare+"x"+session.search.children+"</p>"; 
+//                } 
+//                  if(session.search.infants > 0){
+//                    html += "<p> Precio por infantes: $"+getFlightPriceBreakdown(session.outboundFlight).infants.base_fare+"x"+session.search.infants+"</p>"; 
+//                } 
+//                    html += "<p>Subtotal: "+getFlightPriceBreakdown(session.outboundFlight).total.fare+"</p>\n\
+//                            <p>Cargos e impuestos: "+(getFlightPriceBreakdown(session.outboundFlight).total.charges+getFlightPriceBreakdown(session.outboundFlight).total.taxes)+"</p>\n\
+//                            ";
+//    }                          //lo pongo despues que necesita codigo
+//    html += "<h5><b>Total:</b></h5>";
+//    $("#inbound").html(html);
+//
+//
+//    $("#payment").html("\
+//                            <h4>Información de pago</h4> \
+//                            <p>Número de tarjeta: " + session.payment.cardNumber + "</p> \
+//                            <p>Nombre de titular: " + session.payment.cardholderName + "</p> \
+//                            <br> \
+//                            <h5><b>Gran total: $27.998</b></h5> \
+//                   ");
+//    $("#contact").html("\
+//                            <h4>Información de contacto</h4> \
+//                            <p>Email: " + session.payment.email + "</p> \
+//                    ");
 //                $("#inbound").html("\
 //                        <h4>Vuelta</h4> \
 //                        <p>Vuelo: Delta #101</p> \
