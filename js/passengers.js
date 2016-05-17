@@ -8,10 +8,10 @@ $(function() {
     $(document).ready(function() {
        $('select').material_select();
     });
-    //Para testing
-//    var sessionTest = getSessionData();
-//    sessionTest.search.adults = 1;
-//    setSessionData(sessionTest);
+//    Para testing
+    var sessionTest = getSessionData();
+    sessionTest.search.adults = 1;
+    setSessionData(sessionTest);
     
     //Try to validate date immediately??? TODO Borrar esto o hacerlo. Sirve aca?
     
@@ -42,7 +42,8 @@ $(function() {
                     firstName: $("#"+groups[index]+"-"+i+"-"+"firstName").val(),
                     lastName: $("#"+groups[index]+"-"+i+"-"+"lastName").val(),
                     sex: $("#"+groups[index]+"-"+i+"-"+"sex").val(),
-                    DNI: $("#"+groups[index]+"-"+i+"-"+"DNI").val()
+                    document: $("#"+groups[index]+"-"+i+"-"+"document").val(),
+                    documentType: $("#"+groups[index]+"-"+i+"-"+"documentType").val()
                 };
                 
                 //Validar
@@ -66,11 +67,11 @@ $(function() {
                     dataIsValid=false;
                     
                 }
-                
-                if(!validateDNI(data.DNI)){
-                    dataIsValid=false;
-                    
-                }
+                //Validar documento
+//                if(!validateDNI(data.DNI)){
+//                    dataIsValid=false;
+//                    
+//                }
                 
                 //TODO los msj no anda -.-
                 if(!validateDate(date)){ //Valida si es una fecha
@@ -163,7 +164,7 @@ $(function() {
                                     <div class='row'>\
                                         <div class='col s12 input-field'>\
                                             <select id="+groups[index]+"-"+i+"-"+'sex'+" class='validate' required>\
-                                                <option value=''>Elegir sexo</option>\
+                                                <option value=''>--Elegir sexo--</option>\
                                                 <option value='Masculino'>Masculino</option>\
                                                 <option value='Femenino'>Femenino</option>\
                                             </select>\
@@ -182,11 +183,17 @@ $(function() {
                                                 <label for="+groups[index]+"-"+i+"-"+'year'+" class='black-text'>Año</label>\
                                                 <input id="+groups[index]+"-"+i+"-"+'year'+" type='text' pattern='[0-9]{4}' class='validate' required>\
                                             </div>\
-                                            <div class='col s12 input-field'>\
-                                            <label for="+groups[index]+"-"+i+"-"+'DNI'+" class='black-text' data-error='Por favor ingrese el DNI del pasajero'>DNI</label>\
-                                            <input id="+groups[index]+"-"+i+"-"+'DNI'+" type='text' pattern='^([0-9]{1,8})$' class='validate' required>\
+                                            <div class='col s4 input-field'>\
+                                                <select id="+groups[index]+"-"+i+"-"+'documentType'+" class='validate' required>\
+                                                    <option value='DNI'>DNI</option>\
+                                                    <option value='Pasaporte'>Pasaporte</option>\
+                                                </select>\
+                                            </div>\
+                                            <div class='col s8 input-field'>\
+                                            <label for="+groups[index]+"-"+i+"-"+'document'+" class='black-text' data-error='Por favor ingrese el documento del pasajero'>Documento</label>\
+                                            <input id="+groups[index]+"-"+i+"-"+'document'+" type='text' pattern='^([0-9]{1,8})$' class='validate' required>\
                                         </div>\
-                                    </div> ";   
+                                         </div> ";   
                 miHTML += form;
         }
     });
@@ -199,7 +206,8 @@ $(function() {
             {
                 $("#"+groups[index]+"-"+i+"-"+'firstName').val(session.passengers[groups[index]][i].firstName);
                 $("#"+groups[index]+"-"+i+"-"+'lastName').val(session.passengers[groups[index]][i].lastName);
-                $("#"+groups[index]+"-"+i+"-"+'DNI').val(session.passengers[groups[index]][i].DNI);
+                $("#"+groups[index]+"-"+i+"-"+'document').val(session.passengers[groups[index]][i].document);
+                $("#"+groups[index]+"-"+i+"-"+'documentType').val(session.passengers[groups[index]][i].documentType);
                 $("#"+groups[index]+"-"+i+"-"+'sex').val(session.passengers[groups[index]][i].sex);
                 $("#"+groups[index]+"-"+i+"-"+'sex').material_select();
                 var birthday = new Date(session.passengers[groups[index]][i].birthday);
