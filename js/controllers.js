@@ -162,7 +162,7 @@ app.controller('controller', function ($scope, $http) {
         $("#nextStep > button").removeClass("disabled");
     }
 
-    $scope.searchFlights = function (criteria, order) {
+    $scope.searchFlights = function (criteria, order, page, pageSize) {
         debugger;
         var session = getSessionData();
         var f = session.search.oneWayTrip || !session.state.hasOutboundFlight ? session.search.from : session.search.to,
@@ -175,7 +175,7 @@ app.controller('controller', function ($scope, $http) {
             return;
         }
         //All info is present, search
-        $scope.getOneWayFlights(f, t, d, a, c, i, undefined, undefined, criteria, order);
+        $scope.getOneWayFlights(f, t, d, a, c, i, page, pageSize, criteria, order);
     };
 
     /**
