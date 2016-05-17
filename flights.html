@@ -12,52 +12,52 @@
     </head>
     <body>
         <header>
-            <nav class="light-blue lighten-1" role="navigation" data-ng-include="'includes/nav.html'"></nav>
+            <nav role="navigation" data-ng-include="'includes/nav.html'"></nav>
         </header>
 
         <main>
 
             <div class="section" style="min-height: 1300px;">
                 <div class="row">
-                    <div class="col s4" style="position: absolute;">
+                    <div class="col s3" style="position: absolute;">
                         <div class="row">
                             <div class="col s12">
-                                <div class="card-panel white black-text" id="searchParams">
+                                <div class="card-panel white black-text" id="searchParams" style="border-radius: 10px;">
                                     <div class="row">
                                         <h5 class="center">Su Búsqueda</h5>
                                     </div>
                                     <div class="row">    
                                         <form id="flightSearchForm">
                                             <div class="input-field col s12">
-                                                <input id="from" type="text" class="validate">
+                                                <input id="from" type="text" class="validate" value="{{session.search.from}}">
                                                 <label for="from">Origen</label>
                                             </div>
                                             <div class="input-field col s12">
-                                                <input id="to" type="text" class="validate">
+                                                <input id="to" type="text" class="validate" value="{{session.search.to}}">
                                                 <label for="to">Destino</label>
                                             </div>
-                                            <div class="input-field col s12">
-                                                <input id="oneWayTrip" type="checkbox">
+                                            <div class="input-field col s12" style="padding-left:0; margin-bottom:20px;">
+                                                <input id="oneWayTrip" type="checkbox" data-ng-attr-checked="session.search.oneWayTrip">
                                                 <label for="oneWayTrip">Sólo Ida</label>
                                             </div>
                                             <div class="input-field col s12">
-                                                <input id="departDate" type="date" class="datepicker">
+                                                <input id="departDate" type="date" class="datepicker" value="{{session.search.depart}}">
                                                 <label for="departDate">Ida</label>
                                             </div>
-                                            <div class="input-field col s12">
-                                                <input id="returnDate" type="date" class="datepicker">
+                                            <div class="input-field col s12" data-ng-show="!session.search.oneWayTrip">
+                                                <input id="returnDate" type="date" class="datepicker" value="{{session.search.return|| ''}}">
                                                 <label for="returnDate">Vuelta</label>
                                             </div>
                                             <div class="input-field col s12">
-                                                <input id="numAdults" type="number" class="validate" value="1">
+                                                <input id="numAdults" type="text" pattern="[0-9]{1,}" class="validate" value="{{session.search.adults}}">
                                                 <label for="numAdults">Adultos (12 o más años)</label>
                                             </div>
                                             <div class="input-field col s12">
-                                                <input id="numChildren" type="number" class="validate" value="0">
+                                                <input id="numChildren" type="text" pattern="[0-9]{1,}" class="validate" value="{{session.search.children}}">
                                                 <label for="numChildren">Niños (2-11 años)</label>
                                             </div>
                                             <div class="input-field col s12">
-                                                <input id="numInfants" type="number" class="validate" value="0">
+                                                <input id="numInfants" type="text" pattern="[0-9]{1,}" class="validate" value="{{session.search.infants}}">
                                                 <label for="numInfants">Infantes (0-2 años)</label>
                                             </div>
                                             <button class="input-field col s8 offset-s2 waves-effect waves-light btn-large" type='button' id="searchButton">
@@ -103,13 +103,13 @@
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <button class="col s8 offset-s2 btn" data-ng-click="searchFlights(criteria, order)>Aplicar</button>
+                                        <button class="col s8 offset-s2 btn">Aplicar</button>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col s8 offset-s4">
+                    <div class="col s9 offset-s3">
                         <div id="selectedOutboundFlight" class="col s9">
                             <div class="card-panel grey lighten-1 white-text center" style="border-color:grey; border-style: dashed;">
                                 Ida
@@ -142,7 +142,7 @@
                             </div>
                         </div>                        
                         <div class="col s3 center" id="nextStep">
-                            <button class="btn waves-effect waves-light disabled">{{session.search.oneWayTrip || session.state.hasOutboundFlight ? 'Comprar' : 'Elegir Vuelta'}}<i class="material-icons right">arrow_right</i></button>
+                            <button class="btn waves-effect waves-light disabled">{{session.search.oneWayTrip|| session.state.hasOutboundFlight ? 'Comprar' : 'Elegir Vuelta'}}<i class="material-icons right">arrow_right</i></button>
                         </div>
 
                         <div class="row">
@@ -154,11 +154,62 @@
 
                         <!--VUELOS-->
                         <div class="col s12">
-                            <ul class="collapsible" data-collapsible="accordion">
+                            <!--PRELOADER-->
+                            <div class="row" data-ng-show="flights.flights.length === 0">
+                                <div class="center">
+                                    <div class="preloader-wrapper big active">
+                                        <div class="spinner-layer spinner-blue">
+                                            <div class="circle-clipper left">
+                                                <div class="circle"></div>
+                                            </div><div class="gap-patch">
+                                                <div class="circle"></div>
+                                            </div><div class="circle-clipper right">
+                                                <div class="circle"></div>
+                                            </div>
+                                        </div>
+
+                                        <div class="spinner-layer spinner-red">
+                                            <div class="circle-clipper left">
+                                                <div class="circle"></div>
+                                            </div><div class="gap-patch">
+                                                <div class="circle"></div>
+                                            </div><div class="circle-clipper right">
+                                                <div class="circle"></div>
+                                            </div>
+                                        </div>
+
+                                        <div class="spinner-layer spinner-yellow">
+                                            <div class="circle-clipper left">
+                                                <div class="circle"></div>
+                                            </div><div class="gap-patch">
+                                                <div class="circle"></div>
+                                            </div><div class="circle-clipper right">
+                                                <div class="circle"></div>
+                                            </div>
+                                        </div>
+
+                                        <div class="spinner-layer spinner-green">
+                                            <div class="circle-clipper left">
+                                                <div class="circle"></div>
+                                            </div><div class="gap-patch">
+                                                <div class="circle"></div>
+                                            </div><div class="circle-clipper right">
+                                                <div class="circle"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <!--END PRELOADER-->
+                            <!--FLIGHT CARDS-->
+                            <ul class="collapsible" data-collapsible="accordion" data-ng-show="flights.flights.length > 0">
                                 <li class="grey" data-ng-repeat="flight in flights.flights">
                                     <div class="collapsible-header">
                                         <div class="col s4">
-                                            <i class="material-icons">airplanemode_active</i>{{getFlightAirlineName(flight)}} #{{getFlightNumber(flight)}}
+                                            <!--<i class="material-icons">airplanemode_active</i>-->
+                                            <img src="{{getFlightAirlineLogoURL(flight)}}" alt="{{getFlightAirlineName(flight)}}"/>
+                                            {{getFlightAirlineName(flight)}} #{{getFlightNumber(flight)}}
                                         </div>
                                         <div class="col s3">
                                             {{getOriginAirport(flight).id}} ({{getDepartureDateObj(flight) | date:'HH:mm'}})<span class="material-icons">forward</span>{{getDestinationAirport(flight).id}} ({{getArrivalDateObj(flight) | date: 'HH:mm'}})
@@ -186,7 +237,7 @@
                                                 <br />
                                                 (promedio tramos)
                                                 <br />
-                                                <a class="btn" href="reviews.html?airlineId={{getAirlineID(flight)}}&flightNum={{getFlightNumber(flight)}}">Ver Comentarios</a>
+                                                <a class="btn" href="reviews.html?airlineId={{getFlightAirlineID(flight)}}&flightNum={{getFlightNumber(flight)}}">Ver Comentarios</a>
                                             </span>
                                             <span class="col s3">
                                                 <span data-ng-show="!isDirectFlight(flight)" data-ng-repeat="segment in getStopovers(flight)">
@@ -205,18 +256,18 @@
                                             </span>
                                             <span class="col s4 center">
                                                 <span data-ng-show="flight.price.adults !== null">
-                                                Adultos: ${{flight.price.adults.base_fare | number:2}} x {{flight.price.adults.quantity}}
-                                                <br />
+                                                    Adultos: ${{flight.price.adults.base_fare| number:2}} x {{flight.price.adults.quantity}}
+                                                    <br />
                                                 </span>
                                                 <span data-ng-show="flight.price.children !== null">
-                                                Niños: ${{flight.price.children.base_fare | number:2}} x {{flight.price.children.quantity}}
-                                                <br />
+                                                    Niños: ${{flight.price.children.base_fare| number:2}} x {{flight.price.children.quantity}}
+                                                    <br />
                                                 </span>
                                                 <span data-ng-show="flight.price.infants !== null">
-                                                Infantes: ${{flight.price.infants.base_fare | number:2}} x {{flight.price.infants.quantity}}
-                                                <br />
+                                                    Infantes: ${{flight.price.infants.base_fare| number:2}} x {{flight.price.infants.quantity}}
+                                                    <br />
                                                 </span>
-                                                Cargos e Impuestos: ${{(flight.price.total.charges+flight.price.total.taxes)  | number:2}}
+                                                Cargos e Impuestos: ${{(flight.price.total.charges + flight.price.total.taxes)  | number:2}}
                                                 <br />
                                                 <b>Total Pasajeros: ${{getFlightTotal(flight) | number:2}}</b>
                                             </span>
@@ -224,17 +275,30 @@
                                     </div>
                                 </li>
                             </ul>
+                            <!--END FLIGHT CARDS-->
                         </div>
 
                         <!--PAGINATION-->
-                        
+                        <div class="row">
+                            <div class="col s12 center">
+                                <ul class="pagination">
+                                    <li class="disabled"><a href="#!"><i class="material-icons">chevron_left</i></a></li>
+                                    <li class="active"><a href="#!">1</a></li>
+                                    <li class="waves-effect"><a href="#!">2</a></li>
+                                    <li class="waves-effect"><a href="#!">3</a></li>
+                                    <li class="waves-effect"><a href="#!">4</a></li>
+                                    <li class="waves-effect"><a href="#!">5</a></li>
+                                    <li class="waves-effect"><a href="#!"><i class="material-icons">chevron_right</i></a></li>
+                                </ul>
+                            </div>
+                        </div>
                         <!--/PAGINATION-->
                     </div>
                 </div>
             </div>
         </main>
 
-        <footer class="page-footer blue" data-ng-include="'includes/footer.html'"></footer>
+        <footer data-ng-include="'includes/footer.html'"></footer>
 
         <!--  Scripts-->
         <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
