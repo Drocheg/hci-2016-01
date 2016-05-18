@@ -4085,12 +4085,12 @@ input[type=range] + .thumb {
 }
 
 nav {
-  color: #fff;
-  /*background-color: #ee6e73;*/
-  background-color: #1565c0;
-  width: 100%;
-  height: 56px;
-  line-height: 56px;
+    color: #fff;
+    /*background-color: #ee6e73;*/
+    background-color: #1565c0;
+    width: 100%;
+    height: 56px;
+    line-height: 56px;
 }
 
 nav a {
@@ -4625,7 +4625,8 @@ small {
 .card .card-action {
     position: relative;
     background-color: inherit;
-    border-top: 1px solid rgba(160, 160, 160, 0.2);
+    /*    border-top: 1px solid rgba(160, 160, 160, 0.2);*/
+    border-bottom: 1px solid rgba(160, 160, 160, 0.2);
     padding: 20px;
     z-index: 2;
 }

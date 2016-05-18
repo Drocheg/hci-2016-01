@@ -160,7 +160,7 @@ app.controller('controller', function ($scope, $http) {
         markSelectedFlight(flight, session.search.direction);
         $("#currentTotal").html(session.payment.total);
         $("#nextStep > button").removeClass("disabled");
-    }
+    };
 
     $scope.searchFlights = function (criteria, order) {
         var session = getSessionData();
@@ -293,9 +293,10 @@ app.controller('controller', function ($scope, $http) {
         return flight.outbound_routes[0].segments[0].airline.id;
     };
 
-    $scope.getFlightAirlineLogoURL = function(flight) {
+    $scope.getFlightAirlineLogoURL = function (flight) {
         var session = getSessionData();
-        return session.airlines[getFlightAirlineID(flight)].logo;
+        return session.airlines[getFlightAirlineID(flight)].logo || "#";
+        //    TODO fall back to default image if not found
     };
 
     $scope.getFlightNumber = function (flight) {

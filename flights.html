@@ -145,11 +145,12 @@
                             <button class="btn waves-effect waves-light disabled">{{session.search.oneWayTrip|| session.state.hasOutboundFlight ? 'Comprar' : 'Elegir Vuelta'}}<i class="material-icons right">arrow_right</i></button>
                         </div>
 
+                        
                         <div class="row">
                             <div class="col s12 divider"></div>
                         </div>
-
-                        <!--VUELOS-->
+                        
+                        
                         <div class="col s12">
                             <!--PRELOADER-->
                             <div class="row" data-ng-show="flights === null">
@@ -200,84 +201,69 @@
                                 </div>
                             </div>
                             <!--END PRELOADER-->
-                            <div class="row green lighten-4" data-ng-show="flights !== null">
+                            <div id="flights" class="row lighten-4" data-ng-show="flights !== null">
                                 <div class="col s12 center">
                                     <h5>{{flights.total}} vuelos encontrados</h5>
                                 </div>
                                 <!--FLIGHT CARDS-->
-                                <div class="col s12" data-ng-show="flights.flights.length > 0">
-                                    <ul class="collapsible" data-collapsible="accordion">
-                                        <li class="grey" data-ng-repeat="flight in flights.flights">
-                                            <div class="collapsible-header">
+                                <div class="card black-text col s12" data-ng-show="flights.flights.length > 0" data-ng-repeat="flight in flights.flights" style="padding:0 0 10px 0; border-radius:10px;">
+                                    <div class="card-action green lighten-4" style="padding:5px; border-radius:10px 10px 0 0;">
+                                        <p style="margin: 0; height:30px; line-height:30px;" class="card-title">
+                                            <span class="col s10" style="padding-left:0;">
+                                                <img src="{{getFlightAirlineLogoURL(flight)}}" alt="{{getFlightAirlineName(flight)}}"/>
+                                                {{getFlightAirlineName(flight)}} #{{getFlightNumber(flight)}}
+                                            </span>
+                                            <span class="col s2" style="text-align:right;">
+                                                <b>${{getFlightTotal(flight) | number:0}}</b>
+                                            </span>
+                                        </p>
+                                    </div>
+                                    <div class="card-content">
+                                        <div class="col s4">
+                                            <div data-ng-show="session.search.adults > 0" class="col s6">Adultos</div>
+                                            <div data-ng-show="session.search.adults > 0" class="col s6">${{flight.price.adults.base_fare| number:2}} x {{flight.price.adults.quantity}}</div>
+                                            <div data-ng-show="session.search.children > 0" class="col s6">Niños</div>
+                                            <div data-ng-show="session.search.children > 0" class="col s6">${{flight.price.children.base_fare| number:2}} x {{flight.price.children.quantity}}</div>
+                                            <div data-ng-show="session.search.infants > 0" class="col s6">Infantes</div>
+                                            <div data-ng-show="session.search.infants > 0" class="col s6">${{flight.price.infants.base_fare| number:2}} x {{flight.price.infants.quantity}}</div>
+                                            <div class="col s6">Cargos</div>
+                                            <div class="col s6">${{flight.price.total.charges| number:2}}</div>
+                                            <div class="col s6">Impuestos</div>
+                                            <div class="col s6">${{flight.price.total.taxes| number:2}}</div>
+                                            <div class="divider col s12"></div>
+                                            <div class="col s6" style="font-size: 1.2rem;"><b>Total</b></div>
+                                            <div class="col s6" style="font-size: 1.2rem;"><b>${{getFlightTotal(flight) | number:2}}</b></div>
+                                            <div class="col s6 offset-s2" style="margin-top:10px;">
+                                                <button class="btn-large waves waves-light selectFlightBtn" data-ng-click="selectFlight(flight)">Seleccionar</button>
+                                            </div>
+                                        </div>
+                                        <div class="col s8 card-title center">
+                                            <div class="row">
                                                 <div class="col s4">
-                                                    <!--<i class="material-icons">airplanemode_active</i>-->
-                                                    <img src="{{getFlightAirlineLogoURL(flight)}}" alt="{{getFlightAirlineName(flight)}}"/>
-                                                    {{getFlightAirlineName(flight)}} #{{getFlightNumber(flight)}}
+                                                    <p>{{getDepartureDateObj(flight) | date:'HH:mm'}} - {{getOriginAirport(flight).id}}</p>
+                                                    <p style="font-size: 1rem; line-height: initial;">{{getOriginAirport(flight).description}}</p>
                                                 </div>
-                                                <div class="col s3">
-                                                    {{getOriginAirport(flight).id}} ({{getDepartureDateObj(flight) | date:'HH:mm'}})<span class="material-icons">forward</span>{{getDestinationAirport(flight).id}} ({{getArrivalDateObj(flight) | date: 'HH:mm'}})
+                                                <div class="col s4">
+                                                    <i class="material-icons col s1" style="font-size:2.5rem; margin-top:5px; margin-left:42%;">send</i>
                                                 </div>
-                                                <div data-ng-if="isDirectFlight(flight)" class="col s2">
-                                                    Directo
-                                                </div>
-                                                <div data-ng-if="getStopoversCount(flight) === 1" class="col s2">
-                                                    1 Escala
-                                                </div>
-                                                <div data-ng-if="getStopoversCount(flight) > 1" class="col s2">
-                                                    {{getStopoversCount(flight)}} Escalas
-                                                </div>
-                                                <div class="col s1">
-                                                    ${{getFlightTotal(flight) | number:0}}
-                                                </div>
-                                                <div class="col s2 right-align">
-                                                    <button class='btn' data-ng-click="selectFlight(flight)">Seleccionar</button>
+                                                <div class="col s4">
+                                                    <p>{{getArrivalDateObj(flight) | date: 'HH:mm'}} - {{getDestinationAirport(flight).id}}</p>
+                                                    <p style="font-size: 1rem; line-height: initial;">{{getDestinationAirport(flight).description}}</p>
                                                 </div>
                                             </div>
-                                            <div class="collapsible-body">
-                                                <p style="height:100px; padding: 5px; padding-left: 10px;">
-                                                    <span class="col s4 center">
-                                                        Calificación: gr8 8/8 m8 <!-- 7.3/10 -->
-                                                        <br />
-                                                        (promedio tramos)
-                                                        <br />
-                                                        <a class="btn" href="reviews.html?airlineId={{getFlightAirlineID(flight)}}&flightNum={{getFlightNumber(flight)}}">Ver Comentarios</a>
-                                                    </span>
-                                                    <span class="col s3">
-                                                        <span data-ng-show="!isDirectFlight(flight)" data-ng-repeat="segment in getStopovers(flight)">
-                                                            {{getOriginAirport(segment).id}} ({{getDepartureDateObj(segment) | date:'HH:mm'}})
-                                                            <span class="material-icons">forward</span>
-                                                            {{getDestinationAirport(segment).id}} ({{getArrivalDateObj(segment) | date: 'HH:mm'}})
-                                                        </span>
-                                                        <span data-ng-if="isDirectFlight(flight)">
-                                                            {{getOriginAirport(flight).id}} ({{getDepartureDateObj(flight) | date: 'HH:mm'}})
-                                                            <span class="material-icons">forward</span>
-                                                            {{getDestinationAirport(flight).id}} ({{getArrivalDateObj(flight) | date: 'HH:mm'}})
-                                                        </span>
-                                                    </span>
-                                                    <span class="col s1 center">
-                                                        Duración: {{getFlightDuration(flight)}}
-                                                    </span>
-                                                    <span class="col s4 center">
-                                                        <span data-ng-show="flight.price.adults !== null">
-                                                            Adultos: ${{flight.price.adults.base_fare| number:2}} x {{flight.price.adults.quantity}}
-                                                            <br />
-                                                        </span>
-                                                        <span data-ng-show="flight.price.children !== null">
-                                                            Niños: ${{flight.price.children.base_fare| number:2}} x {{flight.price.children.quantity}}
-                                                            <br />
-                                                        </span>
-                                                        <span data-ng-show="flight.price.infants !== null">
-                                                            Infantes: ${{flight.price.infants.base_fare| number:2}} x {{flight.price.infants.quantity}}
-                                                            <br />
-                                                        </span>
-                                                        Cargos e Impuestos: ${{(flight.price.total.charges + flight.price.total.taxes)  | number:2}}
-                                                        <br />
-                                                        <b>Total Pasajeros: ${{getFlightTotal(flight) | number:2}}</b>
-                                                    </span>
-                                                </p>
+                                            <div class="row">
+                                                <div class="col s4">
+                                                    <p><i class="material-icons">access_time</i>  {{getFlightDuration(flight)}}</p>
+                                                </div>
+                                                <div class="col s4">
+                                                    <p><i class="material-icons">flight</i>  {{getStopoversCount(flight) === 0 ? 'Directo' : getStopoversCount(flight) + ' Escalas'}}</p>
+                                                </div>
+                                                <div class="col s4">
+                                                    <p><a href="reviews.html?airlineId={{getFlightAirlineID(flight)}}&flightNum={{getFlightNumber(flight)}}"><i class="material-icons">star</i>  PROMEDIO ACÁ</a></p>
+                                                </div>
                                             </div>
-                                        </li>
-                                    </ul>
+                                        </div>
+                                    </div>
                                 </div>
                                 <!--END FLIGHT CARDS-->
                                 <!--PAGINATION-->

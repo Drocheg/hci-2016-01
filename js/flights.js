@@ -44,7 +44,8 @@ function getFlightAirlineID(flight) {
 
 function getFlightAirlineLogoURL(flight) {
     var session = getSessionData();
-    return session.airlines[getFlightAirlineID(flight)].logo;
+    return session.airlines[getFlightAirlineID(flight)].logo || "#";
+//    TODO fall back to default image if not found
 }
 
 function getFlightNumber(flight) {
@@ -232,6 +233,15 @@ $(function () {
         setSessionData(session);
         debugger;
         window.location = "flights.html";
+    });
+    
+    $("#flights").on("click", ".selectFlightBtn", function() {
+        //Re-enable all other buttons
+        $(".selectFlightBtn").html("Seleccionar");
+        $(".selectFlightBtn").removeClass("disabled");
+        //Disable this one
+        $(this).html("Seleccionado");
+        $(this).addClass("disabled");
     });
 
     $("#nextStep").on("click", "> button", function () {
