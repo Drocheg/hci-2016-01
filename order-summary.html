@@ -86,12 +86,29 @@
                 <div class="col s8 offset-s2">
                     <div class="card-panel green lighten-3" id="passengers" style="text-align: center;">
                         <h4>Pasajeros</h4>
-                        <div data-ng-if="session.passengers.adults.length > 0"></div>
-                        <h5>Adultos &nbsp ({{session.passengers.adults.length}})</h5>
-                        <div data-ng-repeat="adult in session.passengers.adults">
-                            <p>Nombre: {{adult.firstName}} {{adult.lastName}}</p>
-                            <p>Sexo: {{adult.sex}} &nbsp&nbsp&nbsp&nbsp Dni: {{adult.document}}</p>
-                            <p>Fecha de nacimiento: {{adult.birthday}}</p>
+                        <div data-ng-if="session.passengers.adults.length > 0">
+                            <h5>Adultos &nbsp ({{session.passengers.adults.length}})</h5>
+                            <div data-ng-repeat="adult in session.passengers.adults">
+                                <p>Nombre: {{adult.firstName}} {{adult.lastName}}</p>
+                                <p>Sexo: {{adult.sex}} &nbsp&nbsp&nbsp&nbsp Dni: {{adult.document}}</p>
+                                <p>Fecha de nacimiento: {{adult.birthday}}</p>
+                            </div>
+                        </div>
+                        <div data-ng-if="session.passengers.children.length > 0">
+                            <h5>Niños &nbsp ({{session.passengers.children.length}})</h5>
+                            <div data-ng-repeat="children in session.passengers.children">
+                                <p>Nombre: {{children.firstName}} {{children.lastName}}</p>
+                                <p>Sexo: {{children.sex}} &nbsp&nbsp&nbsp&nbsp Dni: {{children.document}}</p>
+                                <p>Fecha de nacimiento: {{children.birthday}}</p>
+                            </div>
+                        </div>
+                        <div data-ng-if="session.passengers.infants.length > 0">
+                            <h5>Infantes &nbsp ({{session.passengers.infants.length}})</h5>
+                            <div data-ng-repeat="infant in session.passengers.infants">
+                                <p>Nombre: {{infant.firstName}} {{infant.lastName}}</p>
+                                <p>Sexo: {{infant.sex}} &nbsp&nbsp&nbsp&nbsp Dni: {{infant.document}}</p>
+                                <p>Fecha de nacimiento: {{infant.birthday}}</p>
+                            </div>
                         </div>
                     </div>
                 </div>
