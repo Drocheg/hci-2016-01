@@ -10,14 +10,26 @@ function getSessionData() {
     if (typeof sessionStorage.sessionData === "undefined") {
         sessionStorage.sessionData = JSON.stringify({
             search: {
-                from: null,
-                to: null,
+                from: {
+                    name: null,
+                    id: null
+                },
+                to: {
+                    name: null,
+                    id: null
+                },
                 oneWayTrip: null,
-                depart: null, //Store as string, not date, gets serialized to ISO string in session
-                return: null,
-                adults: null,
-                children: null,
-                infants: null,
+                departDate: {
+                    pretty: null,
+                    full: null
+                },
+                returnDate: {
+                    pretty: null,
+                    full: null
+                },
+                numAdults: null,
+                numChildren: null,
+                numInfants: null,
                 selectedFlight: null,
                 direction: null //outbound when current search is for an outbound trip, inbound when inbound, null otherwise
             },
@@ -63,7 +75,8 @@ function getSessionData() {
                 cardExpiry: null,
                 cardholderName: null,
                 cvv: null,
-                dni: null,
+                idNum: null,
+                id: null,
                 email: null,
                 total: 0
             },

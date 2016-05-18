@@ -28,14 +28,14 @@
                                     </div>
                                     <div class="row">    
                                         <form id="flightSearchForm">
-                                            <input type="hidden" id="fromId" value="{{session.search.from}}" />
+                                            <input type="hidden" id="fromId" value="{{session.search.from.id}}" />
                                             <div class="input-field col s12">
-                                                <input id="from" type="text" class="validate typeahead" value="{{session.search.from}}" placeholder="Origen">
+                                                <input id="from" type="text" class="validate typeahead" value="{{session.search.from.name}}" placeholder="Origen">
                                                 <label for="from"></label>
                                             </div>
-                                            <input type="hidden" id="toId" value="{{session.search.to}}" />
+                                            <input type="hidden" id="toId" value="{{session.search.to.id}}" />
                                             <div class="input-field col s12">
-                                                <input id="to" type="text" class="validate typeahead" value="{{session.search.to}}" placeholder="Destino">
+                                                <input id="to" type="text" class="validate typeahead" value="{{session.search.to.name}}" placeholder="Destino">
                                                 <label for="to"></label>
                                             </div>
                                             
@@ -44,23 +44,25 @@
                                                 <label for="oneWayTrip">Sólo Ida</label>
                                             </div>
                                             <div class="input-field col s12">
-                                                <input id="departDate" type="date" class="datepicker" value="{{session.search.depart}}">
+                                                <input id="departDate" type="date" class="datepicker" value="{{session.search.departDate.pretty}}">
+                                                <input id="departDateFull" type="hidden" value="{{session.search.departDate.full}}">
                                                 <label for="departDate">Ida</label>
                                             </div>
                                             <div class="input-field col s12" data-ng-show="!session.search.oneWayTrip">
-                                                <input id="returnDate" type="date" class="datepicker" value="{{session.search.return|| ''}}">
+                                                <input id="returnDate" type="date" class="datepicker" value="{{session.search.returnDate.pretty|| ''}}">
+                                                <input id="returnDateFull" type="hidden" value="{{session.search.returnDate.full}}">
                                                 <label for="returnDate">Vuelta</label>
                                             </div>
                                             <div class="input-field col s12">
-                                                <input id="numAdults" type="text" pattern="[0-9]{1,}" class="validate" value="{{session.search.adults}}">
+                                                <input id="numAdults" type="text" pattern="[0-9]{1,}" class="validate" value="{{session.search.numAdults}}">
                                                 <label for="numAdults">Adultos (12 o más años)</label>
                                             </div>
                                             <div class="input-field col s12">
-                                                <input id="numChildren" type="text" pattern="[0-9]{1,}" class="validate" value="{{session.search.children}}">
+                                                <input id="numChildren" type="text" pattern="[0-9]{1,}" class="validate" value="{{session.search.numChildren}}">
                                                 <label for="numChildren">Niños (2-11 años)</label>
                                             </div>
                                             <div class="input-field col s12">
-                                                <input id="numInfants" type="text" pattern="[0-9]{1,}" class="validate" value="{{session.search.infants}}">
+                                                <input id="numInfants" type="text" pattern="[0-9]{1,}" class="validate" value="{{session.search.numInfants}}">
                                                 <label for="numInfants">Infantes (0-2 años)</label>
                                             </div>
                                             <button class="input-field col s8 offset-s2 waves-effect waves-light btn-large" type='button' id="searchButton">
@@ -223,12 +225,12 @@
                                     </div>
                                     <div class="card-content">
                                         <div class="col s4">
-                                            <div data-ng-show="session.search.adults > 0" class="col s6">Adultos</div>
-                                            <div data-ng-show="session.search.adults > 0" class="col s6">${{flight.price.adults.base_fare| number:2}} x {{flight.price.adults.quantity}}</div>
-                                            <div data-ng-show="session.search.children > 0" class="col s6">Niños</div>
-                                            <div data-ng-show="session.search.children > 0" class="col s6">${{flight.price.children.base_fare| number:2}} x {{flight.price.children.quantity}}</div>
-                                            <div data-ng-show="session.search.infants > 0" class="col s6">Infantes</div>
-                                            <div data-ng-show="session.search.infants > 0" class="col s6">${{flight.price.infants.base_fare| number:2}} x {{flight.price.infants.quantity}}</div>
+                                            <div data-ng-show="session.search.numAdults > 0" class="col s6">Adultos</div>
+                                            <div data-ng-show="session.search.numAdults > 0" class="col s6">${{flight.price.adults.base_fare| number:2}} x {{flight.price.adults.quantity}}</div>
+                                            <div data-ng-show="session.search.numChildren > 0" class="col s6">Niños</div>
+                                            <div data-ng-show="session.search.numChildren > 0" class="col s6">${{flight.price.children.base_fare| number:2}} x {{flight.price.children.quantity}}</div>
+                                            <div data-ng-show="session.search.numInfants > 0" class="col s6">Infantes</div>
+                                            <div data-ng-show="session.search.numInfants > 0" class="col s6">${{flight.price.infants.base_fare| number:2}} x {{flight.price.infants.quantity}}</div>
                                             <div class="col s6">Cargos</div>
                                             <div class="col s6">${{flight.price.total.charges| number:2}}</div>
                                             <div class="col s6">Impuestos</div>

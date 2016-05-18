@@ -25,9 +25,9 @@
                         <p>Horario de salida: {{(getDepartureDateObj(session.outboundFlight)).getHours()}}:{{getDepartureDateObj(session.outboundFlight).getMinutes()}}</p>
                         <P>Horario de llegada: {{(getArrivalDateObj(session.outboundFlight)).getHours()}}:{{getArrivalDateObj(session.outboundFlight).getMinutes()}}</p>
                         <p>Duracion: {{getFlightDuration(session.outboundFlight)}}</p>
-                        <p data-ng-if="session.search.adults > 0"> Precio por adultos: ${{getFlightPriceBreakdown(session.outboundFlight).adults.base_fare}}x{{session.search.adults}}</p>
-                        <p data-ng-if="session.search.children > 0"> Precio por ninios ${{getFlightPriceBreakdown(session.outboundFlight).children.base_fare}}x{{session.search.children}}</p>
-                        <p data-ng-if="session.search.infants > 0"> Precio por infantes: ${{getFlightPriceBreakdown(session.outboundFlight).infants.base_fare}}x{{session.search.infants}}</p>
+                        <p data-ng-if="session.search.numAdults > 0"> Precio por adultos: ${{getFlightPriceBreakdown(session.outboundFlight).adults.base_fare}}x{{session.search.numAdults}}</p>
+                        <p data-ng-if="session.search.numChildren > 0"> Precio por ninios ${{getFlightPriceBreakdown(session.outboundFlight).children.base_fare}}x{{session.search.numChildren}}</p>
+                        <p data-ng-if="session.search.numInfants > 0"> Precio por infantes: ${{getFlightPriceBreakdown(session.outboundFlight).infants.base_fare}}x{{session.search.numInfants}}</p>
                         <h5><b>Total:</b></h5>
                     </div>
                 </div>
@@ -39,9 +39,9 @@
                         <p>Horario de salida: {{(getDepartureDateObj(session.inboundFlight)).getHours()}}:{{getDepartureDateObj(session.inboundFlight).getMinutes()}}</p>
                         <P>Horario de llegada: {{(getArrivalDateObj(session.inboundFlight)).getHours()}}:{{getArrivalDateObj(session.inboundFlight).getMinutes()}}</p>
                         <p>Duracion: {{getFlightDuration(session.inboundFlight)}}</p>
-                        <p data-ng-if="session.search.adults > 0"> Precio por adultos: ${{getFlightPriceBreakdown(session.inboundFlight).adults.base_fare}}x{{session.search.adults}}</p>
-                        <p data-ng-if="session.search.children > 0"> Precio por ninios ${{getFlightPriceBreakdown(session.inboundFlight).children.base_fare}}x{{session.search.children}}</p>
-                        <p data-ng-if="session.search.infants > 0"> Precio por infantes: ${{getFlightPriceBreakdown(session.inboundFlight).infants.base_fare}}x{{session.search.infants}}</p>
+                        <p data-ng-if="session.search.numAdults > 0"> Precio por adultos: ${{getFlightPriceBreakdown(session.inboundFlight).adults.base_fare}}x{{session.search.numAdults}}</p>
+                        <p data-ng-if="session.search.numChildren > 0"> Precio por ninios ${{getFlightPriceBreakdown(session.inboundFlight).children.base_fare}}x{{session.search.numChildren}}</p>
+                        <p data-ng-if="session.search.numInfants > 0"> Precio por infantes: ${{getFlightPriceBreakdown(session.inboundFlight).infants.base_fare}}x{{session.search.numInfants}}</p>
                         <h5><b>Total:</b></h5>
                     </div>
                 </div>

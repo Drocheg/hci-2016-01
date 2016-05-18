@@ -14,14 +14,14 @@ $(function () {
 //                            <P>Horario de llegada: "+(getArrivalDateObj(session.outboundFlight)).getHours()+":"+getArrivalDateObj(session.outboundFlight).getMinutes()+"</p>\n\
 //                            <p>Duracion: "+getFlightDuration(session.outboundFlight)+"</p>\n\ ";  //Falta precio y cantidad de pasajeros
 //                                                    //lo pongo despues que necesita codigo
-//                    if(session.search.adults > 0){
-//                    html += "<p> Precio por adultos: $"+getFlightPriceBreakdown(session.outboundFlight).adults.base_fare+"x"+session.search.adults+"</p>"; 
+//                    if(session.search.numAdults > 0){
+//                    html += "<p> Precio por adultos: $"+getFlightPriceBreakdown(session.outboundFlight).adults.base_fare+"x"+session.search.numAdults+"</p>"; 
 //                } 
-//                 if(session.search.children > 0){
-//                    html += "<p> Precio por ninio: $"+getFlightPriceBreakdown(session.outboundFlight).children.base_fare+"x"+session.search.children+"</p>"; 
+//                 if(session.search.numChildren > 0){
+//                    html += "<p> Precio por ninio: $"+getFlightPriceBreakdown(session.outboundFlight).children.base_fare+"x"+session.search.numChildren+"</p>"; 
 //                } 
-//                  if(session.search.infants > 0){
-//                    html += "<p> Precio por infantes: $"+getFlightPriceBreakdown(session.outboundFlight).infants.base_fare+"x"+session.search.infants+"</p>"; 
+//                  if(session.search.numInfants > 0){
+//                    html += "<p> Precio por infantes: $"+getFlightPriceBreakdown(session.outboundFlight).infants.base_fare+"x"+session.search.numInfants+"</p>"; 
 //                } 
 //                    html += "<p>Subtotal: "+getFlightPriceBreakdown(session.outboundFlight).total.fare+"</p>\n\
 //                            <p>Cargos e impuestos: "+(getFlightPriceBreakdown(session.outboundFlight).total.charges+getFlightPriceBreakdown(session.outboundFlight).total.taxes)+"</p>\n\
@@ -40,14 +40,14 @@ $(function () {
 //                            <P>Horario de llegada: "+(getArrivalDateObj(session.outboundFlight)).getHours()+":"+getArrivalDateObj(session.outboundFlight).getMinutes()+"</p>\n\
 //                            <p>Duracion: "+getFlightDuration(session.outboundFlight)+"</p>\n\ ";  //Falta precio y cantidad de pasajeros
 //                                                    //lo pongo despues que necesita codigo
-//                    if(session.search.adults > 0){
-//                    html += "<p> Precio por adultos: $"+getFlightPriceBreakdown(session.outboundFlight).adults.base_fare+"x"+session.search.adults+"</p>"; 
+//                    if(session.search.numAdults > 0){
+//                    html += "<p> Precio por adultos: $"+getFlightPriceBreakdown(session.outboundFlight).adults.base_fare+"x"+session.search.numAdults+"</p>"; 
 //                } 
-//                 if(session.search.children > 0){
-//                    html += "<p> Precio por ninio: $"+getFlightPriceBreakdown(session.outboundFlight).children.base_fare+"x"+session.search.children+"</p>"; 
+//                 if(session.search.numChildren > 0){
+//                    html += "<p> Precio por ninio: $"+getFlightPriceBreakdown(session.outboundFlight).children.base_fare+"x"+session.search.numChildren+"</p>"; 
 //                } 
-//                  if(session.search.infants > 0){
-//                    html += "<p> Precio por infantes: $"+getFlightPriceBreakdown(session.outboundFlight).infants.base_fare+"x"+session.search.infants+"</p>"; 
+//                  if(session.search.numInfants > 0){
+//                    html += "<p> Precio por infantes: $"+getFlightPriceBreakdown(session.outboundFlight).infants.base_fare+"x"+session.search.numInfants+"</p>"; 
 //                } 
 //                    html += "<p>Subtotal: "+getFlightPriceBreakdown(session.outboundFlight).total.fare+"</p>\n\
 //                            <p>Cargos e impuestos: "+(getFlightPriceBreakdown(session.outboundFlight).total.charges+getFlightPriceBreakdown(session.outboundFlight).total.taxes)+"</p>\n\
@@ -77,7 +77,7 @@ $(function () {
 //                        <p>Escalas: 3</p> \
 //                        <p>Duración: 4:30</p> \
 //                        <p>Precio por adulto: $10.000</p> \
-//                        <p>Cantidad de pasajeros: " +session.search.adults+" adultos; <br> "+session.search.childern+" ninios <br> "+session.search.infants+" infantes</p> \
+//                        <p>Cantidad de pasajeros: " +session.search.numAdults+" adultos; <br> "+session.search.childern+" ninios <br> "+session.search.numInfants+" infantes</p> \
 //                        <p>Subtotal: $10.000</p> \
 //                        <p>Cargos e impuestos: $3.999</p> \
 //                        <br> \
@@ -91,7 +91,7 @@ $(function () {
 //                                <p>Escalas: 3</p> \
 //                                <p>Duración: 4:30</p> \
 //                                <p>Precio por adulto: $20.000</p> \
-//                                <p>Cantidad de pasajeros: " +session.search.adults+" adultos; <br> "+session.search.childern+" ninios <br> "+session.search.infants+" infantes</p> \
+//                                <p>Cantidad de pasajeros: " +session.search.numAdults+" adultos; <br> "+session.search.childern+" ninios <br> "+session.search.numInfants+" infantes</p> \
 //                                <p>Subtotal: $10.000</p> \
 //                                <p>Cargos e impuestos: $3.999</p> \
 //                                <br> \

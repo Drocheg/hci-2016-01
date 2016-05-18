@@ -82,10 +82,11 @@ function markSelectedFlight(flight, direction) {
     }
     //Airline code and flight number        
     var html = '<div class="card-panel green lighten-2" style="height: 70px; padding:2px;">';
-    html += '<div class="col s4"><p><i class="material-icons">airplanemode_active</i>' + getFlightAirlineName(flight) + " #" + getFlightNumber(flight) + '</p></div>';
+    html += '<div class="col s4"><p><img src="'+getFlightAirlineLogoURL(flight)+'" />  ' + getFlightAirlineName(flight) + " #" + getFlightNumber(flight) + '</p></div>';
     //Departure airport and time, arrival airport and time
     var depDate = getDepartureDateObj(flight);
     var arrDate = getArrivalDateObj(flight);
+    //TODO pad times with 0
     html += '<div class="col s4"><p>' + getOriginAirport(flight).id + ' (' + depDate.getHours() + ':' + depDate.getMinutes() + ') <span class="material-icons">forward</span> ' + getDestinationAirport(flight).id + ' (' + arrDate.getHours() + ':' + arrDate.getMinutes() + ')</p></div>';
     //Cost
     html += '<div class="col s1 center"><p style="line-height: 35px;">$' + getFlightTotal(flight) + '</p></div>';
@@ -122,19 +123,11 @@ $(function () {
     setSessionData(session);
 
     //Redirect to home if no search has been performed.
-//    if(session.search.from === null) {
+//    if(session.search.from.id === null) {
 //        window.location = ".";
 //    }
 //    
-    //Autofill form
-//    $("#from").val(session.search.from);
-//    $("#to").val(session.search.to);
-//    $("#departDate").val(session.search.depart);
-//    $("#oneWayTrip").prop('checked', session.search.oneWayTrip);
-//    $("#returnDate").val(session.search.return || "");
-//    $("#numAdults").val(session.search.adults);
-//    $("#numInfants").val(session.search.infants);
-//    $("#numChildren").val(session.search.children);
+
     //Mark current total
     $("#currentTotal").html(session.payment.total.toFixed(2));
     //Mark any selected flights
@@ -190,14 +183,16 @@ $(function () {
     $('#to').bind('typeahead:select', function (ev, suggestion) {
         $("#toId").val(suggestion.id);
     });
-    
+
     $('#to').on("change", function () {
         $("#fromId").val("");
     });
 
+    var minDate = new Date();
+    minDate.setDate(minDate.getDate() + 3);
     //Set up datepickers
-    var datePickerOptions = {
-        min: new Date(), //Can't travel in the past =(
+    var datePickerBaseOptions = {
+        min: minDate,
         selectMonths: true,
         selectYears: 2, //Creates a dropdown of 2 years ahead to control year
         //Spanish translation https://github.com/amsul/pickadate.js/blob/3.5.6/lib/translations/es_ES.js
@@ -210,15 +205,36 @@ $(function () {
         close: 'cerrar',
         firstDay: 1,
         format: 'dddd d/m',
-        formatSubmit: 'yyyy-mm-dd',
-        //closeOnSelect is overriden by materialize, this is the workaround https://github.com/Dogfalo/materialize/issues/870
+//        formatSubmit: 'yyyy-mm-dd',
         onSet: function (arg) {
-            if ('select' in arg) { //prevent closing on selecting month/year
+            if ('select' in arg) { //closeOnSelect is overriden by materialize, this is the workaround https://github.com/Dogfalo/materialize/issues/870
+                var d = new Date(arg.select);
+                var d2 = d.getFullYear() + "-" + (d.getMonth()+1 < 10 ? "0" : "") + (d.getMonth()+1) + "-" + (d.getDate() < 10 ? "0" : "") + d.getDate();
+                console.log(d2);
+                $("#" + this.get('id') + "Full").val(d2);
                 this.close();
             }
         }
     };
-    $('.datepicker').pickadate(datePickerOptions);
+    
+//    var returnDatePicker = $("#returnDate").pickadate(datePickerBaseOptions)[0];
+//    var departDatePickerOpts = datePickerBaseOptions;
+//    departDatePickerOpts.onSet = function(arg) {
+//        if ('select' in arg) {
+//                $("#" + this.get('id') + "Full").val(arg.select);
+//                this.close();
+//                debugger;
+//                var la = returnDatePicker.pickadate('picker');
+//                la.open();
+//                returnDatePicker.set('min', new Date(arg.select));          //Set the min date for the return date picker as the same as departure
+//                if($("#oneWayTrip").val() === "false") {
+//                    returnDatePicker.open();
+//                }
+//            }
+//    };
+//    var departDatePicker = $('#departDate').pickadate(departDatePickerOpts);
+
+    $('.datepicker').pickadate(datePickerBaseOptions);
 
 
     $("#oneWayTrip").on('change', function () {
@@ -236,16 +252,28 @@ $(function () {
     $("#searchButton").on("click", function (event) {
         event.preventDefault();
         var data = {
-            from: $("#fromId").val(),
-            to: $("#toId").val(),
-            departDate: $("input[name=departDate_submit]").val(),
+            from: {
+                name: $("#from").val(),
+                id: $("#fromId").val()
+            },
+            to: {
+                name: $("#to").val(),
+                id: $("#toId").val()
+            },
+            departDate: {
+                pretty: $("#departDate").val(),
+                full: $("#departDateFull").val()
+            },
             oneWayTrip: $("#oneWayTrip").is(":checked"),
-            returnDate: $("#oneWayTrip").is(":checked") ? null : $("input[name=returnDate_submit]").val(),
+            returnDate: $("#oneWayTrip").is(":checked") ? null : {
+                pretty: $("#returnDate").val(),
+                full: $("#returnDateFull").val()
+            },
             numAdults: Number($("#numAdults").val()),
             numChildren: Number($("#numChildren").val()),
             numInfants: Number($("#numInfants").val())
         };
-        if (!data.oneWayTrip && new Date(data.returnDate) < new Date(data.departDate)) {
+        if (!data.oneWayTrip && new Date(data.returnDate.full) < new Date(data.departDate.full)) {  //Departure calendar already allows minimum date 2 days from now
             Materialize.toast("Fecha vuelta deberia ser inferior a fecha ida.", 5000); //El calendario no debería permitirlo pero por las dudas
             return;
         }
@@ -259,8 +287,8 @@ $(function () {
             return;
         }
 
-        if (!data.from) {
-            if (!data.oneWayTrip && !data.to) {
+        if (!data.from.id) {
+            if (!data.oneWayTrip && !data.to.id) {
                 Materialize.toast("Tiene que ingresar origen y destino validos.", 5000);
                 return;
             } else {
@@ -269,7 +297,7 @@ $(function () {
             }
         }
 
-        if (!data.to) {
+        if (!data.to.id) {
             //Don't validate origin, that was checked in previous if
             Materialize.toast("Tiene que ingresar destino válido.", 5000);
             return;
@@ -282,11 +310,11 @@ $(function () {
         session.search.from = data.from;
         session.search.to = data.to;
         session.search.oneWayTrip = data.oneWayTrip;
-        session.search.depart = data.departDate;
-        session.search.return = data.returnDate;
-        session.search.adults = data.numAdults;
-        session.search.children = data.numChildren;
-        session.search.infants = data.numInfants;
+        session.search.departDate = data.departDate;
+        session.search.returnDate = data.returnDate;
+        session.search.numAdults = data.numAdults;
+        session.search.numChildren = data.numChildren;
+        session.search.numInfants = data.numInfants;
         //Rreset search parameters, search starts over
         session.search.direction = "outbound";
         session.outboundFlight = null;
@@ -295,7 +323,6 @@ $(function () {
         session.state.hasInboundFlight = false;
         session.payment.total = 0;
         setSessionData(session);
-        debugger;
         window.location = "flights.html";
     });
 

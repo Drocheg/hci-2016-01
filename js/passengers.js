@@ -12,7 +12,7 @@ $(function() {
     
 //    Para testing
     var sessionTest = getSessionData();
-    sessionTest.search.adults = 2;
+    sessionTest.search.numAdults = 2;
     setSessionData(sessionTest);
     
     //Try to validate date immediately??? TODO Borrar esto o hacerlo. Sirve aca?
@@ -31,7 +31,7 @@ $(function() {
         var spanishGroups = ["Adultos","Niños","Infantes"];
         var session = getSessionData();
         var dataIsValid = true;
-        $([session.search.adults,session.search.children,session.search.infants]).each(function(index, value) {
+        $([session.search.numAdults,session.search.numChildren,session.search.numInfants]).each(function(index, value) {
             //Si se hace corte se ahorra tiempo pero no se podrian poner los carteles.            
 //            if(!dataIsValid){
 //                return;
@@ -148,7 +148,7 @@ $(function() {
     var miHTML = "";
     var groups = ["adults","children","infants"];
     var spanishGroups = ["Adultos","Niños","Infantes"];
-    $([session.search.adults,session.search.children,session.search.infants]).each(function(index, value) {
+    $([session.search.numAdults,session.search.numChildren,session.search.numInfants]).each(function(index, value) {
         for(var i = 0; i < value; i++) 
         {
             
@@ -218,7 +218,7 @@ $(function() {
     //$("select[required]").css({display: "inline", height: 0, padding: 0, width: 0}); Ya no sirve creo
     
     //    if(session.state.hasPassengers){ //Para que siempre intente. Pero ahora pueden haber cosas null
-        $([session.search.adults,session.search.children,session.search.infants]).each(function(index, value) {
+        $([session.search.numAdults,session.search.numChildren,session.search.numInfants]).each(function(index, value) {
             for(var i = 0; i < value && i<session.passengers[groups[index]].length; i++) 
             {
                 $("#"+groups[index]+"-"+i+"-"+'firstName').val(session.passengers[groups[index]][i].firstName);

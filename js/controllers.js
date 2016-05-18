@@ -175,18 +175,18 @@ app.controller('controller', function ($scope, $http) {
         session.search.selectedFlight = flight;
         setSessionData(session);
         markSelectedFlight(flight, session.search.direction);
-        $("#currentTotal").html(session.payment.total);
+        $("#currentTotal").html(session.payment.total.toFixed(2));
         $("#nextStep > button").removeClass("disabled");
     };
 
     $scope.searchFlights = function (criteria, order) {
         var session = getSessionData();
-        var f = session.search.oneWayTrip || !session.state.hasOutboundFlight ? session.search.from : session.search.to,
-                t = session.search.oneWayTrip || !session.state.hasOutboundFlight ? session.search.to : session.search.from,
-                d = session.search.oneWayTrip || !session.state.hasOutboundFlight ? session.search.depart : session.search.return,
-                a = session.search.adults,
-                c = session.search.children,
-                i = session.search.infants;
+        var f = session.search.oneWayTrip || !session.state.hasOutboundFlight ? session.search.from.id : session.search.to.id,
+                t = session.search.oneWayTrip || !session.state.hasOutboundFlight ? session.search.to.id : session.search.from.id,
+                d = session.search.oneWayTrip || !session.state.hasOutboundFlight ? session.search.departDate.full : session.search.returnDate.full,
+                a = session.search.numAdults,
+                c = session.search.numChildren,
+                i = session.search.numInfants;
         if (!f || !t || !d || a < 0 || c < 0 || i < 0) {  //Any empty, null or undefined variable will return false
             return;
         }
@@ -236,7 +236,14 @@ app.controller('controller', function ($scope, $http) {
             cache: true,
             timeout: 10000
         }).then(function (response) {
-            $scope.flights = response.data;
+            if(response.data.error) {
+                console.log("Error getting flights");
+                console.log(JSON.stringify(response.data.error));
+                $scope.flights = [];
+            }
+            else {
+                $scope.flights = response.data;
+            }
         });
     };
 
@@ -345,7 +352,7 @@ app.controller('controller', function ($scope, $http) {
 
     $scope.getAdults = function () {
         // var session = getSessionData();
-        // return session.search.adults;
+        // return session.search.numAdults;
         return 2;
     };
 
