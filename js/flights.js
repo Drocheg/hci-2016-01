@@ -94,11 +94,9 @@ function markSelectedFlight(flight, direction) {
     var session = getSessionData();
     if (direction === "outbound" && (session.search.oneWayTrip || !session.state.hasInboundFlight)) {
         changeFlightState = ' disabled';
-    }
-    else if(session.search.direction === "inbound" && !session.state.hasOutboundFlight) {
+    } else if (session.search.direction === "inbound" && !session.state.hasOutboundFlight) {
         changeFlightState = ' disabled';
-    }
-    else {
+    } else {
         changeFlightState = '';
     }
     html += '<div class="col s3 right-align"><button class="btn' + changeFlightState + '" style="margin-top: 15px;">Cambiar</button></div>';
@@ -107,24 +105,22 @@ function markSelectedFlight(flight, direction) {
 }
 
 $(function () {
-    $(document).ready(function () {
-        if ($("#oneWayTrip").is(":checked")) {
-            $("#returnDate").fadeOut();
-            $("#returnDate").removeAttr("required");
-            $("label[for=returnDate]").fadeOut();
-        } else {
-            $("#returnDate").fadeIn();
-            $("label[for=returnDate]").fadeIn();
-            $("#returnDate").attr("required", "required");
-        }
-    });
+    if ($("#oneWayTrip").is(":checked")) {
+        $("#returnDate").fadeOut();
+        $("#returnDate").removeAttr("required");
+        $("label[for=returnDate]").fadeOut();
+    } else {
+        $("#returnDate").fadeIn();
+        $("label[for=returnDate]").fadeIn();
+        $("#returnDate").attr("required", "required");
+    }
 
 
     var session = getSessionData();
     //Unselect any previously selected flight
     session.search.selectedFlight = null;
     setSessionData(session);
-    
+
     //Redirect to home if no search has been performed.
 //    if(session.search.from === null) {
 //        window.location = ".";
@@ -145,7 +141,59 @@ $(function () {
     markSelectedFlight(session.outboundFlight, 'outbound');
     markSelectedFlight(session.inboundFlight, 'inbound');
 
+    //Autocomplete (typeahead.js)
+    var autocomplete = new Bloodhound({
+        datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
+        queryTokenizer: Bloodhound.tokenizers.whitespace,
+        remote: {
+            url: 'http://eiffel.itba.edu.ar/hci/service4/geo.groovy?method=getcitiesandairportsbyname&name=%QUERY',
+            wildcard: '%QUERY',
+            transform: function (response) {
+                if (response.error) {
+                    console.log("Autocomplete error: " + JSON.stringify(response.error));        //TODO shouldn't happen
+                    return [];
+                }
+                return response.data.map(function (entry) {
+                    return {
+                        value: (entry.name || entry.description) + " (" + entry.id + ")",
+                        id: entry.id
+                    };
+                });
+            }
+        }
+    });
 
+    $('#from').typeahead(null, {
+        source: autocomplete,
+        name: 'autocomplete-from',
+        display: 'value',
+        minLength: 3,
+        highlight: true
+    });
+
+    $('#from').on("change", function () {
+        $("#fromId").val("");
+    });
+
+    $('#from').bind('typeahead:select', function (ev, suggestion) {
+        $("#fromId").val(suggestion.id);
+    });
+
+    $('#to').typeahead(null, {
+        source: autocomplete,
+        name: 'autocomplete-to',
+        display: 'value',
+        minLength: 3,
+        highlight: true
+    });
+
+    $('#to').bind('typeahead:select', function (ev, suggestion) {
+        $("#toId").val(suggestion.id);
+    });
+    
+    $('#to').on("change", function () {
+        $("#fromId").val("");
+    });
 
     //Set up datepickers
     var datePickerOptions = {
@@ -188,8 +236,8 @@ $(function () {
     $("#searchButton").on("click", function (event) {
         event.preventDefault();
         var data = {
-            from: $("#from").val(),
-            to: $("#to").val(),
+            from: $("#fromId").val(),
+            to: $("#toId").val(),
             departDate: $("input[name=departDate_submit]").val(),
             oneWayTrip: $("#oneWayTrip").is(":checked"),
             returnDate: $("#oneWayTrip").is(":checked") ? null : $("input[name=returnDate_submit]").val(),
@@ -210,12 +258,23 @@ $(function () {
             Materialize.toast("Tiene que ingresar al menos un pasajero.", 5000);    //No se puede validar antes, sólo se puede validar de que los 3 tengan como mínimo 0 con HTML
             return;
         }
-        
-//        if($("#isValidTo").val()==="false" || $("#isValidFrom").val()==="false"){
-//            Materialize.toast("Tiene que ingresar origen y destino validos.", 5000);
-//            return;
-//        }
-        
+
+        if (!data.from) {
+            if (!data.oneWayTrip && !data.to) {
+                Materialize.toast("Tiene que ingresar origen y destino validos.", 5000);
+                return;
+            } else {
+                Materialize.toast("Tiene que ingresar origen válido.", 5000);
+                return;
+            }
+        }
+
+        if (!data.to) {
+            //Don't validate origin, that was checked in previous if
+            Materialize.toast("Tiene que ingresar destino válido.", 5000);
+            return;
+        }
+
         //TODO use invalid class rather than toasts
 
         //Valid, store data and go to flight search
@@ -239,8 +298,8 @@ $(function () {
         debugger;
         window.location = "flights.html";
     });
-    
-    $("#flights").on("click", ".selectFlightBtn", function() {
+
+    $("#flights").on("click", ".selectFlightBtn", function () {
         //Re-enable all other buttons
         $(".selectFlightBtn").html("Seleccionar");
         $(".selectFlightBtn").removeClass("disabled");

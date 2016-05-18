@@ -28,15 +28,15 @@
                                     </div>
                                     <div class="row">    
                                         <form id="flightSearchForm">
-                                            <input type="hidden" id="isValidFrom" value="false" />
+                                            <input type="hidden" id="fromId" value="{{session.search.from}}" />
                                             <div class="input-field col s12">
-                                                <input id="from" type="text" class="validate" value="{{session.search.from}}">
-                                                <label for="from">Origen</label>
+                                                <input id="from" type="text" class="validate typeahead" value="{{session.search.from}}" placeholder="Origen">
+                                                <label for="from"></label>
                                             </div>
-                                            <input type="hidden" id="isValidTo" value="false" />
+                                            <input type="hidden" id="toId" value="{{session.search.to}}" />
                                             <div class="input-field col s12">
-                                                <input id="to" type="text" class="validate" value="{{session.search.to}}">
-                                                <label for="to">Destino</label>
+                                                <input id="to" type="text" class="validate typeahead" value="{{session.search.to}}" placeholder="Destino">
+                                                <label for="to"></label>
                                             </div>
                                             
                                             <div class="input-field col s12" style="padding-left:0; margin-bottom:20px;">
@@ -302,6 +302,6 @@
         <script src="js/angular-materialize.js"></script>
 
         <script src='js/flights.js'></script>
-
+        <script src="js/typeahead.bundle.js"></script>
     </body>
 </html>

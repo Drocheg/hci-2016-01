@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
+        <title>Template - Página de Vuelos</title>
+
+        <!-- CSS  -->
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <link href="css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+        <link href="css/style.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+
+        <style>
+            .twitter-typeahead {
+                width: 100%;
+            }
+
+            .typeahead,
+            .tt-query,
+            .tt-hint {
+                width: 396px;
+                height: 30px;
+                padding: 8px 12px;
+                font-size: 24px;
+                line-height: 30px;
+                border: 2px solid #ccc;
+                -webkit-border-radius: 8px;
+                -moz-border-radius: 8px;
+                border-radius: 8px;
+                outline: none;
+            }
+
+            .typeahead {
+                background-color: #fff;
+            }
+
+            .tt-query {
+                -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+                -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+                box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+            }
+
+            .tt-hint {
+                color: #999
+            }
+
+            .tt-menu {
+                width: 422px;
+                margin: 12px 0;
+                padding: 8px 0;
+                background-color: #fff;
+                border: 1px solid #ccc;
+                border: 1px solid rgba(0, 0, 0, 0.2);
+                -webkit-border-radius: 8px;
+                -moz-border-radius: 8px;
+                border-radius: 8px;
+                -webkit-box-shadow: 0 5px 10px rgba(0,0,0,.2);
+                -moz-box-shadow: 0 5px 10px rgba(0,0,0,.2);
+                box-shadow: 0 5px 10px rgba(0,0,0,.2);
+            }
+
+            .tt-suggestion {
+                padding: 3px 20px;
+                font-size: 18px;
+                line-height: 24px;
+            }
+
+            .tt-suggestion:hover {
+                cursor: pointer;
+                color: #fff;
+                background-color: #0097cf;
+            }
+
+            .tt-suggestion.tt-cursor {
+                color: #fff;
+                background-color: #0097cf;
+
+            }
+
+            .tt-suggestion p {
+                margin: 0;
+            }
+
+            .gist {
+                font-size: 14px;
+            }
+        </style>
+    </head>
+    <body>
+        <header>
+            <nav class="light-blue lighten-1" role="navigation">
+                <div class="nav-wrapper container">
+                    <a id="logo-container" href="index.html" class="brand-logo left">Logo</a>
+                    <span style="position:absolute; margin-left:45%;">Pesos Argentinos $<span class="material-icons">arrow_drop_down_circle</span></span>
+                </div>
+            </nav>
+            <h1 class="center">Algún otro contenido que vaya como header</h1>
+        </header>
+
+        <div class="divider"></div> <!-- Sacar este divisor, está sólo para indicar donde termina header y donde empieza main -->
+
+        <main class="container">
+            <div class="row">
+                <div id="remote" class="row input-field col s12">
+                    <input class="typeahead" type="text" placeholder="Cities">
+                </div>
+            </div>
+        </main>
+
+        <footer class="page-footer blue">
+            <div class="footer-copyright">
+                <div class="container">
+                    &COPY; 2016, ITBA. Hecho con <a class="orange-text text-lighten-3" href="http://materializecss.com" target="_blank">Materialize</a>.
+                </div>
+            </div>
+        </footer>
+
+        <!--  Scripts-->
+        <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+        <script src="js/materialize.js"></script>
+        <script src="js/init.js"></script>
+        <script src="js/angular.min.js" type="text/javascript"></script>
+        <script src="js/controllers.js" type="text/javascript"></script>
+
+        <script src="js/typeahead.bundle.js"></script>
+        <script type="text/javascript">
+            $(function () {
+                
+            });
+        </script>
+    </body>
+</html>
