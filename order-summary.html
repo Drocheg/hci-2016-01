@@ -82,6 +82,20 @@
                     </div> 
                 </div> 
             </div>
+            <div class="row">
+                <div class="col s8 offset-s2">
+                    <div class="card-panel green lighten-3" id="passengers" style="text-align: center;">
+                        <h4>Pasajeros</h4>
+                        <div data-ng-if="session.passengers.adults.length > 0"></div>
+                        <h5>Adultos &nbsp ({{session.passengers.adults.length}})</h5>
+                        <div data-ng-repeat="adult in session.passengers.adults">
+                            <p>Nombre: {{adult.firstName}} {{adult.lastName}}</p>
+                            <p>Sexo: {{adult.sex}} &nbsp&nbsp&nbsp&nbsp Dni: {{adult.document}}</p>
+                            <p>Fecha de nacimiento: {{adult.birthday}}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="row" id="summaryActionButtons">
                 <div class="col s10 offset-s1 center">
                     <button id="changeOutboundFlightBtn" class="waves-effect waves-light btn">Modificar Ida</button>
@@ -107,7 +121,6 @@
         <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
         <script src="js/materialize.js"></script>
         <script src="js/init.js"></script>
-        <script src="js/flights.js"></script>
         <script src='js/angular.min.js'></script>
         <script src='js/controllers.js'></script>
         <script src="js/angular-materialize.js"></script>
