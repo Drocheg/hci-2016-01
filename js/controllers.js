@@ -141,22 +141,22 @@ app.controller('controller', function ($scope, $http) {
                     $scope.reviewCount = response.data.total;    // === $scope.reviews.length
                 });
     };
-    
-    $scope.getFlightAverage = function(airlineID, flightNumber){
+
+    $scope.getFlightAverage = function (airlineID, flightNumber) {
         $scope.getFlightReviews(airlineID, flightNumber, 30, 1);
         var cantReview = $scope.reviewCount;
-        var i=1; //MAximo 15000 comentarios
+        var i = 1; //MAximo 15000 comentarios
         var sum = 0;
-        do{
+        do {
             debugger;
             $scope.getFlightReviews(airlineID, flightNumber, 30, i);
-            for(var j=0; j<30 && j<cantReview; j++){
-                sum = sum+$scope.reviews[j].rating.overall;
+            for (var j = 0; j < 30 && j < cantReview; j++) {
+                sum = sum + $scope.reviews[j].rating.overall;
             }
-            cantReview= cantReview-30;
+            cantReview = cantReview - 30;
             i++;
-        }while(cantReview > 0 && i<=500);
-        return sum/$scope.reviewCount;
+        } while (cantReview > 0 && i <= 500);
+        return sum / $scope.reviewCount;
     };
 
     /* *************************************************************************
@@ -236,12 +236,11 @@ app.controller('controller', function ($scope, $http) {
             cache: true,
             timeout: 10000
         }).then(function (response) {
-            if(response.data.error) {
+            if (response.data.error) {
                 console.log("Error getting flights");
                 console.log(JSON.stringify(response.data.error));
                 $scope.flights = [];
-            }
-            else {
+            } else {
                 $scope.flights = response.data;
             }
         });
@@ -254,19 +253,18 @@ app.controller('controller', function ($scope, $http) {
                     $scope.deals = response.data.deals;
                 });
     };
-    
+
     $scope.goToDeal = function (origin) {
-         Materialize.toast("Woooh! Look at that deal!!!", 5000);
+        Materialize.toast("Woooh! Look at that deal!!!", 5000);
     };
-    
-    $scope.getPicture = function(city) {
-//        return "dojima.png";
-        
-        $http.get("http://www.panoramio.com/map/get_panoramas.php?set=public&from=0&to=20&minx=-180&miny=-90&maxx=180&maxy=90&size=medium&mapfilter=true", {cache: true, timeout: 10000})
-                .then(function (response) {
-                   
-                    return response.photos.photo_url;
-            });
+
+    $scope.getPicture = function (cardIndex, city) {
+        return "#";
+//        $http.jsonp("http://www.panoramio.com/map/get_panoramas.php?set=public&from=0&to=20&minx=-180&miny=-90&maxx=180&maxy=90&size=medium&mapfilter=true&callback=magic", {cache: true, timeout: 10000})
+//                .then(function (response) {
+//                    console.log(repsonse.data);
+//                    return response.data.photos[0].photo_url;
+//                });
     };
 
     $scope.getLastMinuteDeals = function (origin) {
@@ -287,6 +285,40 @@ app.controller('controller', function ($scope, $http) {
                 });
     };
 
+    $scope.buildFlickURL = function (imgObj) {
+        var URL = "https://farm" + imgObj.farm + ".staticflickr.com/" + imgObj.server + "/" + imgObj.id + "_" + imgObj.secret + ".jpg";
+        return URL;
+    };
+
+    $scope.getFlickrImg = function (query, destId) {
+        $http({
+            url: "https://api.flickr.com/services/rest/",
+            method: "GET",
+            params: {
+                method: "flickr.photos.search",
+                api_key: "d4a47ff42274335c76b940e3ef520dcd",
+                text: query,
+                format: "json",
+                nojsoncallback: 1,
+//                auth_token: "72157668239782652-059ca87c58c4d413",
+//                api_sig: "fd31f0929e9b67bf16f960d68fc663ec",
+            },
+            cache: true,
+            timeout: 10000
+        }).then(function (response) {
+            if (response.data.stat !== "ok") {
+                Materialize.toast("Flickr Error");
+                console.log(JSON.stringify(response.data));
+            } else {
+                if (response.data.photos.photo.length === 0) {
+                    Materialize.toast("No images found for " + query);
+                }
+                $("#"+destId).attr("src", $scope.buildFlickURL(response.data.photos.photo[0]));
+//                return $scope.buildFlickURL(response.data.photos.photo[0/*(Math.random() * response.data.photos.perpage)*/]);
+            }
+        });
+    };
+
     $scope.getOriginAirport = function (flight) {
         return flight.outbound_routes[0].segments[0].departure.airport;
     };
@@ -298,7 +330,7 @@ app.controller('controller', function ($scope, $http) {
     $scope.getDestinationAirport = function (flight) {
         return flight.outbound_routes[0].segments[0].arrival.airport;
     };
-    
+
     $scope.getArrivalDateObj = function (flight) {
         return new Date(flight.outbound_routes[0].segments[0].arrival.date);
     };
