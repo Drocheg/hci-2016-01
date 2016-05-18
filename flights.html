@@ -28,16 +28,19 @@
                                     </div>
                                     <div class="row">    
                                         <form id="flightSearchForm">
+                                            <input type="hidden" id="isValidFrom" value="false" />
                                             <div class="input-field col s12">
                                                 <input id="from" type="text" class="validate" value="{{session.search.from}}">
                                                 <label for="from">Origen</label>
                                             </div>
+                                            <input type="hidden" id="isValidTo" value="false" />
                                             <div class="input-field col s12">
                                                 <input id="to" type="text" class="validate" value="{{session.search.to}}">
                                                 <label for="to">Destino</label>
                                             </div>
+                                            
                                             <div class="input-field col s12" style="padding-left:0; margin-bottom:20px;">
-                                                <input id="oneWayTrip" type="checkbox" data-ng-attr-checked="session.search.oneWayTrip">
+                                                <input id="oneWayTrip" type="checkbox" data-ng-checked="session.search.oneWayTrip">
                                                 <label for="oneWayTrip">Sólo Ida</label>
                                             </div>
                                             <div class="input-field col s12">

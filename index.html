@@ -23,6 +23,7 @@
                     <form id="flightSearchForm">
                         <div class="row">
                             <div class="input-field col s6">
+                                <input type="hidden" id="isValidFrom" value="false" />
                                 <input id="from" name="from" type="text" class="validate" autocomplete="off" required data-ng-model="from" data-ng-change="findSuggestions(from, 'fromSuggestions', 'fromStatus')">
                                 <label for="from">Origen</label>
                                 <!--Show only if there's at least 2 characters on the input field-->
@@ -40,6 +41,7 @@
                                 </div>
                             </div>
                             <div class="input-field col s6">
+                                <input type="hidden" id="isValidTo" value="false" />
                                 <input id="to" name="to" type="text" class="validate" autocomplete="off" required data-ng-model="to" data-ng-change="findSuggestions(to, 'toSuggestions', 'toStatus')">
                                 <label for="to">Destino</label>
                                 <!--Show only if there's at least 2 characters on the input field-->
@@ -93,11 +95,16 @@
             </div>
             <!--/Flight Search-->
 
+<!--            <img class="" src=${{getPicture(2)}}>-->
             <!-- http://stackoverflow.com/a/30128450 -->
             <div class="container section no-pad-bot" data-ng-init="getDeals('BUE')">   <!-- TODO usar ciudad actual -->
-                <div class="col s4" data-ng-repeat="deal in deals | limitTo: 9">
-                    <div class="card-panel white-text green">
-                        Viajes a {{deal.city.name}} desde ${{deal.price}}
+                <div class="row" >
+                     <div class="col s4" data-ng-repeat="deal in deals | limitTo: 9">
+                        <div class="clearfix" ng-if="$index % 3 == 0"></div>
+                        <div class="card small white-text green" ng-click="goToDeal(deal)">
+                            Viajes a {{deal.city.name}} desde ${{deal.price}}
+                             <!--                       <img class="responsive-img" src=${{getPicture(deal.city.name)}}>-->
+                        </div>
                     </div>
                 </div>
                 <!--            <div class="row center" data-ng-repeat="dealGroup in deals">  separateIntoGroupsOf(3, deals) 
