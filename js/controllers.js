@@ -141,6 +141,23 @@ app.controller('controller', function ($scope, $http) {
                     $scope.reviewCount = response.data.total;    // === $scope.reviews.length
                 });
     };
+    
+    $scope.getFlightAverage = function(airlineID, flightNumber){
+        $scope.getFlightReviews(airlineID, flightNumber, 30, 1);
+        var cantReview = $scope.reviewCount;
+        var i=1; //MAximo 15000 comentarios
+        var sum = 0;
+        do{
+            debugger;
+            $scope.getFlightReviews(airlineID, flightNumber, 30, i);
+            for(var j=0; j<30 && j<cantReview; j++){
+                sum = sum+$scope.reviews[j].rating.overall;
+            }
+            cantReview= cantReview-30;
+            i++;
+        }while(cantReview > 0 && i<=500);
+        return sum/$scope.reviewCount;
+    };
 
     /* *************************************************************************
      *                          Flight functions
@@ -274,7 +291,7 @@ app.controller('controller', function ($scope, $http) {
     $scope.getDestinationAirport = function (flight) {
         return flight.outbound_routes[0].segments[0].arrival.airport;
     };
-
+    
     $scope.getArrivalDateObj = function (flight) {
         return new Date(flight.outbound_routes[0].segments[0].arrival.date);
     };
