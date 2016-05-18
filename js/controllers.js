@@ -286,7 +286,7 @@ app.controller('controller', function ($scope, $http) {
     };
 
     $scope.buildFlickURL = function (imgObj) {
-        var URL = "https://farm" + imgObj.farm + ".staticflickr.com/" + imgObj.server + "/" + imgObj.id + "_" + imgObj.secret + ".jpg";
+        var URL = "https://farm" + imgObj.farm + ".staticflickr.com/" + imgObj.server + "/" + imgObj.id + "_" + imgObj.secret + "_c.jpg";
         return URL;
     };
 
@@ -298,6 +298,9 @@ app.controller('controller', function ($scope, $http) {
                 method: "flickr.photos.search",
                 api_key: "d4a47ff42274335c76b940e3ef520dcd",
                 text: query,
+                tags: "landscape",
+                media: "photos",
+                extra: "url_l",
                 format: "json",
                 nojsoncallback: 1,
 //                auth_token: "72157668239782652-059ca87c58c4d413",
@@ -314,6 +317,8 @@ app.controller('controller', function ($scope, $http) {
                     Materialize.toast("No images found for " + query);
                 }
                 $("#"+destId).attr("src", $scope.buildFlickURL(response.data.photos.photo[0]));
+//                 $("#"+destId).attr("style",  "background-image: url('"+$scope.buildFlickURL(response.data.photos.photo[0])+"');");
+//               
 //                return $scope.buildFlickURL(response.data.photos.photo[0/*(Math.random() * response.data.photos.perpage)*/]);
             }
         });

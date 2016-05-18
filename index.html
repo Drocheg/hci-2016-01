@@ -69,17 +69,29 @@
                     </form>
                 </div>
             </div>
+           
             <!--/Flight Search-->
 
 <!--            <img class="" src=${{getPicture(2)}}>-->
             <!-- http://stackoverflow.com/a/30128450 -->
             <div class="container section no-pad-bot" data-ng-init="getDeals('BUE');">   <!-- TODO usar ciudad actual -->
-                <div class="row" >
+                <div class="row text-center" >
                      <div class="col s4 dealCard" data-ng-repeat="deal in deals | limitTo: 9">
                         <div class="clearfix" ng-if="$index % 3 === 0"></div>
-                        <div class="card small white-text green" ng-click="goToDeal(deal)">
-                            Viajes a {{deal.city.name}} desde ${{deal.price}}
-                            <img id="dealImg-{{$index}}" class="responsive-img" src="#" alt="{{deal.city.name}}">
+                        <div class="card card-small white-text green" ng-click="goToDeal(deal)">
+<!--                            <div style="height: 15%;">
+                                Viajes a {{deal.city.name}} desde ${{deal.price}}
+                            </div>
+                            <div id="dealImg-{{$index}}" class="center-cropped" style="">
+                           </div>-->
+<!--                            <div class="card-image card-image-deals">-->
+                            <div class="card-header card-image">
+                                <img id="dealImg-{{$index}}" src="#" alt="{{deal.city.name}}">
+                            </div>
+                            <div class="card-content">
+                              <p class='text-center' style="font-size: 20px">Viajes a {{deal.city.name}} desde ${{deal.price}}<p>
+                            </div>
+                                                        
                             {{getFlickrImg(deal.city.name, "dealImg-"+$index)}}
                         </div>
                     </div>
