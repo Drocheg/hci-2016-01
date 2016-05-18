@@ -27,9 +27,9 @@ function getSessionData() {
                     pretty: null,
                     full: null
                 },
-                numAdults: null,
-                numChildren: null,
-                numInfants: null,
+                numAdults: 0,
+                numChildren: 0,
+                numInfants: 0,
                 selectedFlight: null,
                 direction: null //outbound when current search is for an outbound trip, inbound when inbound, null otherwise
             },

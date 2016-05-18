@@ -80,45 +80,40 @@ function markSelectedFlight(flight, direction) {
             console.log("Flight direction not stored in session, I don't know which box to put the flight in. Aborting.");  //TODO validate and remove
             return;
     }
-    //Airline code and flight number        
     var html = '<div class="card-panel green lighten-2" style="height: 70px; padding:2px;">';
-    html += '<div class="col s4"><p><img src="'+getFlightAirlineLogoURL(flight)+'" />  ' + getFlightAirlineName(flight) + " #" + getFlightNumber(flight) + '</p></div>';
+    //Airline code and flight number        
+    html += '<div class="col s2"><p><img src="' + getFlightAirlineLogoURL(flight) + '" />  ' + getFlightAirlineID(flight) + " " + getFlightNumber(flight) + '</p></div>';
     //Departure airport and time, arrival airport and time
     var depDate = getDepartureDateObj(flight);
     var arrDate = getArrivalDateObj(flight);
-    //TODO pad times with 0
-    html += '<div class="col s4"><p>' + getOriginAirport(flight).id + ' (' + depDate.getHours() + ':' + depDate.getMinutes() + ') <span class="material-icons">forward</span> ' + getDestinationAirport(flight).id + ' (' + arrDate.getHours() + ':' + arrDate.getMinutes() + ')</p></div>';
+    var depTimeStr = (depDate.getHours() < 10 ? "0" : "") + depDate.getHours() + ":" + (depDate.getMinutes() < 10 ? "0" : "") + depDate.getMinutes();
+    var arrTimeStr = (arrDate.getHours() < 10 ? "0" : "") + arrDate.getHours() + ":" + (arrDate.getMinutes() < 10 ? "0" : "") + arrDate.getMinutes();
+    html += '<div class="col s4" style="text-align: center;"><p style="line-height: 35px;">' + depTimeStr + ' - ' + getOriginAirport(flight).id + '  <span class="material-icons">send</span>  ' + arrTimeStr + ' - ' + getDestinationAirport(flight).id + '</p></div>';
+    //Stopovers
+    html += '<div class="col s2"><p style="line-height: 35px;"><i class="material-icons">flight</i>  ' + (getStopoversCount(flight) === 0 ? 'Directo' : getStopoversCount(flight) + ' Escalas') + '</p></div>';
+    //Duration
+    html += '<div class="col s2 center"><p style="line-height: 35px;"><i class="material-icons">timer</i>  ' + getFlightDuration(flight) + '</p></div>';
     //Cost
-    html += '<div class="col s1 center"><p style="line-height: 35px;">$' + getFlightTotal(flight) + '</p></div>';
-    //Change button - only allow changes if on a one-way trip or if the other part of the trip has already been chosen.
-    var changeFlightState = ' disabled';
-    var session = getSessionData();
-    if (direction === "outbound" && (session.search.oneWayTrip || !session.state.hasInboundFlight)) {
-        changeFlightState = ' disabled';
-    } else if (session.search.direction === "inbound" && !session.state.hasOutboundFlight) {
-        changeFlightState = ' disabled';
-    } else {
-        changeFlightState = '';
-    }
-    html += '<div class="col s3 right-align"><button class="btn' + changeFlightState + '" style="margin-top: 15px;">Cambiar</button></div>';
+    html += '<div class="col s2 center"><p style="line-height: 35px;"><b>$' + getFlightTotal(flight) + '</b></p></div>';
     html += '</div>';
     $("#" + id).html(html);
 }
 
 $(function () {
-    if ($("#oneWayTrip").is(":checked")) {
-        $("#returnDate").fadeOut();
-        $("#returnDate").removeAttr("required");
-        $("label[for=returnDate]").fadeOut();
-    } else {
-        $("#returnDate").fadeIn();
-        $("label[for=returnDate]").fadeIn();
-        $("#returnDate").attr("required", "required");
-    }
 
 
     var session = getSessionData();
+    //Set the one way trip checkbox accordingly
+    if (session.search.oneWayTrip) {
+        $("#returnDate").hide();
+        $("#returnDate").removeAttr("required");
+        $("label[for=returnDate]").hide();
+    }
+
     //Unselect any previously selected flight
+    if (session.search.selectedFlight !== null) {        //User refreshed page
+        session.payment.total -= getFlightTotal(session.search.selectedFlight);
+    }
     session.search.selectedFlight = null;
     setSessionData(session);
 
@@ -126,7 +121,6 @@ $(function () {
 //    if(session.search.from.id === null) {
 //        window.location = ".";
 //    }
-//    
 
     //Mark current total
     $("#currentTotal").html(session.payment.total.toFixed(2));
@@ -209,30 +203,13 @@ $(function () {
         onSet: function (arg) {
             if ('select' in arg) { //closeOnSelect is overriden by materialize, this is the workaround https://github.com/Dogfalo/materialize/issues/870
                 var d = new Date(arg.select);
-                var d2 = d.getFullYear() + "-" + (d.getMonth()+1 < 10 ? "0" : "") + (d.getMonth()+1) + "-" + (d.getDate() < 10 ? "0" : "") + d.getDate();
+                var d2 = d.getFullYear() + "-" + (d.getMonth() + 1 < 10 ? "0" : "") + (d.getMonth() + 1) + "-" + (d.getDate() < 10 ? "0" : "") + d.getDate();
                 console.log(d2);
                 $("#" + this.get('id') + "Full").val(d2);
                 this.close();
             }
         }
     };
-    
-//    var returnDatePicker = $("#returnDate").pickadate(datePickerBaseOptions)[0];
-//    var departDatePickerOpts = datePickerBaseOptions;
-//    departDatePickerOpts.onSet = function(arg) {
-//        if ('select' in arg) {
-//                $("#" + this.get('id') + "Full").val(arg.select);
-//                this.close();
-//                debugger;
-//                var la = returnDatePicker.pickadate('picker');
-//                la.open();
-//                returnDatePicker.set('min', new Date(arg.select));          //Set the min date for the return date picker as the same as departure
-//                if($("#oneWayTrip").val() === "false") {
-//                    returnDatePicker.open();
-//                }
-//            }
-//    };
-//    var departDatePicker = $('#departDate').pickadate(departDatePickerOpts);
 
     $('.datepicker').pickadate(datePickerBaseOptions);
 
@@ -315,15 +292,34 @@ $(function () {
         session.search.numAdults = data.numAdults;
         session.search.numChildren = data.numChildren;
         session.search.numInfants = data.numInfants;
-        //Rreset search parameters, search starts over
-        session.search.direction = "outbound";
-        session.outboundFlight = null;
-        session.inboundFlight = null;
-        session.state.hasOutboundFlight = false;
-        session.state.hasInboundFlight = false;
-        session.payment.total = 0;
+        var passengersChanged = data.numAdults !== session.search.numAdults || data.numChildren !== session.search.numChildren || data.numInfants !== session.search.numChildren,
+                outboundChanged = data.departDate.full !== session.search.departDate.full || data.from.id !== session.search.from.id,
+                inboundChanged = data.oneWayTrip !== session.search.oneWayTrip || data.returnDate.full !== session.search.returnDate.full || data.to.id !== session.search.to.id;
+
+        //Passenger count or outbound trip changed, reset everything
+        if (outboundChanged || (passengersChanged && (session.state.hasOutboundFlight || session.state.hasInboundFlight))) {
+            session.search.direction = "outbound";
+            session.outboundFlight = null;
+            session.inboundFlight = null;
+            session.state.hasOutboundFlight = false;
+            session.state.hasInboundFlight = false;
+            session.payment.total = 0;
+        }
+        //Inbound trip changed, change only inbound trip
+        else if (inboundChanged) {
+            if (session.state.hasInboundFlight) {
+                session.payment.total -= getFlightTotal(session.InboundFlight);
+            }
+            if (!outboundChanged) {
+                session.search.direction = "inbound";
+            }
+            session.inboundFlight = null;
+            session.state.hasInboundFlight = false;
+        }
+        session.search.selectedFlight = null;
         setSessionData(session);
         window.location = "flights.html";
+        //TODO actualizar botón de nextStep si se agrega/saca vuelta
     });
 
     $("#flights").on("click", ".selectFlightBtn", function () {

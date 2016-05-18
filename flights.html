@@ -48,7 +48,7 @@
                                                 <input id="departDateFull" type="hidden" value="{{session.search.departDate.full}}">
                                                 <label for="departDate">Ida</label>
                                             </div>
-                                            <div class="input-field col s12" data-ng-show="!session.search.oneWayTrip">
+                                            <div class="input-field col s12">
                                                 <input id="returnDate" type="date" class="datepicker" value="{{session.search.returnDate.pretty|| ''}}">
                                                 <input id="returnDateFull" type="hidden" value="{{session.search.returnDate.full}}">
                                                 <label for="returnDate">Vuelta</label>
@@ -115,39 +115,41 @@
                         </div>
                     </div>
                     <div class="col s9 offset-s3">
-                        <div id="selectedOutboundFlight" class="col s9">
-                            <div class="card-panel grey lighten-1 white-text center" style="border-color:grey; border-style: dashed;">
-                                Ida
+                        <div class="row">
+                            <div id="selectedOutboundFlight" class="col s9">
+                                <div class="card-panel grey lighten-1 white-text center" style="border-color:grey; border-style: dashed;">
+                                    Ida
+                                </div>
                             </div>
-                        </div>
-                        <!--                        <div class="col s9">
-                                                    <div id="selectedOutboundFlight" class="card-panel green" style="height: 70px; padding:2px;">
-                                                        <div class="col s4">
-                                                            <p><i class="material-icons">airplanemode_active</i> LAN #3258</p>
+                            <!--                        <div class="col s9">
+                                                        <div id="selectedOutboundFlight" class="card-panel green" style="height: 70px; padding:2px;">
+                                                            <div class="col s4">
+                                                                <p><i class="material-icons">airplanemode_active</i> LAN #3258</p>
+                                                            </div>
+                                                            <div class="col s4">
+                                                                <p>EZE (08:35)<span class="material-icons">forward</span> JFK (14:50)</p>
+                                                            </div>
+                                                            <div class="col s1 center">
+                                                                <p style="line-height: 35px;">$617</p>
+                                                            </div>
+                                                            <div class="col s3 right-align">
+                                                                <button class='btn disabled' style="margin-top: 15px;">Cambiar</button>
+                                                            </div>
                                                         </div>
-                                                        <div class="col s4">
-                                                            <p>EZE (08:35)<span class="material-icons">forward</span> JFK (14:50)</p>
-                                                        </div>
-                                                        <div class="col s1 center">
-                                                            <p style="line-height: 35px;">$617</p>
-                                                        </div>
-                                                        <div class="col s3 right-align">
-                                                            <button class='btn disabled' style="margin-top: 15px;">Cambiar</button>
-                                                        </div>
-                                                    </div>
-                                                </div>-->
-                        <div class="col s3 center">
-                            <h5 style="margin-top: 35px;">
-                                <b>Total: $<span id="currentTotal">0</span></b>
-                            </h5>
-                        </div>
-                        <div data-ng-if="!session.search.oneWayTrip" id="selectedInboundFlight" class="col s9">
-                            <div class="card-panel grey lighten-1 white-text center" style="border-color:grey; border-style: dashed;">
-                                Vuelta
+                                                    </div>-->
+                            <div class="col s3 center">
+                                <h5 style="margin-top: 35px;">
+                                    <b>Total: $<span id="currentTotal">0</span></b>
+                                </h5>
                             </div>
-                        </div>                        
-                        <div class="col s3 center" id="nextStep">
-                            <button class="btn waves-effect waves-light disabled">{{session.search.oneWayTrip|| session.state.hasOutboundFlight ? 'Comprar' : 'Elegir Vuelta'}}<i class="material-icons right">arrow_right</i></button>
+                            <div data-ng-if="!session.search.oneWayTrip" id="selectedInboundFlight" class="col s9">
+                                <div class="card-panel grey lighten-1 white-text center" style="border-color:grey; border-style: dashed;">
+                                    Vuelta
+                                </div>
+                            </div>                        
+                            <div class="col s3 center" id="nextStep">
+                                <button class="btn waves-effect waves-light disabled">{{session.search.oneWayTrip|| session.state.hasOutboundFlight ? 'Comprar' : 'Elegir Vuelta'}}<i class="material-icons right">arrow_right</i></button>
+                            </div>
                         </div>
 
                         
@@ -208,7 +210,7 @@
                             <!--END PRELOADER-->
                             <div id="flights" class="row lighten-4" data-ng-show="flights !== null">
                                 <div class="col s12 center">
-                                    <h5>{{flights.total}} vuelos encontrados</h5>
+                                    <h5>{{flights.total}} vuelos de <b>{{session.search.direction === 'outbound' ? 'ida' : 'vuelta'}}</b> encontrados para el {{session.search.direction === 'outbound' ? session.search.departDate.pretty : session.search.returnDate.pretty}}</h5>
                                 </div>
                                 <!--FLIGHT CARDS-->
                                 <div class="card black-text col s12" data-ng-show="flights.flights.length > 0" data-ng-repeat="flight in flights.flights" style="padding:0 0 10px 0; border-radius:10px;">
@@ -258,13 +260,13 @@
                                             </div>
                                             <div class="row">
                                                 <div class="col s4">
-                                                    <p><i class="material-icons">access_time</i>  {{getFlightDuration(flight)}}</p>
+                                                    <p><i class="material-icons">timer</i>  {{getFlightDuration(flight)}}</p>
                                                 </div>
                                                 <div class="col s4">
                                                     <p><i class="material-icons">flight</i>  {{getStopoversCount(flight) === 0 ? 'Directo' : getStopoversCount(flight) + ' Escalas'}}</p>
                                                 </div>
                                                 <div class="col s4">
-                                                    <p><a href="reviews.html?airlineId={{getFlightAirlineID(flight)}}&flightNum={{getFlightNumber(flight)}}"><i class="material-icons">star</i>  PROMEDIO ACÁ</a></p>
+                                                    <p><a href="reviews.html?airlineId={{getFlightAirlineID(flight)}}&flightNum={{getFlightNumber(flight)}}"><i class="material-icons">star</i>  {{session.airlines[getFlightAirlineID(flight)].rating || 'N/A'}}</a></p>
                                                 </div>
                                             </div>
                                         </div>
