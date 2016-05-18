@@ -230,6 +230,20 @@ app.controller('controller', function ($scope, $http) {
                     $scope.deals = response.data.deals;
                 });
     };
+    
+    $scope.goToDeal = function (origin) {
+         Materialize.toast("Woooh! Look at that deal!!!", 5000);
+    };
+    
+    $scope.getPicture = function(city) {
+//        return "dojima.png";
+        
+        $http.get("http://www.panoramio.com/map/get_panoramas.php?set=public&from=0&to=20&minx=-180&miny=-90&maxx=180&maxy=90&size=medium&mapfilter=true", {cache: true, timeout: 10000})
+                .then(function (response) {
+                   
+                    return response.photos.photo_url;
+            });
+    };
 
     $scope.getLastMinuteDeals = function (origin) {
         $http.get("http://eiffel.itba.edu.ar/hci/service4/booking.groovy?method=getlastminuteflightdeals&from=" + origin, {cache: true, timeout: 10000})

@@ -1,5 +1,8 @@
 $(function () {
 
+    //the minx, miny, maxx, maxy define the area to show photos from (minimum longitude, latitude, maximum longitude and latitude, respectively).
+    //http://www.panoramio.com/map/get_panoramas.php?set=public&from=0&to=20&minx=-180&miny=-90&maxx=180&maxy=90&size=medium&mapfilter=true
+
 
     /* *************************************************************************
      *                      Suggestion boxes
@@ -32,6 +35,13 @@ $(function () {
         $("#to").trigger("input");
     });
 
+    /***********************************************************************
+    *                            Deals
+    ***********************************************************************/
+   
+    
+   
+//
 //    //Handle flight search form submit
 //    $("#flightSearchForm").on("submit", function (event) {
 //        event.preventDefault();
