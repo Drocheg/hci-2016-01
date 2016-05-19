@@ -22,7 +22,7 @@ function markSelectedFlight(flight, direction) {
             console.log("Flight direction not stored in session, I don't know which box to put the flight in. Aborting.");  //TODO validate and remove
             return;
     }
-    var html = '<div class="card-panel green lighten-2" style="height: 70px; padding:2px;">';
+    var html = '<div class="card-panel light-green lighten-1" style="height: 70px; padding:2px;">';
     //Airline code and flight number        
     html += '<div class="col s2"><p><img src="' + getFlightAirlineLogoURL(flight) + '" />  ' + getFlightAirlineID(flight) + " " + getFlightNumber(flight) + '</p></div>';
     //Departure airport and time, arrival airport and time

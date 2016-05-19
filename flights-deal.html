@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en" data-ng-app="app" data-ng-controller="controller" data-ng-init="searchFlightDeals({sort_key:'total', sort_order:'asc', max_price:session.search.max_price, min_price:session.search.min_price})">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
+        <title>Vuelos - Página de Vuelos</title>
+
+        <!-- CSS  -->
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <link href="css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+        <link href="css/style.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+    </head>
+    <body>
+        <header>
+            <nav role="navigation" data-ng-include="'includes/nav.html'"></nav>
+        </header>
+
+        <main>
+
+            <div class="section" style="min-height: 1300px;">
+                <div class="row">
+                    <div class="col s3" style="position: absolute;">
+                        <div class="row">
+                            <div class="col s12">
+<!--                                <div class="card-panel white black-text" id="searchParams" style="border-radius: 10px;">
+                                    <div class="row">
+                                        <h5 class="center">Su Búsqueda</h5>
+                                    </div>
+                                    <div class="row">    
+                                        <form id="flightSearchForm">
+                                            <input type="hidden" id="fromId" value="{{session.search.from.id}}" />
+                                            <div class="input-field col s12">
+                                                <input id="from" type="text" class="validate typeahead" value="{{session.search.from.name}}" placeholder="Origen">
+                                                <label for="from"></label>
+                                            </div>
+                                            <input type="hidden" id="toId" value="{{session.search.to.id}}" />
+                                            <div class="input-field col s12">
+                                                <input id="to" type="text" class="validate typeahead" value="{{session.search.to.name}}" placeholder="Destino">
+                                                <label for="to"></label>
+                                            </div>
+                                            <div class="input-field col s12" style="padding-left:0; margin-bottom:20px; display:none;">
+                                                <input id="oneWayTrip" type="checkbox" data-ng-checked="session.search.oneWayTrip">
+                                                <label for="oneWayTrip">Sólo Ida</label>
+                                            </div>
+                                            <div class="input-field col s12">
+                                                <input id="departDate" type="date" class="datepicker" value="{{session.search.departDate.pretty}}">
+                                                <input id="departDateFull" type="hidden" value="{{session.search.departDate.full}}">
+                                                <label for="departDate">Ida</label>
+                                            </div>
+                                            <div class="input-field col s12">
+                                                <input id="returnDate" type="date" class="datepicker" value="{{session.search.returnDate.pretty|| ''}}">
+                                                <input id="returnDateFull" type="hidden" value="{{session.search.returnDate.full}}">
+                                                <label for="returnDate">Vuelta</label>
+                                            </div>
+                                            <div class="input-field col s12">
+                                                <input id="numAdults" type="text" pattern="[0-9]{1,}" class="validate" value="{{session.search.numAdults}}">
+                                                <label for="numAdults">Adultos (12 o más años)</label>
+                                            </div>
+                                            <div class="input-field col s12">
+                                                <input id="numChildren" type="text" pattern="[0-9]{1,}" class="validate" value="{{session.search.numChildren}}">
+                                                <label for="numChildren">Niños (2-11 años)</label>
+                                            </div>
+                                            <div class="input-field col s12">
+                                                <input id="numInfants" type="text" pattern="[0-9]{1,}" class="validate" value="{{session.search.numInfants}}">
+                                                <label for="numInfants">Infantes (0-2 años)</label>
+                                            </div>
+                                            <button class="input-field col s8 offset-s2 waves-effect waves-light btn-large" type='button' id="searchButton">
+                                                Buscar de Nuevo<i class="material-icons right">send</i>
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>-->
+                            </div>
+                            <div class="col s12">
+                                <div class="card-panel white black-text">
+                                    <p class="center">Ordenar Por</p>
+                                    <div class="row">
+                                        <div class="input-field col s6" >
+                                            <select data-ng-model="criteria">
+                                                <option selected value="total">Precio</option>
+                                                <option value="airline">Airline</option>
+                                                <option value="duration">Duración</option>
+                                            </select>
+                                        </div>
+                                        <div class="input-field col s6">
+                                            <select  data-ng-model="order">
+                                                <option selected value="asc">Ascendente</option>
+                                                <option value="desc">Descendente</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <button class="col s8 offset-s2 btn" data-ng-click="searchFlights(criteria, order)">Aplicar</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col s12">
+                                <div class="card-panel white black-text">
+                                    <p class="center">Vuelos por página</p>
+                                    <div class="row">
+                                        <div class="input-field col s6 offset-s3">
+                                            <select>
+                                                <option selected>25</option>
+                                                <option>50</option>
+                                                <option>42</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <button class="col s8 offset-s2 btn">Aplicar</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col s9 offset-s3">
+                        <div class="row">
+                            <div id="selectedOutboundFlight" class="col s9" style="{{session.search.oneWayTrip ? 'margin-top:40px;' : ''}}">
+                                <div class="card-panel grey lighten-1 white-text center" style="border-color:grey; border-style: dashed;">
+                                    Ida
+                                </div>
+                            </div>
+                            <!--                        <div class="col s9">
+                                                        <div id="selectedOutboundFlight" class="card-panel green" style="height: 70px; padding:2px;">
+                                                            <div class="col s4">
+                                                                <p><i class="material-icons">airplanemode_active</i> LAN #3258</p>
+                                                            </div>
+                                                            <div class="col s4">
+                                                                <p>EZE (08:35)<span class="material-icons">forward</span> JFK (14:50)</p>
+                                                            </div>
+                                                            <div class="col s1 center">
+                                                                <p style="line-height: 35px;">$617</p>
+                                                            </div>
+                                                            <div class="col s3 right-align">
+                                                                <button class='btn disabled' style="margin-top: 15px;">Cambiar</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>-->
+                            <div class="col s3 center">
+                                <h5 style="margin-top: 35px;">
+                                    <b>Total: $<span id="currentTotal">0</span></b>
+                                </h5>
+                            </div>
+                            <div data-ng-if="!session.search.oneWayTrip" id="selectedInboundFlight" class="col s9">
+                                <div class="card-panel grey lighten-1 white-text center" style="border-color:grey; border-style: dashed;">
+                                    Vuelta
+                                </div>
+                            </div>                        
+                            <div class="col s3 center" id="nextStep">
+                                <button class="btn waves-effect waves-light disabled">{{session.search.oneWayTrip|| session.state.hasOutboundFlight ? 'Siguiente' : 'Elegir Vuelta'}}<i class="material-icons right">send</i></button>
+                            </div>
+                        </div>
+
+                        
+                        <div class="row">
+                            <div class="col s12 divider"></div>
+                        </div>
+                        
+                        
+                        <div class="col s12">
+                            <!--PRELOADER-->
+                            <div class="row" data-ng-show="flights === null">
+                                <div class="center">
+                                    <h2>Buscando Vuelos...</h2>
+                                    <div class="preloader-wrapper big active">
+                                        <div class="spinner-layer spinner-blue">
+                                            <div class="circle-clipper left">
+                                                <div class="circle"></div>
+                                            </div><div class="gap-patch">
+                                                <div class="circle"></div>
+                                            </div><div class="circle-clipper right">
+                                                <div class="circle"></div>
+                                            </div>
+                                        </div>
+
+                                        <div class="spinner-layer spinner-red">
+                                            <div class="circle-clipper left">
+                                                <div class="circle"></div>
+                                            </div><div class="gap-patch">
+                                                <div class="circle"></div>
+                                            </div><div class="circle-clipper right">
+                                                <div class="circle"></div>
+                                            </div>
+                                        </div>
+
+                                        <div class="spinner-layer spinner-yellow">
+                                            <div class="circle-clipper left">
+                                                <div class="circle"></div>
+                                            </div><div class="gap-patch">
+                                                <div class="circle"></div>
+                                            </div><div class="circle-clipper right">
+                                                <div class="circle"></div>
+                                            </div>
+                                        </div>
+
+                                        <div class="spinner-layer spinner-green">
+                                            <div class="circle-clipper left">
+                                                <div class="circle"></div>
+                                            </div><div class="gap-patch">
+                                                <div class="circle"></div>
+                                            </div><div class="circle-clipper right">
+                                                <div class="circle"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <!--END PRELOADER-->
+                            <div id="flights" class="row lighten-4" data-ng-show="flights !== null">
+                                <div class="col s12 center">
+                                    <h5>{{flights.total}} vuelos de <b>{{session.search.direction === 'outbound' ? 'ida' : 'vuelta'}}</b> encontrados para el {{session.search.direction === 'outbound' ? session.search.departDate.pretty : session.search.returnDate.pretty}}</h5>
+                                </div>
+                                <!--FLIGHT CARDS-->
+                                <div class="card black-text col s12" data-ng-show="flights.flights.length > 0" data-ng-repeat="flight in flights.flights" style="padding:0 0 10px 0; border-radius:10px;">
+                                    <div class="card-action green lighten-4" style="padding:5px; border-radius:10px 10px 0 0;">
+                                        <p style="margin: 0; height:30px; line-height:30px;" class="card-title">
+                                            <span class="col s10" style="padding-left:0;">
+                                                <img src="{{getFlightAirlineLogoURL(flight)}}" alt="{{getFlightAirlineName(flight)}}"/>
+                                                {{getFlightAirlineName(flight)}} #{{getFlightNumber(flight)}}
+                                            </span>
+                                            <span class="col s2" style="text-align:right;">
+                                                <b>${{getFlightTotal(flight) | number:0}}</b>
+                                            </span>
+                                        </p>
+                                    </div>
+                                    <div class="card-content">
+                                        <div class="col s4">
+                                            <div data-ng-show="session.search.numAdults > 0" class="col s6">Adultos</div>
+                                            <div data-ng-show="session.search.numAdults > 0" class="col s6">${{flight.price.adults.base_fare| number:2}} x {{flight.price.adults.quantity}}</div>
+                                            <div data-ng-show="session.search.numChildren > 0" class="col s6">Niños</div>
+                                            <div data-ng-show="session.search.numChildren > 0" class="col s6">${{flight.price.children.base_fare| number:2}} x {{flight.price.children.quantity}}</div>
+                                            <div data-ng-show="session.search.numInfants > 0" class="col s6">Infantes</div>
+                                            <div data-ng-show="session.search.numInfants > 0" class="col s6">${{flight.price.infants.base_fare| number:2}} x {{flight.price.infants.quantity}}</div>
+                                            <div class="col s6">Cargos</div>
+                                            <div class="col s6">${{flight.price.total.charges| number:2}}</div>
+                                            <div class="col s6">Impuestos</div>
+                                            <div class="col s6">${{flight.price.total.taxes| number:2}}</div>
+                                            <div class="divider col s12"></div>
+                                            <div class="col s6" style="font-size: 1.2rem;"><b>Total</b></div>
+                                            <div class="col s6" style="font-size: 1.2rem;"><b>${{getFlightTotal(flight) | number:2}}</b></div>
+                                            <div class="col s6 offset-s2" style="margin-top:10px;">
+                                                <button class="btn-large waves waves-light selectFlightBtn" data-ng-click="selectFlight(flight)">Seleccionar</button>
+                                            </div>
+                                        </div>
+                                        <div class="col s8 card-title center">
+                                            <div class="row">
+                                                <div class="col s4">
+                                                    <p>{{getDepartureDateObj(flight) | date:'HH:mm'}} - {{getOriginAirport(flight).id}}</p>
+                                                    <p style="font-size: 1rem; line-height: initial;">{{getOriginAirport(flight).description}}</p>
+                                                </div>
+                                                <div class="col s4">
+                                                    <i class="material-icons col s1" style="font-size:2.5rem; margin-top:5px; margin-left:42%;">send</i>
+                                                </div>
+                                                <div class="col s4">
+                                                    <p>{{getArrivalDateObj(flight) | date: 'HH:mm'}} - {{getDestinationAirport(flight).id}}</p>
+                                                    <p style="font-size: 1rem; line-height: initial;">{{getDestinationAirport(flight).description}}</p>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col s4">
+                                                    <p><i class="material-icons">timer</i>  {{getFlightDuration(flight)}}</p>
+                                                </div>
+                                                <div class="col s4">
+                                                    <p><i class="material-icons">flight</i>  {{getStopoversCount(flight) === 0 ? 'Directo' : getStopoversCount(flight) + ' Escalas'}}</p>
+                                                </div>
+                                                <div class="col s4">
+                                                    <p><a href="reviews.html?airlineId={{getFlightAirlineID(flight)}}&flightNum={{getFlightNumber(flight)}}"><i class="material-icons">star</i>  {{session.airlines[getFlightAirlineID(flight)].rating || 'N/A'}}</a></p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--END FLIGHT CARDS-->
+                                <!--PAGINATION-->
+                                <div class="row" data-ng-show="flights.flights.length > 0">
+                                    <div class="col s12 center">
+                                        <ul class="pagination">
+                                            <li class="disabled"><a href="#!"><i class="material-icons">chevron_left</i></a></li>
+                                            <li class="active"><a href="#!">1</a></li>
+                                            <li class="waves-effect"><a href="#!">2</a></li>
+                                            <li class="waves-effect"><a href="#!">3</a></li>
+                                            <li class="waves-effect"><a href="#!">4</a></li>
+                                            <li class="waves-effect"><a href="#!">5</a></li>
+                                            <li class="waves-effect"><a href="#!"><i class="material-icons">chevron_right</i></a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <!--/PAGINATION-->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer class="page-footer"  data-ng-include="'includes/footer.html'"></footer>
+
+         <!--  Scripts-->
+        <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+        <script src="js/materialize.js"></script>
+        <script src="js/init.js"></script>
+        <script src='js/angular.min.js'></script>
+        <script src='js/controllers.js'></script>
+        <script src="js/angular-materialize.js"></script>
+
+        <script src='js/commonFunctions.js'></script>
+        <script src='js/flights.js'></script>
+        <script src="js/typeahead.bundle.js"></script>
+    </body>
+</html>
