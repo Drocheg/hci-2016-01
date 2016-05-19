@@ -79,12 +79,10 @@ $(function () {
     //Show/hide return date field when un/checking one-way trip
     $("#oneWayTrip").on('change', function () {
         if ($(this).is(":checked")) {
-            $("#returnDate").fadeOut();
+            $("#returnField").fadeOut();
             $("#returnDate").removeAttr("required");
-            $("label[for=returnDate]").fadeOut();
         } else {
-            $("#returnDate").fadeIn();
-            $("label[for=returnDate]").fadeIn();
+            $("#returnField").fadeIn();
             $("#returnDate").attr("required", "required");
         }
     });

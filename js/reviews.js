@@ -35,21 +35,6 @@ function submitReview(airlineID, flightNum, friend, food, punct, mileage, comfor
             });
 }
 
-function getGETParams() {
-    var str = window.location.search.substr(1);
-    return str !== null && str !== "" ? URLStringToObj(str) : {};
-}
-
-function URLStringToObj(str) {
-    var params = {};
-    var prmarr = str.split("&");
-    for (var i = 0; i < prmarr.length; i++) {
-        var tmparr = prmarr[i].split("=");
-        params[tmparr[0]] = tmparr[1];
-    }
-    return params;
-}
-
 $(function () {
     $(document).ready(function() {
        $('select').material_select();
@@ -61,10 +46,9 @@ $(function () {
         var $submitBtn = $("#review-form button[type=submit]");
         $submitBtn.html("Validando...");
         var session = getSessionData();
-        var params = getGETParams();
         var data = {
-            id: params.airlineID,
-            flightNum: params.flightNumber,
+            id: getGETParam('airlineID'),
+            flightNum: getGETParam('flightNumber'),
             friendliness: $("input[name=friendliness]:checked").val(),
             food: $("input[name=food]:checked").val(),
             punctuality: $("input[name=punctuality]:checked").val(),

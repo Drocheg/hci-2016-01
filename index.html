@@ -23,44 +23,51 @@
                     <form id="flightSearchForm">
                         <div class="row">
                             <div class="input-field col s6">
+                                <i class="material-icons prefix">flight_takeoff</i>
                                 <input type="hidden" id="fromId" value="" />
                                 <input id="from" name="from" type="text" class="validate typeahead" autocomplete="off" placeholder="Origen" required>
-                                <label for="from"></label>
+                                <label data-error="" for="from"></label>
                             </div>
                             <div class="input-field col s6">
+                                <i class="material-icons prefix">flight_land</i>
                                 <input type="hidden" id="toId" value="" />
                                 <input id="to" name="to" type="text" class="validate typeahead" autocomplete="off" placeholder="Destino" required>
-                                <label for="to"></label>
+                                <label data-error="" for="to"></label>
                             </div>
                         </div>
                         <div class="row">
                             <div class="input-field col s2">
                                 <input id="oneWayTrip" name="oneWayTrip" type="checkbox">
-                                <label for="oneWayTrip">Sólo Ida</label>
+                                <label data-error="" for="oneWayTrip">Sólo Ida</label>
                             </div>
                             <div class="input-field col s5">
+                                <i class="material-icons prefix">today</i>
                                 <input id="departDate" name="departDate" type="date" class="datepicker" required>
                                 <input id="departDateFull" type="hidden" value="">
-                                <label for="departDate">Ida</label>
+                                <label data-error="" for="departDate">Ida</label>
                             </div>
-                            <div class="input-field col s5">
+                            <div class="input-field col s5" id="returnField">
+                                <i class="material-icons prefix">today</i>
                                 <input id="returnDate" name="returnDate" type="date" class="datepicker" required>
                                 <input id="returnDateFull" type="hidden" value="">
-                                <label for="returnDate">Vuelta</label>
+                                <label data-error="" for="returnDate">Vuelta</label>
                             </div>
                         </div>
                         <div class="row">
                             <div class="input-field col s4">
+                                <i class="material-icons prefix">account_circle</i>
                                 <input id="numAdults" name="numAdults" type="text" pattern="[0-9]{1,}" class="validate" value="1">
-                                <label for="numAdults">Adultos (12 o más años)</label>
+                                <label data-error="" for="numAdults">Adultos (12 o más años)</label>
                             </div>
                             <div class="input-field col s4">
+                                <i class="material-icons prefix">account_circle</i>
                                 <input id="numChildren" name="numChildren" type="text" pattern="[0-9]{1,}" class="validate" value="0">
-                                <label for="numChildren">Niños (2-11 años)</label>
+                                <label data-error="" for="numChildren">Niños (2-11 años)</label>
                             </div>
                             <div class="input-field col s4">
+                                <i class="material-icons prefix">account_circle</i>
                                 <input id="numInfants" name="numInfants" type="text" pattern="[0-9]{1,}" class="validate" value="0">
-                                <label for="numInfants">Infantes (0-2 años)</label>
+                                <label data-error="" for="numInfants">Infantes (0-2 años)</label>
                             </div>
                             <button id="searchButton" type="button" class="input-field col s4 offset-s4 waves-effect waves-light btn-large">
                                 Buscar<i class="material-icons right">send</i>
@@ -72,7 +79,6 @@
            
             <!--/Flight Search-->
 
-<!--            <img class="" src=${{getPicture(2)}}>-->
             <!-- http://stackoverflow.com/a/30128450 -->
             <div class="container section no-pad-bot" data-ng-init="getDeals('BUE');">   <!-- TODO usar ciudad actual -->
                 <div class="row text-center" >

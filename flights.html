@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-ng-app="app" data-ng-controller="controller" data-ng-init="searchFlights('total', 'asc')">
+<html lang="en" data-ng-app="app" data-ng-controller="controller" data-ng-init="searchFlights({sort_key: 'total', sort_order: 'asc'})">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
@@ -304,7 +304,7 @@
         <script src='js/controllers.js'></script>
         <script src="js/angular-materialize.js"></script>
 
-        <script src='js/flightFunctions.js'></script>
+        <script src='js/commonFunctions.js'></script>
         <script src='js/flights.js'></script>
         <script src="js/typeahead.bundle.js"></script>
     </body>

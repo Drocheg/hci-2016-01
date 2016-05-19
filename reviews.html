@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-ng-app="app" data-ng-controller="controller" data-ng-init="getFlightReviews(getGETParams().airlineId, getGETParams().flightNum)"> <!-- TODO remove when adding form -->
+<html lang="en" data-ng-app="app" data-ng-controller="controller" data-ng-init="getFlightReviews(getGETParam('airlineId'), getGETParam('flightNum'))"> <!-- TODO remove when adding form -->
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
@@ -22,7 +22,7 @@
             <div class="row"> <!-- esto cambia todas la tarjetas -->
                 <div class="col s2 offset-l5">
                     <label>Comentarios por pagina</label>
-                    <select ng-model="resultsPerPage" value=30 data-ng-change="getFlightReviews(getGETParams().airlineId, getGETParams().flightNum, resultsPerPage, 1)">
+                    <select ng-model="resultsPerPage" value=30 data-ng-change="getFlightReviews(getGETParam('airlineId'), getGETParam('flightNum'), resultsPerPage, 1)">
                         <option selected value=10>10</option>
                         <option value=20>20</option>
                         <option value=30>30</option>
@@ -30,7 +30,7 @@
                 </div>
                 <!--TODO change elements (e.g. review.aerolinea) to whatever the API returns-->
                 <div id="reviewCard" class="col offset-s3 s6 center softlyPadded" ng-repeat="review in reviews">    
-                    <div class="softlyPadded"><strong>{{getGETParams().airlineId}} {{getGETParams().flightNum}}</strong></div>
+                    <div class="softlyPadded"><strong>{{getGETParam('airlineId')}} #{{getGETParam('flightNum')}}</strong></div>
                     <div class="col s6"> <!--Columna Izq-->
                         <div class="row">
                             General: {{review.rating.overall}}<div class="progress"><div class="determinate" style="width: {{review.rating.overall * 10}}%; background-color: {{(review.rating.overall > 7) ? 'green' : (review.rating.overall > 4) ? 'yellow' : 'red'}}"></div></div>                                
@@ -63,10 +63,10 @@
                 </div>
                 <div class="col s12">
                     <ul class="pagination center-align">
-                        <li ng-repeat="i in getFilledArray(getNumberOfPages(reviewCount, resultsPerPage))"><button class="waves-button-input" data-ng-click="getFlightReviews(getGETParams().airlineId, getGETParams().flightNum, resultsPerPage, i)">{{i}}</button></li>
+                        <li ng-repeat="i in getFilledArray(getNumberOfPages(reviewCount, resultsPerPage))"><button class="waves-button-input" data-ng-click="getFlightReviews(getGETParam('airlineId'), getGETParam('flightNum'), resultsPerPage, i)">{{i}}</button></li>
                     </ul></div>
                 <div class="col s12">
-                    <div class="center"> <a class="center-align btn waves-effect waves-light offset-l5 s6" href="fillReview.html?airlineId={{getGETparams().airlineId}}&flightNumber={{getGETParams().flightNum}}">Dejar un comentario</a></div>
+                    <div class="center"> <a class="center-align btn waves-effect waves-light offset-l5 s6" href="fillReview.html?airlineId={{getGETparam('airlineId')}}&flightNumber={{getGETParam('flightNum')}}">Dejar un comentario</a></div>
                 </div>
         </main>
 
@@ -78,6 +78,7 @@
         <script src="js/init.js"></script>
         <script src="js/angular.min.js" type="text/javascript"></script>
         <script src="js/controllers.js" type="text/javascript"></script>
-        <script type="text/javascript" src="js/angular-materialize.js"></script>
+        <script src="js/angular-materialize.js"></script>
+        <script src="js/commonFunctions.js"></script>
     </body>
 </html>

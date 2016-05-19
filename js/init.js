@@ -30,6 +30,8 @@ function getSessionData() {
                 numAdults: 0,
                 numChildren: 0,
                 numInfants: 0,
+                max_price: null,
+                min_price: null,
                 selectedFlight: null,
                 direction: null //outbound when current search is for an outbound trip, inbound when inbound, null otherwise
             },

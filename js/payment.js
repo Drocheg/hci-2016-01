@@ -39,12 +39,12 @@ function validateCard(cardNumber, expiry, cvv, async) {
                         case 107:
                             expiryMsg = "Por favor ingrese una fecha válida";
                             break;
-//                        case 108:
-//                            cvvMsg = "Por favor ingrese 3 o 4 números para el código de seguridad";
-//                            break;
-                        case 111:
+                        case 108:
                             cvvMsg = "Por favor ingrese un código válido";
                             break;
+//                        case 111:
+//                            cvvMsg = "";
+//                            break;
                         default:
                             Materialize.toast("Error validando su tarjeta, por favor intente de nuevo.", 5000);
                             console.log(result.error);
@@ -54,28 +54,40 @@ function validateCard(cardNumber, expiry, cvv, async) {
                         $("label[for=cardNumber]").attr("data-error", cardMsg);
                         $("#cardNumber").removeClass("valid");
                         $("#cardNumber").addClass("invalid");
+                        $("#cardNumberIcon").removeClass("green-text");
+                        $("#cardNumberIcon").addClass("red-text");
                     }
                     else {
                         $("#cardNumber").removeClass("invalid");
                         $("#cardNumber").addClass("valid");
+                        $("#cardNumberIcon").removeClass("red-text");
+                        $("#cardNumberIcon").addClass("green-text");
                     }
                     if(expiryMsg) {
                         $("label[for=cardExpiry]").attr("data-error", expiryMsg);
                         $("#cardExpiry").removeClass("valid");
                         $("#cardExpiry").addClass("invalid");
+                        $("#cardExpiryIcon").removeClass("green-text");
+                        $("#cardExpiryIcon").addClass("red-text");
                     }
                     else {
                         $("#cardExpiry").removeClass("invalid");
                         $("#cardExpiry").addClass("valid");
+                        $("#cardExpiryIcon").removeClass("red-text");
+                        $("#cardExpiryIcon").addClass("green-text");
                     }
                     if(cvvMsg) {
                         $("label[for=cvv]").attr("data-error", cvvMsg);
                         $("#cvv").removeClass("valid");
                         $("#cvv").addClass("invalid");
+                        $("#cvvIcon").removeClass("green-text");
+                        $("#cvvIcon").addClass("red-text");
                     }
                     else {
                         $("#cvv").removeClass("invalid");
                         $("#cvv").addClass("valid");
+                        $("#cvvIcon").removeClass("red-text");
+                        $("#cvvIcon").addClass("green-text");
                     }
                     $("#isValidCard").val(false);
                 }
@@ -87,6 +99,12 @@ function validateCard(cardNumber, expiry, cvv, async) {
                     $("#cardExpiry").addClass("valid");
                     $("#cvv").removeClass("invalid");
                     $("#cvv").addClass("valid");
+                    $("#creditCardIcon").removeClass("red-text");
+                    $("#creditCardIcon").addClass("green-text");
+                    $("#cardExpiryIcon").removeClass("red-text");
+                    $("#cardExpiryIcon").addClass("green-text");
+                    $("#cvvIcon").removeClass("red-text");
+                    $("#cvvIcon").addClass("green-text");
                 }
             })
             .fail(function (jqXHR, textStatus, errorThrown)
