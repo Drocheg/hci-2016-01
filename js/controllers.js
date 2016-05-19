@@ -323,6 +323,37 @@ app.controller('controller', function ($scope, $http) {
             }
         });
     };
+    
+    $scope.getFlickBannerImg = function(query, selector) {
+        $http({
+            url: "https://api.flickr.com/services/rest/",
+            method: "GET",
+            params: {
+                method: "flickr.photos.search",
+                api_key: "d4a47ff42274335c76b940e3ef520dcd",
+                text: query,
+                tags: "landscape",
+                media: "photos",
+                extra: "url_l",
+                format: "json",
+                nojsoncallback: 1,
+//                auth_token: "72157668239782652-059ca87c58c4d413",
+//                api_sig: "fd31f0929e9b67bf16f960d68fc663ec",
+            },
+            cache: true,
+            timeout: 10000
+        }).then(function (response) {
+            if (response.data.stat !== "ok") {
+                Materialize.toast("Flickr Error");
+                console.log(JSON.stringify(response.data));
+            } else {
+                if (response.data.photos.photo.length === 0) {
+                    Materialize.toast("No images found for " + query);
+                }
+                $(selector).css("background", "url('"+$scope.buildFlickURL(response.data.photos.photo[0])+"')");
+            }
+        });
+    };
 
     $scope.getOriginAirport = function (flight) {
         return flight.outbound_routes[0].segments[0].departure.airport;
