@@ -135,6 +135,15 @@
     top:50px;
 }
 
+#searchFilters, #resultsPerPage {
+    padding:5px;
+    border-radius: 10px;
+}
+
+#searchFilters h5, #resultsPerPage h5 {
+    margin: 0;
+}
+
 #toSuggestions {
     position: absolute;
     z-index:2;

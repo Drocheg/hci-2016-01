@@ -12,14 +12,13 @@
     </head>
     <body>
         <header>
-            <nav role="navigation" data-ng-include="'includes/nav.html'"></nav>
+            <nav role="navigation" data-ng-include="'includes/nav.html'" style="box-shadow: none; position:fixed; height:65px; z-index: 2;"></nav>
         </header>
 
-        <main>
-
-            <div class="section" style="min-height: 1300px;">
+        <main style="margin-top:65px;">
+            <div style="min-height: 1300px;">
                 <div class="row">
-                    <div class="col s3" style="position: absolute;">
+                    <div class="col s3" style="position: fixed;">
                         <div class="row">
                             <div class="col s12">
                                 <div class="card-panel white black-text" id="searchParams" style="border-radius: 10px;">
@@ -71,92 +70,79 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col s12">
-                                <div class="card-panel white black-text">
-                                    <p class="center">Ordenar Por</p>
-                                    <div class="row">
-                                        <div class="input-field col s6" >
-                                            <select data-ng-model="criteria">
-                                                <option selected value="total">Precio</option>
-                                                <option value="airline">Airline</option>
-                                                <option value="duration">Duración</option>
-                                            </select>
-                                        </div>
-                                        <div class="input-field col s6">
-                                            <select  data-ng-model="order">
-                                                <option selected value="asc">Ascendente</option>
-                                                <option value="desc">Descendente</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <button class="col s8 offset-s2 btn" data-ng-click="searchFlights(criteria, order)">Aplicar</button>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col s12">
-                                <div class="card-panel white black-text">
-                                    <p class="center">Vuelos por página</p>
-                                    <div class="row">
-                                        <div class="input-field col s6 offset-s3">
-                                            <select>
-                                                <option selected>25</option>
-                                                <option>50</option>
-                                                <option>42</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <button class="col s8 offset-s2 btn">Aplicar</button>
-                                    </div>
-                                </div>
-                            </div>
                         </div>
                     </div>
-                    <div class="col s9 offset-s3">
-                        <div class="row">
-                            <div id="selectedOutboundFlight" class="col s9" style="{{session.search.oneWayTrip ? 'margin-top:40px;' : ''}}">
-                                <div class="card-panel grey lighten-1 white-text center" style="border-color:grey; border-style: dashed;">
-                                    Ida
-                                </div>
-                            </div>
-                            <!--                        <div class="col s9">
-                                                        <div id="selectedOutboundFlight" class="card-panel green" style="height: 70px; padding:2px;">
-                                                            <div class="col s4">
-                                                                <p><i class="material-icons">airplanemode_active</i> LAN #3258</p>
-                                                            </div>
-                                                            <div class="col s4">
-                                                                <p>EZE (08:35)<span class="material-icons">forward</span> JFK (14:50)</p>
-                                                            </div>
-                                                            <div class="col s1 center">
-                                                                <p style="line-height: 35px;">$617</p>
-                                                            </div>
-                                                            <div class="col s3 right-align">
-                                                                <button class='btn disabled' style="margin-top: 15px;">Cambiar</button>
-                                                            </div>
-                                                        </div>
-                                                    </div>-->
-                            <div class="col s3 center">
-                                <h5 style="margin-top: 35px;">
-                                    <b>Total: $<span id="currentTotal">0</span></b>
-                                </h5>
-                            </div>
-                            <div data-ng-if="!session.search.oneWayTrip" id="selectedInboundFlight" class="col s9">
-                                <div class="card-panel grey lighten-1 white-text center" style="border-color:grey; border-style: dashed;">
-                                    Vuelta
-                                </div>
-                            </div>                        
-                            <div class="col s3 center" id="nextStep">
-                                <button class="btn waves-effect waves-light disabled">{{session.search.oneWayTrip|| session.state.hasOutboundFlight ? 'Siguiente' : 'Elegir Vuelta'}}<i class="material-icons right">send</i></button>
+                    <!--FIXED TOP SECTION-->
+                    <div class="col s9 offset-s3" style="position: fixed; background-color:white; z-index: 2;">
+                        <!--SELECTED FLIGHT(S) BOX(ES)-->
+                        <div id="selectedOutboundFlight" class="col s9" style="{{session.search.oneWayTrip ? 'margin-top:40px;' : ''}}">
+                            <div class="card-panel grey lighten-1 white-text center" style="border-color:grey; border-style: dashed;">
+                                Ida
                             </div>
                         </div>
-
-                        
-                        <div class="row">
-                            <div class="col s12 divider"></div>
+                        <div class="col s3 center">
+                            <h5 style="margin-top: 35px;">
+                                <b>Total: $<span id="currentTotal">0</span></b>
+                            </h5>
                         </div>
-                        
-                        
+                        <div data-ng-show="!session.search.oneWayTrip" id="selectedInboundFlight" class="col s9">
+                            <div class="card-panel grey lighten-1 white-text center" style="border-color:grey; border-style: dashed;">
+                                Vuelta
+                            </div>
+                        </div>                        
+                        <div class="col s3 center" id="nextStep">
+                            <button class="btn waves-effect waves-light disabled">{{session.search.oneWayTrip|| session.state.hasOutboundFlight ? 'Siguiente' : 'Elegir Vuelta'}}<i class="material-icons right">send</i></button>
+                        </div>
+                        <!--END SELECTED FLIGHT(S) BOX(ES)-->
+                        <!--FILTERS-->
+                        <div class="row" style="margin-bottom:0;">
+                            <div class="col s9">
+                                <div class="col s6">
+                                    <div id="searchFilters" class="card-panel white black-text">
+                                        <div class="row">
+                                            <h5 class="center">Ordenar Por</h5>
+                                            <div class="input-field col s6" >
+                                                <select data-ng-model="criteria">
+                                                    <option selected value="total">Precio</option>
+                                                    <option value="airline">Airline</option>
+                                                    <option value="duration">Duración</option>
+                                                </select>
+                                            </div>
+                                            <div class="input-field col s6">
+                                                <select  data-ng-model="order">
+                                                    <option selected value="asc">Ascendente</option>
+                                                    <option value="desc">Descendente</option>
+                                                </select>
+                                            </div>
+                                            <button class="col s8 offset-s2 btn" data-ng-click="searchFlights(criteria, order)">Aplicar</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--END FILTERS-->
+                                <!--RESULTS PER PAGE-->
+                                <div class="col s6">
+                                    <div id="resultsPerPage" class="card-panel white black-text">
+                                        <div class="row">
+                                            <h5 class="center">Vuelos por página</h5>
+                                            <div class="input-field col s6 offset-s3">
+                                                <select>
+                                                    <option selected>25</option>
+                                                    <option>50</option>
+                                                    <option>42</option>
+                                                </select>
+                                            </div>
+                                            <button class="col s8 offset-s2 btn">Aplicar</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--END RESULTS PER PAGE-->
+                            </div>
+                        </div>
+                        <div class="col s12 divider"></div>
+                    </div>
+                    <!--END FIXED TOP SECTION-->
+                    <!--SEARCH RESULTS-->
+                    <div class="col s9 offset-s3" data-ng-style="session.search.oneWayTrip ? {'margin-top': '340px'} : {'margin-top': '370px'}" style="z-index:1;">
                         <div class="col s12">
                             <!--PRELOADER-->
                             <div class="row" data-ng-show="flights === null">
@@ -212,7 +198,7 @@
                                     <h5>{{flights.total}} vuelos de <b>{{session.search.direction === 'outbound' ? 'ida' : 'vuelta'}}</b> encontrados para el {{session.search.direction === 'outbound' ? session.search.departDate.pretty : session.search.returnDate.pretty}}</h5>
                                 </div>
                                 <!--FLIGHT CARDS-->
-                                <div class="card black-text col s12" data-ng-show="flights.flights.length > 0" data-ng-repeat="flight in flights.flights" style="padding:0 0 10px 0; border-radius:10px;">
+                                <div class="card black-text col s12" data-ng-show="flights.flights.length > 0" data-ng-repeat="flight in flights.flights" style="padding:0 0 10px 0; border-radius:10px; z-index: 1">
                                     <div class="card-action green lighten-4" style="padding:5px; border-radius:10px 10px 0 0;">
                                         <p style="margin: 0; height:30px; line-height:30px;" class="card-title">
                                             <span class="col s10" style="padding-left:0;">
@@ -286,10 +272,11 @@
                                         </ul>
                                     </div>
                                 </div>
-                                <!--/PAGINATION-->
+                                <!--END PAGINATION-->
                             </div>
                         </div>
                     </div>
+                    <!--END SEARCH RESULTS-->
                 </div>
             </div>
         </main>
@@ -304,8 +291,8 @@
         <script src='js/controllers.js'></script>
         <script src="js/angular-materialize.js"></script>
 
-        <script src='js/commonFunctions.js'></script>
         <script src='js/flights.js'></script>
+        <script src='js/commonFunctions.js'></script>
         <script src="js/typeahead.bundle.js"></script>
     </body>
 </html>
