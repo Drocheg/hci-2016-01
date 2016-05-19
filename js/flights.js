@@ -1,61 +1,3 @@
-function getOriginAirport(flight) {
-    return flight.outbound_routes[0].segments[0].departure.airport;
-}
-
-function getDepartureDateObj(flight) {
-    return new Date(flight.outbound_routes[0].segments[0].departure.date);
-}
-
-function getDestinationAirport(flight) {
-    return flight.outbound_routes[0].segments[0].arrival.airport;
-}
-
-function getArrivalDateObj(flight) {
-    return new Date(flight.outbound_routes[0].segments[0].arrival.date);
-}
-
-function getStopovers(flight) {
-    return flight.outbound_routes[0].segments[0].stopovers;
-}
-
-function getStopoversCount(flight) {
-    return flight.outbound_routes[0].segments[0].stopovers.length;
-}
-
-function isDirectFlight(flight) {
-    return getStopovers(flight).length === 0;
-}
-
-function getFlightTotal(flight) {
-    return getFlightPriceBreakdown(flight).total.total;
-}
-
-function getFlightPriceBreakdown(flight) {
-    return flight.price;
-}
-
-function getFlightAirlineName(flight) {
-    return flight.outbound_routes[0].segments[0].airline.name;
-}
-
-function getFlightAirlineID(flight) {
-    return flight.outbound_routes[0].segments[0].airline.id;
-}
-
-function getFlightAirlineLogoURL(flight) {
-    var session = getSessionData();
-    return session.airlines[getFlightAirlineID(flight)].logo || "#";
-//    TODO fall back to default image if not found
-}
-
-function getFlightNumber(flight) {
-    return flight.outbound_routes[0].segments[0].number;
-}
-
-function getFlightDuration(flight) {
-    return flight.outbound_routes[0].duration;
-}
-
 /**
  * Updates the outgoing/incoming boxes on flights.html to show info of the
  * specified flight.
@@ -100,8 +42,6 @@ function markSelectedFlight(flight, direction) {
 }
 
 $(function () {
-
-
     var session = getSessionData();
     //Set the one way trip checkbox accordingly
     if (session.search.oneWayTrip) {
@@ -110,10 +50,10 @@ $(function () {
         $("label[for=returnDate]").hide();
     }
 
-    //Unselect any previously selected flight
     if (session.search.selectedFlight !== null) {        //User refreshed page
         session.payment.total -= getFlightTotal(session.search.selectedFlight);
     }
+    //Unselect any previously selected flight
     session.search.selectedFlight = null;
     setSessionData(session);
 
@@ -182,9 +122,9 @@ $(function () {
         $("#fromId").val("");
     });
 
+    //Datepickers
     var minDate = new Date();
     minDate.setDate(minDate.getDate() + 3);
-    //Set up datepickers
     var datePickerBaseOptions = {
         min: minDate,
         selectMonths: true,
@@ -199,7 +139,6 @@ $(function () {
         close: 'cerrar',
         firstDay: 1,
         format: 'dddd d/m',
-//        formatSubmit: 'yyyy-mm-dd',
         onSet: function (arg) {
             if ('select' in arg) { //closeOnSelect is overriden by materialize, this is the workaround https://github.com/Dogfalo/materialize/issues/870
                 var d = new Date(arg.select);
@@ -210,24 +149,12 @@ $(function () {
             }
         }
     };
-
     $('.datepicker').pickadate(datePickerBaseOptions);
 
-
-    $("#oneWayTrip").on('change', function () {
-        if ($(this).is(":checked")) {
-            $("#returnDate").fadeOut();
-            $("#returnDate").removeAttr("required");
-            $("label[for=returnDate]").fadeOut();
-        } else {
-            $("#returnDate").fadeIn();
-            $("label[for=returnDate]").fadeIn();
-            $("#returnDate").attr("required", "required");
-        }
-    });
-
+    //Handle form submit
     $("#searchButton").on("click", function (event) {
         event.preventDefault();
+        var session = getSessionData();
         var data = {
             from: {
                 name: $("#from").val(),
@@ -241,8 +168,7 @@ $(function () {
                 pretty: $("#departDate").val(),
                 full: $("#departDateFull").val()
             },
-            oneWayTrip: $("#oneWayTrip").is(":checked"),
-            returnDate: $("#oneWayTrip").is(":checked") ? null : {
+            returnDate: session.search.oneWayTrip ? null : {
                 pretty: $("#returnDate").val(),
                 full: $("#returnDateFull").val()
             },
@@ -250,54 +176,89 @@ $(function () {
             numChildren: Number($("#numChildren").val()),
             numInfants: Number($("#numInfants").val())
         };
-        if (!data.oneWayTrip && new Date(data.returnDate.full) < new Date(data.departDate.full)) {  //Departure calendar already allows minimum date 2 days from now
-            Materialize.toast("Fecha vuelta deberia ser inferior a fecha ida.", 5000); //El calendario no debería permitirlo pero por las dudas
-            return;
+        //Validate
+        var valid = true;
+        
+        //Origin
+        if (data.from.id === "") {
+            $("label[for=from]").attr("data-error", "Por favor ingrese un orígen válido");
+            $("#from").removeClass("valid");
+            $("#from").addClass("invalid");
+            valid = false;
+        } else {
+            $("#from").removeClass("invalid");
+            $("#from").addClass("valid");
         }
-        //Tampoco se deberia poder que sean negativos
-        if (data.numInfants > 0 && data.numAdults === 0) {
-            Materialize.toast("Los infantes no pueden viajar sin adultos.", 5000);
-            return;
+        //Destination
+        if (data.to.id === "") {
+            $("label[for=to]").attr("data-error", "Por favor ingrese un destino válido");
+            $("#to").removeClass("valid");
+            $("#to").addClass("invalid");
+            valid = false;
+        } else {
+            $("#to").removeClass("invalid");
+            $("#to").addClass("valid");
         }
-        if (data.numAdults === 0 && data.numChildren === 0 && data.numInfants === 0) {
-            Materialize.toast("Tiene que ingresar al menos un pasajero.", 5000);    //No se puede validar antes, sólo se puede validar de que los 3 tengan como mínimo 0 con HTML
-            return;
+        //Departure date
+        if (data.departDate.full === "") {
+            $("label[for=departDate]").attr("data-error", "Por favor ingrese una fecha de ida válida");
+            $("#departDate").removeClass("valid");
+            $("#departDate").addClass("invalid");
+            valid = false;
+        } else {
+            $("#departDate").removeClass("invalid");
+            $("#departDate").addClass("valid");
         }
-
-        if (!data.from.id) {
-            if (!data.oneWayTrip && !data.to.id) {
-                Materialize.toast("Tiene que ingresar origen y destino validos.", 5000);
-                return;
-            } else {
-                Materialize.toast("Tiene que ingresar origen válido.", 5000);
-                return;
+        //Return date
+        if (!session.search.oneWayTrip) {
+            if (data.returnDate.full === "") {
+                $("label[for=returnDate]").attr("data-error", "Por favor ingrese una fecha de vuelta válida");
+                $("#returnDate").removeClass("valid");
+                $("#returnDate").addClass("invalid");
+                valid = false;
+            }
+            else if (!session.search.oneWayTrip && new Date(data.returnDate.full) < new Date(data.departDate.full)) {
+                $("label[for=returnDate]").attr("data-error", "Todavía no ofrecemos viajes en el tiempo"); //TODO use serious message
+                $("#returnDate").removeClass("valid");
+                $("#returnDate").addClass("invalid");
+                valid = false;
+            }
+            else {
+                $("#returnDate").removeClass("invalid");
+                $("#returnDate").addClass("valid");
             }
         }
-
-        if (!data.to.id) {
-            //Don't validate origin, that was checked in previous if
-            Materialize.toast("Tiene que ingresar destino válido.", 5000);
+        //Passengers: At least one must fly
+        if (data.numAdults === 0 && data.numChildren === 0 && data.numInfants === 0) {
+            $("label[for=numAdults]").attr("data-error", "Por favor ingrese al menos un pasajero");
+            $("#numAdults").removeClass("valid");
+            $("#numAdults").addClass("invalid");
+            valid = false;
+        }
+        //Passengers: Infants can't travel without adults
+        else if (data.numInfants > 0 && data.numAdults === 0) {
+            $("label[for=numAdults]").attr("data-error", "Los infantes no pueden viajar sin adultos");
+            $("#numAdults").removeClass("valid");
+            $("#numAdults").addClass("invalid");
+            valid = false;
+        }
+        else {
+            $("#numAdults").removeClass("invalid");
+            $("#numAdults").addClass("valid");
+        }
+        
+        if (!valid) {
             return;
         }
-
-        //TODO use invalid class rather than toasts
-
-        //Valid, store data and go to flight search
-        var session = getSessionData();
-        session.search.from = data.from;
-        session.search.to = data.to;
-        session.search.oneWayTrip = data.oneWayTrip;
-        session.search.departDate = data.departDate;
-        session.search.returnDate = data.returnDate;
-        session.search.numAdults = data.numAdults;
-        session.search.numChildren = data.numChildren;
-        session.search.numInfants = data.numInfants;
+        
+        //What did the user change?
         var passengersChanged = data.numAdults !== session.search.numAdults || data.numChildren !== session.search.numChildren || data.numInfants !== session.search.numChildren,
-                outboundChanged = data.departDate.full !== session.search.departDate.full || data.from.id !== session.search.from.id,
-                inboundChanged = data.oneWayTrip !== session.search.oneWayTrip || data.returnDate.full !== session.search.returnDate.full || data.to.id !== session.search.to.id;
+            placesChanged = data.from.id !== session.search.from.id || data.to.id !== session.search.to.id,
+            departDateChanged = data.departDate.full !== session.search.departDate.full,
+            returnDateChanged = !session.search.oneWayTrip && data.returnDate.full !== session.search.returnDate.full;
 
-        //Passenger count or outbound trip changed, reset everything
-        if (outboundChanged || (passengersChanged && (session.state.hasOutboundFlight || session.state.hasInboundFlight))) {
+        //Reset everything
+        if (placesChanged || passengersChanged || departDateChanged) {
             session.search.direction = "outbound";
             session.outboundFlight = null;
             session.inboundFlight = null;
@@ -306,20 +267,25 @@ $(function () {
             session.payment.total = 0;
         }
         //Inbound trip changed, change only inbound trip
-        else if (inboundChanged) {
+        else if (returnDateChanged) {
             if (session.state.hasInboundFlight) {
                 session.payment.total -= getFlightTotal(session.InboundFlight);
             }
-            if (!outboundChanged) {
-                session.search.direction = "inbound";
-            }
+            session.search.direction = session.state.hasOutboundFlight ? "inbound" : "outbound";
             session.inboundFlight = null;
             session.state.hasInboundFlight = false;
         }
+        else {  //No change, don't submit
+            return;
+        }
+        //Changed, store new data
+        for (var property in data) {
+            session.search[property] = data[property];
+        }
+        //Clear selected flight for next page load
         session.search.selectedFlight = null;
         setSessionData(session);
         window.location = "flights.html";
-        //TODO actualizar botón de nextStep si se agrega/saca vuelta
     });
 
     $("#flights").on("click", ".selectFlightBtn", function () {
@@ -362,6 +328,5 @@ $(function () {
         session.search.selectedFlight = null;
         setSessionData(session);
         window.location = nextPage;
-
     });
 });

@@ -113,7 +113,6 @@ $(function () {
             numChildren: Number($("#numChildren").val()),
             numInfants: Number($("#numInfants").val())
         };
-        debugger;
         var valid = true;
         //Origin
         if (data.from.id === "") {

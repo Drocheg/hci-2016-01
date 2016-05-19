@@ -38,8 +38,7 @@
                                                 <input id="to" type="text" class="validate typeahead" value="{{session.search.to.name}}" placeholder="Destino">
                                                 <label for="to"></label>
                                             </div>
-                                            
-                                            <div class="input-field col s12" style="padding-left:0; margin-bottom:20px;">
+                                            <div class="input-field col s12" style="padding-left:0; margin-bottom:20px; display:none;">
                                                 <input id="oneWayTrip" type="checkbox" data-ng-checked="session.search.oneWayTrip">
                                                 <label for="oneWayTrip">Sólo Ida</label>
                                             </div>
@@ -66,7 +65,7 @@
                                                 <label for="numInfants">Infantes (0-2 años)</label>
                                             </div>
                                             <button class="input-field col s8 offset-s2 waves-effect waves-light btn-large" type='button' id="searchButton">
-                                                Buscar de Nuevo<i class="material-icons right">arrow_right</i>
+                                                Buscar de Nuevo<i class="material-icons right">send</i>
                                             </button>
                                         </form>
                                     </div>
@@ -116,7 +115,7 @@
                     </div>
                     <div class="col s9 offset-s3">
                         <div class="row">
-                            <div id="selectedOutboundFlight" class="col s9">
+                            <div id="selectedOutboundFlight" class="col s9" style="{{session.search.oneWayTrip ? 'margin-top:40px;' : ''}}">
                                 <div class="card-panel grey lighten-1 white-text center" style="border-color:grey; border-style: dashed;">
                                     Ida
                                 </div>
@@ -148,7 +147,7 @@
                                 </div>
                             </div>                        
                             <div class="col s3 center" id="nextStep">
-                                <button class="btn waves-effect waves-light disabled">{{session.search.oneWayTrip|| session.state.hasOutboundFlight ? 'Comprar' : 'Elegir Vuelta'}}<i class="material-icons right">arrow_right</i></button>
+                                <button class="btn waves-effect waves-light disabled">{{session.search.oneWayTrip|| session.state.hasOutboundFlight ? 'Siguiente' : 'Elegir Vuelta'}}<i class="material-icons right">send</i></button>
                             </div>
                         </div>
 
@@ -305,6 +304,7 @@
         <script src='js/controllers.js'></script>
         <script src="js/angular-materialize.js"></script>
 
+        <script src='js/flightFunctions.js'></script>
         <script src='js/flights.js'></script>
         <script src="js/typeahead.bundle.js"></script>
     </body>
