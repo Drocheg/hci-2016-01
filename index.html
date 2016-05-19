@@ -84,7 +84,9 @@
                 <div class="row text-center" >
                      <div class="col s4 dealCard" data-ng-repeat="deal in deals | limitTo: 9">
                         <div class="clearfix" ng-if="$index % 3 === 0"></div>
-                        <div class="card card-small white-text light-green darken-1" ng-click="goToDeal(deal)">
+
+                        <div class="card card-small white-text  light-green darken-1" ng-click="goToDeal(deal,'BUE')">
+
 <!--                            <div style="height: 15%;">
                                 Viajes a {{deal.city.name}} desde ${{deal.price}}
                             </div>

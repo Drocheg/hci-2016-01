@@ -5,6 +5,12 @@
  * TODO Todos los campos obligatorios. Msj que se entiendan
  */
 $(function () {
+   
+    
+    var session = getSessionData();
+    session.search.numAdults=2;
+    setSessionData(session);
+
     //Try to validate date immediately??? TODO Borrar esto o hacerlo. Sirve aca?
 
 //    $('select').change(function(){
@@ -226,9 +232,8 @@ $(function () {
     });
 
 //    } 
-    
+
     $('select').material_select();
-    
 });
 
 function validateDate(date) { //TODO testear.

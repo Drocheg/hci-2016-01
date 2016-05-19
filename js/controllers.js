@@ -209,8 +209,21 @@ app.controller('controller', function ($scope, $http) {
                 });
     };
 
-    $scope.goToDeal = function (origin) {
+    $scope.goToDeal = function (deal, from) {
         Materialize.toast("Woooh! Look at that deal!!!", 5000);
+        var session = getSessionData();
+        session.search.numAdults=1;
+        session.search.numInfants=0;
+        session.search.numChildren=0;
+        session.search.oneWayTrip=true;
+        session.search.max_Price=deal.price;
+        session.search.min_Price=deal.price;
+        session.search.to.name = deal.city.name;
+        session.search.to.id = deal.city.id;
+        session.search.from.id = from;
+        
+        setSessionData(session);
+        window.location = "flights-deal.html";
     };
 
     $scope.getLastMinuteDeals = function (origin) {
