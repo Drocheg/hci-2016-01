@@ -1,3 +1,6 @@
+/* *****************************************************************************
+ *                          Flight helper functions
+ * ****************************************************************************/
 function getOriginAirport(flight) {
     return flight.outbound_routes[0].segments[0].departure.airport;
 }
@@ -54,4 +57,29 @@ function getFlightNumber(flight) {
 
 function getFlightDuration(flight) {
     return flight.outbound_routes[0].duration;
+}
+
+
+/* *****************************************************************************
+ *                              General Functions
+ * ****************************************************************************/
+
+/**
+ * Searches GET parameters to get the value of the parameter with the specified
+ * name.
+ * 
+ * @param {String} paramName
+ * @returns {String|null} The value of the parameter with the specified key, or
+ * null if not found.
+ */
+function getGETparam(paramName) {
+    var query = location.search.substring(1);
+    var vars = query.split('&');
+    for (var i = 0; i < vars.length; i++) {
+        var pair = vars[i].split('=');
+        if (decodeURIComponent(pair[0]) === paramName) {
+            return decodeURIComponent(pair[1]);
+        }
+    }
+    return null;
 }

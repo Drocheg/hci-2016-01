@@ -5,8 +5,6 @@
  * TODO Todos los campos obligatorios. Msj que se entiendan
  */
 $(function () {
-    $('select').material_select();
-
     //Try to validate date immediately??? TODO Borrar esto o hacerlo. Sirve aca?
 
 //    $('select').change(function(){
@@ -228,8 +226,9 @@ $(function () {
     });
 
 //    } 
-
-
+    
+    $('select').material_select();
+    
 });
 
 function validateDate(date) { //TODO testear.
