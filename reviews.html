@@ -22,7 +22,7 @@
             <div class="row"> <!-- esto cambia todas la tarjetas -->
                 <div class="col s2 offset-l5">
                     <label>Comentarios por pagina</label>
-                    <select ng-model="resultsPerPage" value=30 data-ng-change="getFlightReviews(getGETParam('airlineId'), getGETParam('flightNum'), resultsPerPage, 1)">
+                    <select ng-model="resultsPerPage" value=30 data-ng-change="getFlightReviews(getGETparam('airlineId'), getGETparam('flightNum'), resultsPerPage, 1)">
                         <option selected value=10>10</option>
                         <option value=20>20</option>
                         <option value=30>30</option>
@@ -36,27 +36,27 @@
                             General: {{review.rating.overall}}<div class="progress"><div class="determinate" style="width: {{review.rating.overall * 10}}%; background-color: {{(review.rating.overall > 7) ? 'green' : (review.rating.overall > 4) ? 'yellow' : 'red'}}"></div></div>                                
                         </div>
                         <div class="row">
-                            Amabilidad: {{review.rating.friendliness}}<div class="progress"><div class="determinate" style="width: {{review.rating.friendliness * 10}}%"></div></div>                                
+                            Amabilidad: {{review.rating.friendliness}}<div class="progress"><div class="determinate" style="width: {{review.rating.friendliness * 10}}%; background-color: {{(review.rating.friendliness > 7) ? 'green' : (review.rating.friendliness > 4) ? 'yellow' : 'red'}}"></div></div>                                
                         </div>
                         <div class="row">
-                            Puntualidad: {{review.rating.punctuality}}<div class="progress"><div class="determinate" style="width: {{review.rating.punctuality * 10}}%"></div></div>                                
+                            Puntualidad: {{review.rating.punctuality}}<div class="progress"><div class="determinate" style="width: {{review.rating.punctuality * 10}}%; background-color: {{(review.rating.punctuality > 7) ? 'green' : (review.rating.punctuality > 4) ? 'yellow' : 'red'}}"></div></div>                                
                         </div>
                         <div class="row">
-                            Comfort: {{review.rating.comfort}}<div class="progress"><div class="determinate" style="width: {{review.rating.comfort * 10}}%"></div></div>                                
+                            Comfort: {{review.rating.comfort}}<div class="progress"><div class="determinate" style="width: {{review.rating.comfort * 10}}%; background-color: {{(review.rating.comfort > 7) ? 'green' : (review.rating.comfort > 4) ? 'yellow' : 'red'}}"></div></div>                                
                         </div>
                     </div>
                     <div class="col s6">
                         <div class="row">
-                            Recomendación: {{review.yes_recommend ? "Sí" : "No"}}<div class="progress"><div class="determinate" style="width: {{review.yes_recommend ? 100 : 0}}%"></div></div>                                
+                            Recomendación: {{review.yes_recommend ? "Sí" : "No"}}<div class="progress"><div class="determinate" style="width: {{review.yes_recommend ? 100 : 0}}%; background-color: {{review.yes_recommend ? 'green' : 'red'}}"></div></div>                                
                         </div>
                         <div class="row">
                             Comida: {{review.rating.food}}<div class="progress"><div class="determinate" style="width: {{review.rating.food * 10}}%"></div></div>                                
                         </div>
                         <div class="row">
-                            Programa de viajero frequente: {{review.rating.mileage_program}}<div class="progress"><div class="determinate" style="width: {{review.rating.mileage_program * 10}}%"></div></div>                                
+                            Programa de viajero frequente: {{review.rating.mileage_program}}<div class="progress"><div class="determinate" style="width: {{review.rating.mileage_program * 10}}%; background-color: {{(review.rating.mileage_program > 7) ? 'green' : (review.rating.mileage_program > 4) ? 'yellow' : 'red'}}"></div></div>                                
                         </div>
                         <div class="row">
-                            Relación precio a calidad: {{review.rating.quality_price}}<div class="progress"><div class="determinate" style="width: {{review.rating.quality_price * 10}}%"></div></div>                                
+                            Relación precio a calidad: {{review.rating.quality_price}}<div class="progress"><div class="determinate" style="width: {{review.rating.quality_price * 10}}%; background-color: {{(review.rating.quality_price > 7) ? 'green' : (review.rating.quality_price > 4) ? 'yellow' : 'red'}}"></div></div>                                
                         </div>
                     </div>
                     <div class="softlyPadded">Comentario: <strong>{{review.comments}}</strong></div>
