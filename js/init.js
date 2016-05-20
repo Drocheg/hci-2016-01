@@ -73,11 +73,15 @@ function getSessionData() {
             payment: {
                 cardNumber: null,
                 cardExpiry: null,
-                cardholderName: null,
+                cardholderFirstName: null,
+                cardholderLastName: null,
                 cvv: null,
                 idNum: null,
                 id: null,
                 email: null,
+                zip: null,
+                street: null,
+                streetNumber: null,
                 total: 0
             },
             state: {

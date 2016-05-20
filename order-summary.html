@@ -99,7 +99,8 @@
                             <div class="card-panel light-green lighten-4" id="payment" style="height:500px">
                                 <h4 class="center">Pago</h4> 
                                 <p><b>Número de tarjeta:</b> {{session.payment.cardNumber}}</p> 
-                                <p><b>Nombre de titular:</b> {{session.payment.cardholderName}}</p>
+                                <p><b>Nombre:</b> {{session.payment.cardholderFirstName}}</p>
+                                <p><b>Apellido:</b> {{session.payment.cardholderLastName}}</p>
                                 <!-- Si es pasaporte o dni-->
                                 <p><b>Documento:</b></p>
                                 <p><b>Codigo Postal:</b></p>
@@ -191,7 +192,7 @@
                         </div>-->
             <div class="row">
                 <div class="col s10 offset-s1 center">
-                    <a class="btn-large waves-effect waves cyan darken-1" href="order-confirmation.html">
+                    <a class="btn-large waves-effect waves cyan darken-1" href="order-confirmation.html" id="confirmBtn">
                         Confirmar
                         <i class="material-icons right">send</i>
                     </a>
