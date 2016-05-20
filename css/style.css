@@ -266,3 +266,47 @@ main {
 .gist {
     font-size: 14px;
 }
+
+.miniText {
+    font-size: 3px;
+}
+
+.bar-1 {
+    width: 10%;
+}
+
+.bar-2 {
+    width: 20%;
+}
+
+.bar-3 {
+    width: 30%;
+}
+
+.bar-4 {
+    width: 40%;
+}
+
+.bar-5 {
+    width: 50%;
+}
+.bar-6 {
+    width: 60%;
+}
+
+.bar-7 {
+    width: 70%;
+}
+
+.bar-8 {
+    width: 80%;
+}
+
+.bar-9 {
+    width: 90%;
+}
+
+.bar-10 {
+    width: 100%;
+    background-color: #aeea00;
+}
