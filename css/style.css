@@ -274,40 +274,49 @@ main {
 
 .bar-1 {
     width: 10%;
+    background-color: red;
 }
 
 .bar-2 {
     width: 20%;
+    background-color: red;
 }
 
 .bar-3 {
     width: 30%;
+    background-color: orangered;
 }
 
 .bar-4 {
     width: 40%;
+    background-color: orange;
 }
 
 .bar-5 {
     width: 50%;
+    background-color: yellow;
 }
 .bar-6 {
     width: 60%;
+    background-color: #baec44;
 }
 
 .bar-7 {
     width: 70%;
+    background-color: #b8f231;
 }
 
 .bar-8 {
     width: 80%;
+    background-color: #acf10b;
 }
 
 .bar-9 {
     width: 90%;
+    background-color: #87bd0b;
 }
 
 .bar-10 {
     width: 100%;
-    background-color: #aeea00;
+    background-color: #2cc617;
 }
