@@ -147,10 +147,10 @@ $(function () {
     $([session.search.numAdults, session.search.numChildren, session.search.numInfants]).each(function (index, value) {
         for (var i = 0; i < value; i++)
         {
-
-            miHTML += spanishGroups[index] + " " + (i + 1) + " de " + value; //TODO que el select sea required
+            //TODO que el select sea required
 
             var form = "<div class=card-panel>\
+                            <span class='card-title'>"+spanishGroups[index] + " " + (i + 1) + " de " + value+"</span>\
                             <div class='row'>\
                                 <input type='hidden' id=" + groups[index] + "-" + i + "-" + 'isValidDate' + " value='false' />\
                                 <div class='col s6 input-field'>\
