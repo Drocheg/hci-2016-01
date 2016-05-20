@@ -22,14 +22,18 @@
                     <h5 class="center">Búsqueda de Vuelos</h5>
                     <form id="flightSearchForm">
                         <div class="row">
-                            <div class="input-field col s6">
+                            <div class="input-field col s1">
                                 <i class="material-icons prefix">flight_takeoff</i>
+                            </div>
+                            <div class="input-field col s5">
                                 <input type="hidden" id="fromId" value="" />
                                 <input id="from" name="from" type="text" class="validate typeahead" autocomplete="off" placeholder="Origen" required>
                                 <label data-error="" for="from"></label>
                             </div>
-                            <div class="input-field col s6">
+                             <div class="input-field col s1">
                                 <i class="material-icons prefix">flight_land</i>
+                            </div>
+                            <div class="input-field col s5">
                                 <input type="hidden" id="toId" value="" />
                                 <input id="to" name="to" type="text" class="validate typeahead" autocomplete="off" placeholder="Destino" required>
                                 <label data-error="" for="to"></label>
