@@ -189,6 +189,8 @@ app.controller('controller', function ($scope, $http) {
                         });
             };
             
+            
+            
    
 
             $scope.getDeals = function (origin) {
@@ -230,14 +232,65 @@ app.controller('controller', function ($scope, $http) {
                 window.location = "flights-deal.html";
             };
 
+      
+
             $scope.getLastMinuteDeals = function (origin) {
                 $scope.APIrequest(
-                        "booking",
-                        {method: "getlastminuteflightdeals", from: origin},
-                        function (response) {
-                            $scope.deals = response.deals;
-                        });
+                    "booking",
+                    {method: "getlastminuteflightdeals", from: origin},
+                    function (response) {
+                        $scope.deals = [];
+                        for(var index in response.deals){
+                            debugger
+                            var session = getSessionData(); //TODO borrar?
+                            var deal = response.deals[index];
+                            var date = new Date();
+                            date.setDate(date.getDate()+2);
+                            var year = date.getFullYear();
+                            var month = (1 + date.getMonth()).toString();
+                            month = month.length > 1 ? month : '0' + month;
+                            var day = date.getDate().toString();
+                            day = day.length > 1 ? day : '0' + day;
+                            var fullDate = year+"-"+month+"-"+day;
+                            var params = {
+                                method: "getonewayflights",
+                                from: origin,
+                                to: deal.city.id,
+                                dep_date: fullDate,
+                                adults: 1,
+                                children: 0,
+                                infants: 0,
+                                min_price: deal.price,
+                                max_price: deal.price,
+                            };
+                            $scope.addDeal(params, response.deals[index]);
+                            
+                        }
+                    });
             };
+            
+            $scope.addDeal = function(params, deal){
+                if($scope.deals,length<9){
+                    $scope.APIrequest(
+                        "booking",
+                        params,
+                        function (response) {
+                            if(response.flights.length!==0){
+                               
+                                $scope.deals.push(deal);
+                            }
+                        },
+                        function (response) {
+                            console.log("API error checking deal: " + JSON.stringify(response.error));
+
+                        },
+                        function (response) {
+                            console.log("Network error checking deal: " + JSON.stringify(response));
+
+                    });
+                }
+                
+            }
 
             $scope.bookFlight = function (firstName, lastName, birthDate, idType, idNumber, installments, state, zip, street, streetNumber, phones, email, addressFloor, addressApartment) {
                 $scope.APIrequest(
@@ -405,7 +458,8 @@ app.controller('controller', function ($scope, $http) {
              *                          Passengers functions
              * ************************************************************************/
             //lel nothing
-
+            $scope.order = 'asc';
+            $scope.criteria = 'total';
             $scope.resultsPerPage = 30;
             /* *************************************************************************
              *                          math functions
