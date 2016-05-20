@@ -405,7 +405,8 @@ app.controller('controller', function ($scope, $http) {
              *                          Passengers functions
              * ************************************************************************/
             //lel nothing
-
+            $scope.order = 'asc';
+            $scope.criteria = 'total';
             $scope.resultsPerPage = 30;
             /* *************************************************************************
              *                          math functions
