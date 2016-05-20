@@ -42,37 +42,36 @@ app.controller('controller', function ($scope, $http) {
      * @param {string} method (Optional) GET or POST. Defaults to GET.
      * @returns {undefined}
      */
-//    $scope.APIrequest = function (service, params, successCallback, errorCallback, failCallback, method) {
-////        APIrequest(service, params, successCallback, errorCallback, failCallback, method);
-//        $http({
-//            url: "http://eiffel.itba.edu.ar/hci/service4/" + service + ".groovy",
-//            method: method || "GET",
-//            params: params || {},
-//            cache: true,
-//            timeout: 10000
-//        }).then(
-//                //Request completed
-//                        function (response) {
-//                            if (response.data.error) {
-//                                if (typeof errorCallback !== 'undefined') {
-//                                    errorCallback(response.data);
-//                                } else {
-//                                    console.log("API returned an error: " + JSON.stringify(response.data.error));
-//                                }
-//                            } else {
-//                                successCallback(response.data);
-//                            }
-//                        },
-//                        //Request failed (e.g. network error)
-//                                function (response) {
-//                                    if (typeof failCallback !== 'undefined') {
-//                                        failCallback(response);
-//                                    } else {
-//                                        $scope.defaultFailHandler(response);
-//                                    }
-//                                }
-//                        );
-//    };
+    $scope.APIrequest = function (service, params, successCallback, errorCallback, failCallback, method) {
+        $http({
+            url: "http://eiffel.itba.edu.ar/hci/service4/" + service + ".groovy",
+            method: method || "GET",
+            params: params || {},
+            cache: true,
+            timeout: 10000
+        }).then(
+                //Request completed
+                        function (response) {
+                            if (response.data.error) {
+                                if (typeof errorCallback !== 'undefined') {
+                                    errorCallback(response.data);
+                                } else {
+                                    console.log("API returned an error: " + JSON.stringify(response.data.error));
+                                }
+                            } else {
+                                successCallback(response.data);
+                            }
+                        },
+                        //Request failed (e.g. network error)
+                                function (response) {
+                                    if (typeof failCallback !== 'undefined') {
+                                        failCallback(response);
+                                    } else {
+                                        $scope.defaultFailHandler(response);
+                                    }
+                                }
+                        );
+    };
 
             /* *************************************************************************
              *                          Interaction functions
@@ -109,7 +108,7 @@ app.controller('controller', function ($scope, $http) {
                 if (typeof ascOrDesc !== 'undefined') {
                     params.sort_order = ascOrDesc;
                 }
-                APIrequest(
+                $scope.APIrequest(
                         "review",
                         params,
                         function (response) {
@@ -174,7 +173,7 @@ app.controller('controller', function ($scope, $http) {
                     }
                 }
 
-                APIrequest(
+                $scope.APIrequest(
                         "booking",
                         params,
                         function (response) {
@@ -191,7 +190,7 @@ app.controller('controller', function ($scope, $http) {
             };
 
             $scope.getDeals = function (origin) {
-                APIrequest(
+                $scope.APIrequest(
                         "booking",
                         {method: "getlastminuteflightdeals", from: origin},
                         function (response) {
@@ -217,7 +216,7 @@ app.controller('controller', function ($scope, $http) {
             };
 
             $scope.getLastMinuteDeals = function (origin) {
-                APIrequest(
+                $scope.APIrequest(
                         "booking",
                         {method: "getflightdeals", from: origin},
                         function (response) {
@@ -226,7 +225,7 @@ app.controller('controller', function ($scope, $http) {
             };
 
             $scope.bookFlight = function (firstName, lastName, birthDate, idType, idNumber, installments, state, zip, street, streetNumber, phones, email, addressFloor, addressApartment) {
-                APIrequest(
+                $scope.APIrequest(
                         "booking",
                         {method: "getflightdeals",
                             first_name: firstName,
