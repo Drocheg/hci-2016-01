@@ -239,7 +239,7 @@
                                                     <i class="material-icons col s1" style="font-size:2.5rem; margin-top:5px; margin-left:42%;">send</i>
                                                 </div>
                                                 <div class="col s4">
-                                                    <p>{{getArrivalDateObj(flight) | date: 'HH:mm'}} - {{getDestinationAirport(flight).id}}</p>
+                                                    <p>{{getArrivalDateObj(flight) | date: 'HH:mm'}} - {{getDestinationAirport(flight).id}} <span data-ng-if='(getArrivalDateObj(flight).getDate() !== getDepartureDateObj(flight).getDate())' class='tooltipped' data-position='right' data-tooltip='Llega el día siguiente'> (+1)</span></p>
                                                     <p style="font-size: 1rem; line-height: initial;">{{getDestinationAirport(flight).description}}</p>
                                                 </div>
                                             </div>
@@ -286,13 +286,13 @@
         <!--  Scripts-->
         <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
         <script src="js/materialize.js"></script>
+        <script src='js/commonFunctions.js'></script>
         <script src="js/init.js"></script>
         <script src='js/angular.min.js'></script>
         <script src='js/controllers.js'></script>
         <script src="js/angular-materialize.js"></script>
 
         <script src='js/flights.js'></script>
-        <script src='js/commonFunctions.js'></script>
         <script src="js/typeahead.bundle.js"></script>
     </body>
 </html>

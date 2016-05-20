@@ -6,7 +6,9 @@ function getOriginAirport(flight) {
 }
 
 function getDepartureDateObj(flight) {
-    return new Date(flight.outbound_routes[0].segments[0].departure.date);
+    var str = flight.outbound_routes[0].segments[0].departure.date.split(" ");
+    var date = str[0].split("-"), time = str[1].split(":");
+    return new Date(date[0], date[1] - 1, date[2], time[0], time[1], time[2]);
 }
 
 function getDestinationAirport(flight) {
@@ -14,7 +16,9 @@ function getDestinationAirport(flight) {
 }
 
 function getArrivalDateObj(flight) {
-    return new Date(flight.outbound_routes[0].segments[0].arrival.date);
+    var str = flight.outbound_routes[0].segments[0].arrival.date.split(" ");
+    var date = str[0].split("-"), time = str[1].split(":");
+    return new Date(date[0], date[1] - 1, date[2], time[0], time[1], time[2]);
 }
 
 function getStopovers(flight) {
@@ -82,4 +86,78 @@ function getGETparam(paramName) {
         }
     }
     return null;
+}
+
+function defaultFailHandler(errorObj, customMessage) {
+    Materialize.toast(customMessage || "Error de conexión, por favor intente de nuevo.", 5000);
+    console.log("Network error: ");
+    console.log(errorObj);
+}
+
+/**
+ * Makes an API call with the specified parameters.
+ * 
+ * @param {string} service A valid API service.
+ * @param {object} params Parameters for the query, including the "method"
+ * parameter.
+ * @param {function} successCallback Callback to run on successful
+ * completion of the request that returned without errors.
+ * @param {function} errorCallback (Optional) Callback to run on successful
+ * completion of the request that returned with errors. If none provided,
+ * the error will be logged.
+ * @param {function} failCallback (Optional) Callback to run on failure (e.g.
+ * network error). If none provided, calls default fail handler.
+ * @param {string} method (Optional) GET or POST. Defaults to GET.
+ * @returns {undefined}
+ */
+function APIrequest(service, params, successCallback, errorCallback, failCallback, method) {
+    $.ajax({
+        url: "http://eiffel.itba.edu.ar/hci/service4/" + service + ".groovy",
+        method: method || "GET",
+        dataType: 'json',
+        data: params || {},
+        timeout: 10000
+    }).done(function (response) {
+        if (response.error) {
+            if (typeof errorCallback !== 'undefined') {
+                errorCallback(response);
+            } else {
+                console.log("API returned an error: " + JSON.stringify(response));
+            }
+        } else {
+            successCallback(response);
+        }
+    }).fail(function (jqXHR, textStatus, errorThrown) {
+        if (typeof failCallback !== 'undefined') {
+            failCallback(jqXHR, textStatus, errorThrown);
+        } else {
+            defaultFailHandler({jqXHR: jqXHR, textStatus: textStatus, errorThrown: errorThrown});
+        }
+    });
+
+}
+
+/**
+ * Makes an API request that is paginated and runs a callback with the total
+ * returned by the API, if specified.
+ * 
+ * @param {string} service
+ * @param {object} params
+ * @param {function} callback
+ * @returns {undefined}
+ */
+function countResults(service, params, callback) {
+    APIrequest(
+            service,
+            params,
+            function (response) {
+                if (response.total) {
+                    callback(response.total);
+                } else {
+                    console.log("No total returned for query " + JSON.stringify(params));
+                }
+            },
+            function (response) {
+                console.log("Error counting totals\nQuery: " + JSON.stringify(params) + "\nResponse error: " + JSON.stringify(response.error));
+            });
 }

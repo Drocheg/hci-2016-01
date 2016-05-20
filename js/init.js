@@ -1,5 +1,3 @@
-//TODO move these functions to session.js
-
 /**
  * Gets the stored session data, or the default data if nothing is stored.
  * 
@@ -87,32 +85,14 @@ function getSessionData() {
                 hasInboundFlight: false,
                 hasPassengers: false,
                 hasPayment: false,
-                hasContact : false
+                hasContact: false
             },
-            airlines: null
+            airlines: null,
+            cities: null,
+            airports: null
         });
     }
     return JSON.parse(sessionStorage.sessionData);
-}
-
-function getAirlines() {
-    $.ajax({
-        type: "POST",
-        url: "http://eiffel.itba.edu.ar/hci/service4/misc.groovy?method=getairlines",
-        dataType: 'json'
-    })
-    .done(function(result) {
-        var session = getSessionData();
-        session.airlines = {};
-        for(var index in result.airlines) {
-            session.airlines[result.airlines[index].id] = result.airlines[index];
-        }
-        setSessionData(session);
-    })
-    .fail(function(jqXHR, textStatus, errorThrown)
-    {
-        Materialize.toast("Error getting airlines.");   //TODO handle failure
-    });
 }
 
 /**
@@ -127,6 +107,60 @@ function setSessionData(sessionObj) {
     sessionStorage.sessionData = JSON.stringify(sessionObj);
 }
 
+function getAllAirlines() {
+    countResults(
+            "misc",
+            {method: "getairlines"},
+            function (total) {
+                APIrequest(
+                        "misc",
+                        {method: 'getairlines', page_size: total},
+                        function (result) {
+                            var session = getSessionData();
+                            session.airlines = {};
+                            for (var index in result.airlines) {
+                                session.airlines[result.airlines[index].id] = result.airlines[index];
+                            }
+                            setSessionData(session);
+                        }
+                );
+            });
+}
+
+function getAllCities() {
+    countResults(
+            "geo",
+            {method: 'getcities'},
+            function (total) {
+                APIrequest(
+                        "geo",
+                        {method: 'getcities', page_size: total},
+                        function (result) {
+                            var session = getSessionData();
+                            session.cities = result.cities;
+                            setSessionData(session);
+                        }
+                );
+            });
+}
+
+function getAllAirports() {
+    countResults(
+            "geo",
+            {method: 'getairports'},
+            function (total) {
+                APIrequest(
+                        "geo",
+                        {method: 'getairports', page_size: total},
+                        function (result) {
+                            var session = getSessionData();
+                            session.airports = result.airports;
+                            setSessionData(session);
+                        }
+                );
+            });
+}
+
 $(function () {  //Document.ready
     //Enable dynamic addition of <select>s
     $('select').material_select();
@@ -135,7 +169,13 @@ $(function () {  //Document.ready
         //TODO what to do without local storage? Nothing will work
     }
     var session = getSessionData();
-    if(session.airlines === null) {
-        getAirlines();
+    if (session.airlines === null) {
+        getAllAirlines();
+    }
+    if (session.cities === null) {
+        getAllCities();
+    }
+    if (session.airports === null) {
+        getAllAirports();
     }
 });

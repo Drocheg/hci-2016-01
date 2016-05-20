@@ -50,6 +50,9 @@ $(function () {
         $("label[for=returnDate]").hide();
     }
 
+    //Enable tooltips for +1's
+    $('.tooltipped').tooltip(/*{delay: 50}*/);
+
     if (session.search.selectedFlight !== null) {        //User refreshed page
         session.payment.total -= getFlightTotal(session.search.selectedFlight);
     }
@@ -178,7 +181,7 @@ $(function () {
         };
         //Validate
         var valid = true;
-        
+
         //Origin
         if (data.from.id === "") {
             $("label[for=from]").attr("data-error", "Por favor ingrese un orígen válido");
@@ -216,14 +219,12 @@ $(function () {
                 $("#returnDate").removeClass("valid");
                 $("#returnDate").addClass("invalid");
                 valid = false;
-            }
-            else if (!session.search.oneWayTrip && new Date(data.returnDate.full) < new Date(data.departDate.full)) {
+            } else if (!session.search.oneWayTrip && new Date(data.returnDate.full) < new Date(data.departDate.full)) {
                 $("label[for=returnDate]").attr("data-error", "Todavía no ofrecemos viajes en el tiempo"); //TODO use serious message
                 $("#returnDate").removeClass("valid");
                 $("#returnDate").addClass("invalid");
                 valid = false;
-            }
-            else {
+            } else {
                 $("#returnDate").removeClass("invalid");
                 $("#returnDate").addClass("valid");
             }
@@ -241,21 +242,20 @@ $(function () {
             $("#numAdults").removeClass("valid");
             $("#numAdults").addClass("invalid");
             valid = false;
-        }
-        else {
+        } else {
             $("#numAdults").removeClass("invalid");
             $("#numAdults").addClass("valid");
         }
-        
+
         if (!valid) {
             return;
         }
-        
+
         //What did the user change?
         var passengersChanged = data.numAdults !== session.search.numAdults || data.numChildren !== session.search.numChildren || data.numInfants !== session.search.numChildren,
-            placesChanged = data.from.id !== session.search.from.id || data.to.id !== session.search.to.id,
-            departDateChanged = data.departDate.full !== session.search.departDate.full,
-            returnDateChanged = !session.search.oneWayTrip && data.returnDate.full !== session.search.returnDate.full;
+                placesChanged = data.from.id !== session.search.from.id || data.to.id !== session.search.to.id,
+                departDateChanged = data.departDate.full !== session.search.departDate.full,
+                returnDateChanged = !session.search.oneWayTrip && data.returnDate.full !== session.search.returnDate.full;
 
         //Reset everything
         if (placesChanged || passengersChanged || departDateChanged) {
@@ -274,8 +274,7 @@ $(function () {
             session.search.direction = session.state.hasOutboundFlight ? "inbound" : "outbound";
             session.inboundFlight = null;
             session.state.hasInboundFlight = false;
-        }
-        else {  //No change, don't submit
+        } else {  //No change, don't submit
             return;
         }
         //Changed, store new data

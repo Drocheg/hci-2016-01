@@ -12,6 +12,7 @@ app.controller('controller', function ($scope, $http) {
      * @param {String} paramName
      * @returns {String|null} The value of the parameter with the specified key, or
      * null if not found.
+     * @author Cátedra de HCI
      */
     $scope.getGETparam = function (paramName) {
         var query = location.search.substring(1);
@@ -23,394 +24,389 @@ app.controller('controller', function ($scope, $http) {
             }
         }
         return null;
-    }
-
-    $scope.getAllPagesFromRequest = function (service, params, destArray, responseKey, method) {
-        var done = false;
-        var page = 1;
-        params.page = page;
-        params.page_size = 1000;        //Try to get as many result as possible per page
-//        do {
-        $http({
-            url: API_URL + service + ".groovy",
-            method: method || "GET",
-            params: params,
-            cache: true,
-            timeout: 10000
-        }).then(function (response) {
-            if (response.data.length === 0) {
-                done = true;
-            } else {
-                if (typeof responseKey !== 'undefined') {
-                    destArray.push(response.data[responseKey]);
-                } else {
-                    destArray.push(response.data);
-                }
-                console.log(JSON.stringify(response.data));
-                params.page = page++;
-            }
-        });
-//        }while(!done);
     };
-
-    /* *************************************************************************
-     *                          Interaction functions
-     * ************************************************************************/
 
     /**
-     * Finds cities and airports matching part of the specified query.
+     * Makes an API call with the specified parameters.
      * 
-     * @param {string} partialName Partial or complete name of city/airport.
-     * Must be at least 3 characters long.
-     * @param {string} destArrayName Name of $scope variable where to store the
-     * result. Will store an object of type {cities: [], airports: []}.
-     * @param {string} destStatusName Name of $scope variable where to store the
-     * status of the query (true when a query is running, false otherwise). Used
-     * to cancel previous queries if present.
+     * @param {string} service A valid API service.
+     * @param {object} params Parameters for the query, including the "method"
+     * parameter.
+     * @param {function} successCallback Callback to run on successful
+     * completion of the request that returned without errors.
+     * @param {function} errorCallback (Optional) Callback to run on successful
+     * completion of the request that returned with errors. If none provided,
+     * the error will be logged.
+     * @param {function} failCallback (Optional) Callback to run on failure (e.g.
+     * network error). If none provided, calls default fail handler.
+     * @param {string} method (Optional) GET or POST. Defaults to GET.
      * @returns {undefined}
      */
-    $scope.findSuggestions = function (partialName, destArrayName, destStatusName) {
-        if (partialName && partialName.length <= 2) {  //Avoid excessively general queries
-            return;
-        }
-        $scope[destStatusName] = true;  //Mark active query
-        //TODO cancel previous query if $scope[destStatusName] === true
-        $http({
-            url: "http://eiffel.itba.edu.ar/hci/service4/geo.groovy",
-            method: "GET",
-            headers: {"Accept": "application/json; charset=utf-8", 'Content-Type': 'application/json; charset=UTF-8'}, //TODO España still returns weird, is it encoding or DB error?
-            params: {method: "getcitiesandairportsbyname", name: partialName},
-            cache: true,
-            timeout: 10000
-        }).then(function (response) {
-            $scope[destStatusName] = false; //Query finished
-            var result = {cities: [], airports: []};
-            $(response.data.data).each(function (index, entry) {
-                if (entry.type === 'city') {
-                    result.cities.push(entry);
-                } else if (entry.type === 'airport') {
-                    result.airports.push(entry);
-                } else {
-                    console.log("Unrecognized city/airport entry:");
-                    console.log(entry); //TODO shouldn't happen
+//    $scope.APIrequest = function (service, params, successCallback, errorCallback, failCallback, method) {
+////        APIrequest(service, params, successCallback, errorCallback, failCallback, method);
+//        $http({
+//            url: "http://eiffel.itba.edu.ar/hci/service4/" + service + ".groovy",
+//            method: method || "GET",
+//            params: params || {},
+//            cache: true,
+//            timeout: 10000
+//        }).then(
+//                //Request completed
+//                        function (response) {
+//                            if (response.data.error) {
+//                                if (typeof errorCallback !== 'undefined') {
+//                                    errorCallback(response.data);
+//                                } else {
+//                                    console.log("API returned an error: " + JSON.stringify(response.data.error));
+//                                }
+//                            } else {
+//                                successCallback(response.data);
+//                            }
+//                        },
+//                        //Request failed (e.g. network error)
+//                                function (response) {
+//                                    if (typeof failCallback !== 'undefined') {
+//                                        failCallback(response);
+//                                    } else {
+//                                        $scope.defaultFailHandler(response);
+//                                    }
+//                                }
+//                        );
+//    };
+
+            /* *************************************************************************
+             *                          Interaction functions
+             * ************************************************************************/
+            $scope.pageNumber = 5;
+
+            $scope.getFilledArray = function (size) {
+                if (size === 0)
+                    return [];
+                var arr = new Array(size);
+                for (var i = 1; i <= size; i++) {
+                    arr[i - 1] = i;
                 }
-            });
-            $scope[destArrayName] = result;
-        });
-    };
+                return arr;
+            };
 
-    $scope.pageNumber = 5;
-    $scope.getFilledArray = function (size) {
-        if (size === 0)
-            return [];
-        var arr = new Array(size);
-        for (var i = 1; i <= size; i++) {
-            arr[i - 1] = i;
-        }
-        return arr;
-    };
+            /* *************************************************************************
+             *                          Review functions
+             * ************************************************************************/
+            $scope.reviewCount = 0;
 
-    /* *************************************************************************
-     *                          Review functions
-     * ************************************************************************/
-    $scope.reviewCount = 0;
+            $scope.getFlightReviews = function (airlineID, flightNumber, pageSize, pageNum, orderBy, ascOrDesc) {
+                var params = {method: "getairlinereviews", airline_id: airlineID, flight_number: flightNumber};
+                //Optional parameters
+                if (typeof pageSize !== 'undefined') {
+                    params.page_size = pageSize;
+                }
+                if (typeof pageNum !== 'undefined') {
+                    params.page = pageNum;
+                }
+                if (typeof orderBy !== 'undefined') {
+                    params.sort_key = orderBy;
+                }
+                if (typeof ascOrDesc !== 'undefined') {
+                    params.sort_order = ascOrDesc;
+                }
+                APIrequest(
+                        "review",
+                        params,
+                        function (response) {
+                            $scope.reviews = response.reviews;
+                            $scope.reviewCount = response.total;
+                        });
+            };
 
-    $scope.getFlightReviews = function (airlineID, flightNumber, pageSize, pageNum, orderBy, ascOrDesc) {
-        var optionalParams = "&page_size=" + (pageSize || "") + "&page=" + (pageNum || "") + "&sort_key=" + (orderBy || "") + "&sort_order=" + (ascOrDesc || "");
-        debugger;
-        $http.get("http://eiffel.itba.edu.ar/hci/service4/review.groovy?method=getairlinereviews&airline_id=" + airlineID + "&flight_number=" + flightNumber + optionalParams, {cache: true, timeout: 10000})
-                .then(function (response) {
-                    if (!response.data.error) {
-                        $scope.reviews = response.data.reviews;
-                        $scope.reviewCount = response.data.total;    // === $scope.reviews.length
+            $scope.getFlightAverage = function (airlineID, flightNumber) {
+                $scope.getFlightReviews(airlineID, flightNumber, 30, 1);
+                var cantReview = $scope.reviewCount;
+                var i = 1; //MAximo 15000 comentarios
+                var sum = 0;
+                do {
+                    debugger;
+                    $scope.getFlightReviews(airlineID, flightNumber, 30, i);
+                    for (var j = 0; j < 30 && j < cantReview; j++) {
+                        sum = sum + $scope.reviews[j].rating.overall;
+                    }
+                    cantReview = cantReview - 30;
+                    i++;
+                } while (cantReview > 0 && i <= 500);
+                return sum / $scope.reviewCount;
+            };
+
+            /* *************************************************************************
+             *                          Flight functions
+             * ************************************************************************/
+            $scope.deals = [];
+            $scope.flights = null;
+
+            $scope.selectFlight = function (flight) {
+                //Store flight in session
+                var session = getSessionData();
+                if (session.search.selectedFlight !== null) {   //If there's already a selected flight, subtract its total first
+                    session.payment.total -= getFlightTotal(session.search.selectedFlight);
+                }
+                session.payment.total += getFlightTotal(flight);
+                session.search.selectedFlight = flight;
+                setSessionData(session);
+                markSelectedFlight(flight, session.search.direction);
+                $("#currentTotal").html(session.payment.total.toFixed(2));
+                $("#nextStep > button").removeClass("disabled");
+            };
+
+            $scope.searchFlights = function (extraParamsObj) {
+                var session = getSessionData();
+                var params = {
+                    method: "getonewayflights",
+                    from: session.search.oneWayTrip || !session.state.hasOutboundFlight ? session.search.from.id : session.search.to.id,
+                    to: session.search.oneWayTrip || !session.state.hasOutboundFlight ? session.search.to.id : session.search.from.id,
+                    dep_date: session.search.oneWayTrip || !session.state.hasOutboundFlight ? session.search.departDate.full : session.search.returnDate.full,
+                    adults: session.search.numAdults,
+                    children: session.search.numChildren,
+                    infants: session.search.numInfants
+                };
+                //Add extra params, if supplied
+                var extraParams = ['airline_id', 'max_price', 'min_price', 'stopovers', 'cabin_type', 'min_dep_time', 'max_dep_time', 'page', 'page_size', 'sort_key', 'sort_order'];
+                for (var index in extraParams) {
+                    if (extraParamsObj.hasOwnProperty(extraParams[index])) {
+                        params[extraParams[index]] = extraParamsObj[extraParams[index]];
+                    }
+                }
+
+                APIrequest(
+                        "booking",
+                        params,
+                        function (response) {
+                            $scope.flights = response;
+                        },
+                        function (response) {
+                            console.log("API error getting flights: " + JSON.stringify(response.error));
+                            $scope.flights = {total: 0, flights: []};
+                        },
+                        function (response) {
+                            console.log("Network error getting flights: " + JSON.stringify(response));
+                            $scope.flights = {total: 0, flights: []};
+                        });
+            };
+
+            $scope.getDeals = function (origin) {
+                APIrequest(
+                        "booking",
+                        {method: "getlastminuteflightdeals", from: origin},
+                        function (response) {
+                            $scope.deals = response.data.deals;
+                        });
+            };
+
+            $scope.goToDeal = function (deal, from) {
+                Materialize.toast("Woooh! Look at that deal!!!", 5000);
+                var session = getSessionData();
+                session.search.numAdults = 1;
+                session.search.numInfants = 0;
+                session.search.numChildren = 0;
+                session.search.oneWayTrip = true;
+                session.search.max_Price = deal.price;
+                session.search.min_Price = deal.price;
+                session.search.to.name = deal.city.name;
+                session.search.to.id = deal.city.id;
+                session.search.from.id = from;
+
+                setSessionData(session);
+                window.location = "flights-deal.html";
+            };
+
+            $scope.getLastMinuteDeals = function (origin) {
+                APIrequest(
+                        "booking",
+                        {method: "getflightdeals", from: origin},
+                        function (response) {
+                            $scope.deals = response.data.deals;
+                        });
+            };
+
+            $scope.bookFlight = function (firstName, lastName, birthDate, idType, idNumber, installments, state, zip, street, streetNumber, phones, email, addressFloor, addressApartment) {
+                APIrequest(
+                        "booking",
+                        {method: "getflightdeals",
+                            first_name: firstName,
+                            last_name: lastName,
+                            birthDate: birthDate,
+                            id_type: idType,
+                            id_number: idNumber,
+                            installments: installments,
+                            state: state,
+                            zip_code: zip,
+                            street: street,
+                            number: streetNumber,
+                            phones: phones,
+                            email: email,
+                            floor: (typeof addressFloor === 'undefined' ? null : addressFloor),
+                            apartment: (typeof addressApartment === 'undefined' ? null : addressApartment)},
+                        function (response) {
+                            if (response.data.booking === true) {
+                                Materialize.toast("Reserva completada con éxito", 5000);
+                            } else {
+                                Materialize.toast("Error reservando su vuelo", 5000);
+                            }
+                        },
+                        undefined,
+                        undefined,
+                        "POST");
+            };
+
+            $scope.buildFlickURL = function (imgObj) {
+                var URL = "https://farm" + imgObj.farm + ".staticflickr.com/" + imgObj.server + "/" + imgObj.id + "_" + imgObj.secret + "_c.jpg";
+                return URL;
+            };
+
+            $scope.getFlickrImg = function (query, destId) {
+                $http({
+                    url: "https://api.flickr.com/services/rest/",
+                    method: "GET",
+                    cache: true,
+                    timeout: 10000,
+                    params: {
+                        method: "flickr.photos.search",
+                        api_key: "9a5f81e1e267f943ba8bbc71ae056840",
+                        text: query,
+                        tags: "landscape",
+                        media: "photos",
+                        extra: "url_l",
+                        format: "json",
+                        nojsoncallback: 1
+                    }
+                }).then(function (response) {
+                    if (response.data.stat !== "ok") {
+                        defaultFailHandler(response.data, "Error consiguiendo imágenes.");
+                        //TODO use fallback image
                     } else {
-                        console.log("Error getting reviews: " + JSON.stringify(response.data.error));
+                        if (response.data.photos.photo.length === 0) {
+                            Materialize.toast("No se encontraron imágenes para " + query);
+                            //TODO use fallback iamge
+                        }
+                        else {
+                            $("#" + destId).attr("src", $scope.buildFlickURL(response.data.photos.photo[0]));
+                        }
                     }
                 });
-    };
+            };
 
-    $scope.getFlightAverage = function (airlineID, flightNumber) {
-        $scope.getFlightReviews(airlineID, flightNumber, 30, 1);
-        var cantReview = $scope.reviewCount;
-        var i = 1; //MAximo 15000 comentarios
-        var sum = 0;
-        do {
-            debugger;
-            $scope.getFlightReviews(airlineID, flightNumber, 30, i);
-            for (var j = 0; j < 30 && j < cantReview; j++) {
-                sum = sum + $scope.reviews[j].rating.overall;
-            }
-            cantReview = cantReview - 30;
-            i++;
-        } while (cantReview > 0 && i <= 500);
-        return sum / $scope.reviewCount;
-    };
-
-    /* *************************************************************************
-     *                          Flight functions
-     * ************************************************************************/
-    $scope.deals = [];
-    $scope.flights = null;
-
-    $scope.selectFlight = function (flight) {
-        //Store flight in session
-        var session = getSessionData();
-        if (session.search.selectedFlight !== null) {   //If there's already a selected flight, subtract its total first
-            session.payment.total -= getFlightTotal(session.search.selectedFlight);
-        }
-        session.payment.total += getFlightTotal(flight);
-        session.search.selectedFlight = flight;
-        setSessionData(session);
-        markSelectedFlight(flight, session.search.direction);
-        $("#currentTotal").html(session.payment.total.toFixed(2));
-        $("#nextStep > button").removeClass("disabled");
-    };
-
-    $scope.searchFlights = function (extraParamsObj) {
-        var session = getSessionData();
-        var params = {
-            method: "getonewayflights",
-            from: session.search.oneWayTrip || !session.state.hasOutboundFlight ? session.search.from.id : session.search.to.id,
-            to: session.search.oneWayTrip || !session.state.hasOutboundFlight ? session.search.to.id : session.search.from.id,
-            dep_date: session.search.oneWayTrip || !session.state.hasOutboundFlight ? session.search.departDate.full : session.search.returnDate.full,
-            adults: session.search.numAdults,
-            children: session.search.numChildren,
-            infants: session.search.numInfants
-        };
-        //Add extra params, if supplied
-        var extraParams = ['airline_id', 'max_price', 'min_price', 'stopovers', 'cabin_type', 'min_dep_time', 'max_dep_time', 'page', 'page_size', 'sort_key', 'sort_order'];
-        for (var index in extraParams) {
-            if (extraParamsObj.hasOwnProperty(extraParams[index])) {
-                params[extraParams[index]] = extraParamsObj[extraParams[index]];
-            }
-        }
-
-        $http({
-            url: "http://eiffel.itba.edu.ar/hci/service4/booking.groovy",
-            method: "GET",
-            params: params,
-            cache: true,
-            timeout: 10000
-        }).then(function (response) {
-            if (response.data.error) {
-                console.log("Error getting flights");
-                console.log(JSON.stringify(response.data.error));
-                $scope.flights = [];
-            } else {
-                $scope.flights = response.data;
-            }
-        });
-    };
-
-    $scope.getDeals = function (origin) {
-        $http.get("http://eiffel.itba.edu.ar/hci/service4/booking.groovy?method=getflightdeals&from=" + origin, {cache: true, timeout: 10000})
-                .then(function (response) {
-                    $scope.deals = response.data.deals;
-                });
-    };
-
-    $scope.goToDeal = function (deal, from) {
-        Materialize.toast("Woooh! Look at that deal!!!", 5000);
-        var session = getSessionData();
-        session.search.numAdults=1;
-        session.search.numInfants=0;
-        session.search.numChildren=0;
-        session.search.oneWayTrip=true;
-        session.search.max_Price=deal.price;
-        session.search.min_Price=deal.price;
-        session.search.to.name = deal.city.name;
-        session.search.to.id = deal.city.id;
-        session.search.from.id = from;
-        
-        setSessionData(session);
-        window.location = "flights-deal.html";
-    };
-
-    $scope.getLastMinuteDeals = function (origin) {
-        $http.get("http://eiffel.itba.edu.ar/hci/service4/booking.groovy?method=getlastminuteflightdeals&from=" + origin, {cache: true, timeout: 10000})
-                .then(function (response) {
-                    $scope.deals = response.data.deals;
-                });
-    };
-
-    $scope.bookFlight = function (firstName, lastName, birthDate, idType, idNumber, installments, state, zip, street, streetNumber, phones, email, addressFloor, addressApartment) {
-        $http.post("http://eiffel.itba.edu.ar/hci/service4/booking.groovy",
-                {method: "getflightdeals",
-                    first_name: firstName,
-                    last_name: lastName,
-                    birthDate: birthDate,
-                    id_type: idType,
-                    id_number: idNumber,
-                    installments: installments,
-                    state: state,
-                    zip_code: zip,
-                    street: street,
-                    number: streetNumber,
-                    phones: phones,
-                    email: email,
-                    floor: (addressFloor === undefined ? null : addressFloor),
-                    apartment: (addressApartment === undefined ? null : addressApartment)
-                },
-                {cache: true,
+            $scope.getFlickBannerImg = function (query, selector) {
+                $http({
+                    url: "https://api.flickr.com/services/rest/",
+                    method: "GET",
+                    params: {
+                        method: "flickr.photos.search",
+                        api_key: "9a5f81e1e267f943ba8bbc71ae056840",
+                        text: query,
+                        tags: "landscape",
+                        media: "photos",
+                        extra: "url_l",
+                        format: "json",
+                        nojsoncallback: 1
+                    },
+                    cache: true,
                     timeout: 10000
                 }).then(function (response) {
-            if (response.data.booking === true) {
-                Materialize.toast("OK señorita querida de mi corazón de melocotón de 4 o más décadas", 5000);
-            } else {
-                Materialize.toast("Error bookeando el flighto", 5000);
-            }
-        });
-    };
+                    if (response.data.stat !== "ok") {
+                        defaultFailHandler(response.data, "Error consiguiendo imágenes.");
+                        //TODO use fallback image
+                    } else {
+                        if (response.data.photos.photo.length === 0) {
+                            Materialize.toast("No se encontraron imágenes para " + query);
+                            //TODO use fallback iamge
+                        }
+                        else {
+                            $(selector).css("background", "url('" + $scope.buildFlickURL(response.data.photos.photo[0]) + "')");
+                        }
+                    }
+                });
+            };
 
-    $scope.buildFlickURL = function (imgObj) {
-        var URL = "https://farm" + imgObj.farm + ".staticflickr.com/" + imgObj.server + "/" + imgObj.id + "_" + imgObj.secret + "_c.jpg";
-        return URL;
-    };
+            $scope.getOriginAirport = function (flight) {
+                return flight.outbound_routes[0].segments[0].departure.airport;
+            };
 
-    $scope.getFlickrImg = function (query, destId) {
-        $http({
-            url: "https://api.flickr.com/services/rest/",
-            method: "GET",
-            params: {
-                method: "flickr.photos.search",
-                api_key: "9a5f81e1e267f943ba8bbc71ae056840",
-                text: query,
-                tags: "landscape",
-                media: "photos",
-                extra: "url_l",
-                format: "json",
-                nojsoncallback: 1,
-//                auth_token: "72157668239782652-059ca87c58c4d413",
-//                api_sig: "fd31f0929e9b67bf16f960d68fc663ec",
-            },
-            cache: true,
-            timeout: 10000
-        }).then(function (response) {
-            if (response.data.stat !== "ok") {
-                Materialize.toast("Flickr Error");
-                console.log(JSON.stringify(response.data));
-            } else {
-                if (response.data.photos.photo.length === 0) {
-                    Materialize.toast("No images found for " + query);
+            $scope.getDepartureDateObj = function (flight) {
+                var str = flight.outbound_routes[0].segments[0].departure.date.split(" ");
+                var date = str[0].split("-"), time = str[1].split(":");
+                return new Date(date[0], date[1] - 1, date[2], time[0], time[1], time[2]);
+            };
+
+            $scope.getDestinationAirport = function (flight) {
+                return flight.outbound_routes[0].segments[0].arrival.airport;
+            };
+
+            $scope.getArrivalDateObj = function (flight) {
+                var str = flight.outbound_routes[0].segments[0].arrival.date.split(" ");
+                var date = str[0].split("-"), time = str[1].split(":");
+                return new Date(date[0], date[1] - 1, date[2], time[0], time[1], time[2]);
+            };
+
+            $scope.getStopovers = function (flight) {
+                return flight.outbound_routes[0].segments[0].stopovers;
+            };
+
+            $scope.getStopoversCount = function (flight) {
+                return flight.outbound_routes[0].segments[0].stopovers.length;
+            };
+
+            $scope.isDirectFlight = function (flight) {
+                return $scope.getStopovers(flight).length === 0;
+            };
+
+            $scope.getFlightTotal = function (flight) {
+                return $scope.getFlightPriceBreakdown(flight).total.total;
+            };
+
+            $scope.getFlightPriceBreakdown = function (flight) {
+                return flight.price;
+            };
+
+            $scope.getFlightAirlineName = function (flight) {
+                return flight.outbound_routes[0].segments[0].airline.name;
+            };
+
+            $scope.getFlightAirlineID = function (flight) {
+                return flight.outbound_routes[0].segments[0].airline.id;
+            };
+
+            $scope.getFlightAirlineLogoURL = function (flight) {
+                var session = getSessionData();
+                return session.airlines[getFlightAirlineID(flight)].logo || "#";
+                //    TODO fall back to default image if not found
+            };
+
+            $scope.getFlightNumber = function (flight) {
+                return flight.outbound_routes[0].segments[0].number;
+            };
+
+            $scope.getFlightDuration = function (flight) {
+                return flight.outbound_routes[0].duration;
+            };
+
+
+            /* *************************************************************************
+             *                          Passengers functions
+             * ************************************************************************/
+            //lel nothing
+
+            $scope.resultsPerPage = 30;
+            /* *************************************************************************
+             *                          math functions
+             * ************************************************************************/
+            $scope.getNumberOfPages = function (totalResults, resultsPerPage) {
+                if (typeof totalResults === 'undefined' || totalResults === 0)
+                    return 0;
+                var numberOfPages = Number(totalResults) / Number(resultsPerPage);
+                var nonCompletePage = Number(numberOfPages);
+                numberOfPages = Number(numberOfPages).toFixed(0);
+                if (numberOfPages < nonCompletePage) {
+                    debugger;
+                    numberOfPages = Number(numberOfPages) + 1;
                 }
-                $("#" + destId).attr("src", $scope.buildFlickURL(response.data.photos.photo[0]));
-//                 $("#"+destId).attr("style",  "background-image: url('"+$scope.buildFlickURL(response.data.photos.photo[0])+"');");
-//               
-//                return $scope.buildFlickURL(response.data.photos.photo[0/*(Math.random() * response.data.photos.perpage)*/]);
-            }
+                debugger;
+                return Number(numberOfPages);
+            };
         });
-    };
-
-    $scope.getFlickBannerImg = function (query, selector) {
-        $http({
-            url: "https://api.flickr.com/services/rest/",
-            method: "GET",
-            params: {
-                method: "flickr.photos.search",
-                api_key: "9a5f81e1e267f943ba8bbc71ae056840",
-                text: query,
-                tags: "landscape",
-                media: "photos",
-                extra: "url_l",
-                format: "json",
-                nojsoncallback: 1,
-//                auth_token: "72157668239782652-059ca87c58c4d413",
-//                api_sig: "fd31f0929e9b67bf16f960d68fc663ec",
-            },
-            cache: true,
-            timeout: 10000
-        }).then(function (response) {
-            if (response.data.stat !== "ok") {
-                Materialize.toast("Flickr Error");
-                console.log(JSON.stringify(response.data));
-            } else {
-                if (response.data.photos.photo.length === 0) {
-                    Materialize.toast("No images found for " + query);
-                }
-                $(selector).css("background", "url('" + $scope.buildFlickURL(response.data.photos.photo[0]) + "')");
-            }
-        });
-    };
-
-    $scope.getOriginAirport = function (flight) {
-        return flight.outbound_routes[0].segments[0].departure.airport;
-    };
-
-    $scope.getDepartureDateObj = function (flight) {
-        return new Date(flight.outbound_routes[0].segments[0].departure.date);
-    };
-
-    $scope.getDestinationAirport = function (flight) {
-        return flight.outbound_routes[0].segments[0].arrival.airport;
-    };
-
-    $scope.getArrivalDateObj = function (flight) {
-        return new Date(flight.outbound_routes[0].segments[0].arrival.date);
-    };
-
-    $scope.getStopovers = function (flight) {
-        return flight.outbound_routes[0].segments[0].stopovers;
-    };
-
-    $scope.getStopoversCount = function (flight) {
-        return flight.outbound_routes[0].segments[0].stopovers.length;
-    };
-
-    $scope.isDirectFlight = function (flight) {
-        return $scope.getStopovers(flight).length === 0;
-    };
-
-    $scope.getFlightTotal = function (flight) {
-        return $scope.getFlightPriceBreakdown(flight).total.total;
-    };
-
-    $scope.getFlightPriceBreakdown = function (flight) {
-        return flight.price;
-    };
-
-    $scope.getFlightAirlineName = function (flight) {
-        return flight.outbound_routes[0].segments[0].airline.name;
-    };
-
-    $scope.getFlightAirlineID = function (flight) {
-        return flight.outbound_routes[0].segments[0].airline.id;
-    };
-
-    $scope.getFlightAirlineLogoURL = function (flight) {
-        var session = getSessionData();
-        return session.airlines[getFlightAirlineID(flight)].logo || "#";
-        //    TODO fall back to default image if not found
-    };
-
-    $scope.getFlightNumber = function (flight) {
-        return flight.outbound_routes[0].segments[0].number;
-    };
-
-    $scope.getFlightDuration = function (flight) {
-        return flight.outbound_routes[0].duration;
-    };
-
-
-    /* *************************************************************************
-     *                          Passengers functions
-     * ************************************************************************/
-    //lel nothing
-
-    $scope.resultsPerPage = 30;
-    /* *************************************************************************
-     *                          math functions
-     * ************************************************************************/
-    $scope.getNumberOfPages = function (totalResults, resultsPerPage) {
-        if (typeof totalResults === 'undefined' || totalResults === 0)
-            return 0;
-        var numberOfPages = Number(totalResults) / Number(resultsPerPage);
-        var nonCompletePage = Number(numberOfPages);
-        numberOfPages = Number(numberOfPages).toFixed(0);
-        if (numberOfPages < nonCompletePage) {
-            debugger;
-            numberOfPages = Number(numberOfPages) + 1;
-        }
-        debugger;
-        return Number(numberOfPages);
-    };
-});
