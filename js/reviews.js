@@ -61,5 +61,6 @@ $(function () {
         data.general = getGeneralScore(data.friendliness, data.food, data.punctuality, data.millage_program, data.comfort, data.quality_price);
         debugger;
         submitReview(data.id, Number(data.flightNum), Number(data.friendliness), Number(data.food), Number(data.punctuality), Number(data.millage_program), Number(data.comfort), Number(data.quality_price), Boolean(data.recommendation), data.comments);
+        window.location.replace("reviews.html?airlineId=" + data.id + "&flightNum=" + data.flightNum);
     });
 });
