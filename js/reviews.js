@@ -44,7 +44,7 @@ function submitReview(airlineID, flightNum, friend, food, punct, mileage, comfor
         type: "POST",
         url: "http://eiffel.itba.edu.ar/hci/service4/review.groovy?method=reviewairline",
         contentType: 'aplication/json', //TODO SACAR CABLEADO DE ID
-        data: JSON.stringify({flight: {airline: {id: "AR"}, number: flightNum}, rating: {friendliness: friend, food: food, punctuality: punct, mileage_program: mileage, comfort: comfort, quality_price: quality}, yes_recommend: recommend, comments: comments})  //TODO yes_recommend false rompe
+        data: JSON.stringify({flight: {airline: {id: airlineID}, number: flightNum}, rating: {friendliness: friend, food: food, punctuality: punct, mileage_program: mileage, comfort: comfort, quality_price: quality}, yes_recommend: recommend, comments: comments})  //TODO yes_recommend false rompe
     })
             .done(function (result) {
                 if (result.error) {
@@ -55,10 +55,7 @@ function submitReview(airlineID, flightNum, friend, food, punct, mileage, comfor
                         Materialize.toast("Error, decile a Juen");       //TODO remove
                     } else {
                         Materialize.toast("Review subida");
-                        setTimeout(function() {
-                            window.location.replace("reviews.html?airlineId=" + data.id + "&flightNum=" + data.flightNum);      //TODO remove
-                            
-                        }, 5000);
+                        window.location.replace("reviews.html?airlineId=" + data.id + "&flightNum=" + data.flightNum);
                     }
                 }
             })
