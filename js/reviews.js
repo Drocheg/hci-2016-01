@@ -47,8 +47,8 @@ $(function () {
         $submitBtn.html("Validando...");
         var session = getSessionData();
         var data = {
-            id: getGETParam('airlineID'),
-            flightNum: getGETParam('flightNumber'),
+            id: getGETparam('airlineId'),
+            flightNum: getGETparam('flightNum'),
             friendliness: $("input[name=friendliness]:checked").val(),
             food: $("input[name=food]:checked").val(),
             punctuality: $("input[name=punctuality]:checked").val(),

@@ -194,7 +194,7 @@ app.controller('controller', function ($scope, $http) {
                         "booking",
                         {method: "getlastminuteflightdeals", from: origin},
                         function (response) {
-                            $scope.deals = response.data.deals;
+                            $scope.deals = response.deals;
                         });
             };
 
