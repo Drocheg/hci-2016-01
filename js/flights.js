@@ -1,5 +1,5 @@
 /**
- * Updates the outgoing/incoming boxes on flights.html to show info of the
+ * Updates the outgoing/incoming boxes on the flights page to show info of the
  * specified flight.
  * 
  * @param {object} flight
@@ -41,6 +41,23 @@ function markSelectedFlight(flight, direction) {
     $("#" + id).html(html);
 }
 
+/**
+ * Gets the next page the user should visit based on the current state.
+ * 
+ * @returns {string} The next page; flights, passenger info, payment or order
+ * summary.
+ */
+function nextPage() {
+    var session = getSessionData();
+    var nextPage = "index.html";        //Fall back to home if nothing is chosen
+    if (!session.search.oneWayTrip && !session.state.hasInboundFlight) {
+        nextPage = "flights.html?from=" + session.search.to.id + "&to=" + session.search.from.id + "&dep_date=" + session.search.returnDate.full + "&direction=inbound" + "&adults=" + session.search.numAdults + "&children=" + session.search.numChildren + "&infants=" + session.search.numInfants;
+    } else {
+        nextPage = session.state.hasPassengers ? (session.state.hasPayment ? "order-summary.html" : "payment.html") : "passengers-information.html";
+    }
+    return nextPage;
+}
+
 $(function () {
     var session = getSessionData();
     //Set the one way trip checkbox accordingly
@@ -53,74 +70,108 @@ $(function () {
     //Enable tooltips for +1's
     $('.tooltipped').tooltip(/*{delay: 50}*/);
 
-    if (session.search.selectedFlight !== null) {        //User refreshed page
+    //If there's a flight already selected, clear it
+
+    if (session.search.selectedFlight !== null) {
+        switch (getGETparam('direction')) {
+            case 'outbound':
+                session.outboundFlight = null;
+                break;
+            case 'inbound':
+                session.inboundFlight = null;
+                break;
+            default:
+                Materialize.toast("No flight direction set. Cancelling.");
+                return;
+        }
         session.payment.total -= getFlightTotal(session.search.selectedFlight);
+        session.search.selectedFlight = null;
     }
-    //Unselect any previously selected flight
-    session.search.selectedFlight = null;
     setSessionData(session);
 
     //Redirect to home if no search has been performed.
-//    if(session.search.from.id === null) {
-//        window.location = ".";
-//    }
+    //    if(session.search.from.id === null) {
+    //        window.location = ".";
+    //    }
 
     //Mark current total
     $("#currentTotal").html(session.payment.total.toFixed(2));
+
     //Mark any selected flights
     markSelectedFlight(session.outboundFlight, 'outbound');
     markSelectedFlight(session.inboundFlight, 'inbound');
 
-    //Autocomplete (typeahead.js)
-    var autocomplete = new Bloodhound({
-        datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
-        queryTokenizer: Bloodhound.tokenizers.whitespace,
-        remote: {
-            url: 'http://eiffel.itba.edu.ar/hci/service4/geo.groovy?method=getcitiesandairportsbyname&name=%QUERY',
-            wildcard: '%QUERY',
-            transform: function (response) {
-                if (response.error) {
-                    console.log("Autocomplete error: " + JSON.stringify(response.error));        //TODO shouldn't happen
-                    return [];
+    //Autocomplete (typeahead.js), cities and airports need to be loaded first
+    $.when(citiesPromise, airportsPromise).then(function () {
+        var airports = new Bloodhound({
+            datumTokenizer: function (datum) {
+                return Bloodhound.tokenizers.whitespace(datum.full);
+            },
+            queryTokenizer: Bloodhound.tokenizers.whitespace,
+            local: getSessionData().airports.map(function (entry) {
+                return {id: entry.id,
+                    full: entry.description + " (" + entry.id + ")"};
+            })
+        });
+        airports.initialize();
+
+        var cities = new Bloodhound({
+            datumTokenizer: function (datum) {
+                return Bloodhound.tokenizers.whitespace(datum.full);
+            },
+            queryTokenizer: Bloodhound.tokenizers.whitespace,
+            local: getSessionData().cities.map(function (entry) {
+                return {id: entry.id,
+                    full: entry.name + " (" + entry.id + ")"};
+            })
+        });
+        cities.initialize();
+
+
+        $('#from, #to').typeahead(
+                {
+                    minLength: 2,
+                    highlight: true,
+                    templates: {
+                        notFound: '<div>Sin resultados</div>'
+                    }
+                },
+                {
+                    name: 'Aeropuertos',
+                    source: airports.ttAdapter(),
+                    displayKey: 'full',
+                    limit: 5,
+                    templates: {
+                        header: '<p class="center dataset-title">Aeropuertos <i class="material-icons">airplanemode_active</i></p><div class="divider"></div>'
+                    }
+                },
+                {
+                    name: 'Ciudades',
+                    source: cities.ttAdapter(),
+                    displayKey: 'full',
+                    limit: 5,
+                    templates: {
+                        header: '<div class="divider"></div><p class="center dataset-title">Ciudades <i class="material-icons">location_city</i></p><div class="divider"></div>'
+                    }
                 }
-                return response.data.map(function (entry) {
-                    return {
-                        value: (entry.name || entry.description) + " (" + entry.id + ")",
-                        id: entry.id
-                    };
-                });
-            }
-        }
+        );
+
+        $('#from, #to').removeAttr("disabled");
+        $("#from").attr("placeholder", "Origen");
+        $("#to").attr("placeholder", "Destino");
     });
 
-    $('#from').typeahead(null, {
-        source: autocomplete,
-        name: 'autocomplete-from',
-        display: 'value',
-        minLength: 3,
-        highlight: true
-    });
 
     $('#from').on("change", function () {
         $("#fromId").val("");
     });
-
     $('#from').bind('typeahead:select', function (ev, suggestion) {
         $("#fromId").val(suggestion.id);
-    });
-
-    $('#to').typeahead(null, {
-        source: autocomplete,
-        name: 'autocomplete-to',
-        display: 'value',
-        minLength: 3,
-        highlight: true
     });
 
     $('#to').bind('typeahead:select', function (ev, suggestion) {
         $("#toId").val(suggestion.id);
     });
-
     $('#to').on("change", function () {
         $("#fromId").val("");
     });
@@ -257,8 +308,10 @@ $(function () {
                 departDateChanged = data.departDate.full !== session.search.departDate.full,
                 returnDateChanged = !session.search.oneWayTrip && data.returnDate.full !== session.search.returnDate.full;
 
+        var nextDirection = "";
         //Reset everything
         if (placesChanged || passengersChanged || departDateChanged) {
+            nextDirection = "outbound";
             session.search.direction = "outbound";
             session.outboundFlight = null;
             session.inboundFlight = null;
@@ -271,6 +324,7 @@ $(function () {
             if (session.state.hasInboundFlight) {
                 session.payment.total -= getFlightTotal(session.InboundFlight);
             }
+            nextDirection = session.state.hasOutboundFlight ? "inbound" : "outbound";
             session.search.direction = session.state.hasOutboundFlight ? "inbound" : "outbound";
             session.inboundFlight = null;
             session.state.hasInboundFlight = false;
@@ -284,7 +338,7 @@ $(function () {
         //Clear selected flight for next page load
         session.search.selectedFlight = null;
         setSessionData(session);
-        window.location = "flights.html";
+        window.location = "flights.html?from=" + data.from.id + "&to=" + data.to.id + "&dep_date=" + data.departDate.full + "&direction=" + nextDirection + "&adults=" + data.numAdults + "&children=" + data.numChildren + "&infants=" + data.numInfants;
     });
 
     $("#flights").on("click", ".selectFlightBtn", function () {
@@ -305,27 +359,23 @@ $(function () {
         var flight = session.search.selectedFlight;
         //Update session state
         var direction = session.search.direction;
-        var nextPage = null;
         if (direction === "outbound") {
             session.outboundFlight = flight;
             session.state.hasOutboundFlight = true;
             if (session.search.oneWayTrip) {
-                nextPage = session.state.hasPayment ? (session.state.hasPassengers ? "order-summary.html" : "passengers-information.html") : "payment.html";
                 session.search.direction = null;
             } else {
-                nextPage = session.state.hasInboundFlight ? (session.state.hasPayment ? ((session.state.hasPassengers ? "order-summary.html" : "passengers-information.html")) : "payment.html") : "flights.html";
                 session.search.direction = session.state.hasInboundFlight ? null : "inbound";
             }
         } else if (direction === "inbound") {
             session.inboundFlight = flight;
             session.state.hasInboundFlight = true;
-            nextPage = session.state.hasPayment ? (session.state.hasPassengers ? "order-summary.html" : "passengers-information.html") : "payment.html";
             session.search.direction = null;
         } else {
             Materialize.toast("Invalid state. Direction is neither inbound nor outbound. Fix.");    //TODO fix
         }
         session.search.selectedFlight = null;
         setSessionData(session);
-        window.location = nextPage;
+        window.location = nextPage();
     });
 });

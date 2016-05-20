@@ -1,3 +1,7 @@
+//Promises for readying the autocomplete
+var citiesPromise = $.Deferred(),
+    airportsPromise = $.Deferred();
+
 /**
  * Gets the stored session data, or the default data if nothing is stored.
  * 
@@ -139,6 +143,7 @@ function getAllCities() {
                             var session = getSessionData();
                             session.cities = result.cities;
                             setSessionData(session);
+                            citiesPromise.resolve();
                         }
                 );
             });
@@ -156,6 +161,7 @@ function getAllAirports() {
                             var session = getSessionData();
                             session.airports = result.airports;
                             setSessionData(session);
+                            airportsPromise.resolve();
                         }
                 );
             });
@@ -174,8 +180,12 @@ $(function () {  //Document.ready
     }
     if (session.cities === null) {
         getAllCities();
+    } else {
+        citiesPromise.resolve();
     }
     if (session.airports === null) {
         getAllAirports();
+    } else {
+        airportsPromise.resolve();
     }
 });

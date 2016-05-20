@@ -1,5 +1,4 @@
 $(function () {
-    
     $("#changeOutboundFlightBtn").on("click", function () {
         var session = getSessionData();
         var f = session.outboundFlight;
@@ -7,7 +6,7 @@ $(function () {
         session.state.hasOutboundFlight = false;
         session.outboundFlight = null;
         setSessionData(session);
-        window.location = "flights.html";
+        window.location = "flights.html?from="+session.search.from.id+"&to="+session.search.to.id+"&dep_date="+session.search.departDate.full+"&direction=outbound"+"&adults="+session.search.numAdults+"&children="+session.search.numChildren+"&infants="+session.search.numInfants;
     });
 
     $("#changeInboundFlightBtn").on("click", function () {        
@@ -17,7 +16,7 @@ $(function () {
         session.state.hasInboundFlight = false;
         session.inboundFlight = null;
         setSessionData(session);
-        window.location = "flights.html";
+        window.location = "flights.html?from="+session.search.to.id+"&to="+session.search.from.id+"&dep_date="+session.search.returnDate.full+"&direction=inbound"+"&adults="+session.search.numAdults+"&children="+session.search.numChildren+"&infants="+session.search.numInfants;
     });
 
     $("#changePassengersBtn").on("click", function () {

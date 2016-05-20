@@ -3,46 +3,71 @@ $(function () {
      *                            Search Form
      ***********************************************************************/
 
-//Autocomplete (typeahead.js)
-    var autocomplete = new Bloodhound({
-        datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
-        queryTokenizer: Bloodhound.tokenizers.whitespace,
-        remote: {
-            url: 'http://eiffel.itba.edu.ar/hci/service4/geo.groovy?method=getcitiesandairportsbyname&name=%QUERY',
-            wildcard: '%QUERY',
-            transform: function (response) {
-                if (response.error) {
-                    console.log("Autocomplete error: " + JSON.stringify(response.error)); //TODO shouldn't happen
-                    return [];
+    //Autocomplete (typeahead.js), cities and airports need to be loaded first
+    $.when(citiesPromise, airportsPromise).then(function () {
+        var airports = new Bloodhound({
+            datumTokenizer: function (datum) {
+                return Bloodhound.tokenizers.whitespace(datum.full);
+            },
+            queryTokenizer: Bloodhound.tokenizers.whitespace,
+            local: getSessionData().airports.map(function (entry) {
+                return {id: entry.id,
+                    full: entry.description + " (" + entry.id + ")"};
+            })
+        });
+        airports.initialize();
+        
+        var cities = new Bloodhound({
+            datumTokenizer: function (datum) {
+                return Bloodhound.tokenizers.whitespace(datum.full);
+            },
+            queryTokenizer: Bloodhound.tokenizers.whitespace,
+            local: getSessionData().cities.map(function (entry) {
+                return {id: entry.id,
+                    full: entry.name + " (" + entry.id + ")"};
+            })
+        });
+        cities.initialize();
+        
+
+        $('#from, #to').typeahead(
+                {
+                    minLength: 2,
+                    highlight: true,
+                    templates: {
+                        notFound: '<div>Sin resultados</div>'
+                    }
+                },
+                {
+                    name: 'Aeropuertos',
+                    source: airports.ttAdapter(),
+                    displayKey: 'full',
+                    limit: 5,
+                    templates: {
+                        header: '<p class="center dataset-title">Aeropuertos <i class="material-icons">airplanemode_active</i></p><div class="divider"></div>'
+                    }
+                },
+                {
+                    name: 'Ciudades',
+                    source: cities.ttAdapter(),
+                    displayKey: 'full',
+                    limit: 5,
+                    templates: {
+                        header: '<div class="divider"></div><p class="center dataset-title">Ciudades <i class="material-icons">location_city</i></p><div class="divider"></div>'
+                    }
                 }
-                return response.data.map(function (entry) {
-                    return {
-                        value: (entry.name || entry.description) + " (" + entry.id + ")",
-                        id: entry.id
-                    };
-                });
-            }
-        }
+        );
+        $('#from, #to').removeAttr("disabled");
+        $("#from").attr("placeholder", "Origen");
+        $("#from").focus();
+        $("#to").attr("placeholder", "Destino");
     });
-    $('#from').typeahead(null, {
-        source: autocomplete,
-        name: 'autocomplete-from',
-        display: 'value',
-        minLength: 3,
-        highlight: true
-    });
+
     $('#from').on("change", function () {
         $("#fromId").val("");
     });
     $('#from').bind('typeahead:select', function (ev, suggestion) {
         $("#fromId").val(suggestion.id);
-    });
-    $('#to').typeahead(null, {
-        source: autocomplete,
-        name: 'autocomplete-to',
-        display: 'value',
-        minLength: 3,
-        highlight: true
     });
     $('#to').bind('typeahead:select', function (ev, suggestion) {
         $("#toId").val(suggestion.id);
@@ -50,6 +75,7 @@ $(function () {
     $('#to').on("change", function () {
         $("#fromId").val("");
     });
+
     //Datepickers
     var minDate = new Date();
     minDate.setDate(minDate.getDate() + 3); //Minimum date is 3 days from now
@@ -149,14 +175,12 @@ $(function () {
                 $("#returnDate").removeClass("valid");
                 $("#returnDate").addClass("invalid");
                 valid = false;
-            }
-            else if (!data.oneWayTrip && new Date(data.returnDate.full) < new Date(data.departDate.full)) {
+            } else if (!data.oneWayTrip && new Date(data.returnDate.full) < new Date(data.departDate.full)) {
                 $("label[for=returnDate]").attr("data-error", "Todavía no ofrecemos viajes en el tiempo"); //TODO use serious message
                 $("#returnDate").removeClass("valid");
                 $("#returnDate").addClass("invalid");
                 valid = false;
-            }
-            else {
+            } else {
                 $("#returnDate").removeClass("invalid");
                 $("#returnDate").addClass("valid");
             }
@@ -174,16 +198,15 @@ $(function () {
             $("#numAdults").removeClass("valid");
             $("#numAdults").addClass("invalid");
             valid = false;
-        }
-        else {
+        } else {
             $("#numAdults").removeClass("invalid");
             $("#numAdults").addClass("valid");
         }
-        
+
         if (!valid) {
             return;
         }
-        
+
         //Valid, store data and go to flight search
         var session = getSessionData();
         for (var property in data) {
@@ -199,7 +222,7 @@ $(function () {
         //Data for next page
         session.search.direction = "outbound";
         setSessionData(session);
-        window.location = "flights.html";
+        window.location = "flights.html?from=" + data.from.id + "&to=" + data.to.id + "&dep_date=" + data.departDate.full + "&direction=outbound" + "&adults=" + data.numAdults + "&children=" + data.numChildren + "&infants=" + data.numInfants;
     });
     /***********************************************************************
      *                            Deals

@@ -136,7 +136,7 @@ $(function () {
     $("#backButton").on("click", function (event) {
         event.preventDefault();
         $("#backButton").addClass("disabled");
-        window.location = "payment.html"; //flight o flight 2
+        window.history.back();
     });
 
 

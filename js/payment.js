@@ -270,6 +270,6 @@ $(function () {
     $("#backButton").on("click", function(event) {
         event.preventDefault();
         $("#backButton").addClass("disabled");
-        window.location = "flights.html"; //flight o flight 2
+        window.history.back();  //Will go back to previous search (inbound trip if user searched for round trip, outbound trip if one way trip)
     });
 });

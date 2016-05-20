@@ -11,7 +11,7 @@ app.controller('controller', function ($scope, $http) {
      * 
      * @param {String} paramName
      * @returns {String|null} The value of the parameter with the specified key, or
-     * null if not found.
+     * null if not found or if empty.
      * @author Cátedra de HCI
      */
     $scope.getGETparam = function (paramName) {
@@ -20,7 +20,8 @@ app.controller('controller', function ($scope, $http) {
         for (var i = 0; i < vars.length; i++) {
             var pair = vars[i].split('=');
             if (decodeURIComponent(pair[0]) === paramName) {
-                return decodeURIComponent(pair[1]);
+                var decoded = decodeURIComponent(pair[1]);
+                return decoded === "" ? null : decoded;
             }
         }
         return null;
@@ -71,7 +72,7 @@ app.controller('controller', function ($scope, $http) {
                                     }
                                 }
                         );
-    };
+                    };
 
             /* *************************************************************************
              *                          Interaction functions
@@ -283,8 +284,99 @@ app.controller('controller', function ($scope, $http) {
                         if (response.data.photos.photo.length === 0) {
                             Materialize.toast("No se encontraron imágenes para " + query);
                             //TODO use fallback iamge
+                        } else {
+                            $("#" + destId).attr("src", $scope.buildFlickURL(response.data.photos.photo[0]));
                         }
-                        else {
+                    }
+                });
+            };
+
+            $scope.goToDeal = function (deal, from) {
+                Materialize.toast("Woooh! Look at that deal!!!", 5000);
+                var session = getSessionData();
+                session.search.numAdults = 1;
+                session.search.numInfants = 0;
+                session.search.numChildren = 0;
+                session.search.oneWayTrip = true;
+                session.search.max_Price = deal.price;
+                session.search.min_Price = deal.price;
+                session.search.to.name = deal.city.name;
+                session.search.to.id = deal.city.id;
+                session.search.from.id = from;
+
+                setSessionData(session);
+                window.location = "flights-deal.html";
+            };
+
+            $scope.getLastMinuteDeals = function (origin) {
+                APIrequest(
+                        "booking",
+                        {method: "getflightdeals", from: origin},
+                        function (response) {
+                            $scope.deals = response.data.deals;
+                        });
+            };
+
+            $scope.bookFlight = function (firstName, lastName, birthDate, idType, idNumber, installments, state, zip, street, streetNumber, phones, email, addressFloor, addressApartment) {
+                APIrequest(
+                        "booking",
+                        {method: "getflightdeals",
+                            first_name: firstName,
+                            last_name: lastName,
+                            birthDate: birthDate,
+                            id_type: idType,
+                            id_number: idNumber,
+                            installments: installments,
+                            state: state,
+                            zip_code: zip,
+                            street: street,
+                            number: streetNumber,
+                            phones: phones,
+                            email: email,
+                            floor: (typeof addressFloor === 'undefined' ? null : addressFloor),
+                            apartment: (typeof addressApartment === 'undefined' ? null : addressApartment)},
+                        function (response) {
+                            if (response.booking === true) {
+                                Materialize.toast("Reserva completada con éxito", 5000);
+                            } else {
+                                Materialize.toast("Error reservando su vuelo", 5000);
+                            }
+                        },
+                        undefined,
+                        undefined,
+                        "POST");
+            };
+
+            $scope.buildFlickURL = function (imgObj) {
+                var URL = "https://farm" + imgObj.farm + ".staticflickr.com/" + imgObj.server + "/" + imgObj.id + "_" + imgObj.secret + "_c.jpg";
+                return URL;
+            };
+
+            $scope.getFlickrImg = function (query, destId) {
+                $http({
+                    url: "https://api.flickr.com/services/rest/",
+                    method: "GET",
+                    cache: true,
+                    timeout: 10000,
+                    params: {
+                        method: "flickr.photos.search",
+                        api_key: "9a5f81e1e267f943ba8bbc71ae056840",
+                        text: query,
+                        tags: "landscape",
+                        media: "photos",
+                        extra: "url_l",
+                        format: "json",
+                        nojsoncallback: 1
+                    }
+                }).then(function (response) {
+                    if (response.data.stat !== "ok") {
+                        defaultFailHandler(response.data, "Error consiguiendo imágenes.");
+                        //TODO use fallback image
+                    } else {
+                        if (response.data.photos.photo.length === 0) {
+                            Materialize.toast("No se encontraron imágenes para " + query);
+                            //TODO use fallback iamge
+                        } else {
                             $("#" + destId).attr("src", $scope.buildFlickURL(response.data.photos.photo[0]));
                         }
                     }
@@ -315,8 +407,7 @@ app.controller('controller', function ($scope, $http) {
                         if (response.data.photos.photo.length === 0) {
                             Materialize.toast("No se encontraron imágenes para " + query);
                             //TODO use fallback iamge
-                        }
-                        else {
+                        } else {
                             $(selector).css("background", "url('" + $scope.buildFlickURL(response.data.photos.photo[0]) + "')");
                         }
                     }
