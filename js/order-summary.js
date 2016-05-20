@@ -39,6 +39,12 @@ $(function () {
         setSessionData(session);
         window.location = "payment.html";
     });
+    
+    $("#confirmBtn").on("click", function () {
+        var session = getSessionData();
+        bookFlight(session.payment.cardholderFirstName, session.payment.cardholderLastName, session.payment.birthday, 1, session.payment.idNum, installments, state, session.payment.zip, street, streetNumber, phones, session.payment.email, addressFloor, addressApartment)
+        window.location = "payment.html";
+    });
 });
 
 

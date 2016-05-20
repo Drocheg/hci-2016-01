@@ -6,22 +6,56 @@ function getGeneralScore(friendliness, food, punctuality, millage_program, comfo
     return score;
 }
 
+// Validate that the user has checked one of the radio buttons
+function isValidRadio(radioGroup, helperMsg) {
+    var valid = false;
+    for (var i = 0; i < radioGroup.length; i++) {
+        if (radioGroup[i].checked) {
+            return true;
+        }
+    }
+    Materialize.toast(helperMsg, 5000);
+    radioGroup[0].focus();
+    return false;
+}
+
+function radioFormValid(friend, food, punct, mileage, comfort, quality, recommend) {
+    var valid = true;
+    var aux = true
+        valid = isValidRadio(friend, "Campo amabilidad no esta completado");
+        if(!valid) {aux = false;}
+        valid = isValidRadio(food, "Campo comida no esta completado");
+        if(!valid) {aux = false;}
+        valid = isValidRadio(punct, "Campo puntualidad no esta completado");
+        if(!valid) {aux = false;}
+        valid = isValidRadio(mileage, "Campo programa de viajero frequente no esta completado");
+        if(!valid) {aux = false;}
+        valid = isValidRadio(comfort, "Campo comodidad no esta completado");
+        if(!valid) {aux = false;}
+        valid = isValidRadio(quality, "Campo calidad no esta completado");
+        if(!valid) {aux = false;}
+        valid = isValidRadio(recommend, "Campo recomendado no esta completado");
+        if(!valid) {aux = false;}
+        return aux;
+}
+
 function submitReview(airlineID, flightNum, friend, food, punct, mileage, comfort, quality, recommend, comments) {
     $.ajax({
         type: "POST",
         url: "http://eiffel.itba.edu.ar/hci/service4/review.groovy?method=reviewairline",
         contentType: 'aplication/json', //TODO SACAR CABLEADO DE ID
-        data: JSON.stringify({flight: {airline: {id: "AR"}, number: flightNum}, rating: {friendliness: friend, food: food, punctuality: punct, mileage_program: mileage, comfort: comfort, quality_price: quality}, yes_recommend: recommend, comments: comments})  //TODO yes_recommend false rompe
+        data: JSON.stringify({flight: {airline: {id: airlineID}, number: flightNum}, rating: {friendliness: friend, food: food, punctuality: punct, mileage_program: mileage, comfort: comfort, quality_price: quality}, yes_recommend: recommend, comments: comments})  //TODO yes_recommend false rompe
     })
             .done(function (result) {
                 if (result.error) {
-                    Materialize.toast("Error, decile a Juan esto:");      //TODO remove
-                    Materialize.toast(JSON.stringify(result.error));
+                    Materialize.toast("Error, decile a Juan esto:", 5000);      //TODO remove
+                    Materialize.toast(JSON.stringify(result.error), 5000);
                 } else {
                     if (result.review !== true) {
                         Materialize.toast("Error, decile a Juen");       //TODO remove
                     } else {
-                        Materialize.toast("Review subida vieja");       //TODO remove
+                        Materialize.toast("Review subida");
+                        window.location.replace("reviews.html?airlineId=" + data.id + "&flightNum=" + data.flightNum);
                     }
                 }
             })
@@ -36,8 +70,8 @@ function submitReview(airlineID, flightNum, friend, food, punct, mileage, comfor
 }
 
 $(function () {
-    $(document).ready(function() {
-       $('select').material_select();
+    $(document).ready(function () {
+        $('select').material_select();
     });
 
 
@@ -46,6 +80,10 @@ $(function () {
         var $submitBtn = $("#review-form button[type=submit]");
         $submitBtn.html("Validando...");
         var session = getSessionData();
+        if (!radioFormValid($("input[name=friendliness]"), $("input[name=food]"), $("input[name=punctuality]"), $("input[name=millage_program]"), $("input[name=comfort]"), $("input[name=quality_price]"), $("input[name=recommend]"))) {
+            $submitBtn.html("Confirmar");
+            return;
+        }
         var data = {
             id: getGETparam('airlineId'),
             flightNum: getGETparam('flightNum'),

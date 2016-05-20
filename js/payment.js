@@ -221,9 +221,13 @@ $(function () {
         var data = {
             cardNumber: Number($("#cardNumber").val()),
             cardExpiry: $("#cardExpiry").val(),
-            cardholderName: $("#cardholderName").val(),
+            cardholderFirstName: $("#cardholderFirstName").val(),
+            cardholderLastName: $("#cardholderLastName").val(),
             cvv: Number($("#cvv").val()),
             dni: Number($("#dni").val()),
+            street: $("#street").val(),
+            streetNumber: $("#streetNumber").val(),
+            zip: $("#zip").val(),
             email: $("#email").val()
         };
         //Missing info?
@@ -261,9 +265,13 @@ $(function () {
     if(session.state.hasPayment){
          $("#cardNumber").val(session.payment.cardNumber);
          $("#cardExpiry").val(session.payment.cardExpiry);
-         $("#cardholderName").val(session.payment.cardholderName);
+         $("#cardholderFirstName").val(session.payment.cardholderFirstName);
+         $("#cardholderLastName").val(session.payment.cardholderLastName);
          $("#cvv").val(session.payment.cvv);
          $("#dni").val(session.payment.dni);
+         $("#zip").val(session.payment.zip);
+         $("#street").val(session.payment.street);
+         $("#streetNumber").val(session.payment.streetNumber);
          $("#email").val(session.payment.email);
     }
     

@@ -189,11 +189,15 @@ app.controller('controller', function ($scope, $http) {
                             $scope.flights = {total: 0, flights: []};
                         });
             };
+            
+            
+            
+   
 
             $scope.getDeals = function (origin) {
                 $scope.APIrequest(
                         "booking",
-                        {method: "getlastminuteflightdeals", from: origin},
+                        {method: "getflightdeals", from: origin},
                         function (response) {
                             $scope.deals = response.deals;
                         });
@@ -202,28 +206,92 @@ app.controller('controller', function ($scope, $http) {
             $scope.goToDeal = function (deal, from) {
                 Materialize.toast("Woooh! Look at that deal!!!", 5000);
                 var session = getSessionData();
-                session.search.numAdults = 1;
+                var date = new Date();
+                date.setDate(date.getDate()+2);
+                var year = date.getFullYear();
+                var month = (1 + date.getMonth()).toString();
+                month = month.length > 1 ? month : '0' + month;
+                var day = date.getDate().toString();
+                day = day.length > 1 ? day : '0' + day;
+                var fullDate = year+"-"+month+"-"+day;
+                session.search.departDate.pretty = "HardcodeadaFecha";
+                session.search.departDate.full = fullDate;
+                session.search.numAdults = 1; //Vamos a tener que cambiar esta parte.
                 session.search.numInfants = 0;
                 session.search.numChildren = 0;
-                session.search.oneWayTrip = true;
-                session.search.max_Price = deal.price;
-                session.search.min_Price = deal.price;
+                session.search.oneWayTrip = true; //Esto esta bien asi.
+                session.search.max_price = deal.price;
+                session.search.min_price = deal.price;
                 session.search.to.name = deal.city.name;
                 session.search.to.id = deal.city.id;
                 session.search.from.id = from;
-
+                session.search.selectedFlight = null;
+                session.search.direction = "outbound";
+                session.outboundFlight=null;
+                session.inboundFlight=null;
                 setSessionData(session);
                 window.location = "flights-deal.html";
             };
 
+      
+
             $scope.getLastMinuteDeals = function (origin) {
                 $scope.APIrequest(
-                        "booking",
-                        {method: "getflightdeals", from: origin},
-                        function (response) {
-                            $scope.deals = response.data.deals;
-                        });
+                    "booking",
+                    {method: "getlastminuteflightdeals", from: origin},
+                    function (response) {
+                        $scope.deals = [];
+                        for(var index in response.deals){
+                            debugger
+                            var session = getSessionData(); //TODO borrar?
+                            var deal = response.deals[index];
+                            var date = new Date();
+                            date.setDate(date.getDate()+2);
+                            var year = date.getFullYear();
+                            var month = (1 + date.getMonth()).toString();
+                            month = month.length > 1 ? month : '0' + month;
+                            var day = date.getDate().toString();
+                            day = day.length > 1 ? day : '0' + day;
+                            var fullDate = year+"-"+month+"-"+day;
+                            var params = {
+                                method: "getonewayflights",
+                                from: origin,
+                                to: deal.city.id,
+                                dep_date: fullDate,
+                                adults: 1,
+                                children: 0,
+                                infants: 0,
+                                min_price: deal.price,
+                                max_price: deal.price,
+                            };
+                            $scope.addDeal(params, response.deals[index]);
+                            
+                        }
+                    });
             };
+            
+            $scope.addDeal = function(params, deal){
+                if($scope.deals,length<9){
+                    $scope.APIrequest(
+                        "booking",
+                        params,
+                        function (response) {
+                            if(response.flights.length!==0){
+                               
+                                $scope.deals.push(deal);
+                            }
+                        },
+                        function (response) {
+                            console.log("API error checking deal: " + JSON.stringify(response.error));
+
+                        },
+                        function (response) {
+                            console.log("Network error checking deal: " + JSON.stringify(response));
+
+                    });
+                }
+                
+            }
 
             $scope.bookFlight = function (firstName, lastName, birthDate, idType, idNumber, installments, state, zip, street, streetNumber, phones, email, addressFloor, addressApartment) {
                 $scope.APIrequest(
@@ -481,7 +549,8 @@ app.controller('controller', function ($scope, $http) {
              *                          Passengers functions
              * ************************************************************************/
             //lel nothing
-
+            $scope.order = 'asc';
+            $scope.criteria = 'total';
             $scope.resultsPerPage = 30;
             /* *************************************************************************
              *                          math functions
