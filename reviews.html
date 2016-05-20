@@ -30,7 +30,7 @@
                 </div>
                 <!--TODO change elements (e.g. review.aerolinea) to whatever the API returns-->
                 <div id="reviewCard" class="col offset-s3 s6 center softlyPadded" ng-repeat="review in reviews">    
-                    <div class="softlyPadded"><strong>{{getGETParam('airlineId')}} #{{getGETParam('flightNum')}}</strong></div>
+                    <div class="softlyPadded"><strong>{{getGETparam('airlineId')}} #{{getGETparam('flightNum')}}</strong></div>
                     <div class="col s6"> <!--Columna Izq-->
                         <div class="row">
                             General: {{review.rating.overall}}<div class="progress"><div class="determinate bar-{{review.rating.overall}}"></div></div>                                
