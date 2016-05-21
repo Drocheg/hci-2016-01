@@ -180,6 +180,18 @@ function isValidCVV(cvvStr) {
     return cvvStr.match(/[0-9]{3,4}/) !== null;
 }
 
+function isEmpty(information, id){
+    if (information === ""){
+//            $("label[for="+id+"]").attr("data-error", "Por favor ingrese solo caracters validos");
+            $("#"+id+"").removeClass("valid");
+            $("#"+id+"").addClass("invalid");
+            return true;
+        } else {
+            $("#"+id+"").removeClass("invalid");
+            $("#"+id+"").addClass("valid");
+            return false;
+        }
+}
 
 $(function () {
     var session = getSessionData();
@@ -200,7 +212,7 @@ $(function () {
     $("#cardExpiry").on("change", function() {
         var $field = $(this);
         if(!isValidDate($field.val())) {
-            $("label[for=cardExpiry]").attr("data-error", "Por favor ingrese una fecha válida");
+            $("label[for=cardExpiry]").attr("data-error", "Por favor ingrese una fecha valida"); 
             $field.removeClass("valid");
             $field.addClass("invalid");
         }
@@ -238,26 +250,79 @@ $(function () {
             email: $("#email").val()
         };
         //Missing info?
-        for (var entry in data) {
-            if (data.hasOwnProperty(entry)) {
-                if (data[entry].length === 0) {
-                    Materialize.toast("Por favor complete todos los campos.", 5000);
+        
+//        Creo que no sirve de nada esto. Pero en el testeo de tarjeta se deberia ver que no este vacio.
+//        for (var entry in data) {
+//            if (data.hasOwnProperty(entry)) {
+//                if (data[entry].length === 0) {
+//                    Materialize.toast("Por favor complete todos los campos.", 5000);
+//                    $submitBtn.html("Confirmar >");
+//                    $submitBtn.removeClass("disabled");
+//                    return;
+//                }
+//            }
+//        }
+        var valid = true;
+        if(isEmpty(data.cardNumber,"cardNumber")){
+            valid = false;
+        }
+        if(isEmpty(data.cardExpiry,"cardExpiry")){
+            valid = false;
+        }
+        if(isEmpty(data.cvv,"cvv")){
+            valid = false;
+        }
+        
+        //All data is in, validate credit card if needed
+        if(valid){
+           if($("#isValidCard").val() !== true) {
+                validateCard(data.cardNumber, data.cardExpiry, data.cvv, false);    //NOT async
+                if(!$("#isValidCard").val()) {
                     $submitBtn.html("Confirmar >");
                     $submitBtn.removeClass("disabled");
-                    return;
+                    valid = false;
                 }
-            }
+            } 
         }
-        //All data is in, validate credit card if needed
-        if($("#isValidCard").val() !== true) {
-            validateCard(data.cardNumber, data.cardExpiry, data.cvv, false);    //NOT async
-            if(!$("#isValidCard").val()) {
-                $submitBtn.html("Confirmar >");
-                $submitBtn.removeClass("disabled");
-                return;
-            }
+        
+        //No te lo toma ya el html? 
+//        if (!/^([a-zA-Z ]{1,})$/.test(data.cardholderFirstName)) {
+//            $("label[for=cardholderFirstName]").attr("data-error", "Por favor ingrese solo caracters validos");
+//            $("#cardholderFirstName").removeClass("valid");
+//            $("#cardholderFirstName").addClass("invalid");
+//            valid = false;
+//        } else {
+//            $("#cardholderFirstName").removeClass("invalid");
+//            $("#cardholderFirstName").addClass("valid");
+//        }
+        
+        if(isEmpty(data.cardholderFirstName,"cardholderFirstName")){
+            valid = false;
         }
+        if(isEmpty(data.cardholderLastName,"cardholderLastName")){
+            valid = false;
+        }
+        if(isEmpty(data.dni,"dni")){
+            valid = false;
+        }
+        if(isEmpty(data.street,"street")){
+            valid = false;
+        }
+        if(isEmpty(data.zip,"zip")){
+            valid = false;
+        }
+        if(isEmpty(data.email,"email")){
+            valid = false;
+        }
+        
+
         //Valid, store
+        if(!valid){
+            $submitBtn.html("Confirmar >");
+            $submitBtn.removeClass("disabled");
+            return;
+        }
+        
         session.payment = data;
         session.state.hasPayment = true;
         session.state.hasContact = true;
