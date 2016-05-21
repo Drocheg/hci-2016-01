@@ -85,7 +85,8 @@
                         </div>
                     </div>
                 </div>
-                <div data-ng-if="reviewCount / resultsPerPage > 1"> <!-- Only show pagination if there's more than 1 page -->
+            </div>
+            <div data-ng-if="reviewCount / resultsPerPage > 1"> <!-- Only show pagination if there's more than 1 page -->
                     <div class="col s12">
                         <ul class="pagination center-align">
                             <li ng-repeat="i in getFilledArray(getNumberOfPages(reviewCount, resultsPerPage))"><button class="waves-button-input" data-ng-click="getFlightReviews(getGETparam('airlineId'), getGETparam('flightNum'), resultsPerPage, i)">{{i}}</button></li>
@@ -94,7 +95,6 @@
                         <div class="center"> <a class="center-align btn waves-effect waves-light offset-l5 s6" href="fillReview.html?airlineId={{getGETparam('airlineId')}}&flightNum={{getGETparam('flightNum')}}">Dejar un comentario</a></div>
                     </div>
                 </div>
-            </div>
         </main>
 
         <footer class="page-footer" data-ng-include="'includes/footer.html'"></footer>
