@@ -235,3 +235,15 @@ function countResults(service, params, callback) {
                 console.log("Error counting totals\nQuery: " + JSON.stringify(params) + "\nResponse error: " + JSON.stringify(response.error));
             });
 }
+
+/**
+ * Converts a specified amount to the currently selected currency, including
+ * the symbol.
+ * 
+ * @param {number} amount
+ * @returns {string}
+ */
+function toSelectedCurrency(amount) {
+    var s = getSessionData();
+    return s.preferences.currency.symbol + (amount/s.preferences.currency.ratio).toFixed(2);
+}

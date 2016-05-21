@@ -1,6 +1,7 @@
 //Promises for readying the autocomplete
 var citiesPromise = $.Deferred(),
-    airportsPromise = $.Deferred();
+    airportsPromise = $.Deferred(),
+    currenciesPromise = $.Deferred();
 
 /**
  * Gets the stored session data, or the default data if nothing is stored.
@@ -40,7 +41,7 @@ function getSessionData() {
             outboundFlight: null, //if there are stopovers, will be inside the flight object
             inboundFlight: null, //If NOT choosing a one-way trip, fill with the same structure as outbound
             preferences: {
-                currency: "USD"
+                currency: null
             },
             passengers: {
                 adults: [
@@ -100,7 +101,8 @@ function getSessionData() {
             },
             airlines: null,
             cities: null,
-            airports: null
+            airports: null,
+            currencies: null
         });
     }
     return JSON.parse(sessionStorage.sessionData);
@@ -118,6 +120,11 @@ function setSessionData(sessionObj) {
     sessionStorage.sessionData = JSON.stringify(sessionObj);
 }
 
+/**
+ * Gets all available airlines and stores them in session to reference them later.
+ * 
+ * @returns {undefined}
+ */
 function getAllAirlines() {
     countResults(
             "misc",
@@ -138,6 +145,11 @@ function getAllAirlines() {
             });
 }
 
+/**
+ * Gets all available cities and stores them in session to reference them later.
+ * 
+ * @returns {undefined}
+ */
 function getAllCities() {
     countResults(
             "geo",
@@ -156,6 +168,11 @@ function getAllCities() {
             });
 }
 
+/**
+ * Gets all available airports and stores them in session to reference them later.
+ * 
+ * @returns {undefined}
+ */
 function getAllAirports() {
     countResults(
             "geo",
@@ -169,6 +186,37 @@ function getAllAirports() {
                             session.airports = result.airports;
                             setSessionData(session);
                             airportsPromise.resolve();
+                        }
+                );
+            });
+}
+
+/**
+ * Gets all available airlines and stores them in session to reference them later.
+ * 
+ * @returns {undefined}
+ */
+function getAllCurrencies() {
+    countResults(
+            "misc",
+            {method: 'getcurrencies'},
+            function (total) {
+                APIrequest(
+                        "misc",
+                        {method: 'getcurrencies', page_size: total},
+                        function (result) {
+                            var session = getSessionData();
+                            session.currencies = {};
+                            for (var index in result.currencies) {
+                                //Add a trailing space to the US currency cymbol
+                                if(result.currencies[index].id === "USD") {
+                                    result.currencies[index].symbol += " ";
+                                    debugger;
+                                }
+                                session.currencies[result.currencies[index].id] = result.currencies[index];
+                            }
+                            setSessionData(session);
+                            currenciesPromise.resolve();
                         }
                 );
             });
@@ -194,5 +242,11 @@ $(function () {  //Document.ready
         getAllAirports();
     } else {
         airportsPromise.resolve();
+    }
+    if(session.currencies === null) {
+        getAllCurrencies();
+    }
+    else {
+        currenciesPromise.resolve();
     }
 });

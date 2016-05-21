@@ -29,10 +29,10 @@
                             <p><b>Aeropuerto de salida:</b> {{getOriginAirport(session.outboundFlight).description}}</p>
                             <p><b>Aeropuerto de llegada:</b> {{getDestinationAirport(session.outboundFlight).description}}</p>    
                             <p><b>Duracion:</b> {{getFlightDuration(session.outboundFlight)}}</p>
-                            <p data-ng-if="session.search.numAdults > 0"> <b>Precio por adultos:</b>  ${{getFlightPriceBreakdown(session.outboundFlight).adults.base_fare}}x{{session.search.numAdults}}</p>
-                            <p data-ng-if="session.search.numChildren > 0"> <b>Precio por ninios:</b> ${{getFlightPriceBreakdown(session.outboundFlight).children.base_fare}}x{{session.search.numChildren}}</p>
-                            <p data-ng-if="session.search.numInfants > 0"> <b>Precio por infantes:</b> ${{getFlightPriceBreakdown(session.outboundFlight).infants.base_fare}}x{{session.search.numInfants}}</p>
-                            <h5 class="center"><b>Precio:</b> $20.000</h5>
+                            <p data-ng-if="session.search.numAdults > 0"> <b>Precio por adultos:</b>  {{toSelectedCurrency(getFlightPriceBreakdown(session.outboundFlight).adults.base_fare)}} x {{session.search.numAdults}}</p>
+                            <p data-ng-if="session.search.numChildren > 0"> <b>Precio por ninios:</b> {{toSelectedCurrency(getFlightPriceBreakdown(session.outboundFlight).children.base_fare)}} x {{session.search.numChildren}}</p>
+                            <p data-ng-if="session.search.numInfants > 0"> <b>Precio por infantes:</b> {{toSelectedCurrency(getFlightPriceBreakdown(session.outboundFlight).infants.base_fare)}} x {{session.search.numInfants}}</p>
+                            <h5 class="center"><b>Precio:</b> {{toSelectedCurrency(getFlightTotal(session.outboundFlight))}}</h5>
                             <div class="row center">
                                 <button id="changeOutboundFlightBtn" class="waves-effect waves-light btn">Modificar Ida</button>
                             </div>
@@ -48,10 +48,10 @@
                             <p><b>Aeropuerto de salida:</b> {{getOriginAirport(session.inboundFlight).description}}</p>
                             <p><b>Aeropuerto de llegada:</b> {{getDestinationAirport(session.inboundFlight).description}}</p> 
                             <p><b>Duracion:</b> {{getFlightDuration(session.inboundFlight)}}</p>
-                            <p data-ng-if="session.search.numAdults > 0"> <b>Precio por adultos:</b> ${{getFlightPriceBreakdown(session.inboundFlight).adults.base_fare}}x{{session.search.numAdults}}</p>
-                            <p data-ng-if="session.search.numChildren > 0"> <b>Precio por ninios:</b> ${{getFlightPriceBreakdown(session.inboundFlight).children.base_fare}}x{{session.search.numChildren}}</p>
-                            <p data-ng-if="session.search.numInfants > 0"> <b>Precio por infantes:</b> ${{getFlightPriceBreakdown(session.inboundFlight).infants.base_fare}}x{{session.search.numInfants}}</p>
-                            <h5 class="center"><b>Precio:</b> $20.000</h5>
+                            <p data-ng-if="session.search.numAdults > 0"> <b>Precio por adultos:</b>  {{toSelectedCurrency(getFlightPriceBreakdown(session.inboundFlight).adults.base_fare)}} x {{session.search.numAdults}}</p>
+                            <p data-ng-if="session.search.numChildren > 0"> <b>Precio por ninios:</b> {{toSelectedCurrency(getFlightPriceBreakdown(session.inboundFlight).children.base_fare)}} x {{session.search.numChildren}}</p>
+                            <p data-ng-if="session.search.numInfants > 0"> <b>Precio por infantes:</b> {{toSelectedCurrency(getFlightPriceBreakdown(session.inboundFlight).infants.base_fare)}} x {{session.search.numInfants}}</p>
+                            <h5 class="center"><b>Precio:</b> {{toSelectedCurrency(getFlightTotal(session.inboundFlight))}}</h5>
                             <div class="row center">
                                 <button id="changeInboundFlightBtn" class="waves-effect waves-light btn">Modificar Vuelta</button>
                             </div>
@@ -78,7 +78,7 @@
                                 <p><b>Direccion:</b> {{session.payment.state}} {{session.payment.street}} {{session.payment.streetNumber}} {{session.payment.addressFloor}} {{session.payment.addressApartment}}</p>
                                 <p><b>Numero de telefono:</b> {{session.payment.phone}}</p>
                                 <p><b>Cuotas:</b> {{session.payment.installments}}</p>
-                                <h5 class="center"><b>Total:</b> $40.000</h5> 
+                                <h5 class="center"><b>Total:</b> {{toSelectedCurrency(session.payment.total)}}</h5> 
                                 <div class="row center">
                                     <button id="changePaymentBtn" class="waves-effect waves-light btn">Modificar Pago</button>
                                 </div>
@@ -106,7 +106,7 @@
                                 <p><b>Direccion:</b> {{session.payment.state}} {{session.payment.street}} {{session.payment.streetNumber}} {{session.payment.addressFloor}} {{session.payment.addressApartment}}</p>
                                 <p><b>Numero de telefono:</b> {{session.payment.phone}}</p>
                                 <p><b>Cuotas:</b> {{session.payment.installments}}</p>
-                                <h5 class="center"><b>Total:</b> $40.000</h5> 
+                                <h5 class="center"><b>Total:</b> {{toSelectedCurrency(session.payment.total)}}</h5> 
                                 <div class="row center">
                                     <button id="changePaymentBtn" class="waves-effect waves-light btn">Modificar Pago</button>
                                 </div>
@@ -207,9 +207,10 @@
         <script src="js/commonFunctions.js"></script>
         <script src="js/init.js"></script>
         <script src='js/angular.min.js'></script>
-        <script src="js/order-summary.js"></script>
         <script src='js/controllers.js'></script>
         <script src="js/angular-materialize.js"></script>
+        <script src='js/currencies.js'></script>
 
+        <script src="js/order-summary.js"></script>
     </body>
 </html>

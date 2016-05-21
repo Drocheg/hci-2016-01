@@ -36,9 +36,11 @@ function markSelectedFlight(flight, direction) {
     //Duration
     html += '<div class="col s2 center"><p style="line-height: 35px;"><i class="material-icons">timer</i>  ' + getFlightDuration(flight) + '</p></div>';
     //Cost
-    html += '<div class="col s2 center"><p style="line-height: 35px;"><b>$' + getFlightTotal(flight) + '</b></p></div>';
+    html += '<div class="col s2 center"><p style="line-height: 35px;"><b>' + toSelectedCurrency(getFlightTotal(flight)) + '</b></p></div>';
     html += '</div>';
     $("#" + id).html(html);
+    //Update total (angular isn't picking up the changes)
+    $("#total").html(toSelectedCurrency(getSessionData().payment.total));
 }
 
 /**
@@ -77,7 +79,9 @@ $(function () {
     }
 
     var session = getSessionData();
-    $("#currentTotal").html(session.payment.total.toFixed(2));  //Mark current total TODO use angular?
+    
+    //Mark current total
+    $("#total").html(toSelectedCurrency(session.payment.total));
 
     //Mark any selected flights
     markSelectedFlight(session.outboundFlight, 'outbound');

@@ -28,6 +28,18 @@ app.controller('controller', function ($scope, $http) {
     };
 
     /**
+     * Converts a specified amount to the currently selected currency, including
+     * the symbol.
+     * 
+     * @param {number} amount
+     * @returns {string}
+     */
+    $scope.toSelectedCurrency = function(amount) {
+        return $scope.session.preferences.currency.symbol + (amount/$scope.session.preferences.currency.ratio).toFixed(2);
+//        return $filter("currency")(amount/$scope.session.preferences.currency.ratio, $scope.session.preferences.currency.symbol, 2);
+    };
+
+    /**
      * Makes an API call with the specified parameters.
      * 
      * @param {string} service A valid API service.
@@ -140,10 +152,11 @@ app.controller('controller', function ($scope, $http) {
              * ************************************************************************/
             $scope.deals = [];
             $scope.flights = null;
-            
-            $scope.$watchGroup(['criteria', 'order', 'resultsPerPage'], function() {
-                    $scope.searchFlights({sort_key: $scope.criteria, sort_order: $scope.order, page_size: $scope.resultsPerPage});
-                });
+
+            //Watch sorting parameters and re-search as necessary
+            $scope.$watchGroup(['criteria', 'order', 'resultsPerPage'], function () {
+                $scope.searchFlights({sort_key: $scope.criteria, sort_order: $scope.order, page_size: $scope.resultsPerPage});
+            });
 
             $scope.selectFlight = function (flight) {
                 var d = getGETparam('direction');
@@ -159,13 +172,12 @@ app.controller('controller', function ($scope, $http) {
                         break;
                 }
                 markSelectedFlight(flight, d);
-                $("#currentTotal").html(getSessionData().payment.total.toFixed(2));
                 $("#nextStep > button").removeClass("disabled");
             };
 
             $scope.searchFlights = function (extraParamsObj) {
                 $scope.flights = null;
-                
+
                 var params = {method: "getonewayflights"};
                 //Get ALL required parameters from GET
                 var requiredParams = ['from', 'to', 'dep_date', 'adults', 'children', 'infants'];
@@ -191,7 +203,7 @@ app.controller('controller', function ($scope, $http) {
                             $('.tooltipped').tooltip('remove');
                             $scope.flights = response;
                             //Add news ones after a delay
-                            setTimeout(function() {
+                            setTimeout(function () {
                                 $('.tooltipped').tooltip(/*{delay: 50}*/);          //Enable tooltips for +1's TODO make it work without timeout
                             }, 500);
                         },
@@ -543,7 +555,7 @@ app.controller('controller', function ($scope, $http) {
             };
 
             $scope.getFlightAirlineID = function (flight) {
-                if(typeof flight === 'undefined') {
+                if (typeof flight === 'undefined') {
                     return;
                 }
                 return flight.outbound_routes[0].segments[0].airline.id;
@@ -555,7 +567,7 @@ app.controller('controller', function ($scope, $http) {
             };
 
             $scope.getFlightNumber = function (flight) {
-                if(typeof flight === 'undefined') {
+                if (typeof flight === 'undefined') {
                     return;
                 }
                 return flight.outbound_routes[0].segments[0].number;

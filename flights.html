@@ -78,7 +78,7 @@
                         </div>
                         <div class="col s3 center">
                             <h5 style="margin-top: 35px;">
-                                <b>Total: $<span id="currentTotal">0</span></b>
+                                <b>Total: <span id="total"></span></b>
                             </h5>
                         </div>
                         <div data-ng-show="!session.search.oneWayTrip" id="selectedInboundFlight" class="col s9">
@@ -183,25 +183,25 @@
                                                 {{getFlightAirlineName(flight)}} ({{getFlightAirlineID(flight)}}) #{{getFlightNumber(flight)}}
                                             </span>
                                             <span class="col s2" style="text-align:right;">
-                                                <b>${{getFlightTotal(flight) | number:0}}</b>
+                                                <b>{{toSelectedCurrency(getFlightTotal(flight))}}</b>
                                             </span>
                                         </p>
                                     </div>
                                     <div class="card-content">
                                         <div class="col s4">
                                             <div data-ng-show="getGETparam('adults') > 0" class="col s6">Adultos</div>
-                                            <div data-ng-show="getGETparam('adults') > 0" class="col s6">${{flight.price.adults.base_fare| number:2}} x {{flight.price.adults.quantity}}</div>
+                                            <div data-ng-show="getGETparam('adults') > 0" class="col s6">{{toSelectedCurrency(flight.price.adults.base_fare)}} x {{flight.price.adults.quantity}}</div>
                                             <div data-ng-show="getGETparam('children') > 0" class="col s6">Niños</div>
-                                            <div data-ng-show="getGETparam('children') > 0" class="col s6">${{flight.price.children.base_fare| number:2}} x {{flight.price.children.quantity}}</div>
+                                            <div data-ng-show="getGETparam('children') > 0" class="col s6">{{toSelectedCurrency(flight.price.children.base_fare)}} x {{flight.price.children.quantity}}</div>
                                             <div data-ng-show="getGETparam('infants') > 0" class="col s6">Infantes</div>
-                                            <div data-ng-show="getGETparam('infants') > 0" class="col s6">${{flight.price.infants.base_fare| number:2}} x {{flight.price.infants.quantity}}</div>
+                                            <div data-ng-show="getGETparam('infants') > 0" class="col s6">{{toSelectedCurrency(flight.price.infants.base_fare)}} x {{flight.price.infants.quantity}}</div>
                                             <div class="col s6">Cargos</div>
-                                            <div class="col s6">${{flight.price.total.charges| number:2}}</div>
+                                            <div class="col s6">{{toSelectedCurrency(flight.price.total.charges)}}</div>
                                             <div class="col s6">Impuestos</div>
-                                            <div class="col s6">${{flight.price.total.taxes| number:2}}</div>
+                                            <div class="col s6">{{toSelectedCurrency(flight.price.total.taxes)}}</div>
                                             <div class="divider col s12"></div>
                                             <div class="col s6" style="font-size: 1.2rem;"><b>Total</b></div>
-                                            <div class="col s6" style="font-size: 1.2rem;"><b>${{getFlightTotal(flight) | number:2}}</b></div>
+                                            <div class="col s6" style="font-size: 1.2rem;"><b>{{toSelectedCurrency(getFlightTotal(flight))}}</b></div>
                                             <div class="col s6 offset-s2" style="margin-top:10px;">
                                                 <button class="btn-large waves waves-light selectFlightBtn" data-ng-click="selectFlight(flight)">Seleccionar</button>
                                             </div>
@@ -236,7 +236,7 @@
                                 </div>
                                 <!--END FLIGHT CARDS-->
                                 <!--PAGINATION-->
-                                <div class="row" data-ng-if="flights.total/resultsPerPage > 1">   <!-- Only show pagination when there's more than 1 page -->
+                                <div class="row" data-ng-if="flights.total / resultsPerPage > 1">   <!-- Only show pagination when there's more than 1 page -->
                                     <div class="col s12 center">
                                         <ul class="pagination center-align">
                                             <li class="waves-effect"><a href="#!"><i class="material-icons">chevron_left</i></a></li>
@@ -264,6 +264,7 @@
         <script src='js/angular.min.js'></script>
         <script src='js/controllers.js'></script>
         <script src="js/angular-materialize.js"></script>
+        <script src='js/currencies.js'></script>
 
         <script src='js/flights.js'></script>
         <script src="js/typeahead.bundle.js"></script>
