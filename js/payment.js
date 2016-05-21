@@ -182,7 +182,14 @@ function isValidCVV(cvvStr) {
 
 
 $(function () {
-    //Try to validate card immediately
+    var session = getSessionData();
+    
+    //Make sure the user is supposed to be here, if not redirect to home
+    if(!session.state.hasPassengers || session.outboundFlight === null || (!session.search.oneWayTrip && session.inboundFlight === null)) {
+        window.location = "index.html";
+    }
+    
+    //Try to validate card immediately after typing it
     $("#cardNumber, #cardExpiry, #cvv").on("change", function (event) {
         if (cardCanBeValidated()) {
             validateCard($("#cardNumber").val(), $("#cardExpiry").val(), $("#cvv").val());
@@ -251,7 +258,6 @@ $(function () {
             }
         }
         //Valid, store
-        var session = getSessionData();
         session.payment = data;
         session.state.hasPayment = true;
         session.state.hasContact = true;

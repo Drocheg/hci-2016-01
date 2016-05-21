@@ -1,15 +1,14 @@
 /* 
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
  * TODO Todos los campos obligatorios. Msj que se entiendan
  */
 $(function () {
-   
-    
     var session = getSessionData();
-    session.search.numAdults=2;
-    setSessionData(session);
+    
+    //Make sure the user is supposed to be here, if not redirect to home
+    if(session.outboundFlight === null || (!session.search.oneWayTrip && session.inboundFlight === null)) {
+        window.location = "index.html";
+    }
+    
 
     //Try to validate date immediately??? TODO Borrar esto o hacerlo. Sirve aca?
 

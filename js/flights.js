@@ -60,7 +60,13 @@ function nextPage() {
 }
 
 $(function () {
-   //TODO Validate GET parameters
+   //Validate GET parameters
+   var requiredParams = ['from', 'to', 'dep_date', 'adults', 'children', 'infants'];
+   for(var index in requiredParams) {
+       if(getGETparam(requiredParams[index]) === null) {        //Redirect users to home on invalid parameters
+           window.location = "index.html";
+       }
+   }
    
    
     $('.tooltipped').tooltip(/*{delay: 50}*/);          //Enable tooltips for +1's TODO make it work, load dynamically after cards load
