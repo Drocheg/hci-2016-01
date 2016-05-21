@@ -118,7 +118,7 @@
                                 <!--                                <a class='dropdown-button' href='#' data-ng-model="order" data-ng-init="order = 'asc'" data-ng-click="order = (order === 'asc' ? 'desc' : 'asc')" >{{order === 'asc' ? 'ascendente' : 'descendente'}}</a>, <a class='dropdown-button' href='#' data-activates='pagesize'>{{resultsPerPage}}</a> por pagina</span>-->
                             </div>
                         </div>
-                        <div class="col s12 divider"></div>
+                        <div class="col s12 divider" style="height:2px"></div>
                     </div>
                     <!--END FIXED TOP SECTION-->
                     <!--SEARCH RESULTS-->
@@ -175,7 +175,7 @@
                             <!--END PRELOADER-->
                             <div id="flights" class="row lighten-4" data-ng-show="flights !== null">
                                 <!--FLIGHT CARDS-->
-                                <div class="card black-text col s12" data-ng-show="flights.flights.length > 0" data-ng-repeat="flight in flights.flights" style="margin-bottom: 0px; padding:0 0 10px 0; border-radius:10px; z-index: 1">
+                                <div class="card black-text col s12" data-ng-show="flights.flights.length > 0" data-ng-repeat="flight in flights.flights" style="margin-bottom: 0px; padding:0 0 10px 0; border-radius:10px; z-index: 1; height: 230px">
                                     <div class="card-action green lighten-4" style="padding:5px; border-radius:10px 10px 0 0;">
                                         <p style="margin: 0; height:30px; line-height:30px;" class="card-title">
                                             <span class="col s10" style="padding-left:0;">
