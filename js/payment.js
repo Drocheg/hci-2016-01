@@ -243,7 +243,7 @@ $(function () {
             cardholderFirstName: $("#cardholderFirstName").val(),
             cardholderLastName: $("#cardholderLastName").val(),
             cvv: Number($("#cvv").val()),
-            dni: Number($("#dni").val()),
+            id: Number($("#id").val()),
             street: $("#street").val(),
             streetNumber: $("#streetNumber").val(),
             installments: $("#installments").val(),
@@ -307,7 +307,7 @@ $(function () {
         if(isEmpty(data.cardholderLastName,"cardholderLastName")){
             valid = false;
         }
-        if(isEmpty(data.dni,"dni")){
+        if(isEmpty(data.id,"id")){
             valid = false;
         }
         if(isEmpty(data.street,"street")){
@@ -340,7 +340,9 @@ $(function () {
             return;
         }
         
-        session.payment = data;
+        for(var property in data) {
+            session.payment[property] = data[property];
+        }
         session.state.hasPayment = true;
         session.state.hasContact = true;
         setSessionData(session);
@@ -356,7 +358,7 @@ $(function () {
          $("#cardholderFirstName").val(session.payment.cardholderFirstName);
          $("#cardholderLastName").val(session.payment.cardholderLastName);
          $("#cvv").val(session.payment.cvv);
-         $("#dni").val(session.payment.dni);
+         $("#id").val(session.payment.id);
          $("#zip").val(session.payment.zip);
          $("#street").val(session.payment.street);
          $("#streetNumber").val(session.payment.streetNumber);
