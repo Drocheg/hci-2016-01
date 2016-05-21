@@ -87,19 +87,29 @@
     margin-top: 0px;
 }
 
+
+/*
+#resultsPerPage{
+  
+    margin-top: -8px;
+}*/
+
 #criteria {
     width: 80px;
     margin-left: 10px;
+     margin-top: -7px;
 }
 
 #order {
     width: 115px;
     margin: 0 10px 0 5px;
+     margin-top: -7.5px;
 }
 
 #resultsPerPage {
     width: 50px;
     margin-left: 10px;
+     margin-top: -10px;
 }
 
 /*.center-cropped {
