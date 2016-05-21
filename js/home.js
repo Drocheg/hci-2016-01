@@ -105,10 +105,11 @@ $(function () {
     //Show/hide return date field when un/checking one-way trip
     $("#oneWayTrip").on('change', function () {
         if ($(this).is(":checked")) {
-            $("#returnField").fadeOut();
+            $("#returnField").fadeOut('fast', function() {$("#departDateContainer").removeClass("s5").addClass("s10");});
             $("#returnDate").removeAttr("required");
         } else {
-            $("#returnField").fadeIn();
+            $("#departDateContainer").removeClass("s10").addClass("s5");
+            $("#returnField").fadeIn('fast');
             $("#returnDate").attr("required", "required");
         }
     });
