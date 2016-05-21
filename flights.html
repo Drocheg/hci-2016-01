@@ -42,7 +42,7 @@
                                                 <input id="departDateFull" type="hidden" value="{{session.search.departDate.full}}">
                                                 <label for="departDate">Ida</label>
                                             </div>
-                                            <div class="input-field col s12" data-ng-if="!session.search.oneWayTrip">
+                                            <div class="input-field col s12" data-ng-show="!session.search.oneWayTrip">
                                                 <input id="returnDate" type="date" class="datepicker" value="{{session.search.returnDate.pretty|| ''}}">
                                                 <input id="returnDateFull" type="hidden" value="{{session.search.returnDate.full}}">
                                                 <label for="returnDate">Vuelta</label>

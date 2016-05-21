@@ -79,7 +79,7 @@ $(function () {
     //Datepickers
     var minDate = new Date();
     minDate.setDate(minDate.getDate() + 3); //Minimum date is 3 days from now
-    $('.datepicker').pickadate({
+    var datePickerBaseOpts = {
         min: minDate,
         selectMonths: true,
         selectYears: 2, //Creates a dropdown of 2 years ahead to control year
@@ -101,7 +101,30 @@ $(function () {
                 this.close();
             }
         }
-    });
+    };
+    //Define return date picker first, depart datepicker will open return datepicker on set
+    var returnDatePicker = $("#returnDate").pickadate(datePickerBaseOpts).pickadate("picker");  //How to access pickadate API with Materialize: http://stackoverflow.com/a/30324855/2333689
+    var departureOptions = datePickerBaseOpts;
+    departureOptions.onSet = function(arg) {
+        if ('select' in arg) {
+                var depDate = new Date(arg.select);
+                var dStr = depDate.getFullYear() + "-" + (depDate.getMonth() + 1 < 10 ? "0" : "") + (depDate.getMonth() + 1) + "-" + (depDate.getDate() < 10 ? "0" : "") + depDate.getDate();
+                $("#" + this.get('id') + "Full").val(dStr);
+                this.close();
+                returnDatePicker.set("min", depDate);       //Set the minimum return date as the same day as departure,
+                returnDatePicker.set("highlight", depDate); //Highlight it,
+                depDate.setDate(depDate.getDate()+1);       //And select the next day
+                returnDatePicker.set("select", depDate);
+                if(!$("#oneWayTrip").is(":checked")) {      //If NOT on a one-way trip, automatically open the next datepicker
+                    setTimeout(function() {
+                        returnDatePicker.open();
+                    }, 250);
+                }
+            }
+    };
+    var departureDatePicker = $("#departDate").pickadate(departureOptions).pickadate("picker");
+    
+    
     //Show/hide return date field when un/checking one-way trip
     $("#oneWayTrip").on('change', function () {
         if ($(this).is(":checked")) {
@@ -113,6 +136,8 @@ $(function () {
             $("#returnDate").attr("required", "required");
         }
     });
+    
+    
     //Handle form submit
     $("#searchButton").on("click", function (event) {
         event.preventDefault();

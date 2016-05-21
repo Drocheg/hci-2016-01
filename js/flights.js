@@ -178,8 +178,8 @@ $(function () {
 
     //Datepickers
     var minDate = new Date();
-    minDate.setDate(minDate.getDate() + 3);
-    var datePickerBaseOptions = {
+    minDate.setDate(minDate.getDate() + 3); //Minimum date is 3 days from now
+    var datePickerBaseOpts = {
         min: minDate,
         selectMonths: true,
         selectYears: 2, //Creates a dropdown of 2 years ahead to control year
@@ -197,13 +197,32 @@ $(function () {
             if ('select' in arg) { //closeOnSelect is overriden by materialize, this is the workaround https://github.com/Dogfalo/materialize/issues/870
                 var d = new Date(arg.select);
                 var d2 = d.getFullYear() + "-" + (d.getMonth() + 1 < 10 ? "0" : "") + (d.getMonth() + 1) + "-" + (d.getDate() < 10 ? "0" : "") + d.getDate();
-                console.log(d2);
                 $("#" + this.get('id') + "Full").val(d2);
                 this.close();
             }
         }
     };
-    $('.datepicker').pickadate(datePickerBaseOptions);
+    //Define return date picker first, depart datepicker will open return datepicker on set
+    var returnDatePicker = $("#returnDate").pickadate(datePickerBaseOpts).pickadate("picker");  //How to access pickadate API with Materialize: http://stackoverflow.com/a/30324855/2333689
+    var departureOptions = datePickerBaseOpts;
+    departureOptions.onSet = function(arg) {
+        if ('select' in arg) {
+                var depDate = new Date(arg.select);
+                var dStr = depDate.getFullYear() + "-" + (depDate.getMonth() + 1 < 10 ? "0" : "") + (depDate.getMonth() + 1) + "-" + (depDate.getDate() < 10 ? "0" : "") + depDate.getDate();
+                $("#" + this.get('id') + "Full").val(dStr);
+                this.close();
+                returnDatePicker.set("min", depDate);       //Set the minimum return date as the same day as departure,
+                returnDatePicker.set("highlight", depDate); //Highlight it,
+                depDate.setDate(depDate.getDate()+1);       //And select the next day
+                returnDatePicker.set("select", depDate);
+                if(!$("#oneWayTrip").is(":checked")) {      //If NOT on a one-way trip, automatically open the next datepicker
+                    setTimeout(function() {
+                        returnDatePicker.open();
+                    }, 250);
+                }
+            }
+    };
+    var departureDatePicker = $("#departDate").pickadate(departureOptions).pickadate("picker");
 
     //Handle form submit
     $("#searchButton").on("click", function (event) {
