@@ -1,21 +1,13 @@
 $(function () {
     $("#changeOutboundFlightBtn").on("click", function () {
         var session = getSessionData();
-        var f = session.outboundFlight;
-        session.payment.total -= getFlightTotal(f);
-        session.state.hasOutboundFlight = false;
-        session.outboundFlight = null;
-        setSessionData(session);
+        clearOutboundFlight();
         window.location = "flights.html?from="+session.search.from.id+"&to="+session.search.to.id+"&dep_date="+session.search.departDate.full+"&direction=outbound"+"&adults="+session.search.numAdults+"&children="+session.search.numChildren+"&infants="+session.search.numInfants;
     });
 
     $("#changeInboundFlightBtn").on("click", function () {        
         var session = getSessionData();
-        var f = session.inboundFlight;
-        session.payment.total -= getFlightTotal(f);
-        session.state.hasInboundFlight = false;
-        session.inboundFlight = null;
-        setSessionData(session);
+        clearInboundFlight();
         window.location = "flights.html?from="+session.search.to.id+"&to="+session.search.from.id+"&dep_date="+session.search.returnDate.full+"&direction=inbound"+"&adults="+session.search.numAdults+"&children="+session.search.numChildren+"&infants="+session.search.numInfants;
     });
 

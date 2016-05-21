@@ -42,7 +42,8 @@ function markSelectedFlight(flight, direction) {
 }
 
 /**
- * Gets the next page the user should visit based on the current state.
+ * Gets the next page the user should visit, given they are on the flights page,
+ * based on their current state.
  * 
  * @returns {string} The next page; flights, passenger info, payment or order
  * summary.
@@ -50,7 +51,7 @@ function markSelectedFlight(flight, direction) {
 function nextPage() {
     var session = getSessionData();
     var nextPage = "index.html";        //Fall back to home if nothing is chosen
-    if (!session.search.oneWayTrip && !session.state.hasInboundFlight) {
+    if (!session.search.oneWayTrip && session.inboundFlight === null) {
         nextPage = "flights.html?from=" + session.search.to.id + "&to=" + session.search.from.id + "&dep_date=" + session.search.returnDate.full + "&direction=inbound" + "&adults=" + session.search.numAdults + "&children=" + session.search.numChildren + "&infants=" + session.search.numInfants;
     } else {
         nextPage = session.state.hasPassengers ? (session.state.hasPayment ? "order-summary.html" : "payment.html") : "passengers-information.html";
@@ -59,47 +60,26 @@ function nextPage() {
 }
 
 $(function () {
+   //TODO Validate GET parameters
+   
+   
+    $('.tooltipped').tooltip(/*{delay: 50}*/);          //Enable tooltips for +1's TODO make it work, load dynamically after cards load
+
+    if(getGETparam("direction") === "outbound") {       //If there's a flight already selected for this direction, clear it
+        clearOutboundFlight();
+        clearInboundFlight();
+    }
+    else if(getGETparam("direction") === "inbound") {
+        clearInboundFlight();   //TODO redundant, clear inbound flight either case
+    }
+
     var session = getSessionData();
-    //Set the one way trip checkbox accordingly
-    if (session.search.oneWayTrip) {
-        $("#returnDate").hide();
-        $("#returnDate").removeAttr("required");
-        $("label[for=returnDate]").hide();
-    }
-
-    //Enable tooltips for +1's
-    $('.tooltipped').tooltip(/*{delay: 50}*/);
-
-    //If there's a flight already selected, clear it
-
-    if (session.search.selectedFlight !== null) {
-        switch (getGETparam('direction')) {
-            case 'outbound':
-                session.outboundFlight = null;
-                break;
-            case 'inbound':
-                session.inboundFlight = null;
-                break;
-            default:
-                Materialize.toast("No flight direction set. Cancelling.");
-                return;
-        }
-        session.payment.total -= getFlightTotal(session.search.selectedFlight);
-        session.search.selectedFlight = null;
-    }
-    setSessionData(session);
-
-    //Redirect to home if no search has been performed.
-    //    if(session.search.from.id === null) {
-    //        window.location = ".";
-    //    }
-
-    //Mark current total
-    $("#currentTotal").html(session.payment.total.toFixed(2));
+    $("#currentTotal").html(session.payment.total.toFixed(2));  //Mark current total TODO use angular?
 
     //Mark any selected flights
     markSelectedFlight(session.outboundFlight, 'outbound');
     markSelectedFlight(session.inboundFlight, 'inbound');
+
 
     //Autocomplete (typeahead.js), cities and airports need to be loaded first
     $.when(citiesPromise, airportsPromise).then(function () {
@@ -161,7 +141,7 @@ $(function () {
         $("#to").attr("placeholder", "Destino");
     });
 
-
+    //Validate entered destinations
     $('#from').on("change", function () {
         $("#fromId").val("");
     });
@@ -175,6 +155,8 @@ $(function () {
     $('#to').on("change", function () {
         $("#fromId").val("");
     });
+
+    //TODO FIXME datepickers don't pick up a date if selected with keyboard, fix or disable
 
     //Datepickers
     var minDate = new Date();
@@ -204,8 +186,12 @@ $(function () {
     };
     //Define return date picker first, depart datepicker will open return datepicker on set
     var returnDatePicker = $("#returnDate").pickadate(datePickerBaseOpts).pickadate("picker");  //How to access pickadate API with Materialize: http://stackoverflow.com/a/30324855/2333689
-    var departureOptions = datePickerBaseOpts;
-    departureOptions.onSet = function(arg) {
+//    returnDatePicker.set("select", new Date(session.search.returnDate.full));
+//    returnDatePicker.close();
+    
+    
+    var departOptions = datePickerBaseOpts;
+    departOptions.onSet = function(arg) {
         if ('select' in arg) {
                 var depDate = new Date(arg.select);
                 var dStr = depDate.getFullYear() + "-" + (depDate.getMonth() + 1 < 10 ? "0" : "") + (depDate.getMonth() + 1) + "-" + (depDate.getDate() < 10 ? "0" : "") + depDate.getDate();
@@ -222,7 +208,10 @@ $(function () {
                 }
             }
     };
-    var departureDatePicker = $("#departDate").pickadate(departureOptions).pickadate("picker");
+    var departDatePicker = $("#departDate").pickadate(departOptions).pickadate("picker");
+//    departDatePicker.set("select", new Date(session.search.departDate.full));
+//    departDatePicker.close();
+
 
     //Handle form submit
     $("#searchButton").on("click", function (event) {
@@ -320,44 +309,34 @@ $(function () {
         if (!valid) {
             return;
         }
-
         //What did the user change?
         var passengersChanged = data.numAdults !== session.search.numAdults || data.numChildren !== session.search.numChildren || data.numInfants !== session.search.numChildren,
                 placesChanged = data.from.id !== session.search.from.id || data.to.id !== session.search.to.id,
                 departDateChanged = data.departDate.full !== session.search.departDate.full,
                 returnDateChanged = !session.search.oneWayTrip && data.returnDate.full !== session.search.returnDate.full;
-
-        var nextDirection = "";
-        //Reset everything
-        if (placesChanged || passengersChanged || departDateChanged) {
-            nextDirection = "outbound";
-            session.search.direction = "outbound";
-            session.outboundFlight = null;
-            session.inboundFlight = null;
-            session.state.hasOutboundFlight = false;
-            session.state.hasInboundFlight = false;
-            session.payment.total = 0;
-        }
-        //Inbound trip changed, change only inbound trip
-        else if (returnDateChanged) {
-            if (session.state.hasInboundFlight) {
-                session.payment.total -= getFlightTotal(session.InboundFlight);
+       
+        var nextPage = "index.html";
+        if (placesChanged || passengersChanged || departDateChanged) {  //Destinations, passengers or departure date changed, reset everything
+            clearOutboundFlight();
+            clearInboundFlight();
+            if(passengersChanged) {
+                session.state.hasPassengers = false;
             }
-            nextDirection = session.state.hasOutboundFlight ? "inbound" : "outbound";
-            session.search.direction = session.state.hasOutboundFlight ? "inbound" : "outbound";
-            session.inboundFlight = null;
-            session.state.hasInboundFlight = false;
+            nextPage = "flights.html?from=" + data.from.id + "&to=" + data.to.id + "&dep_date=" + data.departDate.full + "&direction=outbound" + "&adults=" + data.numAdults + "&children=" + data.numChildren + "&infants=" + data.numInfants;
+        }
+        else if (returnDateChanged) {       //Inbound trip changed, change only inbound trip
+            clearInboundFlight();
+            nextPage = "flights.html?from=" + data.to.id + "&to=" + data.from.id + "&dep_date=" + data.returnDate.full + "&direction=inbound" + "&adults=" + data.numAdults + "&children=" + data.numChildren + "&infants=" + data.numInfants;
+            //TODO if return date is prior to arrival date, change outbound. Or should we just reset everything?            
         } else {  //No change, don't submit
             return;
         }
-        //Changed, store new data
-        for (var property in data) {
+
+        for (var property in data) {                    //Changed, store new data
             session.search[property] = data[property];
         }
-        //Clear selected flight for next page load
-        session.search.selectedFlight = null;
         setSessionData(session);
-        window.location = "flights.html?from=" + data.from.id + "&to=" + data.to.id + "&dep_date=" + data.departDate.full + "&direction=" + nextDirection + "&adults=" + data.numAdults + "&children=" + data.numChildren + "&infants=" + data.numInfants;
+        window.location = nextPage;
     });
 
     $("#flights").on("click", ".selectFlightBtn", function () {
@@ -370,31 +349,7 @@ $(function () {
     });
 
     $("#nextStep").on("click", "> button", function () {
-        //Make sure there's a selected flight
-        var session = getSessionData();
-        if (session.search.selectedFlight === null) {
-            return;
-        }
-        var flight = session.search.selectedFlight;
-        //Update session state
-        var direction = session.search.direction;
-        if (direction === "outbound") {
-            session.outboundFlight = flight;
-            session.state.hasOutboundFlight = true;
-            if (session.search.oneWayTrip) {
-                session.search.direction = null;
-            } else {
-                session.search.direction = session.state.hasInboundFlight ? null : "inbound";
-            }
-        } else if (direction === "inbound") {
-            session.inboundFlight = flight;
-            session.state.hasInboundFlight = true;
-            session.search.direction = null;
-        } else {
-            Materialize.toast("Invalid state. Direction is neither inbound nor outbound. Fix.");    //TODO fix
-        }
-        session.search.selectedFlight = null;
-        setSessionData(session);
+        //TODO NOW handle changes (i.e. if came back from order summary and changed outbound, must choose inbound again)
         window.location = nextPage();
     });
 });

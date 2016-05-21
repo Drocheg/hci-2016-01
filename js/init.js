@@ -7,6 +7,7 @@ var citiesPromise = $.Deferred(),
  * 
  * @returns {Object}
  */
+//TODO move to commonFunctions.js
 function getSessionData() {
     //Initialize the sessionData object with defaults if not present
     if (typeof sessionStorage.sessionData === "undefined") {
@@ -34,7 +35,6 @@ function getSessionData() {
                 numInfants: 0,
                 max_price: null,
                 min_price: null,
-                selectedFlight: null,
                 direction: null //outbound when current search is for an outbound trip, inbound when inbound, null otherwise
             },
             outboundFlight: null, //if there are stopovers, will be inside the flight object
@@ -89,8 +89,6 @@ function getSessionData() {
                 total: 0
             },
             state: {
-                hasOutboundFlight: false,
-                hasInboundFlight: false,
                 hasPassengers: false,
                 hasPayment: false,
                 hasContact: false

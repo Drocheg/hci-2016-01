@@ -87,7 +87,7 @@
                             </div>
                         </div>                        
                         <div class="col s3 center" id="nextStep">
-                            <button class="btn waves-effect waves-light disabled">{{session.search.oneWayTrip|| session.state.hasOutboundFlight ? 'Siguiente' : 'Elegir Vuelta'}}<i class="material-icons right">send</i></button>
+                            <button class="btn waves-effect waves-light disabled">{{session.search.oneWayTrip || session.outboundFlight !== null ? 'Siguiente' : 'Elegir Vuelta'}}<i class="material-icons right">send</i></button>
                         </div>
                         <!--END SELECTED FLIGHT(S) BOX(ES)-->
                         <!--FILTERS-->
@@ -191,7 +191,7 @@
                             <!--END PRELOADER-->
                             <div id="flights" class="row lighten-4" data-ng-show="flights !== null">
                                 <div class="col s12 center">
-                                    <h5>{{flights.total}} vuelos de <b>{{session.search.direction === 'outbound' ? 'ida' : 'vuelta'}}</b> encontrados para el {{session.search.direction === 'outbound' ? session.search.departDate.pretty : session.search.returnDate.pretty}}</h5>
+                                    <h5>{{flights.total}} vuelos de <b>{{getGETparam('direction') === 'outbound' ? 'ida' : 'vuelta'}}</b> encontrados para el {{getGETparam("direction") === 'outbound' ? session.search.departDate.pretty : session.search.returnDate.pretty}}</h5>
                                 </div>
                                 <!--FLIGHT CARDS-->
                                 <div class="card black-text col s12" data-ng-show="flights.flights.length > 0" data-ng-repeat="flight in flights.flights" style="padding:0 0 10px 0; border-radius:10px; z-index: 1">

@@ -63,6 +63,81 @@ function getFlightDuration(flight) {
     return flight.outbound_routes[0].duration;
 }
 
+/* *****************************************************************************
+ *                              Session Functions
+ * ****************************************************************************/
+
+/**
+ * Sets the specified outbound flight and stores it in session, clearing any
+ * previously selected flight, if present.
+ * 
+ * @param {object} flightObj The flight to store
+ * @returns {boolean} True if there was a previous flight, false otherwise.
+ */
+function setOutboundFlight(flightObj) {
+    var result = clearOutboundFlight();
+    var session = getSessionData();
+    session.payment.total += getFlightTotal(flightObj);
+    session.outboundFlight = flightObj;
+    setSessionData(session);
+    return result;
+}
+
+/**
+ * Removes the session-stored outbound flight, if present.
+ * 
+ * @returns {Boolean} True if there was an outbound flight and it was cleared,
+ * false otherwise.
+ */
+function clearOutboundFlight() {
+    var session = getSessionData();
+    if(session.outboundFlight === null) {
+        return false;
+    }
+    session.payment.total -= getFlightTotal(session.outboundFlight);
+    if(session.payment.total < 0) { //Handle precision errors
+        session.payment.total = 0;
+    }
+    session.outboundFlight = null;
+    setSessionData(session);
+    return true;
+}
+
+/**
+ * Sets the specified inbound flight and stores it in session, clearing any
+ * previously selected flight, if present.
+ * 
+ * @param {object} flightObj The flight to store
+ * @returns {boolean} True if there was a previous flight, false otherwise.
+ */
+function setInboundFlight(flightObj) {
+    var result = clearInboundFlight();
+    var session = getSessionData();
+    session.payment.total += getFlightTotal(flightObj);
+    session.inboundFlight = flightObj;
+    setSessionData(session);
+    return result;
+}
+
+/**
+ * Removes the session-stored inbound flight, if present.
+ * 
+ * @returns {Boolean} True if there was an inbound flight and it was cleared,
+ * false otherwise.
+ */
+function clearInboundFlight() {
+    var session = getSessionData();
+    if(session.inboundFlight === null) {
+        return false;
+    }
+    session.payment.total -= getFlightTotal(session.inboundFlight);
+    if(session.payment.total < 0) { //Handle precision errors
+        session.payment.total = 0;
+    }
+    session.inboundFlight = null;
+    setSessionData(session);
+    return true;
+}
 
 /* *****************************************************************************
  *                              General Functions

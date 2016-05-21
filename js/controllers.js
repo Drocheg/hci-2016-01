@@ -142,31 +142,34 @@ app.controller('controller', function ($scope, $http) {
             $scope.flights = null;
 
             $scope.selectFlight = function (flight) {
-                //Store flight in session
-                var session = getSessionData();
-                if (session.search.selectedFlight !== null) {   //If there's already a selected flight, subtract its total first
-                    session.payment.total -= getFlightTotal(session.search.selectedFlight);
+                var d = getGETparam('direction');
+                switch(d) {
+                    case 'outbound':
+                        setOutboundFlight(flight);
+                        break;
+                    case 'inbound':
+                        setInboundFlight(flight);
+                        break;
+                    default:
+                        Materialize.toast("Unrecognized state, not setting flight.");   //TODO shouldn't happen
+                        break;
                 }
-                session.payment.total += getFlightTotal(flight);
-                session.search.selectedFlight = flight;
-                setSessionData(session);
-                markSelectedFlight(flight, session.search.direction);
-                $("#currentTotal").html(session.payment.total.toFixed(2));
+                markSelectedFlight(flight, d);
+                $("#currentTotal").html(getSessionData().payment.total.toFixed(2));
                 $("#nextStep > button").removeClass("disabled");
             };
 
             $scope.searchFlights = function (extraParamsObj) {
-                var session = getSessionData();
-                var params = {
-                    method: "getonewayflights",
-                    from: session.search.oneWayTrip || !session.state.hasOutboundFlight ? session.search.from.id : session.search.to.id,
-                    to: session.search.oneWayTrip || !session.state.hasOutboundFlight ? session.search.to.id : session.search.from.id,
-                    dep_date: session.search.oneWayTrip || !session.state.hasOutboundFlight ? session.search.departDate.full : session.search.returnDate.full,
-                    adults: session.search.numAdults,
-                    children: session.search.numChildren,
-                    infants: session.search.numInfants
-                };
-                //Add extra params, if supplied
+                var params = {method: "getonewayflights"};
+                //Get ALL required parameters from GET
+                var requiredParams = ['from', 'to', 'dep_date', 'adults', 'children', 'infants'];
+                for(var index in requiredParams) {
+                    if (getGETparam(requiredParams[index]) === null) {
+                        return;
+                    }
+                    params[requiredParams[index]] = getGETparam(requiredParams[index]);
+                }
+                //Add extra params, if supplied via parameter
                 var extraParams = ['airline_id', 'max_price', 'min_price', 'stopovers', 'cabin_type', 'min_dep_time', 'max_dep_time', 'page', 'page_size', 'sort_key', 'sort_order'];
                 for (var index in extraParams) {
                     if (extraParamsObj.hasOwnProperty(extraParams[index])) {
@@ -225,12 +228,12 @@ app.controller('controller', function ($scope, $http) {
                 session.search.to.name = deal.city.name;
                 session.search.to.id = deal.city.id;
                 session.search.from.id = from;
-                session.search.selectedFlight = null;
-                session.search.direction = "outbound";
+//                session.search.selectedFlight = null; //Lo maté, no existe más TODO borrar
+//                session.search.direction = "outbound";
                 session.outboundFlight=null;
                 session.inboundFlight=null;
                 setSessionData(session);
-                window.location = "flights-deal.html";
+                window.location = "flights-deal.html?direction=outbound";   //TODO Diego maté session.search.direction, pasá todo por GET
             };
 
       
@@ -562,10 +565,10 @@ app.controller('controller', function ($scope, $http) {
                 var nonCompletePage = Number(numberOfPages);
                 numberOfPages = Number(numberOfPages).toFixed(0);
                 if (numberOfPages < nonCompletePage) {
-                    debugger;
+//                    debugger;  Me sacaron de quicio estos debuggers TODO kill with fire
                     numberOfPages = Number(numberOfPages) + 1;
                 }
-                debugger;
+//                debugger;
                 return Number(numberOfPages);
             };
         });
