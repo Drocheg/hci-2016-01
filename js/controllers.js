@@ -68,7 +68,7 @@ app.controller('controller', function ($scope, $http) {
                                     if (typeof failCallback !== 'undefined') {
                                         failCallback(response);
                                     } else {
-                                        $scope.defaultFailHandler(response);
+                                        defaultFailHandler(response);
                                     }
                                 }
                         );
@@ -143,7 +143,7 @@ app.controller('controller', function ($scope, $http) {
 
             $scope.selectFlight = function (flight) {
                 var d = getGETparam('direction');
-                switch(d) {
+                switch (d) {
                     case 'outbound':
                         setOutboundFlight(flight);
                         break;
@@ -163,7 +163,7 @@ app.controller('controller', function ($scope, $http) {
                 var params = {method: "getonewayflights"};
                 //Get ALL required parameters from GET
                 var requiredParams = ['from', 'to', 'dep_date', 'adults', 'children', 'infants'];
-                for(var index in requiredParams) {
+                for (var index in requiredParams) {
                     if (getGETparam(requiredParams[index]) === null) {
                         return;
                     }
@@ -192,10 +192,10 @@ app.controller('controller', function ($scope, $http) {
                             $scope.flights = {total: 0, flights: []};
                         });
             };
-            
-            
-            
-   
+
+
+
+
 
             $scope.getDeals = function (origin) {
                 $scope.APIrequest(
@@ -210,13 +210,13 @@ app.controller('controller', function ($scope, $http) {
                 Materialize.toast("Woooh! Look at that deal!!!", 5000);
                 var session = getSessionData();
                 var date = new Date();
-                date.setDate(date.getDate()+2);
+                date.setDate(date.getDate() + 2);
                 var year = date.getFullYear();
                 var month = (1 + date.getMonth()).toString();
                 month = month.length > 1 ? month : '0' + month;
                 var day = date.getDate().toString();
                 day = day.length > 1 ? day : '0' + day;
-                var fullDate = year+"-"+month+"-"+day;
+                var fullDate = year + "-" + month + "-" + day;
                 session.search.departDate.pretty = "HardcodeadaFecha";
                 session.search.departDate.full = fullDate;
                 session.search.numAdults = 1; //Vamos a tener que cambiar esta parte.
@@ -230,70 +230,74 @@ app.controller('controller', function ($scope, $http) {
                 session.search.from.id = from;
 //                session.search.selectedFlight = null; //Lo maté, no existe más TODO borrar
 //                session.search.direction = "outbound";
-                session.outboundFlight=null;
-                session.inboundFlight=null;
+                session.outboundFlight = null;
+                session.inboundFlight = null;
                 setSessionData(session);
                 window.location = "flights-deal.html?direction=outbound";   //TODO Diego maté session.search.direction, pasá todo por GET
             };
 
-      
+
 
             $scope.getLastMinuteDeals = function (origin) {
                 $scope.APIrequest(
-                    "booking",
-                    {method: "getlastminuteflightdeals", from: origin},
-                    function (response) {
-                        $scope.deals = [];
-                        for(var index in response.deals){
-                            debugger
-                            var session = getSessionData(); //TODO borrar?
-                            var deal = response.deals[index];
-                            var date = new Date();
-                            date.setDate(date.getDate()+2);
-                            var year = date.getFullYear();
-                            var month = (1 + date.getMonth()).toString();
-                            month = month.length > 1 ? month : '0' + month;
-                            var day = date.getDate().toString();
-                            day = day.length > 1 ? day : '0' + day;
-                            var fullDate = year+"-"+month+"-"+day;
-                            var params = {
-                                method: "getonewayflights",
-                                from: origin,
-                                to: deal.city.id,
-                                dep_date: fullDate,
-                                adults: 1,
-                                children: 0,
-                                infants: 0,
-                                min_price: deal.price,
-                                max_price: deal.price,
-                            };
-                            $scope.addDeal(params, response.deals[index]);
-                            
-                        }
-                    });
-            };
-            
-            $scope.addDeal = function(params, deal){
-                if($scope.deals,length<9){
-                    $scope.APIrequest(
                         "booking",
-                        params,
+                        {method: "getlastminuteflightdeals", from: origin},
                         function (response) {
-                            if(response.flights.length!==0){
-                               
-                                $scope.deals.push(deal);
+                            $scope.deals = [];
+                            for (var index in response.deals) {
+                                debugger
+                                var session = getSessionData(); //TODO borrar?
+                                var deal = response.deals[index];
+                                var date = new Date();
+                                date.setDate(date.getDate() + 2);
+                                var year = date.getFullYear();
+                                var month = (1 + date.getMonth()).toString();
+                                month = month.length > 1 ? month : '0' + month;
+                                var day = date.getDate().toString();
+                                day = day.length > 1 ? day : '0' + day;
+                                var fullDate = year + "-" + month + "-" + day;
+                                var params = {
+                                    method: "getonewayflights",
+                                    from: origin,
+                                    to: deal.city.id,
+                                    dep_date: fullDate,
+                                    adults: 1,
+                                    children: 0,
+                                    infants: 0,
+                                    min_price: deal.price,
+                                    max_price: deal.price
+                                };
+                                $scope.addDeal(params, response.deals[index]);
+
                             }
                         },
+                        undefined,
                         function (response) {
-                            console.log("API error checking deal: " + JSON.stringify(response.error));
+                            defaultFailHandler(response, "Error de conexión consiguiendo promociones.");
+                        });
+            };
 
-                        },
-                        function (response) {
-                            console.log("Network error checking deal: " + JSON.stringify(response));
+            $scope.addDeal = function (params, deal) {
+                if ($scope.deals, length < 9) {
+                    $scope.APIrequest(
+                            "booking",
+                            params,
+                            function (response) {
+                                if (response.flights.length !== 0) {
 
-                    });
+                                    $scope.deals.push(deal);
+                                }
+                            },
+                            function (response) {
+                                console.log("API error checking deal: " + JSON.stringify(response.error));
+
+                            },
+                            function (response) {
+                                console.log("Network error checking deal: " + JSON.stringify(response));
+
+                            });
                 }
-                
+
             }
 
             $scope.bookFlight = function (firstName, lastName, birthDate, idType, idNumber, installments, state, zip, street, streetNumber, phones, email, addressFloor, addressApartment) {
@@ -350,11 +354,10 @@ app.controller('controller', function ($scope, $http) {
                 }).then(function (response) {
                     if (response.data.stat !== "ok") {
                         defaultFailHandler(response.data, "Error consiguiendo imágenes.");
-                        //TODO use fallback image
+                        $("#" + destId).attr("src", "img/placeholder.png");
                     } else {
                         if (response.data.photos.photo.length === 0) {
-                            Materialize.toast("No se encontraron imágenes para " + query);
-                            //TODO use fallback iamge
+                            $("#" + destId).attr("src", "img/placeholder.png");
                         } else {
                             $("#" + destId).attr("src", $scope.buildFlickURL(response.data.photos.photo[0]));
                         }
@@ -363,7 +366,6 @@ app.controller('controller', function ($scope, $http) {
             };
 
             $scope.goToDeal = function (deal, from) {
-                Materialize.toast("Woooh! Look at that deal!!!", 5000);
                 var session = getSessionData();
                 session.search.numAdults = 1;
                 session.search.numInfants = 0;
@@ -442,11 +444,11 @@ app.controller('controller', function ($scope, $http) {
                 }).then(function (response) {
                     if (response.data.stat !== "ok") {
                         defaultFailHandler(response.data, "Error consiguiendo imágenes.");
-                        //TODO use fallback image
+                        $("#" + destId).attr("src", "img/placeholder.png");
                     } else {
                         if (response.data.photos.photo.length === 0) {
                             Materialize.toast("No se encontraron imágenes para " + query);
-                            //TODO use fallback iamge
+                            $("#" + destId).attr("src", "img/placeholder.png");
                         } else {
                             $("#" + destId).attr("src", $scope.buildFlickURL(response.data.photos.photo[0]));
                         }
@@ -473,11 +475,10 @@ app.controller('controller', function ($scope, $http) {
                 }).then(function (response) {
                     if (response.data.stat !== "ok") {
                         defaultFailHandler(response.data, "Error consiguiendo imágenes.");
-                        //TODO use fallback image
+                        $("#" + destId).attr("src", "img/placeholder.png");
                     } else {
                         if (response.data.photos.photo.length === 0) {
-                            Materialize.toast("No se encontraron imágenes para " + query);
-                            //TODO use fallback iamge
+                            $("#" + destId).attr("src", "img/placeholder.png");
                         } else {
                             $(selector).css("background", "url('" + $scope.buildFlickURL(response.data.photos.photo[0]) + "')");
                         }
@@ -535,8 +536,7 @@ app.controller('controller', function ($scope, $http) {
 
             $scope.getFlightAirlineLogoURL = function (flight) {
                 var session = getSessionData();
-                return session.airlines[getFlightAirlineID(flight)].logo || "#";
-                //    TODO fall back to default image if not found
+                return session.airlines[getFlightAirlineID(flight)].logo || "img/placeholder.png";
             };
 
             $scope.getFlightNumber = function (flight) {

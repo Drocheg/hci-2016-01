@@ -51,8 +51,7 @@ function getFlightAirlineID(flight) {
 
 function getFlightAirlineLogoURL(flight) {
     var session = getSessionData();
-    return session.airlines[getFlightAirlineID(flight)].logo || "#";
-//    TODO fall back to default image if not found
+    return session.airlines[getFlightAirlineID(flight)].logo || "img/placeholder.png"; //Fall back to default image if not found
 }
 
 function getFlightNumber(flight) {
