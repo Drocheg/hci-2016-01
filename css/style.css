@@ -56,8 +56,13 @@
     margin: 0.82rem 0 0.656rem 0;*/
 }
 
-#searchResults div {
+#searchResults div{
     display: inline-block;
+}
+
+#searchResults * {
+    vertical-align: top;
+    margin-top: 0px;
 }
 
 #criteria {

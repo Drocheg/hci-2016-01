@@ -16,7 +16,7 @@
         </header>
 
         <main style="margin-top:65px;">
-            <div style="min-height: 1300px;">
+            <div style="min-height: 0px;">
                 <div class="row">
                     <div class="col s3" style="position: fixed;">
                         <div class="row">
@@ -90,7 +90,7 @@
                             <button class="btn waves-effect waves-light disabled">{{session.search.oneWayTrip|| session.outboundFlight !== null ? 'Siguiente' : 'Elegir Vuelta'}}<i class="material-icons right">send</i></button>
                         </div>
                         <!--END SELECTED FLIGHT(S) BOX(ES)-->
-                        <div class="col s12 center" data-ng-show='flights !== null' id="searchResults">
+                        <div class="col s12 center" data-ng-show='flights !== null' id="searchResults" style="height: 55px; ">
                             <span class="bigText">{{flights.total}} vuelo{{flights.total === 1 ? '' : 's'}} de <b>{{getGETparam('from')}}</b> a <b>{{getGETparam('to')}}</b> encontrado{{flights.total === 1 ? '' : 's'}} para el {{getGETparam("direction") === 'outbound' ? session.search.departDate.pretty : session.search.returnDate.pretty}}</span>
                             <div data-ng-show="flights.total > 1">
                                 <span class="bigText">, ordenados por</span>
@@ -175,7 +175,7 @@
                             <!--END PRELOADER-->
                             <div id="flights" class="row lighten-4" data-ng-show="flights !== null">
                                 <!--FLIGHT CARDS-->
-                                <div class="card black-text col s12" data-ng-show="flights.flights.length > 0" data-ng-repeat="flight in flights.flights" style="padding:0 0 10px 0; border-radius:10px; z-index: 1">
+                                <div class="card black-text col s12" data-ng-show="flights.flights.length > 0" data-ng-repeat="flight in flights.flights" style="margin-bottom: 0px; padding:0 0 10px 0; border-radius:10px; z-index: 1">
                                     <div class="card-action green lighten-4" style="padding:5px; border-radius:10px 10px 0 0;">
                                         <p style="margin: 0; height:30px; line-height:30px;" class="card-title">
                                             <span class="col s10" style="padding-left:0;">
