@@ -13,16 +13,17 @@
     <body>
         <header>
             <nav role="navigation" data-ng-include="'includes/nav.html'"></nav>
-            <h1 class="center">Pagina de comentarios</h1>
+            <h1 class="center">Comentarios de {{session.airlines[getGETparam("airlineId")].name}} #{{getGETparam("flightNum")}}</h1>
         </header>
 
 
         <main>
-            <h2 class="center">Comentarios sobre vuelo: {{reviewCount}}</h2>
+            <h4 class="center">Puntaje promedio de {{session.airlines[getGETparam("airlineId")].name}}: {{session.airlines[getGETparam("airlineId")].rating || 'N/D'}}</h4>
+            <h5 class="center">Comentarios encontrados: {{reviewCount}}</h5>
             <div class="row"> <!-- esto cambia todas la tarjetas -->
-                <div class="col s2 offset-l5">
+                <div class="col s2 offset-s5">
                     <label>Comentarios por pagina</label>
-                    <select ng-model="resultsPerPage" value=30 data-ng-change="getFlightReviews(getGETparam('airlineId'), getGETparam('flightNum'), resultsPerPage, 1)">
+                    <select ng-model="resultsPerPage" data-ng-change="getFlightReviews(getGETparam('airlineId'), getGETparam('flightNum'), resultsPerPage, 1)">
                         <option selected value=10>10</option>
                         <option value=20>20</option>
                         <option value=30>30</option>
