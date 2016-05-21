@@ -86,6 +86,11 @@ function getSessionData() {
                 zip: null,
                 street: null,
                 streetNumber: null,
+                installments: null,
+                state: null,
+                addressFloor: "-",
+                addressApartment: "-",
+                phone: null,
                 total: 0
             },
             state: {

@@ -20,7 +20,7 @@
                 <div class="row"> 
                     <!--/*, (session.search.oneWayTrip ? 'offset-s2' : 'offset-s1')*/-->
                     <div data-ng-class="['col', (session.search.oneWayTrip ? 's6' : 's4')]">
-                        <div class="card-panel light-green lighten-3 " id="outbound" data-ng-style="session.search.oneWayTrip ? {height: '663px'} : {height: '723px'}">
+                        <div class="card-panel light-green lighten-3 " id="outbound" data-ng-style="session.search.oneWayTrip ? {height: '703px'} : {height: '763px'}">
                             <h4 class="center">Ida</h4>
                             <p><b>Numero de vuelo</b>: {{getFlightNumber(session.outboundFlight)}}</p>
                             <p><b>Fecha:</b> {{(getDepartureDateObj(session.outboundFlight)).getDate()}}/{{getDepartureDateObj(session.outboundFlight).getMonth()}}</p>
@@ -68,16 +68,16 @@
                             </div> 
                         </div>
                         <div class="col s12">
-                            <div class="card-panel light-green lighten-4" id="payment" style="height:440px">
+                            <div class="card-panel light-green lighten-4" id="payment" style="height:480px">
                                 <h4 class="center">Pago</h4> 
                                 <p><b>Número de tarjeta:</b> {{session.payment.cardNumber}}</p> 
-                                <p><b>Nombre de titular:</b> {{session.payment.cardholderName}}</p>
-                                <!-- Si es pasaporte o dni-->
-                                <p><b>Documento:</b></p>
-                                <p><b>Codigo Postal:</b></p>
-                                <p><b>Direccion:</b></p>
-                                <p><b>Numero de telefono:</b></p>
-                                <p><b>Cuotas:</b></p>
+                                <p><b>Nombre</b> {{session.payment.cardholderFirstName}}</p>
+                                <p><b>Apellido:</b> {{session.payment.cardholderLastName}}</p>
+                                <p><b>Documento:</b>{{session.payment.dni}}</p>
+                                <p><b>Codigo Postal:</b>{{session.payment.zip}}</p>
+                                <p><b>Direccion:</b> {{session.payment.state}} {{session.payment.street}} {{session.payment.streetNumber}} {{session.payment.addressFloor}} {{session.payment.addressApartment}}</p>
+                                <p><b>Numero de telefono:</b> {{session.payment.phone}}</p>
+                                <p><b>Cuotas:</b> {{session.payment.installments}}</p>
                                 <h5 class="center"><b>Total:</b> $40.000</h5> 
                                 <div class="row center">
                                     <button id="changePaymentBtn" class="waves-effect waves-light btn">Modificar Pago</button>
@@ -96,17 +96,16 @@
                             </div> 
                         </div>
                         <div class="col s12">
-                            <div class="card-panel light-green lighten-4" id="payment" style="height:500px">
+                            <div class="card-panel light-green lighten-4" id="payment" style="height:540px">
                                 <h4 class="center">Pago</h4> 
                                 <p><b>Número de tarjeta:</b> {{session.payment.cardNumber}}</p> 
-                                <p><b>Nombre:</b> {{session.payment.cardholderFirstName}}</p>
+                                <p><b>Nombre</b> {{session.payment.cardholderFirstName}}</p>
                                 <p><b>Apellido:</b> {{session.payment.cardholderLastName}}</p>
-                                <!-- Si es pasaporte o dni-->
-                                <p><b>Documento:</b></p>
-                                <p><b>Codigo Postal:</b></p>
-                                <p><b>Direccion:</b></p>
-                                <p><b>Numero de telefono:</b></p>
-                                <p><b>Cuotas:</b></p>
+                                <p><b>Documento:</b>{{session.payment.dni}}</p>
+                                <p><b>Codigo Postal:</b>{{session.payment.zip}}</p>
+                                <p><b>Direccion:</b> {{session.payment.state}} {{session.payment.street}} {{session.payment.streetNumber}} {{session.payment.addressFloor}} {{session.payment.addressApartment}}</p>
+                                <p><b>Numero de telefono:</b> {{session.payment.phone}}</p>
+                                <p><b>Cuotas:</b> {{session.payment.installments}}</p>
                                 <h5 class="center"><b>Total:</b> $40.000</h5> 
                                 <div class="row center">
                                     <button id="changePaymentBtn" class="waves-effect waves-light btn">Modificar Pago</button>

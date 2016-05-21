@@ -17,58 +17,84 @@
         </header>
 
 
-        <main>
+        <main class="container">
             <h4 class="center">Puntaje promedio de {{session.airlines[getGETparam("airlineId")].name}}: {{session.airlines[getGETparam("airlineId")].rating || 'N/D'}}</h4>
             <h5 class="center">Comentarios encontrados: {{reviewCount}}</h5>
             <div class="row"> <!-- esto cambia todas la tarjetas -->
-                <div class="col s2 offset-s5">
-                    <label>Comentarios por pagina</label>
-                    <select ng-model="resultsPerPage" data-ng-change="getFlightReviews(getGETparam('airlineId'), getGETparam('flightNum'), resultsPerPage, 1)">
-                        <option selected value=10>10</option>
-                        <option value=20>20</option>
-                        <option value=30>30</option>
-                    </select>
+                <div class="col s4 offset-s4">
+                    <div class="row">
+                        <label>Comentarios por pagina</label>
+                        <select ng-model="resultsPerPage" data-ng-change="getFlightReviews(getGETparam('airlineId'), getGETparam('flightNum'), resultsPerPage, 1)">
+                            <option selected value=10>10</option>
+                            <option value=20>20</option>
+                            <option value=30>30</option>
+                        </select>
+                    </div>
+                    <div class="row">
+                        <div class="center">
+                            <a class="center-align btn waves-effect waves-light offset-l5 s6" href="fillReview.html?airlineId={{getGETparam('airlineId')}}&flightNum={{getGETparam('flightNum')}}">Dejar un comentario</a>
+                        </div>
+                    </div>
                 </div>
+            </div>
+            <div class="row" ng-repeat="review in reviews">
                 <!--TODO change elements (e.g. review.aerolinea) to whatever the API returns-->
-                <div id="reviewCard" class="col offset-s3 s6 center softlyPadded" ng-repeat="review in reviews">    
-                    <div class="softlyPadded"><strong>{{getGETparam('airlineId')}} #{{getGETparam('flightNum')}}</strong></div>
-                    <div class="col s6"> <!--Columna Izq-->
+                <div class="card reviewCard col s8 offset-s2 black-text center" >
+                    <div class="card-action green lighten-4">
+                        <p class="card-title">
+                            <span>
+                                <img src="http://eiffel.itba.edu.ar/hci/service4/images/AM.png" alt="Aeromexico">
+                                Aeromexico (AM) #427
+                            </span>
+                        </p>
+                    </div>
+                    <div class="card-content">
                         <div class="row">
-                            General: {{review.rating.overall}}<div class="progress"><div class="determinate bar-{{review.rating.overall}}"></div></div>                                
+                            <div class="col s4 offset-s1"> <!-- Left column -->
+                                <div class="row">
+                                    General: {{review.rating.overall}}<div class="progress"><div class="determinate bar-{{review.rating.overall}}"></div></div>                                
+                                </div>
+                                <div class="row">
+                                    Amabilidad: {{review.rating.friendliness}}<div class="progress"><div class="determinate bar-{{review.rating.friendliness}}" ></div></div>                                
+                                </div>
+                                <div class="row">
+                                    Puntualidad: {{review.rating.punctuality}}<div class="progress"><div class="determinate bar-{{review.rating.punctuality}}" ></div></div>                                
+                                </div>
+                                <div class="row">
+                                    Comfort: {{review.rating.comfort}}<div class="progress"><div class="determinate bar-{{review.rating.comfort}}"></div></div>                                
+                                </div>
+                            </div>
+                            <div class="col s1">&nbsp;</div>
+                            <div class="col s4 offset-s1"> <!-- Right column -->
+                                <div class="row">
+                                    Recomendado? {{review.yes_recommend ? "Sí" : "No"}}<div class="progress"><div class="determinate bar-{{review.yes_recommend * 10}}"></div></div>                                
+                                </div>
+                                <div class="row">
+                                    Comida: {{review.rating.food}}<div class="progress"><div class="determinate bar-{{review.rating.food}}"></div></div>                                
+                                </div>
+                                <div class="row">
+                                    Programa de viajero frecuente: {{review.rating.mileage_program}}<div class="progress"><div class="determinate bar-{{review.rating.mileage_program}}" ></div></div>                                
+                                </div>
+                                <div class="row">
+                                    Relación precio a calidad: {{review.rating.quality_price}}<div class="progress"><div class="determinate bar-{{review.rating.quality_price}}"></div></div>                                
+                                </div>
+                            </div>
                         </div>
                         <div class="row">
-                            Amabilidad: {{review.rating.friendliness}}<div class="progress"><div class="determinate bar-{{review.rating.friendliness}}" ></div></div>                                
-                        </div>
-                        <div class="row">
-                            Puntualidad: {{review.rating.punctuality}}<div class="progress"><div class="determinate bar-{{review.rating.punctuality}}" ></div></div>                                
-                        </div>
-                        <div class="row">
-                            Comfort: {{review.rating.comfort}}<div class="progress"><div class="determinate bar-{{review.rating.comfort}}"></div></div>                                
+                            Comentario: <strong>{{review.comments}}</strong>
                         </div>
                     </div>
-                    <div class="col s6">
-                        <div class="row">
-                            Recomendación: {{review.yes_recommend ? "Sí" : "No"}}<div class="progress"><div class="determinate bar-{{review.yes_recommend*10}}"></div></div>                                
-                        </div>
-                        <div class="row">
-                            Comida: {{review.rating.food}}<div class="progress"><div class="determinate bar-{{review.rating.food}}"></div></div>                                
-                        </div>
-                        <div class="row">
-                            Programa de viajero frequente: {{review.rating.mileage_program}}<div class="progress"><div class="determinate bar-{{review.rating.mileage_program}}" ></div></div>                                
-                        </div>
-                        <div class="row">
-                            Relación precio a calidad: {{review.rating.quality_price}}<div class="progress"><div class="determinate bar-{{review.rating.quality_price}}"></div></div>                                
-                        </div>
+                </div>
+                <div data-ng-if="reviewCount / resultsPerPage > 1"> <!-- Only show pagination if there's more than 1 page -->
+                    <div class="col s12">
+                        <ul class="pagination center-align">
+                            <li ng-repeat="i in getFilledArray(getNumberOfPages(reviewCount, resultsPerPage))"><button class="waves-button-input" data-ng-click="getFlightReviews(getGETparam('airlineId'), getGETparam('flightNum'), resultsPerPage, i)">{{i}}</button></li>
+                        </ul></div>
+                    <div class="col s12">
+                        <div class="center"> <a class="center-align btn waves-effect waves-light offset-l5 s6" href="fillReview.html?airlineId={{getGETparam('airlineId')}}&flightNum={{getGETparam('flightNum')}}">Dejar un comentario</a></div>
                     </div>
-                    <div class="softlyPadded">Comentario: <strong>{{review.comments}}</strong></div>
                 </div>
-                <div class="col s12">
-                    <ul class="pagination center-align">
-                        <li ng-repeat="i in getFilledArray(getNumberOfPages(reviewCount, resultsPerPage))"><button class="waves-button-input" data-ng-click="getFlightReviews(getGETparam('airlineId'), getGETparam('flightNum'), resultsPerPage, i)">{{i}}</button></li>
-                    </ul></div>
-                <div class="col s12">
-                    <div class="center"> <a class="center-align btn waves-effect waves-light offset-l5 s6" href="fillReview.html?airlineId={{getGETparam('airlineId')}}&flightNum={{getGETparam('flightNum')}}">Dejar un comentario</a></div>
-                </div>
+            </div>
         </main>
 
         <footer class="page-footer" data-ng-include="'includes/footer.html'"></footer>

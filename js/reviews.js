@@ -21,7 +21,7 @@ function isValidRadio(radioGroup, helperMsg) {
 
 function radioFormValid(friend, food, punct, mileage, comfort, quality, recommend) {
     var valid = true;
-    var aux = true
+    var aux = true;
         valid = isValidRadio(friend, "Campo amabilidad no esta completado");
         if(!valid) {aux = false;}
         valid = isValidRadio(food, "Campo comida no esta completado");
@@ -43,8 +43,8 @@ function submitReview(airlineID, flightNum, friend, food, punct, mileage, comfor
     $.ajax({
         type: "POST",
         url: "http://eiffel.itba.edu.ar/hci/service4/review.groovy?method=reviewairline",
-        contentType: 'aplication/json', //TODO SACAR CABLEADO DE ID
-        data: JSON.stringify({flight: {airline: {id: airlineID}, number: flightNum}, rating: {friendliness: friend, food: food, punctuality: punct, mileage_program: mileage, comfort: comfort, quality_price: quality}, yes_recommend: recommend, comments: comments})  //TODO yes_recommend false rompe
+        contentType: 'aplication/json',
+        data: JSON.stringify({flight: {airline: {id: airlineID}, number: flightNum}, rating: {friendliness: friend, food: food, punctuality: punct, mileage_program: mileage, comfort: comfort, quality_price: quality}, yes_recommend: recommend, comments: comments})
     })
             .done(function (result) {
                 if (result.error) {
@@ -54,8 +54,7 @@ function submitReview(airlineID, flightNum, friend, food, punct, mileage, comfor
                     if (result.review !== true) {
                         Materialize.toast("Error, decile a Juen");       //TODO remove
                     } else {
-                        Materialize.toast("Review subida");
-                        window.location.replace("reviews.html?airlineId=" + data.id + "&flightNum=" + data.flightNum);
+                        window.location = "reviews.html?airlineId=" + airlineID + "&flightNum=" + flightNum;
                     }
                 }
             })

@@ -21,21 +21,26 @@
                 <div class='col s8 offset-s2 card-panel'>
                     <form id='payment-form'>
                         <div class="row">
-                            <div class="input-field col s4">
+                            <div class="input-field col s3">
                                 <i id="cardNumberIcon" class="material-icons prefix">credit_card</i>
                                 <input type="hidden" id="isValidCard" value="false" />
                                 <input type="text" id="cardNumber" pattern="[0-9]{13,16}"   value="4111111111111111" placeholder=" "> <!-- TODO remove value -->
                                 <label for="cardNumber" data-error="">Número de Tarjeta de Crédito (sólo números)</label>
                             </div>
-                            <div class="input-field col s4">
+                            <div class="input-field col s3">
                                 <i id="cardExpiryIcon" class="material-icons prefix">today</i>
                                 <input type="text" id="cardExpiry" pattern="[0-9]{2}/[0-9]{2}" placeholder="MM/AA"  >
                                 <label for="cardExpiry" data-error="">Fecha de Vencimiento</label>
                             </div>
-                            <div class="input-field col s4">
+                            <div class="input-field col s3">
                                 <i id="cvvIcon" class="material-icons prefix">lock_outline</i>
                                 <input type="text" id="cvv" pattern="[0-9]{3,4}" class="validate"  placeholder=" ">
                                 <label for="cvv" data-error="Por favor ingrese un código válido.">Código de Seguridad</label>
+                            </div>
+                            <div class="input-field col s3">
+                                <i id="installmentsIcon" class="material-icons prefix">payment</i>
+                                <input id="installments" type="text" class="validate"   placeholder=" " pattern="[0-9]{1,}">
+                                <label for="installments" data-error="Por favor ingrese un número">Cuotas</label>
                             </div>
                         </div>
                         <div class="row">
@@ -62,31 +67,43 @@
                                 <label for="email" data-error="Por favor ingrese un email válido">E-mail</label>
                             </div>
                             <div class="input-field col s4">
-                                <i id="zipIcon" class="material-icons prefix">email</i>
+                                <i id="zipIcon" class="material-icons prefix">lock_outline</i>
                                 <input id="zip" type="text" class="validate"   pattern="[0-9]{1,}" placeholder=" ">
                                 <label for="zip" data-error="Por favor ingrese un zip válido">Codigo postal</label>
                             </div>
                         </div>
                         <div class="row">
                             <div class="input-field col s3">
-                                <i id="state" class="material-icons prefix">email</i>
+                                <i id="stateIcon" class="material-icons prefix">location_city</i>
                                 <input id="state" type="text" class="validate"  placeholder=" " >
                                 <label for="state" data-error="Por favor ingrese una ciudad">Ciudad</label>
                             </div>
                             <div class="input-field col s3">
-                                <i id="addressIcon" class="material-icons prefix">email</i>
+                                <i id="streetIcon" class="material-icons prefix">domain</i>
                                 <input id="street" type="text" class="validate"  placeholder=" " >
                                 <label for="street" data-error="Por favor ingrese una calle valida">Calle</label>
                             </div>
                             <div class="input-field col s3">
-                                <i id="addressIcon" class="material-icons prefix">email</i>
+<!--                                <i id="streetNumberIcon" class="material-icons prefix">domain</i>-->
                                 <input id="streetNumber" type="text" class="validate"  placeholder=" " >
                                 <label for="streetNumber" data-error="Por favor ingrese una dirección">Número</label>
                             </div>
                             <div class="input-field col s3">
-                                <i id="addressIcon" class="material-icons prefix">email</i>
+                                <i id="phoneIcon" class="material-icons prefix">phone</i>
                                 <input id="phone" type="text" class="validate"   placeholder=" " pattern="[0-9]{1,}">
                                 <label for="phone" data-error="Por favor ingrese un número">Teléfono</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="input-field col s3">
+                                <i id="addressIcon" class="material-icons prefix">domain</i>
+                                <input id="addressFloor" type="text">
+                                <label for="addressFloor" data-error="Por favor ingrese un número">Piso (Opcional)</label>
+                            </div>
+                            <div class="input-field col s3">
+<!--                                <i id="addressIcon" class="material-icons prefix">email</i>-->
+                                <input id="addressApartment" type="text">
+                                <label for="addressApartment" data-error="Por favor ingrese un número">Departamento (Opcional)</label>
                             </div>
                         </div>
                         <div class="row">
