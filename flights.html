@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-ng-app="app" data-ng-controller="controller" data-ng-init="searchFlights({sort_key: 'total', sort_order: 'asc'})">
+<html lang="en" data-ng-app="app" data-ng-controller="controller">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
@@ -87,63 +87,47 @@
                             </div>
                         </div>                        
                         <div class="col s3 center" id="nextStep">
-                            <button class="btn waves-effect waves-light disabled">{{session.search.oneWayTrip || session.outboundFlight !== null ? 'Siguiente' : 'Elegir Vuelta'}}<i class="material-icons right">send</i></button>
+                            <button class="btn waves-effect waves-light disabled">{{session.search.oneWayTrip|| session.outboundFlight !== null ? 'Siguiente' : 'Elegir Vuelta'}}<i class="material-icons right">send</i></button>
                         </div>
                         <!--END SELECTED FLIGHT(S) BOX(ES)-->
-                        <!--FILTERS-->
-                        <div class="row" style="margin-bottom:0;">
-                            <div class="col s9">
-                                <div class="col s6">
-                                    <div id="searchFilters" class="card-panel white black-text">
-                                        <div class="row">
-                                            <h5 class="center">Ordenar Por</h5>
-                                            <div class="input-field col s6" >
-                                                <select data-ng-model="criteria" data-ng-change="searchFlights({sort_key: criteria, sort_order: order, page_size: resultsPerPage})">
-                                                    <option selected value="total">Precio</option>
-                                                    <option value="airline">Airline</option>
-                                                    <option value="duration">Duración</option>
-                                                </select>
-                                            </div>
-                                            <div class="input-field col s6">
-                                                <select  data-ng-model="order" data-ng-change="searchFlights({sort_key: criteria, sort_order: order, page_size: resultsPerPage})">
-                                                    <option selected value="asc">Ascendente</option>
-                                                    <option value="desc">Descendente</option>
-                                                </select>
-                                            </div>
-                                            <button class="col s8 offset-s2 btn" data-ng-click="searchFlights(criteria, order)">Aplicar</button>
-                                        </div>
-                                    </div>
+                        <div class="col s12 center" data-ng-show='flights !== null' id="searchResults">
+                            <span class="bigText">{{flights.total}} vuelo{{flights.total === 1 ? '' : 's'}} de <b>{{getGETparam('from')}}</b> a <b>{{getGETparam('to')}}</b> encontrado{{flights.total === 1 ? '' : 's'}} para el {{getGETparam("direction") === 'outbound' ? session.search.departDate.pretty : session.search.returnDate.pretty}}</span>
+                            <div data-ng-show="flights.total > 1">
+                                <span class="bigText">, ordenados por</span>
+                                <div id="criteria" class="input-field">
+                                    <select data-ng-model="criteria">
+                                        <option selected value="total">Precio</option>
+                                        <option value="airline">Aerolínea</option>
+                                        <option value="duration">Duración</option>
+                                    </select>
                                 </div>
-                                <!--END FILTERS-->
-                                <!--RESULTS PER PAGE-->
-                                <div class="col s6">
-                                    <div id="resultsPerPage" class="card-panel white black-text">
-                                        <div class="row">
-                                            <h5 class="center">Vuelos por página</h5>
-                                            <div class="input-field col s6 offset-s3">
-                                                <select ng-model="resultsPerPage" value=30 data-ng-change="searchFlights({sort_key: criteria, sort_order: order, page_size: resultsPerPage})">
-                                                    <option selected value=10>10</option>
-                                                    <option value=20>20</option>
-                                                    <option value=30>30</option>
-                                                </select>
-                                            </div>
-                                            <button class="col s8 offset-s2 btn">Aplicar</button>
-                                        </div>
-                                    </div>
+                                <div id="order" class="input-field">
+                                    <select data-ng-model="order">
+                                        <option selected value="asc">Ascendente</option>
+                                        <option value="desc">Descendente</option>
+                                    </select>
                                 </div>
-                                <!--END RESULTS PER PAGE-->
+                                <span class="bigText"> en páginas de </span>
+                                <div id="resultsPerPage" class="input-field">
+                                    <select ng-model="resultsPerPage">
+                                        <option selected value="10">10</option>
+                                        <option value="20">20</option>
+                                        <option value="30">30</option>
+                                    </select>
+                                </div>
+                                <!--                                <a class='dropdown-button' href='#' data-ng-model="order" data-ng-init="order = 'asc'" data-ng-click="order = (order === 'asc' ? 'desc' : 'asc')" >{{order === 'asc' ? 'ascendente' : 'descendente'}}</a>, <a class='dropdown-button' href='#' data-activates='pagesize'>{{resultsPerPage}}</a> por pagina</span>-->
                             </div>
                         </div>
                         <div class="col s12 divider"></div>
                     </div>
                     <!--END FIXED TOP SECTION-->
                     <!--SEARCH RESULTS-->
-                    <div class="col s9 offset-s3" data-ng-style="session.search.oneWayTrip ? {'margin-top': '340px'} : {'margin-top': '370px'}" style="z-index:1;">
+                    <div class="col s9 offset-s3" data-ng-style="session.search.oneWayTrip ? {'margin-top': '240px'} : {'margin-top': '270px'}" style="z-index:1;">
                         <div class="col s12">
                             <!--PRELOADER-->
                             <div class="row" data-ng-show="flights === null">
                                 <div class="center">
-                                    <h2>Buscando Vuelos...</h2>
+                                    <h2>Buscando vuelos...</h2>
                                     <div class="preloader-wrapper big active">
                                         <div class="spinner-layer spinner-blue">
                                             <div class="circle-clipper left">
@@ -190,16 +174,13 @@
                             </div>
                             <!--END PRELOADER-->
                             <div id="flights" class="row lighten-4" data-ng-show="flights !== null">
-                                <div class="col s12 center">
-                                    <h5>{{flights.total}} vuelos de <b>{{getGETparam('direction') === 'outbound' ? 'ida' : 'vuelta'}}</b> encontrados para el {{getGETparam("direction") === 'outbound' ? session.search.departDate.pretty : session.search.returnDate.pretty}}</h5>
-                                </div>
                                 <!--FLIGHT CARDS-->
                                 <div class="card black-text col s12" data-ng-show="flights.flights.length > 0" data-ng-repeat="flight in flights.flights" style="padding:0 0 10px 0; border-radius:10px; z-index: 1">
                                     <div class="card-action green lighten-4" style="padding:5px; border-radius:10px 10px 0 0;">
                                         <p style="margin: 0; height:30px; line-height:30px;" class="card-title">
                                             <span class="col s10" style="padding-left:0;">
                                                 <img src="{{getFlightAirlineLogoURL(flight)}}" alt="{{getFlightAirlineName(flight)}}"/>
-                                                {{getFlightAirlineName(flight)}} #{{getFlightNumber(flight)}}
+                                                {{getFlightAirlineName(flight)}} ({{getFlightAirlineID(flight)}}) #{{getFlightNumber(flight)}}
                                             </span>
                                             <span class="col s2" style="text-align:right;">
                                                 <b>${{getFlightTotal(flight) | number:0}}</b>
@@ -235,7 +216,7 @@
                                                     <i class="material-icons col s1" style="font-size:2.5rem; margin-top:5px; margin-left:42%;">send</i>
                                                 </div>
                                                 <div class="col s4">
-                                                    <p>{{getArrivalDateObj(flight) | date: 'HH:mm'}} - {{getDestinationAirport(flight).id}} <span data-ng-if='(getArrivalDateObj(flight).getDate() !== getDepartureDateObj(flight).getDate())' class='tooltipped' data-position='right' data-tooltip='Llega el día siguiente'> (+1)</span></p>
+                                                    <p>{{getArrivalDateObj(flight) | date: 'HH:mm'}} - {{getDestinationAirport(flight).id}} <span data-ng-if='(getArrivalDateObj(flight).getDate() !== getDepartureDateObj(flight).getDate())' class='tooltipped' data-position='bottom' data-tooltip='Llega el día siguiente'> (+1)</span></p>
                                                     <p style="font-size: 1rem; line-height: initial;">{{getDestinationAirport(flight).description}}</p>
                                                 </div>
                                             </div>
@@ -247,7 +228,7 @@
                                                     <p><i class="material-icons">flight</i>  {{getStopoversCount(flight) === 0 ? 'Directo' : getStopoversCount(flight) + ' Escalas'}}</p>
                                                 </div>
                                                 <div class="col s4">
-                                                    <p><a href="reviews.html?airlineId={{getFlightAirlineID(flight)}}&flightNum={{getFlightNumber(flight)}}"><i class="material-icons">star</i>  {{session.airlines[getFlightAirlineID(flight)].rating || 'N/A'}}</a></p>
+                                                    <p><a href="reviews.html?airlineId={{getFlightAirlineID(flight)}}&flightNum={{getFlightNumber(flight)}}" target="_blank" class='tooltipped' data-position='bottom' data-tooltip="Click para ver comentarios de {{getFlightAirlineID(flight)}} #{{getFlightNumber(flight)}}"><i class="material-icons">star</i>  {{session.airlines[getFlightAirlineID(flight)].rating || 'N/D'}}</a></p>
                                                 </div>
                                             </div>
                                         </div>
@@ -255,7 +236,7 @@
                                 </div>
                                 <!--END FLIGHT CARDS-->
                                 <!--PAGINATION-->
-                                <div class="row" data-ng-show="flights.flights.length > 0">
+                                <div class="row" data-ng-if="flights.total/resultsPerPage > 1">   <!-- Only show pagination when there's more than 1 page -->
                                     <div class="col s12 center">
                                         <ul class="pagination center-align">
                                             <li class="waves-effect"><a href="#!"><i class="material-icons">chevron_left</i></a></li>

@@ -67,9 +67,6 @@ $(function () {
            window.location = "index.html";
        }
    }
-   
-   
-    $('.tooltipped').tooltip(/*{delay: 50}*/);          //Enable tooltips for +1's TODO make it work, load dynamically after cards load
 
     if(getGETparam("direction") === "outbound") {       //If there's a flight already selected for this direction, clear it
         clearOutboundFlight();

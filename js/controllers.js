@@ -140,6 +140,10 @@ app.controller('controller', function ($scope, $http) {
              * ************************************************************************/
             $scope.deals = [];
             $scope.flights = null;
+            
+            $scope.$watchGroup(['criteria', 'order', 'resultsPerPage'], function() {
+                    $scope.searchFlights({sort_key: $scope.criteria, sort_order: $scope.order, page_size: $scope.resultsPerPage});
+                });
 
             $scope.selectFlight = function (flight) {
                 var d = getGETparam('direction');
@@ -160,6 +164,8 @@ app.controller('controller', function ($scope, $http) {
             };
 
             $scope.searchFlights = function (extraParamsObj) {
+                $scope.flights = null;
+                
                 var params = {method: "getonewayflights"};
                 //Get ALL required parameters from GET
                 var requiredParams = ['from', 'to', 'dep_date', 'adults', 'children', 'infants'];
@@ -181,7 +187,13 @@ app.controller('controller', function ($scope, $http) {
                         "booking",
                         params,
                         function (response) {
+                            //Remove previous tooltips
+                            $('.tooltipped').tooltip('remove');
                             $scope.flights = response;
+                            //Add news ones after a delay
+                            setTimeout(function() {
+                                $('.tooltipped').tooltip(/*{delay: 50}*/);          //Enable tooltips for +1's TODO make it work without timeout
+                            }, 500);
                         },
                         function (response) {
                             console.log("API error getting flights: " + JSON.stringify(response.error));
@@ -531,6 +543,9 @@ app.controller('controller', function ($scope, $http) {
             };
 
             $scope.getFlightAirlineID = function (flight) {
+                if(typeof flight === 'undefined') {
+                    return;
+                }
                 return flight.outbound_routes[0].segments[0].airline.id;
             };
 
@@ -540,6 +555,9 @@ app.controller('controller', function ($scope, $http) {
             };
 
             $scope.getFlightNumber = function (flight) {
+                if(typeof flight === 'undefined') {
+                    return;
+                }
                 return flight.outbound_routes[0].segments[0].number;
             };
 
