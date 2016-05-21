@@ -246,6 +246,11 @@ $(function () {
             dni: Number($("#dni").val()),
             street: $("#street").val(),
             streetNumber: $("#streetNumber").val(),
+            installments: $("#installments").val(),
+            state: $("#state").val(),
+            phone: $("#phone").val(),
+            addressFloor: $("#addressFloor").val(),
+            addressApartment: $("#addressApartment").val(),
             zip: $("#zip").val(),
             email: $("#email").val()
         };
@@ -314,6 +319,18 @@ $(function () {
         if(isEmpty(data.email,"email")){
             valid = false;
         }
+        if(isEmpty(data.installments,"installments")){
+            valid = false;
+        }
+        if(isEmpty(data.state,"state")){
+            valid = false;
+        }
+        if(isEmpty(data.streetNumber,"streetNumber")){
+            valid = false;
+        }
+           if(isEmpty(data.phone,"phone")){
+            valid = false;
+        }
         
 
         //Valid, store
@@ -343,6 +360,11 @@ $(function () {
          $("#zip").val(session.payment.zip);
          $("#street").val(session.payment.street);
          $("#streetNumber").val(session.payment.streetNumber);
+         $("#installments").val(session.payment.installments);
+         $("#state").val(session.payment.state);
+         $("#phone").val(session.payment.phone);
+         $("#addressFloor").val(session.payment.addressFloor);
+         $("#addressApartment").val(session.payment.addressApartment);
          $("#email").val(session.payment.email);
     }
     

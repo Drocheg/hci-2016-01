@@ -41,7 +41,7 @@ $(function () {
     
     $("#confirmBtn").on("click", function () {
         var session = getSessionData();
-        bookFlight(session.payment.cardholderFirstName, session.payment.cardholderLastName, session.payment.birthday, 1, session.payment.idNum, installments, state, session.payment.zip, street, streetNumber, phones, session.payment.email, addressFloor, addressApartment)
+        bookFlight(session.payment.cardholderFirstName, session.payment.cardholderLastName, session.payment.birthday, 1, session.payment.idNum, session.payment.installments, session.paymentstate, session.payment.zip, session.payment.street, session.payment.streetNumber, session.payment.phones, session.payment.email, session.payment.addressFloor, session.payment.addressApartment)
         window.location = "payment.html";
     });
 });
