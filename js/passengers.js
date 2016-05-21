@@ -59,36 +59,38 @@ $(function () {
 //                    }
 //                }
                 //Al pedo? Ya hago Patter antes.
-                if (!validateName(data.firstName)) {
-                    dataIsValid = false;
-
-                }
-
-                if (!validateName(data.lastName)) {
-                    dataIsValid = false;
-
-                }
+//                if (!validateName(data.firstName)) {
+//                    dataIsValid = false;
+//
+//                }
+//
+//                if (!validateName(data.lastName)) {
+//                    dataIsValid = false;
+//
+//                }
                 //Validar documento
 //                if(!validateDNI(data.DNI)){
 //                    dataIsValid=false;
 //                    
 //                }
+                if(isEmpty(data.day,groups[index] + "-" + i + "-" + "day")){
+                    dataIsValid = false;
+                }  
+                if(isEmpty(data.month, groups[index] + "-" + i + "-" + "month")){
+                    dataIsValid = false;
+                }  
+                if(isEmpty(data.year, groups[index] + "-" + i + "-" + "year")){
+                    dataIsValid = false;
+                }  
+
+
+
 
                 //TODO los msj no anda -.-
-                if (!validateDate(date)) { //Valida si es una fecha
-                    dataIsValid = false;
-                    $("label[for=" + groups[index] + "-" + i + "-" + 'day' + "]").attr("data-error", "Datos no corresponden a un Fecha");
-                    $("#" + groups[index] + "-" + i + "-" + 'day').removeClass("valid");
-                    $("#" + groups[index] + "-" + i + "-" + 'day').addClass("invalid");
-                    $("#" + groups[index] + "-" + i + "-" + 'month').removeClass("valid");
-                    $("#" + groups[index] + "-" + i + "-" + 'month').addClass("invalid");
-                    $("#" + groups[index] + "-" + i + "-" + 'year').removeClass("valid");
-                    $("#" + groups[index] + "-" + i + "-" + 'year').addClass("invalid");
-                } else {
-                    data.birthday = new Date(date.year, date.month - 1, date.day, 0, 0, 0, 0);
-                    if (!validateBirthday(data.birthday, index)) { //Valida si los groupos son lo que dice la fecha.
+                if(dataIsValid){
+                    if (!validateDate(date)) { //Valida si es una fecha
                         dataIsValid = false;
-                        $("label[for=" + groups[index] + "-" + i + "-" + 'day' + "]").attr("data-error", "La edad no corresponde a un " + spanishGroups[index]);
+                        $("label[for=" + groups[index] + "-" + i + "-" + 'day' + "]").attr("data-error", "Datos no corresponden a un Fecha");
                         $("#" + groups[index] + "-" + i + "-" + 'day').removeClass("valid");
                         $("#" + groups[index] + "-" + i + "-" + 'day').addClass("invalid");
                         $("#" + groups[index] + "-" + i + "-" + 'month').removeClass("valid");
@@ -96,14 +98,52 @@ $(function () {
                         $("#" + groups[index] + "-" + i + "-" + 'year').removeClass("valid");
                         $("#" + groups[index] + "-" + i + "-" + 'year').addClass("invalid");
                     } else {
-                        $("#" + groups[index] + "-" + i + "-" + 'day').removeClass("invalid");
-                        $("#" + groups[index] + "-" + i + "-" + 'day').addClass("valid");
-                        $("#" + groups[index] + "-" + i + "-" + 'month').removeClass("invalid");
-                        $("#" + groups[index] + "-" + i + "-" + 'month').addClass("valid");
-                        $("#" + groups[index] + "-" + i + "-" + 'year').removeClass("invalid");
-                        $("#" + groups[index] + "-" + i + "-" + 'year').addClass("valid");
+                        data.birthday = new Date(date.year, date.month - 1, date.day, 0, 0, 0, 0);
+                        if (!validateBirthday(data.birthday, index)) { //Valida si los groupos son lo que dice la fecha.
+                            dataIsValid = false;
+                            $("label[for=" + groups[index] + "-" + i + "-" + 'day' + "]").attr("data-error", "La edad no corresponde a un " + spanishGroups[index]);
+                            $("#" + groups[index] + "-" + i + "-" + 'day').removeClass("valid");
+                            $("#" + groups[index] + "-" + i + "-" + 'day').addClass("invalid");
+                            $("#" + groups[index] + "-" + i + "-" + 'month').removeClass("valid");
+                            $("#" + groups[index] + "-" + i + "-" + 'month').addClass("invalid");
+                            $("#" + groups[index] + "-" + i + "-" + 'year').removeClass("valid");
+                            $("#" + groups[index] + "-" + i + "-" + 'year').addClass("invalid");
+                        } else {
+                            $("#" + groups[index] + "-" + i + "-" + 'day').removeClass("invalid");
+                            $("#" + groups[index] + "-" + i + "-" + 'day').addClass("valid");
+                            $("#" + groups[index] + "-" + i + "-" + 'month').removeClass("invalid");
+                            $("#" + groups[index] + "-" + i + "-" + 'month').addClass("valid");
+                            $("#" + groups[index] + "-" + i + "-" + 'year').removeClass("invalid");
+                            $("#" + groups[index] + "-" + i + "-" + 'year').addClass("valid");
+                        }
                     }
                 }
+                
+                if(isEmpty(data.firstName, groups[index] + "-" + i + "-" + "firstName")){
+                    dataIsValid = false;
+                }  
+                if(isEmpty(data.lastName, groups[index] + "-" + i + "-" + "lastName")){
+                    dataIsValid = false;
+                }  
+                if(isEmpty(data.sex,groups[index] + "-" + i + "-" + "sex")){
+                    dataIsValid = false;
+                }else{
+                    if(!data.sex){
+                        $("#"+groups[index] + "-" + i + "-" + "sex"+"").removeClass("valid");
+                        $("#"+groups[index] + "-" + i + "-" + "sex"+"").addClass("invalid");
+                        dataIsValid = false;
+                    } else {
+                        $("#"+groups[index] + "-" + i + "-" + "sex"+"").removeClass("invalid");
+                        $("#"+groups[index] + "-" + i + "-" + "sex"+"").addClass("valid");
+                    }
+                }  
+                $("#"+groups[index] + "-" + i + "-" + "sex"+"").material_select();
+                if(isEmpty(data.document, groups[index] + "-" + i + "-" + "document")){
+                    dataIsValid = false;
+                }  
+                if(isEmpty(data.documentType, groups[index] + "-" + i + "-" + "documentType")){
+                    dataIsValid = false;
+                }  
 
 
 
@@ -147,51 +187,52 @@ $(function () {
         for (var i = 0; i < value; i++)
         {
             //TODO que el select sea required
+            //<input type='hidden' id=" + groups[index] + "-" + i + "-" + 'isValidDate' + " value='false' />\
+                                
 
             var form = "<div class=card-panel>\
                             <span class='card-title'>"+spanishGroups[index] + " " + (i + 1) + " de " + value+"</span>\
                             <div class='row'>\
-                                <input type='hidden' id=" + groups[index] + "-" + i + "-" + 'isValidDate' + " value='false' />\
-                                <div class='col s6 input-field'>\
+                                <div class='col s8 input-field'>\
                                     <label for=" + groups[index] + "-" + i + "-" + 'firstName' + " class='black-text' data-error='Por favor ingrese el nombre del pasajero'>Nombre</label>\
-                                    <input id=" + groups[index] + "-" + i + "-" + 'firstName' + " type='text' pattern='^([a-zA-Z ]{1,})$' class='validate' required>\
+                                    <input id=" + groups[index] + "-" + i + "-" + 'firstName' + " type='text' pattern='^([a-zA-Z ]{1,})$' class='validate'   >\
                                 </div>\
-                                <div class='col s6 input-field'>\
-                                    <label for=" + groups[index] + "-" + i + "-" + 'lastName' + " class='black-text' data data-error='Por favor ingrese el apellido del pasajero'>Apellido</label>\
-                                    <input id=" + groups[index] + "-" + i + "-" + 'lastName' + " type='text' pattern='^([a-zA-Z ]{1,})$' class='validate' required>\
+                                <div class='input-field col s1'> \
+                                    <label for=" + groups[index] + "-" + i + "-" + 'day' + " class='black-text' data-error='' style='white-space:nowrap; font-size:13px;'>Fecha de nacimiento</label>\
+                                    <input id=" + groups[index] + "-" + i + "-" + 'day' + " type='text' pattern='[0-9]{1,2}' class='validate'    placeholder='Dia'> \
+                                </div>\
+                                <div class='input-field col s1'> \
+                                    <label for=" + groups[index] + "-" + i + "-" + 'month' + " class='black-text'></label> \
+                                    <input id=" + groups[index] + "-" + i + "-" + 'month' + " type='text' pattern='[0-9]{1,2}' class='validate'    placeholder='Mes'> \
+                                </div>\
+                                <div class='input-field col s2'>\
+                                    <label for=" + groups[index] + "-" + i + "-" + 'year' + " class='black-text'></label>\
+                                    <input id=" + groups[index] + "-" + i + "-" + 'year' + " type='text' pattern='[0-9]{4}' class='validate'    placeholder='Año'>\
                                 </div>\
                             </div>   \
                             <div class='row'>\
-                                <div class='input-field col s4'> \
-                                    <label for=" + groups[index] + "-" + i + "-" + 'day' + " class='black-text' data-error=''>Dia</label>\
-                                    <input id=" + groups[index] + "-" + i + "-" + 'day' + " type='text' pattern='[0-9]{1,2}' class='validate' required> \
-                                </div>\
-                                <div class='input-field col s4'> \
-                                    <label for=" + groups[index] + "-" + i + "-" + 'month' + " class='black-text'>Month</label> \
-                                    <input id=" + groups[index] + "-" + i + "-" + 'month' + " type='text' pattern='[0-9]{1,2}' class='validate' required> \
-                                </div>\
-                                <div class='input-field col s4'>\
-                                    <label for=" + groups[index] + "-" + i + "-" + 'year' + " class='black-text'>Año</label>\
-                                    <input id=" + groups[index] + "-" + i + "-" + 'year' + " type='text' pattern='[0-9]{4}' class='validate' required>\
-                                </div>\
-                            </div>    \
-                            <div class='row'>\
-                                <div class='col s3 input-field'>\
-                                    <select id=" + groups[index] + "-" + i + "-" + 'documentType' + " class='validate' required>\
-                                        <option value='DNI'>DNI</option>\
-                                        <option value='Pasaporte'>Pasaporte</option>\
-                                    </select>\
-                                </div>\
-                                <div class='col s5 input-field'>\
-                                    <label for=" + groups[index] + "-" + i + "-" + 'document' + " class='black-text' data-error='Por favor ingrese el documento del pasajero'>Documento</label>\
-                                    <input id=" + groups[index] + "-" + i + "-" + 'document' + " type='text' pattern='^([0-9]{1,8})$' class='validate' required>\
+                                <div class='col s8 input-field'>\
+                                    <label for=" + groups[index] + "-" + i + "-" + 'lastName' + " class='black-text' data data-error='Por favor ingrese el apellido del pasajero'>Apellido</label>\
+                                    <input id=" + groups[index] + "-" + i + "-" + 'lastName' + " type='text' pattern='^([a-zA-Z ]{1,})$' class='validate'   >\
                                 </div>\
                                 <div class='col s4 input-field'>\
-                                    <select id=" + groups[index] + "-" + i + "-" + 'sex' + " class='validate' required>\
+                                    <select id=" + groups[index] + "-" + i + "-" + 'sex' + " class='validate'   >\
                                         <option value=''>Elegir sexo</option>\
                                         <option value='Masculino'>Masculino</option>\
                                         <option value='Femenino'>Femenino</option>\
                                     </select>\
+                                </div>\
+                            </div>    \
+                            <div class='row'>\
+                                <div class='col s4 input-field'>\
+                                    <select id=" + groups[index] + "-" + i + "-" + 'documentType' + " class='validate'   >\
+                                        <option value='DNI'>DNI</option>\
+                                        <option value='Pasaporte'>Pasaporte</option>\
+                                    </select>\
+                                </div>\
+                                <div class='col s8 input-field'>\
+                                    <label for=" + groups[index] + "-" + i + "-" + 'document' + " class='black-text' data-error='Por favor ingrese el documento del pasajero'>Documento</label>\
+                                    <input id=" + groups[index] + "-" + i + "-" + 'document' + " type='text' pattern='^([0-9]{1,8})$' class='validate'   >\
                                 </div>\
                             </div>\
                              <div class='row'>\
@@ -276,8 +317,23 @@ function _calculateAge(birthday) { // birthday is a date
     return Math.abs(ageDate.getUTCFullYear() - 1970);
 }
 
+function isEmpty(information, id){
+    if (information === ""){
+//            $("label[for="+id+"]").attr("data-error", "Por favor ingrese solo caracters validos");
+            $("#"+id+"").removeClass("valid");
+            $("#"+id+"").addClass("invalid");
+            return true;
+        } else {
+            $("#"+id+"").removeClass("invalid");
+            $("#"+id+"").addClass("valid");
+            return false;
+        }
+}
+
 function validateDNI(DNI) {
+    $('#error-message').html('<div class="card-panel red"> Error </div>');
     return /^([0-9]{1,8})$/.test(DNI);
+    
 }
 
 function validateName(name) {

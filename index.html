@@ -116,7 +116,7 @@
                                 <a href=""><img id="dealImg-{{$index}}" src="img/placeholder.png" alt="{{deal.city.name}}" /></a>
                             </div>
                             <div class="card-content">
-                                <p>Viajes a {{deal.city.name}} desde ${{deal.price}}<p>
+                                <p>Viajes a {{deal.city.name}} desde <span style="white-space:nowrap;">{{toSelectedCurrency(deal.price)}}</span><p>
                             </div>
 
                             {{getFlickrImg(deal.city.name, "dealImg-" + $index)}}
