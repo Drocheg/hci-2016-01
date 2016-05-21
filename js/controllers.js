@@ -377,16 +377,16 @@ app.controller('controller', function ($scope, $http) {
             };
 
             $scope.getLastMinuteDeals = function (origin) {
-                APIrequest(
+                $scope.APIrequest(
                         "booking",
                         {method: "getflightdeals", from: origin},
                         function (response) {
-                            $scope.deals = response.data.deals;
+                            $scope.deals = response.deals;
                         });
             };
 
             $scope.bookFlight = function (firstName, lastName, birthDate, idType, idNumber, installments, state, zip, street, streetNumber, phones, email, addressFloor, addressApartment) {
-                APIrequest(
+                $scope.APIrequest(
                         "booking",
                         {method: "getflightdeals",
                             first_name: firstName,
