@@ -218,11 +218,11 @@ $(function () {
                 returnDatePicker.set("highlight", depDate); //Highlight it,
                 depDate.setDate(depDate.getDate()+1);       //And select the next day
                 returnDatePicker.set("select", depDate);
-                if(!$("#oneWayTrip").is(":checked")) {      //If NOT on a one-way trip, automatically open the next datepicker
-                    setTimeout(function() {
-                        returnDatePicker.open();
-                    }, 250);
-                }
+//                if(!$("#oneWayTrip").is(":checked")) {      //If NOT on a one-way trip, automatically open the next datepicker
+//                    setTimeout(function() {
+//                        returnDatePicker.open();
+//                    }, 250);
+//                }
             }
     };
     var departDatePicker = $("#departDate").pickadate(departOptions).pickadate("picker");
