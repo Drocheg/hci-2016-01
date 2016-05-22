@@ -34,116 +34,149 @@ $(function () {
             session.passengers[groups[index]] = [];
 
             for (var i = 0; i < value; i++) {
+                var prefix = groups[index] + "-" + i + "-";
+                
+
+
                 var date = {
-                    day: $("#" + groups[index] + "-" + i + "-" + "day").val(),
-                    month: $("#" + groups[index] + "-" + i + "-" + "month").val(),
-                    year: $("#" + groups[index] + "-" + i + "-" + "year").val()
+                    day: $("#" + prefix + "day").val(),
+                    month: $("#" + prefix + "month").val(),
+                    year: $("#" + prefix + "year").val()
                 };
                 var data = {
-                    firstName: $("#" + groups[index] + "-" + i + "-" + "firstName").val(),
-                    lastName: $("#" + groups[index] + "-" + i + "-" + "lastName").val(),
-                    sex: $("#" + groups[index] + "-" + i + "-" + "sex").val(),
-                    document: $("#" + groups[index] + "-" + i + "-" + "document").val(),
-                    documentType: $("#" + groups[index] + "-" + i + "-" + "documentType").val()
+                    firstName: $("#" + prefix + "firstName").val(),
+                    lastName: $("#" + prefix + "lastName").val(),
+                    sex: $("#" + prefix + "sex").val(),
+                    document: $("#" + prefix + "document").val(),
+                    documentType: $("#" + prefix + "documentType").val()
                 };
-
-                //Validar
-//                for (var entry in data) { //Sirve esto? No lo hace html?
-//                    if (data.hasOwnProperty(entry)) {
-//                        if (data[entry].length === 0) {
-//                           // Materialize.toast("Por favor complete todos los campos.", 5000); 
-//                            $submitBtn.html("Confirmar >");
-//                            $submitBtn.removeClass("disabled");
-//                            return;
-//                        }
-//                    }
-//                }
-                //Al pedo? Ya hago Patter antes.
-//                if (!validateName(data.firstName)) {
-//                    dataIsValid = false;
-//
-//                }
-//
-//                if (!validateName(data.lastName)) {
-//                    dataIsValid = false;
-//
-//                }
-                //Validar documento
-//                if(!validateDNI(data.DNI)){
-//                    dataIsValid=false;
-//                    
-//                }
-                if(isEmpty(data.day,groups[index] + "-" + i + "-" + "day")){
+                
+              
+                if(isEmpty(date.day,prefix + "day")){
+                    $( "#" + prefix + 'day'+ 'Error').html("Ingrese la fecha de nacimiento"); 
                     dataIsValid = false;
-                }  
-                if(isEmpty(data.month, groups[index] + "-" + i + "-" + "month")){
+                }  else{
+                    if(!/^([0-9]{1,2})$/.test(date.day)){
+                        dataIsValid = false;
+                        $("#" + prefix + 'day').removeClass("valid");
+                        $("#" + prefix + 'day').addClass("invalid"); 
+                        $("#" + prefix + 'day'+ 'Error').html("Ingrese en el formato DD MM YYYY");
+                    }
+                }
+                if(isEmpty(date.month, prefix + "month")){
+                    $( "#" + prefix + 'day'+ 'Error').html("Ingrese la fecha de nacimiento"); 
                     dataIsValid = false;
-                }  
-                if(isEmpty(data.year, groups[index] + "-" + i + "-" + "year")){
+                }  else{
+                    if(!/^([0-9]{1,2})$/.test(date.month)){
+                        dataIsValid = false;
+                        $("#" + prefix + 'month').removeClass("valid");
+                        $("#" + prefix + 'month').addClass("invalid"); 
+                        $("#" + prefix + 'day'+ 'Error').html("Ingrese en el formato DD MM YYYY");
+                    }
+                }
+                if(isEmpty(date.year, prefix + "year")){
+                    $( "#" + prefix + 'day'+ 'Error').html("Ingrese la fecha de nacimiento"); 
                     dataIsValid = false;
+                } else{
+                    if(!/^([0-9]{4})$/.test(date.year)){
+                        dataIsValid = false;
+                        $("#" + prefix + 'year').removeClass("valid");
+                        $("#" + prefix + 'year').addClass("invalid"); 
+                        $("#" + prefix + 'day'+ 'Error').html("Ingrese en el formato DD MM YYYY");
+                    }
                 }  
 
 
-
-
-                //TODO los msj no anda -.-
                 if(dataIsValid){
                     if (!validateDate(date)) { //Valida si es una fecha
                         dataIsValid = false;
-                        $("label[for=" + groups[index] + "-" + i + "-" + 'day' + "]").attr("data-error", "Datos no corresponden a un Fecha");
-                        $("#" + groups[index] + "-" + i + "-" + 'day').removeClass("valid");
-                        $("#" + groups[index] + "-" + i + "-" + 'day').addClass("invalid");
-                        $("#" + groups[index] + "-" + i + "-" + 'month').removeClass("valid");
-                        $("#" + groups[index] + "-" + i + "-" + 'month').addClass("invalid");
-                        $("#" + groups[index] + "-" + i + "-" + 'year').removeClass("valid");
-                        $("#" + groups[index] + "-" + i + "-" + 'year').addClass("invalid");
+                        $("#" + prefix + 'day').removeClass("valid");
+                        $("#" + prefix + 'day').addClass("invalid");
+                        $("#" + prefix + 'month').removeClass("valid");
+                        $("#" + prefix + 'month').addClass("invalid");
+                        $("#" + prefix + 'year').removeClass("valid");
+                        $("#" + prefix + 'year').addClass("invalid");
+                        $( "#" + prefix + 'day'+ 'Error').html("No corresponde a una fecha"); 
                     } else {
                         data.birthday = new Date(date.year, date.month - 1, date.day, 0, 0, 0, 0);
                         if (!validateBirthday(data.birthday, index)) { //Valida si los groupos son lo que dice la fecha.
                             dataIsValid = false;
-                            $("label[for=" + groups[index] + "-" + i + "-" + 'day' + "]").attr("data-error", "La edad no corresponde a un " + spanishGroups[index]);
-                            $("#" + groups[index] + "-" + i + "-" + 'day').removeClass("valid");
-                            $("#" + groups[index] + "-" + i + "-" + 'day').addClass("invalid");
-                            $("#" + groups[index] + "-" + i + "-" + 'month').removeClass("valid");
-                            $("#" + groups[index] + "-" + i + "-" + 'month').addClass("invalid");
-                            $("#" + groups[index] + "-" + i + "-" + 'year').removeClass("valid");
-                            $("#" + groups[index] + "-" + i + "-" + 'year').addClass("invalid");
+                            $("#" + prefix + 'day').removeClass("valid");
+                            $("#" + prefix + 'day').addClass("invalid");
+                            $("#" + prefix + 'month').removeClass("valid");
+                            $("#" + prefix + 'month').addClass("invalid");
+                            $("#" + prefix + 'year').removeClass("valid");
+                            $("#" + prefix + 'year').addClass("invalid");
+                            $( "#" + prefix + 'day'+ 'Error').html("No corresponde a la edad de un "+ spanishGroups[index]); 
                         } else {
-                            $("#" + groups[index] + "-" + i + "-" + 'day').removeClass("invalid");
-                            $("#" + groups[index] + "-" + i + "-" + 'day').addClass("valid");
-                            $("#" + groups[index] + "-" + i + "-" + 'month').removeClass("invalid");
-                            $("#" + groups[index] + "-" + i + "-" + 'month').addClass("valid");
-                            $("#" + groups[index] + "-" + i + "-" + 'year').removeClass("invalid");
-                            $("#" + groups[index] + "-" + i + "-" + 'year').addClass("valid");
+                            $("#" + prefix + 'day').removeClass("invalid");
+                            $("#" + prefix + 'day').addClass("valid");
+                            $("#" + prefix + 'month').removeClass("invalid");
+                            $("#" + prefix + 'month').addClass("valid");
+                            $("#" + prefix + 'year').removeClass("invalid");
+                            $("#" + prefix + 'year').addClass("valid");
+                             $( "#" + prefix + 'day'+ 'Error').html(""); 
                         }
                     }
                 }
-                
-                if(isEmpty(data.firstName, groups[index] + "-" + i + "-" + "firstName")){
-                    dataIsValid = false;
-                }  
-                if(isEmpty(data.lastName, groups[index] + "-" + i + "-" + "lastName")){
-                    dataIsValid = false;
-                }  
-                if(isEmpty(data.sex,groups[index] + "-" + i + "-" + "sex")){
+
+
+
+                if(isEmpty(data.firstName, prefix + "firstName")){
+                    $( "#" + prefix + 'firstName'+ 'Error').html("Ingrese el nombre del pasajero");
+
                     dataIsValid = false;
                 }else{
-                    if(!data.sex){
-                        $("#"+groups[index] + "-" + i + "-" + "sex"+"").removeClass("valid");
-                        $("#"+groups[index] + "-" + i + "-" + "sex"+"").addClass("invalid");
+                    if (!validateName(data.firstName)) {
                         dataIsValid = false;
-                    } else {
-                        $("#"+groups[index] + "-" + i + "-" + "sex"+"").removeClass("invalid");
-                        $("#"+groups[index] + "-" + i + "-" + "sex"+"").addClass("valid");
+                        $( "#" + prefix + 'firstName'+ 'Error').html("Ingrese el nombre sin usar numeros ni caracteres especiales");
+                    }else{
+                        $( "#" + prefix + 'firstName'+ 'Error').html("");  
+                    }
+
+                }
+                 if(isEmpty(data.lastName, prefix + "lastName")){
+                    $( "#" + prefix + 'lastName'+ 'Error').html("Ingrese el apellido del pasajero");
+
+                    dataIsValid = false;
+                }else{
+                    if (!validateName(data.lastName)) {
+                        dataIsValid = false;
+                        $( "#" + prefix + 'lastName'+ 'Error').html("Ingrese el apellido sin usar numeros ni caracteres especiales");
+                    }else{
+                        $( "#" + prefix + 'lastName'+ 'Error').html("");  
+                    }
+
+                }
+                
+                if(data.sex!=="Masculino" && data.sex!=="Femenino"){
+                     $( "#" + prefix + 'sex'+ 'Error').html("Ingrese el sexo del pasajero");
+                    $("#"+prefix + "sex"+"").removeClass("valid");
+                    $("#"+prefix + "sex"+"").addClass("invalid");
+                    dataIsValid = false;
+                } else {
+                    $( "#" + prefix + 'sex'+ 'Error').html("");
+                    $("#"+prefix + "sex"+"").removeClass("invalid");
+                    $("#"+prefix + "sex"+"").addClass("valid");
+                }
+                
+                $("#"+prefix + "sex"+"").material_select();
+                if(isEmpty(data.document, prefix + "document")){
+                     $( "#" + prefix + 'document'+ 'Error').html("Ingrese el documento del pasajero");
+                    dataIsValid = false;
+                }else{
+                    if(!validateDNI(data.document)){
+                         $( "#" + prefix + 'document'+ 'Error').html("El documento debe estar compuesto por entre 1 y 8 numeros");
+                        dataIsValid=false;
+                    }else{
+                         $( "#" + prefix + 'document'+ 'Error').html("");
                     }
                 }  
-                $("#"+groups[index] + "-" + i + "-" + "sex"+"").material_select();
-                if(isEmpty(data.document, groups[index] + "-" + i + "-" + "document")){
-                    dataIsValid = false;
-                }  
-                if(isEmpty(data.documentType, groups[index] + "-" + i + "-" + "documentType")){
-                    dataIsValid = false;
-                }  
+                if(isEmpty(data.documentType, prefix + "documentType")){
+                    dataIsValid=false;
+                }
+                    
+                    
 
 
 
@@ -186,37 +219,45 @@ $(function () {
     $([session.search.numAdults, session.search.numChildren, session.search.numInfants]).each(function (index, value) {
         for (var i = 0; i < value; i++)
         {
+            var prefix = groups[index] + "-" + i + "-";
             //TODO que el select sea required
-            //<input type='hidden' id=" + groups[index] + "-" + i + "-" + 'isValidDate' + " value='false' />\
+            //<input type='hidden' id=" + prefix + 'isValidDate' + " value='false' />\
                                 
 
             var form = "<div class=card-panel>\
                             <span class='card-title'>"+spanishGroups[index] + " " + (i + 1) + " de " + value+"</span>\
+                            <input type='hidden' id='"+ prefix +"groupNum' value='"+index+"' />\
                             <div class='row'>\
                                 <div class='col s8 input-field'>\
-                                    <label for=" + groups[index] + "-" + i + "-" + 'firstName' + " class='black-text' data-error='Por favor ingrese el nombre del pasajero'>Nombre</label>\
-                                    <input id=" + groups[index] + "-" + i + "-" + 'firstName' + " type='text' pattern='^([a-zA-Z ]{1,})$' class='validate'   >\
+                                    <label for=" + prefix + 'firstName' + " class='black-text' data-error='Por favor ingrese el nombre del pasajero'>Nombre</label>\
+                                    <input data-field ="+ prefix +" id=" + prefix + 'firstName' + " type='text' pattern='^([a-zA-Z ]{1,})$' class='field validate'   placeholder=' ' >\
+                                    <label id="+ prefix + 'firstName' + 'Error' + " class='red-text ' style='margin-top: 60px;white-space:nowrap;text-align: left;'></label>\
                                 </div>\
                                 <div class='input-field col s1'> \
-                                    <label for=" + groups[index] + "-" + i + "-" + 'day' + " class='black-text' data-error='' style='white-space:nowrap; font-size:13px;'>Fecha de nacimiento</label>\
-                                    <input id=" + groups[index] + "-" + i + "-" + 'day' + " type='text' pattern='[0-9]{1,2}' class='validate'    placeholder='Dia'> \
+                                    <label for=" + prefix + 'day' + " class='black-text' data-error='' style='white-space:nowrap; font-size:13px;'>Fecha de nacimiento</label>\
+                                    <input data-field ="+ prefix + " id=" + prefix + 'day' + " type='text' pattern='[0-9]{1,2}' class='field validate'    placeholder='Dia'> \
+                                    <label id="+ prefix + 'day' + 'Error' + " class='red-text ' style='margin-top: 60px;white-space:nowrap;text-align: left;'></label>\
                                 </div>\
                                 <div class='input-field col s1'> \
-                                    <label for=" + groups[index] + "-" + i + "-" + 'month' + " class='black-text'></label> \
-                                    <input id=" + groups[index] + "-" + i + "-" + 'month' + " type='text' pattern='[0-9]{1,2}' class='validate'    placeholder='Mes'> \
+                                    <label for=" + prefix + 'month' + " class='black-text'></label> \
+                                    <input  data-field ="+ prefix + " id=" + prefix + 'month' + " type='text' pattern='[0-9]{1,2}' class='validate field'    placeholder='Mes'> \
+                                    <label id="+ prefix + 'month' + 'Error' + " class='red-text ' style='margin-top: 60px;white-space:nowrap;text-align: left;'></label>\
                                 </div>\
                                 <div class='input-field col s2'>\
-                                    <label for=" + groups[index] + "-" + i + "-" + 'year' + " class='black-text'></label>\
-                                    <input id=" + groups[index] + "-" + i + "-" + 'year' + " type='text' pattern='[0-9]{4}' class='validate'    placeholder='Año'>\
+                                    <label for=" + prefix + 'year' + " class='black-text'></label>\
+                                    <input  data-field ="+ prefix + "  id=" + prefix + 'year' + " type='text' pattern='[0-9]{4}' class='validate field'    placeholder='Año'>\
+                                    <label id="+ prefix + 'year' + 'Error' + " class='red-text ' style='margin-top: 60px;white-space:nowrap;text-align: left;'></label>\
                                 </div>\
                             </div>   \
                             <div class='row'>\
                                 <div class='col s8 input-field'>\
-                                    <label for=" + groups[index] + "-" + i + "-" + 'lastName' + " class='black-text' data data-error='Por favor ingrese el apellido del pasajero'>Apellido</label>\
-                                    <input id=" + groups[index] + "-" + i + "-" + 'lastName' + " type='text' pattern='^([a-zA-Z ]{1,})$' class='validate'   >\
+                                    <label for=" + prefix + 'lastName' + " class='black-text' data data-error='Por favor ingrese el apellido del pasajero'>Apellido</label>\
+                                    <input data-field ="+ prefix +" id=" + prefix + 'lastName' + " type='text' pattern='^([a-zA-Z ]{1,})$' class='validate field' placeholder=' '   >\
+                                    <label id="+ prefix + 'lastName' + 'Error' + " class='red-text ' style='margin-top: 60px;white-space:nowrap;text-align: left;'></label>\
                                 </div>\
                                 <div class='col s4 input-field'>\
-                                    <select id=" + groups[index] + "-" + i + "-" + 'sex' + " class='validate'   >\
+                                    <label id="+ prefix + 'sex' + 'Error' + " class='red-text ' style='margin-top: 33px;white-space:nowrap;text-align: left; font-size:12px;'></label>\
+                                    <select data-field ="+ prefix +" id=" + prefix + 'sex' + " class='validate field'   >\
                                         <option value=''>Elegir sexo</option>\
                                         <option value='Masculino'>Masculino</option>\
                                         <option value='Femenino'>Femenino</option>\
@@ -225,14 +266,15 @@ $(function () {
                             </div>    \
                             <div class='row'>\
                                 <div class='col s4 input-field'>\
-                                    <select id=" + groups[index] + "-" + i + "-" + 'documentType' + " class='validate'   >\
+                                    <select data-field ="+ prefix +" id=" + prefix + 'documentType' + " class='validate'   >\
                                         <option value='DNI'>DNI</option>\
                                         <option value='Pasaporte'>Pasaporte</option>\
                                     </select>\
                                 </div>\
                                 <div class='col s8 input-field'>\
-                                    <label for=" + groups[index] + "-" + i + "-" + 'document' + " class='black-text' data-error='Por favor ingrese el documento del pasajero'>Documento</label>\
-                                    <input id=" + groups[index] + "-" + i + "-" + 'document' + " type='text' pattern='^([0-9]{1,8})$' class='validate'   >\
+                                    <label id="+ prefix + 'document' + 'Error' + " class='red-text ' style='margin-top: 60px;white-space:nowrap;text-align: left;'></label>\
+                                    <label for=" + prefix + 'document' + " class='black-text' data-error='Por favor ingrese el documento del pasajero'>Documento</label>\
+                                    <input data-field ="+ prefix +" id=" + prefix + 'document' + " type='text' pattern='^([0-9]{1,8})$' class='validate field' placeholder=' '   >\
                                 </div>\
                             </div>\
                              <div class='row'>\
@@ -241,32 +283,260 @@ $(function () {
                              </div>\
                         </div>\  ";
             miHTML += form;
+            
+           
+            
+           
+            
         }
     });
 
+    
 
     $("#form").html(miHTML);
 
-
     $('select').val("");
     $("select option:selected").attr('disabled', 'disabled');
+    
+//    $([session.search.numAdults, session.search.numChildren, session.search.numInfants]).each(function (index, value) {
+//        for (var i = 0; i < value; i++)
+//        {
+//            
+            
+            $("#form").on("change", ".field", function(){
+                debugger;
+                var prefix = $(this).attr("data-field");
+                var dataIsValid = true;
+
+
+                var date = {
+                    day: $("#" + prefix + "day").val(),
+                    month: $("#" + prefix + "month").val(),
+                    year: $("#" + prefix + "year").val()
+                };
+                var data = {
+                    firstName: $("#" + prefix + "firstName").val(),
+                    lastName: $("#" + prefix + "lastName").val(),
+                    sex: $("#" + prefix + "sex").val(),
+                    document: $("#" + prefix + "document").val(),
+                    documentType: $("#" + prefix + "documentType").val()
+                };
+                if(date.year!=="" && !/^([0-9]{4})$/.test(date.year)){
+                    dataIsValid = false;
+                    $("#" + prefix + 'year').removeClass("valid");
+                    $("#" + prefix + 'year').addClass("invalid"); 
+                    $("#" + prefix + 'day'+ 'Error').html("Ingrese en el formato DD MM YYYY");
+                }
+                 if(date.month!=="" && !/^([0-9]{1,2})$/.test(date.month)){
+                    dataIsValid = false;
+                    $("#" + prefix + 'month').removeClass("valid");
+                    $("#" + prefix + 'month').addClass("invalid"); 
+                    $("#" + prefix + 'day'+ 'Error').html("Ingrese en el formato DD MM YYYY");
+                }
+                 if(date.day!=="" && !/^([0-9]{1,2})$/.test(date.day)){
+                    dataIsValid = false;
+                    $("#" + prefix + 'day').removeClass("valid");
+                    $("#" + prefix + 'day').addClass("invalid"); 
+                    $("#" + prefix + 'day'+ 'Error').html("Ingrese en el formato DD MM YYYY");
+                }
+                
+
+                if(date.day!=="" && date.month!=="" && date.year!=="" && dataIsValid){
+                    if (!validateDate(date)) { //Valida si es una fecha
+                        dataIsValid = false;
+                        
+                        $("#" + prefix + 'day').removeClass("valid");
+                        $("#" + prefix + 'day').addClass("invalid");
+                        $("#" + prefix + 'month').removeClass("valid");
+                        $("#" + prefix + 'month').addClass("invalid");
+                        $("#" + prefix + 'year').removeClass("valid");
+                        $("#" + prefix + 'year').addClass("invalid");
+                        $("#" + prefix + 'day'+ 'Error').html("No corresponde a una fecha"); 
+                    } else {
+                        data.birthday = new Date(date.year, date.month - 1, date.day, 0, 0, 0, 0);
+                        if (!validateBirthday(data.birthday, $(prefix+"groupNum").val())) { //Valida si los groupos son lo que dice la fecha.
+                            dataIsValid = false;
+                            
+                            $("#" + prefix + 'day').removeClass("valid");
+                            $("#" + prefix + 'day').addClass("invalid");
+                            $("#" + prefix + 'month').removeClass("valid");
+                            $("#" + prefix + 'month').addClass("invalid");
+                            $("#" + prefix + 'year').removeClass("valid");
+                            $("#" + prefix + 'year').addClass("invalid");
+                            $( "#" + prefix + 'day'+ 'Error').html("No corresponde a la edad de un "+ spanishGroups[index]); 
+                        } else {
+                            $("#" + prefix + 'day').removeClass("invalid");
+                            $("#" + prefix + 'day').addClass("valid");
+                            $("#" + prefix + 'month').removeClass("invalid");
+                            $("#" + prefix + 'month').addClass("valid");
+                            $("#" + prefix + 'year').removeClass("invalid");
+                            $("#" + prefix + 'year').addClass("valid");
+                            $( "#" + prefix + 'day'+ 'Error').html(""); 
+                        }
+                    }
+                }
+
+
+
+                if(data.firstName!==""){
+                    if (!validateName(data.firstName)) {
+                        dataIsValid = false;
+                        var id = prefix + "firstName";
+                        $("#"+id+"").removeClass("valid");
+                         $("#"+id+"").addClass("invalid");
+                        $( "#" + prefix + 'firstName'+ 'Error').html("Ingrese el nombre sin usar numeros ni caracteres especiales");
+                    }else{
+                        $( "#" + prefix + 'firstName'+ 'Error').html("");  
+                         var id = prefix + "firstName";
+                          $("#"+id+"").removeClass("invalid");
+                         $("#"+id+"").addClass("valid");
+                    }
+
+                }
+                 if(data.lastName!==""){
+                    if (!validateName(data.lastName)) {
+                        dataIsValid = false;
+                       var id = prefix + "lastName";
+                        $("#"+id+"").removeClass("valid");
+                         $("#"+id+"").addClass("invalid");
+                        $( "#" + prefix + 'lastName'+ 'Error').html("Ingrese el apellido sin usar numeros ni caracteres especiales");
+                    }else{
+                        $( "#" + prefix + 'lastName'+ 'Error').html("");  
+                         var id = prefix + "lastName";
+                          $("#"+id+"").removeClass("invalid");
+                         $("#"+id+"").addClass("valid");
+                    }
+
+                }
+//                if(isEmpty(data.sex,prefix + "sex")){
+////                    $( "#" + prefix + 'sex'+ 'Error').html("");
+//                    dataIsValid = false;
+//                }else{
+//                    if(!data.sex){
+//                         $( "#" + prefix + 'sex'+ 'Error').html("Ingrese el sexo del pasajero");
+//                        $("#"+prefix + "sex"+"").removeClass("valid");
+//                        $("#"+prefix + "sex"+"").addClass("invalid");
+//                        dataIsValid = false;
+//                    } else {
+//                         $( "#" + prefix + 'sex'+ 'Error').html("");
+//                        $("#"+prefix + "sex"+"").removeClass("invalid");
+//                        $("#"+prefix + "sex"+"").addClass("valid");
+//                    }
+//                }  
+//                $("#"+prefix + "sex"+"").material_select();
+                if(data.document!==""){
+                    if(!validateDNI(data.document)){
+                         $( "#" + prefix + 'document'+ 'Error').html("El documento debe estar compuesto por entre 1 y 8 numeros");
+                        dataIsValid=false;
+                        var id = prefix + "document";
+                        $("#"+id+"").removeClass("valid");
+                         $("#"+id+"").addClass("invalid");
+                    }else{
+                         $( "#" + prefix + 'document'+ 'Error').html("");
+                          var id = prefix + "document";
+                          $("#"+id+"").removeClass("invalid");
+                         $("#"+id+"").addClass("valid");
+                    }
+                }  
+                
+            });
+//            $("#form").on("change", "#" + prefix + 'lastName', updateErrors());
+//            $("#form").on("change", "#" + prefix + 'document', updateErrors());
+//            $("#form").on("change", "#" + prefix + 'sex', updateErrors());
+//            $("#form").on("change", "#" + prefix + 'day', updateErrors());
+//            $("#form").on("change", "#" + prefix + 'month', updateErrors());
+//            $("#form").on("change", "#" + prefix + 'year', updateErrors());
+            
+//            $("#form").on("change", "#" + prefix + 'firstName', function() {
+//                
+//                var idName = $(this).attr("id");
+//                var val = $(this).val();
+//                if(val===""){
+//                    $( "#"+idName+ 'Error').html("Por favor ingrese el nombre del pasajero");
+//                }else if(!/^([a-zA-Z ]{1,})$/.test(val)){
+//                    $( "#"+idName+ 'Error').html("Tiene que ingresar un nombre con caracteres validos");
+//                }  else{
+//                    $( "#"+idName+ 'Error').html("");
+//                }
+//            });
+//            
+//            $("#form").on("change", "#" + prefix + 'lastName', function() {
+//                var idName = $(this).attr("id");
+//                var val = $(this).val();
+//                if(val===""){
+//                    $( "#"+idName+ 'Error').html("Por favor ingrese el apellido del pasajero");
+//                }else if(!/^([a-zA-Z ]{1,})$/.test(val)){
+//                    $( "#"+idName+ 'Error').html("Tiene que ingresar un apellido con caracteres validos");
+//                }  else{
+//                    $( "#"+idName+ 'Error').html("");
+//                }
+//            });
+//            
+//            $("#form").on("change", "#" + prefix + 'document', function() {
+//                var idName = $(this).attr("id");
+//                var val = $(this).val();
+//                if(val===""){
+//                    $( "#"+idName+ 'Error').html("Por favor ingrese el documento del pasajero");
+//                }else if(!/^([0-9]{1,8})$/.test(val)){
+//                    $( "#"+idName+ 'Error').html("Tiene que ingresar entre 1 y 8 numeros");
+//                }  else{
+//                    $( "#"+idName+ 'Error').html("");
+//                }
+//            });
+//            
+//            $("#form").on("change", "#" + prefix + 'day', function() {
+////                var idName = $(this).attr("id");
+//                var val = $(this).val();
+//                var field = $(this).attr("data-field");
+//                var day = $(field+'day').val();
+//                var month = $(field+'month').val();
+//                var year = $(field+'year').val();
+//                if(val===""){
+//                    $( "#"+field+'day'+ 'Error').html("Por favor ingrese la fecha de nacimiento");
+//                }else if(!/^([a-zA-Z ]{1,})$/.test(val)){
+//                    $( "#"+field+'day'+ 'Error').html("Tiene que ingresar la fecha en numeros");
+//                }  else{
+//                    $( "#"+field+'day'+ 'Error').html("");
+//                }
+//            }); 
+//            
+//            $("#form").on("change", "#" + prefix + 'day', function() {
+//                var idName = $(this).attr("id");
+//                var val = $(this).val();
+//                var field = $(this).attr("data-field");
+//                if(val===""){
+//                    $( "#"+data-field+'day'+ 'Error').html("Por favor ingrese la fecha de nacimiento");
+//                }else if(!/^([a-zA-Z ]{1,})$/.test(val)){
+//                    $( "#"+data-field+'day'+ 'Error').html("Tiene que ingresar la fecha en numeros");
+//                }  else{
+//                    $( "#"+data-field+'day'+ 'Error').html("");
+//                }
+//            }); 
+            
+//            
+//       }
+//    });
+    
     //Tiene que pasar antes que lo de despues. Semaforos? 
     //$("select[required]").css({display: "inline", height: 0, padding: 0, width: 0}); Ya no sirve creo
+
+
 
     //    if(session.state.hasPassengers){ //Para que siempre intente. Pero ahora pueden haber cosas null
     $([session.search.numAdults, session.search.numChildren, session.search.numInfants]).each(function (index, value) {
         for (var i = 0; i < value && i < session.passengers[groups[index]].length; i++)
         {
-            $("#" + groups[index] + "-" + i + "-" + 'firstName').val(session.passengers[groups[index]][i].firstName);
-            $("#" + groups[index] + "-" + i + "-" + 'lastName').val(session.passengers[groups[index]][i].lastName);
-            $("#" + groups[index] + "-" + i + "-" + 'document').val(session.passengers[groups[index]][i].document);
-            $("#" + groups[index] + "-" + i + "-" + 'documentType').val(session.passengers[groups[index]][i].documentType);
-            $("#" + groups[index] + "-" + i + "-" + 'sex').val(session.passengers[groups[index]][i].sex);
-            $("#" + groups[index] + "-" + i + "-" + 'sex').material_select(); //Creo que no sirve para nada
+            var prefix = groups[index] + "-" + i + "-";
+            $("#" + prefix + 'firstName').val(session.passengers[groups[index]][i].firstName);
+            $("#" + prefix + 'lastName').val(session.passengers[groups[index]][i].lastName);
+            $("#" + prefix + 'document').val(session.passengers[groups[index]][i].document);
+            $("#" + prefix + 'documentType').val(session.passengers[groups[index]][i].documentType);
+            $("#" + prefix + 'sex').val(session.passengers[groups[index]][i].sex);
+            $("#" + prefix + 'sex').material_select(); //Creo que no sirve para nada
             var birthday = new Date(session.passengers[groups[index]][i].birthday);
-            $("#" + groups[index] + "-" + i + "-" + 'day').val(birthday.getUTCDate());
-            $("#" + groups[index] + "-" + i + "-" + 'month').val(birthday.getUTCMonth() + 1);
-            $("#" + groups[index] + "-" + i + "-" + 'year').val(birthday.getFullYear());
+            $("#" + prefix + 'day').val(birthday.getUTCDate());
+            $("#" + prefix + 'month').val(birthday.getUTCMonth() + 1);
+            $("#" + prefix + 'year').val(birthday.getFullYear());
         }
 
     });
@@ -319,7 +589,7 @@ function _calculateAge(birthday) { // birthday is a date
 
 function isEmpty(information, id){
     if (information === ""){
-//            $("label[for="+id+"]").attr("data-error", "Por favor ingrese solo caracters validos");
+//        $("label[for="+id+"]").attr("data-error", "Por favor ingrese solo caracters validos");
             $("#"+id+"").removeClass("valid");
             $("#"+id+"").addClass("invalid");
             return true;
@@ -330,8 +600,8 @@ function isEmpty(information, id){
         }
 }
 
+
 function validateDNI(DNI) {
-    $('#error-message').html('<div class="card-panel red"> Error </div>');
     return /^([0-9]{1,8})$/.test(DNI);
     
 }
@@ -339,3 +609,15 @@ function validateDNI(DNI) {
 function validateName(name) {
     return /^([a-zA-Z ]{1,})$/.test(name);
 }
+//
+//function changeError(idName,error){
+//    
+//    debugger;
+//     
+//    if($(idName).hasClass("invalid")){
+//        $( idName+ 'Error').html(error);
+//    }else{
+//        $( idName+ 'Error').html("");
+//    } 
+//          
+//}
