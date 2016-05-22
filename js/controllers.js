@@ -35,6 +35,9 @@ app.controller('controller', function ($scope, $http) {
      * @returns {string}
      */
     $scope.toSelectedCurrency = function (amount) {
+        if ($scope.session.preferences.currency === null) {       //Default to USD
+            return "U$S " + amount.toFixed(2);
+        }
         return $scope.session.preferences.currency.symbol + (amount / $scope.session.preferences.currency.ratio).toFixed(2);
 //        return $filter("currency")(amount/$scope.session.preferences.currency.ratio, $scope.session.preferences.currency.symbol, 2);
     };
@@ -94,16 +97,16 @@ app.controller('controller', function ($scope, $http) {
              */
             $scope.currenciesSelectInFlightsPage = function () {
                 $("#currencies").on("focus", ".select-dropdown", function () {
-                $("#fixedTopSection").css("z-index", "-1");     //Forcibly put cards behind drop-down
-                $(".flightCard").css("z-index", "-2");
+                    $("#fixedTopSection").css("z-index", "-1");     //Forcibly put cards behind drop-down
+                    $(".flightCard").css("z-index", "-2");
                 });
-                
+
                 $("#currencies").on("blur", ".select-dropdown", function () {
-                    setTimeout(function() { //Wait for the dropdown to disappear
+                    setTimeout(function () { //Wait for the dropdown to disappear
                         $("#fixedTopSection").css("z-index", "");
                         $(".flightCard").css("z-index", "");
                     }, 500);
-                    
+
                 });
             };
 

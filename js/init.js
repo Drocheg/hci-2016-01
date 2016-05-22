@@ -162,6 +162,11 @@ function getAllCities() {
                         {method: 'getcities', page_size: total},
                         function (result) {
                             var session = getSessionData();
+                            var $aux = $("<div/>");
+                            $(result.cities).each(function(unusedIndex, entry) {
+                                $aux.html(entry.name);
+                                entry.name = $aux.text();   //Decode special entities
+                            });
                             session.cities = result.cities;
                             setSessionData(session);
                             citiesPromise.resolve();
@@ -185,6 +190,11 @@ function getAllAirports() {
                         {method: 'getairports', page_size: total},
                         function (result) {
                             var session = getSessionData();
+                            var $aux = $("<div/>");
+                            $(result.airports).each(function(unusedIndex, entry) {
+                                $aux.html(entry.description.replace("\uFFFD", "ñ"));    //BUG: 'ñ' is sent as an unrepresentable Unicode char. Possible API error? http://www.fileformat.info/info/unicode/char/fffd/index.htm
+                                entry.description = $aux.text();   //Decode special entities
+                            });
                             session.airports = result.airports;
                             setSessionData(session);
                             airportsPromise.resolve();

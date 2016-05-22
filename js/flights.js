@@ -117,7 +117,7 @@ $(function () {
 
         $('#from, #to').typeahead(
                 {
-                    minLength: 2,
+//                    minLength: 2,
                     highlight: true,
                     templates: {
                         notFound: '<div>Sin resultados</div>'

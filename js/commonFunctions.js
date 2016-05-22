@@ -249,5 +249,8 @@ function countResults(service, params, callback) {
  */
 function toSelectedCurrency(amount) {
     var s = getSessionData();
+    if(s.preferences.currency === null) {       //Default to USD
+        return "U$S " + amount.toFixed(2);
+    }
     return s.preferences.currency.symbol + (amount/s.preferences.currency.ratio).toFixed(2);
 }
