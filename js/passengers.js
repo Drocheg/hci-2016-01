@@ -50,14 +50,16 @@ $(function () {
                     document: $("#" + prefix + "document").val(),
                     documentType: $("#" + prefix + "documentType").val()
                 };
-                
+                var isDateRight = true;
               
                 if(isEmpty(date.day,prefix + "day")){
                     $( "#" + prefix + 'day'+ 'Error').html("Ingrese la fecha de nacimiento"); 
                     dataIsValid = false;
+                    isDateRight = false;
                 }  else{
                     if(!/^([0-9]{1,2})$/.test(date.day)){
                         dataIsValid = false;
+                        isDateRight = false;
                         $("#" + prefix + 'day').removeClass("valid");
                         $("#" + prefix + 'day').addClass("invalid"); 
                         $("#" + prefix + 'day'+ 'Error').html("Ingrese en el formato DD MM YYYY");
@@ -66,9 +68,11 @@ $(function () {
                 if(isEmpty(date.month, prefix + "month")){
                     $( "#" + prefix + 'day'+ 'Error').html("Ingrese la fecha de nacimiento"); 
                     dataIsValid = false;
+                    isDateRight = false;
                 }  else{
                     if(!/^([0-9]{1,2})$/.test(date.month)){
                         dataIsValid = false;
+                        isDateRight = false;
                         $("#" + prefix + 'month').removeClass("valid");
                         $("#" + prefix + 'month').addClass("invalid"); 
                         $("#" + prefix + 'day'+ 'Error').html("Ingrese en el formato DD MM YYYY");
@@ -77,9 +81,11 @@ $(function () {
                 if(isEmpty(date.year, prefix + "year")){
                     $( "#" + prefix + 'day'+ 'Error').html("Ingrese la fecha de nacimiento"); 
                     dataIsValid = false;
+                    isDateRight = false;
                 } else{
                     if(!/^([0-9]{4})$/.test(date.year)){
                         dataIsValid = false;
+                        isDateRight = false;
                         $("#" + prefix + 'year').removeClass("valid");
                         $("#" + prefix + 'year').addClass("invalid"); 
                         $("#" + prefix + 'day'+ 'Error').html("Ingrese en el formato DD MM YYYY");
@@ -87,7 +93,7 @@ $(function () {
                 }  
 
 
-                if(dataIsValid){
+                if(isDateRight){
                     if (!validateDate(date)) { //Valida si es una fecha
                         dataIsValid = false;
                         $("#" + prefix + 'day').removeClass("valid");
@@ -228,12 +234,14 @@ $(function () {
                             <span class='card-title'>"+spanishGroups[index] + " " + (i + 1) + " de " + value+"</span>\
                             <input type='hidden' id='"+ prefix +"groupNum' value='"+index+"' />\
                             <div class='row'>\
-                                <div class='col s8 input-field'>\
+                                <div class='col s7 input-field'>\
+                                    <i  class='material-icons prefix'>account_circle</i>\
                                     <label for=" + prefix + 'firstName' + " class='black-text' data-error='Por favor ingrese el nombre del pasajero'>Nombre</label>\
                                     <input data-field ="+ prefix +" id=" + prefix + 'firstName' + " type='text' pattern='^([a-zA-Z ]{1,})$' class='field validate'   placeholder=' ' >\
                                     <label id="+ prefix + 'firstName' + 'Error' + " class='red-text ' style='margin-top: 60px;white-space:nowrap;text-align: left;'></label>\
                                 </div>\
-                                <div class='input-field col s1'> \
+                                <div class='input-field col s2'> \
+                                    <i class='material-icons prefix'>perm_contact_calendar</i>\
                                     <label for=" + prefix + 'day' + " class='black-text' data-error='' style='white-space:nowrap; font-size:13px;'>Fecha de nacimiento</label>\
                                     <input data-field ="+ prefix + " id=" + prefix + 'day' + " type='text' pattern='[0-9]{1,2}' class='field validate'    placeholder='Dia'> \
                                     <label id="+ prefix + 'day' + 'Error' + " class='red-text ' style='margin-top: 60px;white-space:nowrap;text-align: left;'></label>\
@@ -250,12 +258,14 @@ $(function () {
                                 </div>\
                             </div>   \
                             <div class='row'>\
-                                <div class='col s8 input-field'>\
+                                <div class='col s7 input-field'>\
+                                    <i  class='material-icons prefix'>account_circle</i>\
                                     <label for=" + prefix + 'lastName' + " class='black-text' data data-error='Por favor ingrese el apellido del pasajero'>Apellido</label>\
                                     <input data-field ="+ prefix +" id=" + prefix + 'lastName' + " type='text' pattern='^([a-zA-Z ]{1,})$' class='validate field' placeholder=' '   >\
                                     <label id="+ prefix + 'lastName' + 'Error' + " class='red-text ' style='margin-top: 60px;white-space:nowrap;text-align: left;'></label>\
                                 </div>\
-                                <div class='col s4 input-field'>\
+                                <div class='col s5 input-field'>\
+                                    <i style='margin-left:-47%;'  class='material-icons prefix'>perm_identity</i>\
                                     <label id="+ prefix + 'sex' + 'Error' + " class='red-text ' style='margin-top: 33px;white-space:nowrap;text-align: left; font-size:12px;'></label>\
                                     <select data-field ="+ prefix +" id=" + prefix + 'sex' + " class='validate field'   >\
                                         <option value=''>Elegir sexo</option>\
@@ -266,12 +276,14 @@ $(function () {
                             </div>    \
                             <div class='row'>\
                                 <div class='col s4 input-field'>\
+                                    <i style='margin-left:-45%;'  class='material-icons prefix'>picture_in_picture</i>\
                                     <select data-field ="+ prefix +" id=" + prefix + 'documentType' + " class='validate'   >\
                                         <option value='DNI'>DNI</option>\
                                         <option value='Pasaporte'>Pasaporte</option>\
                                     </select>\
                                 </div>\
                                 <div class='col s8 input-field'>\
+                                    <i  class='material-icons prefix'>picture_in_picture</i>\
                                     <label id="+ prefix + 'document' + 'Error' + " class='red-text ' style='margin-top: 60px;white-space:nowrap;text-align: left;'></label>\
                                     <label for=" + prefix + 'document' + " class='black-text' data-error='Por favor ingrese el documento del pasajero'>Documento</label>\
                                     <input data-field ="+ prefix +" id=" + prefix + 'document' + " type='text' pattern='^([0-9]{1,8})$' class='validate field' placeholder=' '   >\
@@ -408,6 +420,13 @@ $(function () {
                     }
 
                 }
+                
+                 if(data.sex==="Masculino" || data.sex==="Femenino"){
+                    $( "#" + prefix + 'sex'+ 'Error').html("");
+                    $("#"+prefix + "sex"+"").removeClass("invalid");
+                    $("#"+prefix + "sex"+"").addClass("valid");
+                }
+                
 //                if(isEmpty(data.sex,prefix + "sex")){
 ////                    $( "#" + prefix + 'sex'+ 'Error').html("");
 //                    dataIsValid = false;
