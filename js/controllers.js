@@ -86,6 +86,27 @@ app.controller('controller', function ($scope, $http) {
                         );
                     };
 
+            /**
+             * Currency drop-down overlaps with fixed-position top section, this
+             * function handles z-indexes to make up for it it.
+             * 
+             * @returns {undefined}
+             */
+            $scope.currenciesSelectInFlightsPage = function () {
+                $("#currencies").on("focus", ".select-dropdown", function () {
+                $("#fixedTopSection").css("z-index", "-1");     //Forcibly put cards behind drop-down
+                $(".flightCard").css("z-index", "-2");
+                });
+                
+                $("#currencies").on("blur", ".select-dropdown", function () {
+                    setTimeout(function() { //Wait for the dropdown to disappear
+                        $("#fixedTopSection").css("z-index", "");
+                        $(".flightCard").css("z-index", "");
+                    }, 500);
+                    
+                });
+            };
+
             /* *************************************************************************
              *                          Interaction functions
              * ************************************************************************/
@@ -130,19 +151,19 @@ app.controller('controller', function ($scope, $http) {
                             $scope.reviewPages = new Array(Math.ceil($scope.reviewCount / $scope.resultsPerPage));
                         });
             };
-            
-            $scope.goToPage = function(scopeVarName, pageNum) {
+
+            $scope.goToPage = function (scopeVarName, pageNum) {
                 $scope[scopeVarName] = pageNum;
             };
 
-            $scope.decrementPage = function(scopeVarName, min) {
-                if($scope[scopeVarName] > (min || 1)) {
+            $scope.decrementPage = function (scopeVarName, min) {
+                if ($scope[scopeVarName] > (min || 1)) {
                     $scope[scopeVarName]--;
                 }
             };
-            
-            $scope.incrementPage = function(scopeVarName, max) {
-                if($scope[scopeVarName] < max) {
+
+            $scope.incrementPage = function (scopeVarName, max) {
+                if ($scope[scopeVarName] < max) {
                     $scope[scopeVarName]++;
                 }
             };
@@ -205,7 +226,7 @@ app.controller('controller', function ($scope, $http) {
                             $scope.flights = response;
                             $scope.flightPages = new Array(Math.ceil($scope.flights.total / $scope.resultsPerPage));
                             $('.tooltipped').tooltip('remove'); //Remove previous tooltips
-                            setTimeout(function () {    
+                            setTimeout(function () {
                                 $('.tooltipped').tooltip({delay: 50});      //Add news ones after a delay
                             }, 500);
                         },
