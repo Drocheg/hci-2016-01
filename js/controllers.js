@@ -107,6 +107,7 @@ app.controller('controller', function ($scope, $http) {
             $scope.reviewCount = 0;
 
             $scope.getFlightReviews = function (airlineID, flightNumber, pageSize, pageNum, orderBy, ascOrDesc) {
+                debugger;
                 var params = {method: "getairlinereviews", airline_id: airlineID, flight_number: flightNumber};
                 //Optional parameters
                 if (typeof pageSize !== 'undefined') {
@@ -587,6 +588,7 @@ app.controller('controller', function ($scope, $http) {
              * ************************************************************************/
             //lel nothing
             $scope.order = 'asc';
+            $scope.orderFromRating = 'asc';
             $scope.criteria = 'total';
             $scope.resultsPerPage = 30;
             /* *************************************************************************
