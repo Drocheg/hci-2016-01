@@ -184,7 +184,7 @@ $(function () {
         format: 'dddd d/m',
         onSet: function (arg) {
             if ('select' in arg) { //closeOnSelect is overriden by materialize, this is the workaround https://github.com/Dogfalo/materialize/issues/870
-                var d = new Date(arg.select);
+                var d = arg.select.obj || new Date(arg.select);
                 var d2 = d.getFullYear() + "-" + (d.getMonth() + 1 < 10 ? "0" : "") + (d.getMonth() + 1) + "-" + (d.getDate() < 10 ? "0" : "") + d.getDate();
                 $("#" + this.get('id') + "Full").val(d2);
                 this.close();
@@ -210,7 +210,7 @@ $(function () {
     var departOptions = datePickerBaseOpts;
     departOptions.onSet = function(arg) {
         if ('select' in arg) {
-                var depDate = new Date(arg.select);
+                var depDate = arg.select.obj || new Date(arg.select);
                 var dStr = depDate.getFullYear() + "-" + (depDate.getMonth() + 1 < 10 ? "0" : "") + (depDate.getMonth() + 1) + "-" + (depDate.getDate() < 10 ? "0" : "") + depDate.getDate();
                 $("#" + this.get('id') + "Full").val(dStr);
                 this.close();
