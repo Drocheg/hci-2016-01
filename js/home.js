@@ -75,7 +75,7 @@ $(function () {
     $('#to').on("change", function () {
         $("#fromId").val("");
     });
-
+    
     //Datepickers
     var minDate = new Date();
     minDate.setDate(minDate.getDate() + 3); //Minimum date is 3 days from now
@@ -100,6 +100,14 @@ $(function () {
                 $("#" + this.get('id') + "Full").val(d2);
                 this.close();
             }
+        },
+        onOpen: function() {
+            $(".dealCard .card").css("z-index", "-1");  //Forcibly put cards behind calendar
+        },
+        onClose: function() {
+            setTimeout(function() { //Wait a little for the calendar to disappear
+                $(".dealCard .card").css("z-index", "");    //Put them back
+            }, 500);
         }
     };
     //Define return date picker first, depart datepicker will open return datepicker on set
