@@ -69,7 +69,7 @@
                         </div>
                     </div>
                     <!--FIXED TOP SECTION-->
-                    <div class="col s9 offset-s3" style="position: fixed; background-color:white; z-index: 2;">
+                    <div id="fixedTopSection" class="col s9 offset-s3">
                         <!--SELECTED FLIGHT(S) BOX(ES)-->
                         <div id="selectedOutboundFlight" class="col s9" style="{{session.search.oneWayTrip ? 'margin-top:40px;' : ''}}">
                             <div class="card-panel grey lighten-1 white-text center" style="border-color:grey; border-style: dashed;">
@@ -175,14 +175,17 @@
                             <!--END PRELOADER-->
                             <div id="flights" class="row lighten-4" data-ng-show="flights !== null">
                                 <!--FLIGHT CARDS-->
-                                <div class="card black-text col s12" data-ng-show="flights.flights.length > 0" data-ng-repeat="flight in flights.flights" style="margin-bottom: 0px; padding:0 0 10px 0; border-radius:10px; z-index: 1; height: 230px">
+                                <div class="card col s12 flightCard black-text" data-ng-show="flights.flights.length > 0" data-ng-repeat="flight in flights.flights">
                                     <div class="card-action green lighten-4" style="padding:5px; border-radius:10px 10px 0 0;">
                                         <p style="margin: 0; height:30px; line-height:30px;" class="card-title">
-                                            <span class="col s10" style="padding-left:0;">
+                                            <span class="col s6" style="padding-left:0;">
                                                 <img src="{{getFlightAirlineLogoURL(flight)}}" alt="{{getFlightAirlineName(flight)}}"/>
                                                 {{getFlightAirlineName(flight)}} ({{getFlightAirlineID(flight)}}) #{{getFlightNumber(flight)}}
                                             </span>
-                                            <span class="col s2" style="text-align:right;">
+                                            <span class="col s2">
+                                                {{getGETparam('direction') === "outbound" ? "Ida" : "Vuelta"}}
+                                            </span>
+                                            <span class="col s2 offset-s2" style="text-align:right;">
                                                 <b>{{toSelectedCurrency(getFlightTotal(flight))}}</b>
                                             </span>
                                         </p>

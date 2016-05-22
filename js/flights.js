@@ -189,6 +189,16 @@ $(function () {
                 $("#" + this.get('id') + "Full").val(d2);
                 this.close();
             }
+        },
+        onOpen: function() {
+            $("#fixedTopSection").css("z-index", "-1");     //Forcibly put cards behind calendar
+            $(".flightCard").css("z-index", "-2");          //Forcibly put cards behind calendar
+        },
+        onClose: function() {
+            setTimeout(function() { //Wait for the calendar's black cover to fade out
+                $("#fixedTopSection").css("z-index", "");
+                $(".flightCard").css("z-index", "");
+            }, 500);
         }
     };
     //Define return date picker first, depart datepicker will open return datepicker on set
@@ -208,11 +218,11 @@ $(function () {
                 returnDatePicker.set("highlight", depDate); //Highlight it,
                 depDate.setDate(depDate.getDate()+1);       //And select the next day
                 returnDatePicker.set("select", depDate);
-                if(!$("#oneWayTrip").is(":checked")) {      //If NOT on a one-way trip, automatically open the next datepicker
-                    setTimeout(function() {
-                        returnDatePicker.open();
-                    }, 250);
-                }
+//                if(!$("#oneWayTrip").is(":checked")) {      //If NOT on a one-way trip, automatically open the next datepicker
+//                    setTimeout(function() {
+//                        returnDatePicker.open();
+//                    }, 250);
+//                }
             }
     };
     var departDatePicker = $("#departDate").pickadate(departOptions).pickadate("picker");

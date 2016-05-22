@@ -104,30 +104,20 @@
                     <!--<h4 class="center">Promociones</h4>-->
                     <div class="col s4 dealCard" data-ng-repeat="deal in deals| limitTo: 9">
                         <div class="clearfix" ng-if="$index % 3 === 0"></div>
-
                         <div class="card card-small white-text  light-green darken-1" ng-click="goToDeal(deal, 'BUE')">
-                            <!--                            <div style="height: 15%;">
-                                                            Viajes a {{deal.city.name}} desde ${{deal.price}}
-                                                        </div>
-                                                        <div id="dealImg-{{$index}}" class="center-cropped" style="">
-                                                       </div>-->
-                            <!--                            <div class="card-image card-image-deals">-->
                             <div class="card-header card-image">
                                 <a href=""><img id="dealImg-{{$index}}" src="img/placeholder.png" alt="{{deal.city.name}}" /></a>
                             </div>
                             <div class="card-content">
                                 <p>Viajes a {{deal.city.name}} desde <span style="white-space:nowrap;">{{toSelectedCurrency(deal.price)}}</span><p>
                             </div>
-
                             {{getFlickrImg(deal.city.name, "dealImg-" + $index)}}
                         </div>
                     </div>
                 </div>
-                <!--            <div class="row center" data-ng-repeat="dealGroup in deals">  separateIntoGroupsOf(3, deals) 
-                            </div>-->
             </div>
         </main>
-        
+
         <footer class="page-footer" data-ng-include="'includes/footer.html'"></footer>
 
         <!--  Scripts-->
@@ -139,7 +129,7 @@
         <script src="js/commonFunctions.js"></script>
         <script src="js/init.js"></script>
         <script src='js/currencies.js'></script>
-        
+
         <!--Site-specific scripts-->
         <script src="js/typeahead.bundle.js"></script>
         <script src="js/home.js"></script>
