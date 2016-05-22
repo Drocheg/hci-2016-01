@@ -34,8 +34,8 @@ app.controller('controller', function ($scope, $http) {
      * @param {number} amount
      * @returns {string}
      */
-    $scope.toSelectedCurrency = function(amount) {
-        return $scope.session.preferences.currency.symbol + (amount/$scope.session.preferences.currency.ratio).toFixed(2);
+    $scope.toSelectedCurrency = function (amount) {
+        return $scope.session.preferences.currency.symbol + (amount / $scope.session.preferences.currency.ratio).toFixed(2);
 //        return $filter("currency")(amount/$scope.session.preferences.currency.ratio, $scope.session.preferences.currency.symbol, 2);
     };
 
@@ -572,6 +572,10 @@ app.controller('controller', function ($scope, $http) {
                 }
                 return flight.outbound_routes[0].segments[0].number;
             };
+
+            $scope.getFlightId = function (flight) {
+                return flight.outbound_routes[0].segments[0].id;
+            }
 
             $scope.getFlightDuration = function (flight) {
                 return flight.outbound_routes[0].duration;

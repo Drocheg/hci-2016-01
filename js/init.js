@@ -92,6 +92,8 @@ function getSessionData() {
                 addressFloor: "-",
                 addressApartment: "-",
                 phone: null,
+                availableInstallments: null,
+                selectedInstallment: null,
                 total: 0
             },
             state: {
@@ -211,7 +213,6 @@ function getAllCurrencies() {
                                 //Add a trailing space to the US currency cymbol
                                 if(result.currencies[index].id === "USD") {
                                     result.currencies[index].symbol += " ";
-                                    debugger;
                                 }
                                 session.currencies[result.currencies[index].id] = result.currencies[index];
                             }
