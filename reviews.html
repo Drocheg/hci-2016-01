@@ -18,7 +18,7 @@
 
 
         <main class="container">
-            <h4 class="center">Puntaje promedio de {{session.airlines[getGETparam("airlineId")].name}}: {{session.airlines[getGETparam("airlineId")].rating || 'N/D'}}</h4>
+            <h4 class="center">Reputación de {{session.airlines[getGETparam("airlineId")].name}}: {{session.airlines[getGETparam("airlineId")].rating || 'N/D'}}</h4>
             <h5 class="center">Comentarios encontrados: {{reviewCount}}</h5>
             <div class="row"> <!-- esto cambia todas la tarjetas -->
                 <div class="col s4 offset-s4">

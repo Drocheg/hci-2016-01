@@ -178,11 +178,14 @@
                                 <div class="card black-text col s12" data-ng-show="flights.flights.length > 0" data-ng-repeat="flight in flights.flights" style="margin-bottom: 0px; padding:0 0 10px 0; border-radius:10px; z-index: 1; height: 230px">
                                     <div class="card-action green lighten-4" style="padding:5px; border-radius:10px 10px 0 0;">
                                         <p style="margin: 0; height:30px; line-height:30px;" class="card-title">
-                                            <span class="col s10" style="padding-left:0;">
+                                            <span class="col s6" style="padding-left:0;">
                                                 <img src="{{getFlightAirlineLogoURL(flight)}}" alt="{{getFlightAirlineName(flight)}}"/>
                                                 {{getFlightAirlineName(flight)}} ({{getFlightAirlineID(flight)}}) #{{getFlightNumber(flight)}}
                                             </span>
-                                            <span class="col s2" style="text-align:right;">
+                                            <span class="col s2">
+                                                {{getGETparam('direction') === "outbound" ? "Ida" : "Vuelta"}}
+                                            </span>
+                                            <span class="col s2 offset-s2" style="text-align:right;">
                                                 <b>{{toSelectedCurrency(getFlightTotal(flight))}}</b>
                                             </span>
                                         </p>
