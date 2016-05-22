@@ -89,25 +89,22 @@ app.controller('controller', function ($scope, $http) {
             /* *************************************************************************
              *                          Interaction functions
              * ************************************************************************/
-            $scope.pageNumber = 5;
 
-            $scope.getFilledArray = function (size) {
-                if (size === 0)
-                    return [];
-                var arr = new Array(size);
-                for (var i = 1; i <= size; i++) {
-                    arr[i - 1] = i;
-                }
-                return arr;
-            };
 
             /* *************************************************************************
              *                          Review functions
              * ************************************************************************/
+            $scope.reviews = null;
+            $scope.currentReviewPage = 1;
+            $scope.reviewPages = [];
             $scope.reviewCount = 0;
+            $scope.orderFromRating = 'desc';
+
+            $scope.$watchGroup(['currentReviewPage', 'resultsPerPage', 'orderFromRating'], function () {
+                $scope.getFlightReviews($scope.getGETparam('airlineId'), $scope.getGETparam('flightNum'), $scope.resultsPerPage, $scope.currentReviewPage, 'rating', $scope.orderFromRating);
+            });
 
             $scope.getFlightReviews = function (airlineID, flightNumber, pageSize, pageNum, orderBy, ascOrDesc) {
-                debugger;
                 var params = {method: "getairlinereviews", airline_id: airlineID, flight_number: flightNumber};
                 //Optional parameters
                 if (typeof pageSize !== 'undefined') {
@@ -122,30 +119,32 @@ app.controller('controller', function ($scope, $http) {
                 if (typeof ascOrDesc !== 'undefined') {
                     params.sort_order = ascOrDesc;
                 }
+                $scope.reviews = null;
                 $scope.APIrequest(
                         "review",
                         params,
                         function (response) {
                             $scope.reviews = response.reviews;
                             $scope.reviewCount = response.total;
+                            $scope.currentReviewPage = pageNum;
+                            $scope.reviewPages = new Array(Math.ceil($scope.reviewCount / $scope.resultsPerPage));
                         });
             };
+            
+            $scope.goToPage = function(scopeVarName, pageNum) {
+                $scope[scopeVarName] = pageNum;
+            };
 
-            $scope.getFlightAverage = function (airlineID, flightNumber) {
-                $scope.getFlightReviews(airlineID, flightNumber, 30, 1);
-                var cantReview = $scope.reviewCount;
-                var i = 1; //MAximo 15000 comentarios
-                var sum = 0;
-                do {
-                    debugger;
-                    $scope.getFlightReviews(airlineID, flightNumber, 30, i);
-                    for (var j = 0; j < 30 && j < cantReview; j++) {
-                        sum = sum + $scope.reviews[j].rating.overall;
-                    }
-                    cantReview = cantReview - 30;
-                    i++;
-                } while (cantReview > 0 && i <= 500);
-                return sum / $scope.reviewCount;
+            $scope.decrementPage = function(scopeVarName, min) {
+                if($scope[scopeVarName] > (min || 1)) {
+                    $scope[scopeVarName]--;
+                }
+            };
+            
+            $scope.incrementPage = function(scopeVarName, max) {
+                if($scope[scopeVarName] < max) {
+                    $scope[scopeVarName]++;
+                }
             };
 
             /* *************************************************************************
@@ -153,10 +152,12 @@ app.controller('controller', function ($scope, $http) {
              * ************************************************************************/
             $scope.deals = [];
             $scope.flights = null;
+            $scope.flightPages = [];
+            $scope.currentFlightsPage = 1;
 
             //Watch sorting parameters and re-search as necessary
-            $scope.$watchGroup(['criteria', 'order', 'resultsPerPage'], function () {
-                $scope.searchFlights({sort_key: $scope.criteria, sort_order: $scope.order, page_size: $scope.resultsPerPage});
+            $scope.$watchGroup(['criteria', 'order', 'resultsPerPage', 'currentFlightsPage'], function () {
+                $scope.searchFlights({sort_key: $scope.criteria, sort_order: $scope.order, page_size: $scope.resultsPerPage, page: $scope.currentFlightsPage});
             });
 
             $scope.selectFlight = function (flight) {
@@ -178,6 +179,7 @@ app.controller('controller', function ($scope, $http) {
 
             $scope.searchFlights = function (extraParamsObj) {
                 $scope.flights = null;
+                $scope.flightPages = [];
 
                 var params = {method: "getonewayflights"};
                 //Get ALL required parameters from GET
@@ -200,12 +202,11 @@ app.controller('controller', function ($scope, $http) {
                         "booking",
                         params,
                         function (response) {
-                            //Remove previous tooltips
-                            $('.tooltipped').tooltip('remove');
                             $scope.flights = response;
-                            //Add news ones after a delay
-                            setTimeout(function () {
-                                $('.tooltipped').tooltip(/*{delay: 50}*/);          //Enable tooltips for +1's TODO make it work without timeout
+                            $scope.flightPages = new Array(Math.ceil($scope.flights.total / $scope.resultsPerPage));
+                            $('.tooltipped').tooltip('remove'); //Remove previous tooltips
+                            setTimeout(function () {    
+                                $('.tooltipped').tooltip({delay: 50});      //Add news ones after a delay
                             }, 500);
                         },
                         function (response) {
@@ -588,7 +589,6 @@ app.controller('controller', function ($scope, $http) {
              * ************************************************************************/
             //lel nothing
             $scope.order = 'asc';
-            $scope.orderFromRating = 'asc';
             $scope.criteria = 'total';
             $scope.resultsPerPage = 30;
             /* *************************************************************************

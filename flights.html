@@ -122,7 +122,7 @@
                     </div>
                     <!--END FIXED TOP SECTION-->
                     <!--SEARCH RESULTS-->
-                    <div class="col s9 offset-s3" data-ng-style="session.search.oneWayTrip ? {'margin-top': '240px'} : {'margin-top': '270px'}" style="z-index:1;">
+                    <div class="col s9 offset-s3" data-ng-style="session.search.oneWayTrip ? {'margin-top': '215px'} : {'margin-top': '245px'}" style="z-index:1;">
                         <div class="col s12">
                             <!--PRELOADER-->
                             <div class="row" data-ng-show="flights === null">
@@ -238,18 +238,16 @@
                                     </div>
                                 </div>
                                 <!--END FLIGHT CARDS-->
-                                <!--PAGINATION-->
-                                <div class="row" data-ng-if="flights.total / resultsPerPage > 1">   <!-- Only show pagination when there's more than 1 page -->
-                                    <div class="col s12 center">
-                                        <ul class="pagination center-align">
-                                            <li class="waves-effect"><a href="#!"><i class="material-icons">chevron_left</i></a></li>
-                                            <li ng-repeat="i in getFilledArray(getNumberOfPages(flights.total, resultsPerPage))" class="waves-effect"><a href="#!">{{i}}</a></li>
-                                            <li class="waves-effect"><a href="#!"><i class="material-icons">chevron_right</i></a></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                                <!--END PAGINATION-->
                             </div>
+                            <!--PAGINATION-->
+                            <div data-ng-if="flightPages.length > 1" style="margin-top:15px;"> <!-- Only show pagination if there's more than 1 page -->
+                                <ul class="pagination center-align">
+                                    <li data-ng-class="{disabled: currentFlightsPage === 1, 'waves-effect': currentFlightsPage !== 1}" data-ng-click="decrementPage('currentFlightsPage')"><a href="#!"><i class="material-icons">chevron_left</i></a></li>
+                                    <li data-ng-repeat="page in flightPages track by $index" data-ng-class="{active: currentFlightsPage === $index + 1, 'waves-effect': currentFlightsPage !== $index + 1}" data-ng-click="goToPage('currentFlightsPage', $index + 1)" ><a href="#!">{{$index + 1}}</a></li>
+                                    <li data-ng-class="{disabled: currentFlightsPage === flightPages.length, 'waves-effect': currentFlightsPage !== flightPages.length}" data-ng-click="incrementPage('currentFlightsPage', flightPages.length)"><a href="#!"><i class="material-icons">chevron_right</i></a></li>
+                                </ul>
+                            </div>
+                            <!--END PAGINATION-->
                         </div>
                     </div>
                     <!--END SEARCH RESULTS-->

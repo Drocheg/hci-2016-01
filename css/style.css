@@ -95,8 +95,8 @@
 
 .flightCard {
     height: 230px;
-    margin-bottom: 0px;
-    padding:0 0 10px 0 !important;
+    margin-bottom: 5px;
+    padding: 0 !important;
     border-radius:10px;
     z-index: 1;
 }
