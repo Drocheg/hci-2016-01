@@ -58,6 +58,10 @@ function getFlightNumber(flight) {
     return flight.outbound_routes[0].segments[0].number;
 }
 
+function getFlightId(flight) {
+    return flight.outbound_routes[0].segments[0].id;
+}
+
 function getFlightDuration(flight) {
     return flight.outbound_routes[0].duration;
 }

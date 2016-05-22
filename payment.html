@@ -37,9 +37,11 @@
                                 <input type="text" id="cvv" pattern="[0-9]{3,4}" class="validate"  placeholder=" ">
                                 <label for="cvv" data-error="Por favor ingrese un código válido.">Código de Seguridad</label>
                             </div>
-                            <div class="input-field col s3">
+                            <div class='input-field col s3'>
                                 <i id="installmentsIcon" class="material-icons prefix">payment</i>
-                                <input id="installments" type="text" class="validate"   placeholder=" " pattern="[0-9]{1,}">
+                                <select id="installments" disabled required>
+                                    <option value="" disabled  selected>Ingrese tarjeta</option>
+                                </select>
                                 <label for="installments" data-error="Por favor ingrese un número">Cuotas</label>
                             </div>
                         </div>
@@ -57,9 +59,9 @@
                         </div>
                         <div class="row">
                             <div class="input-field col s4">
-                                <i id="dniIcon" class="material-icons prefix">account_circle</i>
-                                <input type="text" id="dni" pattern="[0-9]{1,8}" class="validate"  placeholder=" " >
-                                <label for="dni" data-error="Por favor ingrese un número válido">DNI del Titular (sólo números)</label>
+                                <i id="idIcon" class="material-icons prefix">account_circle</i>
+                                <input type="text" id="id" pattern="[0-9]{1,8}" class="validate"  placeholder=" " >
+                                <label for="id" data-error="Por favor ingrese un número válido">DNI del Titular (sólo números)</label>
                             </div>
                             <div class="input-field col s4">
                                 <i id="emailIcon" class="material-icons prefix">email</i>
@@ -84,7 +86,7 @@
                                 <label for="street" data-error="Por favor ingrese una calle valida">Calle</label>
                             </div>
                             <div class="input-field col s3">
-<!--                                <i id="streetNumberIcon" class="material-icons prefix">domain</i>-->
+                                <!--                                <i id="streetNumberIcon" class="material-icons prefix">domain</i>-->
                                 <input id="streetNumber" type="text" class="validate"  placeholder=" " >
                                 <label for="streetNumber" data-error="Por favor ingrese una dirección">Número</label>
                             </div>
@@ -101,7 +103,7 @@
                                 <label for="addressFloor" data-error="Por favor ingrese un número">Piso (Opcional)</label>
                             </div>
                             <div class="input-field col s3">
-<!--                                <i id="addressIcon" class="material-icons prefix">email</i>-->
+                                <!--                                <i id="addressIcon" class="material-icons prefix">email</i>-->
                                 <input id="addressApartment" type="text">
                                 <label for="addressApartment" data-error="Por favor ingrese un número">Departamento (Opcional)</label>
                             </div>
