@@ -283,7 +283,7 @@ $(function () {
             cardholderFirstName: $("#cardholderFirstName").val(),
             cardholderLastName: $("#cardholderLastName").val(),
             cvv: Number($("#cvv").val()),
-            dni: Number($("#dni").val()),
+            id: Number($("#id").val()),
             street: $("#street").val(),
             streetNumber: $("#streetNumber").val(),
             state: $("#state").val(),
@@ -334,7 +334,7 @@ $(function () {
         if (isEmpty(data.cardholderLastName, "cardholderLastName")) {
             valid = false;
         }
-        if (isEmpty(data.dni, "dni")) {
+        if(isEmpty(data.id,"id")){
             valid = false;
         }
         if (isEmpty(data.street, "street")) {
@@ -374,8 +374,8 @@ $(function () {
             $submitBtn.removeClass("disabled");
             return;
         }
-
-        for (var property in data) {
+        
+        for(var property in data) {
             session.payment[property] = data[property];
         }
         session.state.hasPayment = true;

@@ -32,6 +32,7 @@
                             <p data-ng-if="session.search.numAdults > 0"> <b>Precio por adultos:</b>  {{toSelectedCurrency(getFlightPriceBreakdown(session.outboundFlight).adults.base_fare)}} x {{session.search.numAdults}}</p>
                             <p data-ng-if="session.search.numChildren > 0"> <b>Precio por ninios:</b> {{toSelectedCurrency(getFlightPriceBreakdown(session.outboundFlight).children.base_fare)}} x {{session.search.numChildren}}</p>
                             <p data-ng-if="session.search.numInfants > 0"> <b>Precio por infantes:</b> {{toSelectedCurrency(getFlightPriceBreakdown(session.outboundFlight).infants.base_fare)}} x {{session.search.numInfants}}</p>
+                            <p><b>Cargos e impuestos:</b> {{(session.outboundFlight.price.total.charges + session.outboundFlight.price.total.taxes).toFixed(2)}}</p>
                             <h5 class="center"><b>Precio:</b> {{toSelectedCurrency(getFlightTotal(session.outboundFlight))}}</h5>
                             <div class="row center">
                                 <button id="changeOutboundFlightBtn" class="waves-effect waves-light btn">Modificar Ida</button>
@@ -51,6 +52,7 @@
                             <p data-ng-if="session.search.numAdults > 0"> <b>Precio por adultos:</b>  {{toSelectedCurrency(getFlightPriceBreakdown(session.inboundFlight).adults.base_fare)}} x {{session.search.numAdults}}</p>
                             <p data-ng-if="session.search.numChildren > 0"> <b>Precio por ninios:</b> {{toSelectedCurrency(getFlightPriceBreakdown(session.inboundFlight).children.base_fare)}} x {{session.search.numChildren}}</p>
                             <p data-ng-if="session.search.numInfants > 0"> <b>Precio por infantes:</b> {{toSelectedCurrency(getFlightPriceBreakdown(session.inboundFlight).infants.base_fare)}} x {{session.search.numInfants}}</p>
+                            <p><b>Cargos e impuestos:</b> {{(session.inboundFlight.price.total.charges + session.inboundFlight.price.total.taxes).toFixed(2)}}</p>
                             <h5 class="center"><b>Precio:</b> {{toSelectedCurrency(getFlightTotal(session.inboundFlight))}}</h5>
                             <div class="row center">
                                 <button id="changeInboundFlightBtn" class="waves-effect waves-light btn">Modificar Vuelta</button>
@@ -73,8 +75,8 @@
                                 <p><b>Número de tarjeta:</b> {{session.payment.cardNumber}}</p> 
                                 <p><b>Nombre</b> {{session.payment.cardholderFirstName}}</p>
                                 <p><b>Apellido:</b> {{session.payment.cardholderLastName}}</p>
-                                <p><b>Documento:</b>{{session.payment.dni}}</p>
-                                <p><b>Codigo Postal:</b>{{session.payment.zip}}</p>
+                                <p><b>Documento:</b> {{session.payment.id}}</p>
+                                <p><b>Codigo Postal:</b> {{session.payment.zip}}</p>
                                 <p><b>Direccion:</b> {{session.payment.state}} {{session.payment.street}} {{session.payment.streetNumber}} {{session.payment.addressFloor}} {{session.payment.addressApartment}}</p>
                                 <p><b>Numero de telefono:</b> {{session.payment.phone}}</p>
                                 <p><b>Cuotas:</b> {{session.payment.installments}}</p>
@@ -101,8 +103,8 @@
                                 <p><b>Número de tarjeta:</b> {{session.payment.cardNumber}}</p> 
                                 <p><b>Nombre</b> {{session.payment.cardholderFirstName}}</p>
                                 <p><b>Apellido:</b> {{session.payment.cardholderLastName}}</p>
-                                <p><b>Documento:</b>{{session.payment.dni}}</p>
-                                <p><b>Codigo Postal:</b>{{session.payment.zip}}</p>
+                                <p><b>Documento:</b> {{session.payment.id}}</p>
+                                <p><b>Codigo Postal:</b> {{session.payment.zip}}</p>
                                 <p><b>Direccion:</b> {{session.payment.state}} {{session.payment.street}} {{session.payment.streetNumber}} {{session.payment.addressFloor}} {{session.payment.addressApartment}}</p>
                                 <p><b>Numero de telefono:</b> {{session.payment.phone}}</p>
                                 <p><b>Cuotas:</b> {{session.payment.installments}}</p>
