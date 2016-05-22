@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-ng-app="app" data-ng-controller="controller" data-ng-init="getFlightReviews(getGETParam('airlineId'), getGETParam('flightNum'))"> <!-- TODO remove when adding form -->
+<html lang="en" data-ng-app="app" data-ng-controller="controller" data-ng-init="getFlightReviews(getGETParam('airlineId'), getGETParam('flightNum'), undefined, undefined, 'rating', 'asc')"> <!-- TODO remove when adding form -->
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
@@ -24,10 +24,15 @@
                 <div class="col s4 offset-s4">
                     <div class="row">
                         <label>Comentarios por pagina</label>
-                        <select ng-model="resultsPerPage" data-ng-change="getFlightReviews(getGETparam('airlineId'), getGETparam('flightNum'), resultsPerPage, 1)">
+                        <select ng-model="resultsPerPage" data-ng-change="getFlightReviews(getGETparam('airlineId'), getGETparam('flightNum'), resultsPerPage, 1, 'rating', order)">
                             <option selected value=10>10</option>
                             <option value=20>20</option>
                             <option value=30>30</option>
+                        </select>
+                        <label>Ordenados por:</label>
+                        <select ng-model="orderFromRating" data-ng-change="getFlightReviews(getGETparam('airlineId'), getGETparam('flightNum'), resultsPerPage, 'rating', order)">
+                            <option selected value='asc'>Mejores primero</option>
+                            <option value='desc'>Peores primero</option>
                         </select>
                     </div>
                     <div class="row">
@@ -37,7 +42,7 @@
                     </div>
                 </div>
             </div>
-            <div class="row" ng-repeat="review in reviews">
+            <div class="row" ng-repeat="review in reviews | filter: query">
                 <!--TODO change elements (e.g. review.aerolinea) to whatever the API returns-->
                 <div class="card reviewCard col s8 offset-s2 black-text center" >
                     <div class="card-action green lighten-4">
@@ -89,7 +94,7 @@
             <div data-ng-if="reviewCount / resultsPerPage > 1"> <!-- Only show pagination if there's more than 1 page -->
                     <div class="col s12">
                         <ul class="pagination center-align">
-                            <li ng-repeat="i in getFilledArray(getNumberOfPages(reviewCount, resultsPerPage))"><button class="waves-button-input" data-ng-click="getFlightReviews(getGETparam('airlineId'), getGETparam('flightNum'), resultsPerPage, i)">{{i}}</button></li>
+                            <li ng-repeat="i in getFilledArray(getNumberOfPages(reviewCount, resultsPerPage))"><button class="waves-effect btn" data-ng-click="getFlightReviews(getGETparam('airlineId'), getGETparam('flightNum'), resultsPerPage, i,  'rating', order)">{{i}}</button></li>
                         </ul></div>
                     <div class="col s12">
                         <div class="center"> <a class="center-align btn waves-effect waves-light offset-l5 s6" href="fillReview.html?airlineId={{getGETparam('airlineId')}}&flightNum={{getGETparam('flightNum')}}">Dejar un comentario</a></div>
