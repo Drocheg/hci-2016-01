@@ -53,7 +53,8 @@
                                                
                                                 <input id="departDate" type="date" class="datepicker" value="{{session.search.departDate.pretty}}">
                                                 <input id="departDateFull" type="hidden" value="{{session.search.departDate.full}}">
-                                                <label for="departDate">Ida</label>
+                                                <label for="departDate"></label>
+                                                <span class="flightLabelDate">Ida</span>
                                                 <span id="departDateError" class="red-text diegoSuperCoolLabel2"></span>
                                             </div>
                                             <div class="input-field col s1" data-ng-show="!session.search.oneWayTrip">
@@ -63,7 +64,8 @@
                                                
                                                 <input id="returnDate" type="date" class="datepicker" value="{{session.search.returnDate.pretty|| ''}}">
                                                 <input id="returnDateFull" type="hidden" value="{{session.search.returnDate.full}}">
-                                                <label for="returnDate">Vuelta</label>
+                                                <label for="returnDate"></label>
+                                                 <span class="flightLabelDate">Vuelta</span>
                                                 <span id="returnDateError" class="red-text diegoSuperCoolLabel2"></span>
                                             </div>
                                             <div class="input-field col s1">
