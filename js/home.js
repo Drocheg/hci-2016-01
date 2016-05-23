@@ -2,7 +2,9 @@ $(function () {
     /***********************************************************************
      *                            Search Form
      ***********************************************************************/
-
+    $("#toId").val("");
+    $("#fromId").val("");
+  
     //Autocomplete (typeahead.js), cities and airports need to be loaded first
     $.when(citiesPromise, airportsPromise).then(function () {
         var airports = new Bloodhound({
@@ -260,31 +262,61 @@ $(function () {
                 $("#" + "returnDate" + "Error").html("");
             }
         }
-        //Passengers: At least one must fly
-        if (data.numAdults === 0 && data.numChildren === 0 && data.numInfants === 0) {
-            $("#" + "numAdults" + "Error").html("Por favor ingrese al menos un pasajero (minimo un adulto)");
-            $("#numAdults").removeClass("valid");
-            $("#numAdults").addClass("invalid");
-            $("#numChildren").removeClass("valid");
-            $("#numChildren").addClass("invalid");
-            $("#numInfants").removeClass("valid");
-            $("#numInfants").addClass("invalid");
+         //Passengers:
+        var isPassengersNumbers=true;
+        if( !/^([0-9]{0,})$/.test(data.numAdults)){
+            $("#" + "numAdults" + "Error").html("Ingrese solo números");
+            isPassengersNumbers=false;
             valid = false;
+            $("#numAdults").removeClass("valid");
+                $("#numAdults").addClass("invalid");
+               
         }
-        //Passengers: Infants and children can't travel without adults
-        else if (data.numAdults === 0) {
-            $("#" + "numAdults" + "Error").html("No se pueden viajar sin adultos");
-            $("#numAdults").removeClass("valid");
-            $("#numAdults").addClass("invalid");
+        if( !/^([0-9]{0,})$/.test(data.numChildren)){
+            $("#" + "numChildren" + "Error").html("Ingrese solo números");
+            isPassengersNumbers=false;
             valid = false;
-        } else {
-            $("#numAdults").removeClass("invalid");
-            $("#numAdults").addClass("valid");
-            $("#numChildren").removeClass("invalid");
-            $("#numChildren").addClass("valid");
-            $("#numInfants").removeClass("invalid");
-            $("#numInfants").addClass("valid");
-            $("#" + "numAdults" + "Error").html("");
+           
+                $("#numChildren").removeClass("valid");
+                $("#numChildren").addClass("invalid");
+               
+        }
+        if( !/^([0-9]{0,})$/.test(data.numInfants)){
+            $("#" + "numInfants" + "Error").html("Ingrese solo números");
+            isPassengersNumbers=false;
+            valid = false;
+           
+                $("#numInfants").removeClass("valid");
+                $("#numInfants").addClass("invalid");
+        }
+       
+        if(isPassengersNumbers){
+            //Passengers: At least one must fly
+            if (data.numAdults === 0 && data.numChildren === 0 && data.numInfants === 0) {
+                $("#" + "numAdults" + "Error").html("Por favor ingrese al menos un pasajero (minimo un adulto)");
+                $("#numAdults").removeClass("valid");
+                $("#numAdults").addClass("invalid");
+                $("#numChildren").removeClass("valid");
+                $("#numChildren").addClass("invalid");
+                $("#numInfants").removeClass("valid");
+                $("#numInfants").addClass("invalid");
+                valid = false;
+            }
+            //Passengers: Infants and children can't travel without adults
+            else if (data.numAdults === 0) {
+                $("#" + "numAdults" + "Error").html("No se pueden viajar sin adultos");
+                $("#numAdults").removeClass("valid");
+                $("#numAdults").addClass("invalid");
+                valid = false;
+            } else {
+                $("#numAdults").removeClass("invalid");
+                $("#numAdults").addClass("valid");
+                $("#numChildren").removeClass("invalid");
+                $("#numChildren").addClass("valid");
+                $("#numInfants").removeClass("invalid");
+                $("#numInfants").addClass("valid");
+                $("#" + "numAdults" + "Error").html("");
+            }
         }
 
         if (!valid) {
@@ -433,32 +465,61 @@ function validateAllFields(){
                 $("#" + "returnDate" + "Error").html("");
             }
         }
-        
-        //Passengers: At least one must fly
-        if (data.numAdults === 0 && data.numChildren === 0 && data.numInfants === 0) {
-            $("#" + "numAdults" + "Error").html("Por favor ingrese al menos un pasajero (minimo un adulto)");
-            $("#numAdults").removeClass("valid");
-            $("#numAdults").addClass("invalid");
-            $("#numChildren").removeClass("valid");
-            $("#numChildren").addClass("invalid");
-            $("#numInfants").removeClass("valid");
-            $("#numInfants").addClass("invalid");
+        //Passengers:
+        var isPassengersNumbers=true;
+        if( !/^([0-9]{0,})$/.test(data.numAdults)){
+            $("#" + "numAdults" + "Error").html("Ingrese solo números");
+            isPassengersNumbers=false;
             valid = false;
+            $("#numAdults").removeClass("valid");
+                $("#numAdults").addClass("invalid");
+               
         }
-        //Passengers: Infants and children can't travel without adults
-        else if (data.numAdults === 0) {
-            $("#" + "numAdults" + "Error").html("No se pueden viajar sin adultos");
-            $("#numAdults").removeClass("valid");
-            $("#numAdults").addClass("invalid");
+        if( !/^([0-9]{0,})$/.test(data.numChildren)){
+            $("#" + "numChildren" + "Error").html("Ingrese solo números");
+            isPassengersNumbers=false;
             valid = false;
-        } else {
-            $("#numAdults").removeClass("invalid");
-            $("#numAdults").addClass("valid");
-            $("#numChildren").removeClass("invalid");
-            $("#numChildren").addClass("valid");
-            $("#numInfants").removeClass("invalid");
-            $("#numInfants").addClass("valid");
-            $("#" + "numAdults" + "Error").html("");
+           
+                $("#numChildren").removeClass("valid");
+                $("#numChildren").addClass("invalid");
+               
+        }
+        if( !/^([0-9]{0,})$/.test(data.numInfants)){
+            $("#" + "numInfants" + "Error").html("Ingrese solo números");
+            isPassengersNumbers=false;
+            valid = false;
+           
+                $("#numInfants").removeClass("valid");
+                $("#numInfants").addClass("invalid");
+        }
+       
+        if(isPassengersNumbers){
+            //Passengers: At least one must fly
+            if (data.numAdults === 0 && data.numChildren === 0 && data.numInfants === 0) {
+                $("#" + "numAdults" + "Error").html("Por favor ingrese al menos un pasajero (minimo un adulto)");
+                $("#numAdults").removeClass("valid");
+                $("#numAdults").addClass("invalid");
+                $("#numChildren").removeClass("valid");
+                $("#numChildren").addClass("invalid");
+                $("#numInfants").removeClass("valid");
+                $("#numInfants").addClass("invalid");
+                valid = false;
+            }
+            //Passengers: Infants and children can't travel without adults
+            else if (data.numAdults === 0) {
+                $("#" + "numAdults" + "Error").html("No se pueden viajar sin adultos");
+                $("#numAdults").removeClass("valid");
+                $("#numAdults").addClass("invalid");
+                valid = false;
+            } else {
+                $("#numAdults").removeClass("invalid");
+                $("#numAdults").addClass("valid");
+                $("#numChildren").removeClass("invalid");
+                $("#numChildren").addClass("valid");
+                $("#numInfants").removeClass("invalid");
+                $("#numInfants").addClass("valid");
+                $("#" + "numAdults" + "Error").html("");
+            }
         }
     
 }
