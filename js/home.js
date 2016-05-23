@@ -29,14 +29,10 @@ $(function () {
         });
         cities.initialize();
 
-
         $('#from, #to').typeahead(
                 {
 //                    minLength: 2,
-                    highlight: true,
-                    templates: {
-                        notFound: '<div>Sin resultados</div>'
-                    }
+                    highlight: true
                 },
                 {
                     name: 'Aeropuertos',
@@ -44,7 +40,8 @@ $(function () {
                     displayKey: 'full',
                     limit: 5,
                     templates: {
-                        header: '<p class="center dataset-title">Aeropuertos <i class="material-icons">airplanemode_active</i></p><div class="divider"></div>'
+                        header: '<p class="center dataset-title">Aeropuertos <i class="material-icons">airplanemode_active</i></p><div class="divider"></div>',
+                        notFound: '<p class="center dataset-title">Aeropuertos <i class="material-icons">airplanemode_active</i></p><div class="divider"></div><div class="center">Sin resultados</div>'
                     }
                 },
                 {
@@ -53,7 +50,8 @@ $(function () {
                     displayKey: 'full',
                     limit: 5,
                     templates: {
-                        header: '<div class="divider"></div><p class="center dataset-title">Ciudades <i class="material-icons">location_city</i></p><div class="divider"></div>'
+                        header: '<div class="divider"></div><p class="center dataset-title">Ciudades <i class="material-icons">location_city</i></p><div class="divider"></div>',
+                        notFound: '<div class="divider"></div><p class="center dataset-title">Ciudades <i class="material-icons">location_city</i></p><div class="divider"></div><div class="center">Sin resultados</div>'
                     }
                 }
         );
@@ -137,11 +135,11 @@ $(function () {
     $("#oneWayTrip").on('change', function () {
         if ($(this).is(":checked")) {
             $("#returnField").fadeOut('fast', function () {
-                $("#departDateContainer").removeClass("s5").addClass("s10");
+//                $("#departDateContainer").removeClass("s5").addClass("s10");
             });
             $("#returnDate").removeAttr("required");
         } else {
-            $("#departDateContainer").removeClass("s10").addClass("s5");
+//            $("#departDateContainer").removeClass("s10").addClass("s5");
             $("#returnField").fadeIn('fast');
             $("#returnDate").attr("required", "required");
         }
@@ -259,7 +257,6 @@ $(function () {
     /***********************************************************************
      *                            Session
      ***********************************************************************/
-
     //Reset session state
     var session = getSessionData();
     clearOutboundFlight();
