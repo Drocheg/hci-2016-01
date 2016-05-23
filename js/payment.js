@@ -301,7 +301,7 @@ $(function () {
         };
         //Missing info?
         var valid = true;
-        if (data.cardNumber === "" || data.cardNumber === null) {
+        if ($("#cardNumber").val() === "" || $("#cardNumber").val() === null) {
             $("label[for="+"cardNumber"+"]").attr("data-error", "Ingrese el numero de la tarjeta");
             $("#" + "cardNumber" + "").removeClass("valid");
             $("#" + "cardNumber" + "").addClass("invalid");
@@ -448,7 +448,7 @@ $(function () {
             $("#" + id + "").addClass("invalid");
             valid = false;
         }else if (!/^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/.test(data.email)) {
-            $("label[for="+id+"]").attr("data-error", "Ingrese el e-mail con el formato ejemplo@miMailDeEjemplo.com");
+            $("label[for="+id+"]").attr("data-error", "Ingrese el e-mail con el formato nombre@ejemplo.com");
             $("#"+id+"").removeClass("valid");
             $("#"+id+"").addClass("invalid");
             valid = false;
@@ -523,7 +523,7 @@ $(function () {
         id = "addressFloor";
         if (data.addressFloor === "" || data.addressFloor === null) {
             
-        }else if (!/^([0-9 ]{1,})$/.test(data.addressFloor)) {
+        }else if (!/^([\-0-9 ]{1,})$/.test(data.addressFloor)) {
             $("label[for="+id+"]").attr("data-error", "Ingrese el numero de piso con solo numeros");
             $("#"+id+"").removeClass("valid");
             $("#"+id+"").addClass("invalid");
@@ -546,11 +546,11 @@ $(function () {
             $("#" + ""+id+"" + "").addClass("valid");
         }
    
-
+        $submitBtn.html("Siguiente <i class='material-icons right'>send</i>");
+        $submitBtn.removeClass("disabled");
         //Valid, store
         if (!valid) {
-            $submitBtn.html("Confirmar >");
-            $submitBtn.removeClass("disabled");
+            
             return;
         }
         
@@ -597,7 +597,7 @@ function validateAllFields(){
     };
     //Missing info?
     var valid = true;
-    if (data.cardNumber === "" || data.cardNumber === null) {
+     if ($("#cardNumber").val() === "" || $("#cardNumber").val() === null) {
          $("label[for="+id+"]").attr("data-error", "Ingrese el numero de la tarjeta");
         valid = false;
     }else if (!/^([0-9]{13,16})$/.test(data.cardNumber)) {
@@ -697,7 +697,7 @@ function validateAllFields(){
     if (data.street === "" || data.street === null) {
          $("label[for="+id+"]").attr("data-error", "Ingrese la calle del titular");
         valid = false;
-    }else if (!/^([A-zÀ-ÿ ]{1,})$/.test(data.street)) {
+    }else if (!/^([0-9A-zÀ-ÿ ]{1,})$/.test(data.street)) {
         $("label[for="+id+"]").attr("data-error", "Ingrese la calle sin usar caracteres especiales");
         $("#"+id+"").removeClass("valid");
         $("#"+id+"").addClass("invalid");
@@ -726,7 +726,7 @@ function validateAllFields(){
          $("label[for="+id+"]").attr("data-error", "Ingrese el e-mail del titular");
         valid = false;
     }else if (!/^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/.test(data.email)) {
-        $("label[for="+id+"]").attr("data-error", "Ingrese el e-mail con el formato ejemplo@miMailDeEjemplo.com");
+        $("label[for="+id+"]").attr("data-error", "Ingrese el e-mail con el formato nombre@ejemplo.com");
         $("#"+id+"").removeClass("valid");
         $("#"+id+"").addClass("invalid");
         valid = false;
@@ -794,7 +794,7 @@ function validateAllFields(){
     id = "addressFloor";
         if (data.addressFloor === "" || data.addressFloor === null) {
             
-        }else if (!/^([0-9 ]{1,})$/.test(data.addressFloor)) {
+        }else if (!/^([\-0-9 ]{1,})$/.test(data.addressFloor)) {
             $("label[for="+id+"]").attr("data-error", "Ingrese el numero de piso con solo numeros");
             $("#"+id+"").removeClass("valid");
             $("#"+id+"").addClass("invalid");

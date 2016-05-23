@@ -28,7 +28,7 @@
                                     </div>
                                     <div class="row">
                                         <form id="flightSearchForm">
-                                            <input type="hidden" id="fromId" value="{{session.search.from.id}}" />
+                                            <input type="hidden" id="fromId"  data-change="true" value="{{session.search.from.id}}" />
                                             <div class="input-field col s1">
                                                 <i class="material-icons prefix flightSearchIcon">flight_takeoff</i>
                                             </div>
@@ -37,7 +37,7 @@
                                                 <label for="from"></label>
                                                 <span id="fromError" class="red-text diegoSuperCoolLabel1"></span>
                                             </div>
-                                            <input type="hidden" id="toId" value="{{session.search.to.id}}" />
+                                            <input type="hidden" id="toId"  data-change="true" value="{{session.search.to.id}}" />
                                             <div class="input-field col s1">
                                                 <i class="material-icons prefix flightSearchIcon">flight_land</i>
                                             </div>
