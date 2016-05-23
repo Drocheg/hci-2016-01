@@ -626,7 +626,8 @@ function validateDNI(DNI) {
 }
 
 function validateName(name) {
-    return /^([A-zÀ-ÿ ]{1,})$/.test(name);
+    return /^([A-zÀ-ÿ]{1,})$/.test(name);
+    //http://stackoverflow.com/a/26900132/2333689 Para caracteres con acentos
 }
 //
 //function changeError(idName,error){

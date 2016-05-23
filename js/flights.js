@@ -41,6 +41,9 @@ function markSelectedFlight(flight, direction) {
     $("#" + id).html(html);
     //Update total (angular isn't picking up the changes)
     $("#total").html(toSelectedCurrency(getSessionData().payment.total));
+    //Enable next step button
+    $("#nextStep button").removeAttr("disabled");
+    $("#nextStep button").removeClass("disabled");
 }
 
 /**

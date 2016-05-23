@@ -120,7 +120,7 @@
                             </div>
                         </div>                        
                         <div class="col s3 center" id="nextStep">
-                            <button class="btn waves-effect waves-light disabled">{{session.search.oneWayTrip|| session.outboundFlight !== null ? 'Siguiente' : 'Elegir Vuelta'}}<i class="material-icons right">send</i></button>
+                            <button class="btn waves-effect waves-light disabled" disabled>{{session.search.oneWayTrip|| session.outboundFlight !== null ? 'Siguiente' : 'Elegir Vuelta'}}<i class="material-icons right">send</i></button>
                         </div>
                         <!--END SELECTED FLIGHT(S) BOX(ES)-->
                         <div class="col s12 center" data-ng-show='flights !== null' id="searchResults" style="height: 55px; ">
