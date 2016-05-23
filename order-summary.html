@@ -29,7 +29,7 @@
                         </div>
                         <div class="card-content">
                             <div class="col s12 flightContent">
-                                <p><b>Numero de vuelo</b>: {{getFlightNumber(session.outboundFlight)}}</p>
+                                <p><b>Número de vuelo</b>: {{getFlightNumber(session.outboundFlight)}}</p>
                                 <p><b>Fecha:</b> {{(getDepartureDateObj(session.outboundFlight)).getDate()}}/{{getDepartureDateObj(session.outboundFlight).getMonth()}}</p>
                                 <p><b>Horario de salida:</b> {{(getDepartureDateObj(session.outboundFlight)).getHours()}}:{{getDepartureDateObj(session.outboundFlight).getMinutes()}}</p>
                                 <p><b>Horario de llegada:</b> {{(getArrivalDateObj(session.outboundFlight)).getHours()}}:{{getArrivalDateObj(session.outboundFlight).getMinutes()}}</p>
@@ -58,7 +58,7 @@
                         </div>
                         <div class="card-content">
                             <div class="col s12 flightContent">
-                                <p><b>Numero de vuelo:</b> {{getFlightNumber(session.inboundFlight)}}</p>
+                                <p><b>Número de vuelo:</b> {{getFlightNumber(session.inboundFlight)}}</p>
                                 <p><b>Fecha:</b> {{(getDepartureDateObj(session.inboundFlight)).getDate()}}/{{getDepartureDateObj(session.inboundFlight).getMonth()}}</p>
                                 <p><b>Horario de salida:</b> {{(getDepartureDateObj(session.inboundFlight)).getHours()}}:{{getDepartureDateObj(session.inboundFlight).getMinutes()}}</p>
                                 <P><b>Horario de llegada:</b> {{(getArrivalDateObj(session.inboundFlight)).getHours()}}:{{getArrivalDateObj(session.inboundFlight).getMinutes()}}</p>
@@ -112,7 +112,7 @@
                                 <p><b>Documento:</b> {{session.payment.id}}</p>
                                 <p><b>Codigo Postal:</b> {{session.payment.zip}}</p>
                                 <p><b>Dirección:</b> {{session.payment.state}} {{session.payment.street}} {{session.payment.streetNumber}} {{session.payment.addressFloor}} {{session.payment.addressApartment}}</p>
-                                <p><b>Numero de telefono:</b> {{session.payment.phone}}</p>
+                                <p><b>Número de telefono:</b> {{session.payment.phone}}</p>
                                 <p><b>Cuotas:</b> {{session.payment.selectedInstallment.quantity}}</p>
                                 <p data-ng-if="session.payment.selectedInstallment.quantity > 1"><b>Precio de la primer cuota:</b> {{toSelectedCurrency(session.payment.selectedInstallment.first)}}<br><b>Precio de las cuotas restantes:</b> {{toSelectedCurrency(session.payment.selectedInstallment.others)}}</p>
                                 <h4 data-ng-if="session.payment.selectedInstallment.quantity > 1" class="center"><b>Total:</b> {{toSelectedCurrency((session.payment.total) * (1 + session.payment.availableInstallments.financial_cost))}}</h4> 
