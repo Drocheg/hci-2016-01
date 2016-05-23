@@ -110,6 +110,11 @@ function submitReview(airlineID, flightNum, friend, food, punct, mileage, comfor
 }
 
 $(function () {
+    if(getGETparam("airlineId") === null || getGETparam("flightNum") === null) {
+        window.location = "index.html";
+    }
+    
+
     $(document).ready(function () {
         $('select').material_select();
     });
@@ -173,7 +178,6 @@ $(function () {
     
     
     });
-
 
     $("#review-form").on("submit", function (event) {
         event.preventDefault();
