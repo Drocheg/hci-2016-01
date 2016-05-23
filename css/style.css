@@ -144,11 +144,14 @@
     margin-top: 245px;
 }
 
+.activated {
+    padding:0;
+}
+
 #selectedOutboundFlight .card-panel, #selectedInboundFlight .card-panel {
     border-color:grey;
     border-style: dashed;
     height: 70px;
-    /*padding:20px;*/
 }
 
 #selectedOutboundFlight .card-panel p, #selectedInboundFlight .card-panel p {
