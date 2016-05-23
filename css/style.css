@@ -9,6 +9,11 @@
     border: 1px solid black;
 }
 
+.flightSearchIcon{
+    margin-left: -10px;
+    margin-top: 10px;
+}
+
 .reviewCard {
     padding: 0 !important;
     border-radius:10px;
@@ -263,6 +268,11 @@
 #flightSearchForm {
     z-index: 1;
 }
+
+#flightSearchForm > div{
+    padding-bottom: 3%;
+}
+    
 
 .flight-card {}
 

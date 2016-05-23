@@ -237,7 +237,7 @@ $(function () {
                                 <div class='col s7 input-field'>\
                                     <i  class='material-icons prefix'>account_circle</i>\
                                     <label for=" + prefix + 'firstName' + " class='black-text' data-error='Por favor ingrese el nombre del pasajero'>Nombre</label>\
-                                    <input data-field ="+ prefix +" id=" + prefix + 'firstName' + " type='text' pattern='^([a-zA-Z ]{1,})$' class='field validate'   placeholder=' ' >\
+                                    <input data-field ="+ prefix +" id=" + prefix + 'firstName' + " type='text' pattern='^([A-zÀ-ÿ ]{1,})$' class='field validate'   placeholder=' ' >\
                                     <label id="+ prefix + 'firstName' + 'Error' + " class='red-text ' style='margin-top: 60px;white-space:nowrap;text-align: left;'></label>\
                                 </div>\
                                 <div class='input-field col s2'> \
@@ -261,7 +261,7 @@ $(function () {
                                 <div class='col s7 input-field'>\
                                     <i  class='material-icons prefix'>account_circle</i>\
                                     <label for=" + prefix + 'lastName' + " class='black-text' data data-error='Por favor ingrese el apellido del pasajero'>Apellido</label>\
-                                    <input data-field ="+ prefix +" id=" + prefix + 'lastName' + " type='text' pattern='^([a-zA-Z ]{1,})$' class='validate field' placeholder=' '   >\
+                                    <input data-field ="+ prefix +" id=" + prefix + 'lastName' + " type='text' pattern='^([A-zÀ-ÿ ]{1,})$' class='validate field' placeholder=' '   >\
                                     <label id="+ prefix + 'lastName' + 'Error' + " class='red-text ' style='margin-top: 60px;white-space:nowrap;text-align: left;'></label>\
                                 </div>\
                                 <div class='col s5 input-field'>\
@@ -626,7 +626,7 @@ function validateDNI(DNI) {
 }
 
 function validateName(name) {
-    return /^([a-zA-Z ]{1,})$/.test(name);
+    return /^([A-zÀ-ÿ ]{1,})$/.test(name);
 }
 //
 //function changeError(idName,error){

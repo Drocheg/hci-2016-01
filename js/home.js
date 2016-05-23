@@ -2,7 +2,9 @@ $(function () {
     /***********************************************************************
      *                            Search Form
      ***********************************************************************/
-
+    $("#toId").val("");
+    $("#fromId").val("");
+  
     //Autocomplete (typeahead.js), cities and airports need to be loaded first
     $.when(citiesPromise, airportsPromise).then(function () {
         var airports = new Bloodhound({
@@ -73,6 +75,15 @@ $(function () {
     $('#to').on("change", function () {
         $("#fromId").val("");
     });
+    $('#from').on('typeahead:change', function(){
+       validateAllFields();
+    });
+
+    $('#to').on('typeahead:change', function(){
+       validateAllFields();
+    });   
+
+    
     
     //Datepickers
     var minDate = new Date();
@@ -171,70 +182,139 @@ $(function () {
             numChildren: Number($("#numChildren").val()),
             numInfants: Number($("#numInfants").val())
         };
+       
+        
         var valid = true;
         //Origin
-        if (data.from.id === "") {
-            $("label[for=from]").attr("data-error", "Por favor ingrese un orígen válido");
+        if ($("#from").val() === "") {
+            $("#" + "from" + "Error").html("Ingrese el aeropuerto o ciudad de origen");
             $("#from").removeClass("valid");
             $("#from").addClass("invalid");
             valid = false;
-        } else {
+        } else if(!isValidId(data.from.id)){
+            $("#" + "from" + "Error").html("Ingrese el nombre de un aeropuerto o ciudad valido");
+            $("#from").removeClass("valid");
+            $("#from").addClass("invalid");
+            valid = false;
+        }else{
             $("#from").removeClass("invalid");
             $("#from").addClass("valid");
+            $("#" + "from" + "Error").html("");
         }
         //Destination
-        if (data.to.id === "") {
-            $("label[for=to]").attr("data-error", "Por favor ingrese un destino válido");
+        if ($("#to").val() === "") {
+            $("#" + "to" + "Error").html("Ingrese el aeropuerto o ciudad de destino");
             $("#to").removeClass("valid");
             $("#to").addClass("invalid");
             valid = false;
-        } else {
+        } else if(!isValidId(data.to.id)){
+            $("#" + "to" + "Error").html("Ingrese el nombre de un aeropuerto o ciudad valido");
+            $("#to").removeClass("valid");
+            $("#to").addClass("invalid");
+            valid = false;
+        }else{
             $("#to").removeClass("invalid");
             $("#to").addClass("valid");
+            $("#" + "to" + "Error").html("");
         }
+        
+        if(valid && data.from.id===data.to.id ){
+            $("#" + "from" + "Error").html("El lugar de origen y destino no pueden ser el mismo");
+            $("#from").removeClass("valid");
+            $("#from").addClass("invalid");
+            $("#to").removeClass("valid");
+            $("#to").addClass("invalid");
+            valid = false;
+        }else{
+            if(valid){
+                $("#" + "from" + "Error").html("");
+            }
+        }
+        
         //Departure date
-        if (data.departDate.full === "") {
-            $("label[for=departDate]").attr("data-error", "Por favor ingrese una fecha de ida válida");
+        if ($("#departDate").val() === "") {
+            $("#" + "departDate" + "Error").html("Ingrese la fecha de ida");
             $("#departDate").removeClass("valid");
             $("#departDate").addClass("invalid");
             valid = false;
         } else {
             $("#departDate").removeClass("invalid");
             $("#departDate").addClass("valid");
+            $("#" + "departDate" + "Error").html("");
         }
         //Return date
         if (!data.oneWayTrip) {
-            if (data.returnDate.full === "") {
-                $("label[for=returnDate]").attr("data-error", "Por favor ingrese una fecha de vuelta válida");
+            if ($("#returnDate").val() === "") {
+                $("#" + "returnDate" + "Error").html("Ingrese la fecha de vuelta");
                 $("#returnDate").removeClass("valid");
                 $("#returnDate").addClass("invalid");
                 valid = false;
-            } else if (!data.oneWayTrip && new Date(data.returnDate.full) < new Date(data.departDate.full)) {
-                $("label[for=returnDate]").attr("data-error", "Todavía no ofrecemos viajes en el tiempo"); //TODO use serious message
+            } else if ($("#departDate").val() !== "" && new Date(data.returnDate.full) < new Date(data.departDate.full)) {
+                $("#" + "returnDate" + "Error").html("La fecha de vuelta debe ser mayor a la de ida");
                 $("#returnDate").removeClass("valid");
                 $("#returnDate").addClass("invalid");
                 valid = false;
             } else {
                 $("#returnDate").removeClass("invalid");
                 $("#returnDate").addClass("valid");
+                $("#" + "returnDate" + "Error").html("");
             }
         }
-        //Passengers: At least one must fly
-        if (data.numAdults === 0 && data.numChildren === 0 && data.numInfants === 0) {
-            $("label[for=numAdults]").attr("data-error", "Por favor ingrese al menos un pasajero");
-            $("#numAdults").removeClass("valid");
-            $("#numAdults").addClass("invalid");
+         //Passengers:
+        var isPassengersNumbers=true;
+        if( !/^([0-9]{0,})$/.test(data.numAdults)){
+            $("#" + "numAdults" + "Error").html("Ingrese solo números");
+            isPassengersNumbers=false;
             valid = false;
+            $("#numAdults").removeClass("valid");
+                $("#numAdults").addClass("invalid");
+               
         }
-        //Passengers: Infants can't travel without adults
-        else if (data.numInfants > 0 && data.numAdults === 0) {
-            $("label[for=numAdults]").attr("data-error", "Los infantes no pueden viajar sin adultos");
-            $("#numAdults").removeClass("valid");
-            $("#numAdults").addClass("invalid");
+        if( !/^([0-9]{0,})$/.test(data.numChildren)){
+            $("#" + "numChildren" + "Error").html("Ingrese solo números");
+            isPassengersNumbers=false;
             valid = false;
-        } else {
-            $("#numAdults").removeClass("invalid");
-            $("#numAdults").addClass("valid");
+           
+                $("#numChildren").removeClass("valid");
+                $("#numChildren").addClass("invalid");
+               
+        }
+        if( !/^([0-9]{0,})$/.test(data.numInfants)){
+            $("#" + "numInfants" + "Error").html("Ingrese solo números");
+            isPassengersNumbers=false;
+            valid = false;
+           
+                $("#numInfants").removeClass("valid");
+                $("#numInfants").addClass("invalid");
+        }
+       
+        if(isPassengersNumbers){
+            //Passengers: At least one must fly
+            if (data.numAdults === 0 && data.numChildren === 0 && data.numInfants === 0) {
+                $("#" + "numAdults" + "Error").html("Por favor ingrese al menos un pasajero (minimo un adulto)");
+                $("#numAdults").removeClass("valid");
+                $("#numAdults").addClass("invalid");
+                $("#numChildren").removeClass("valid");
+                $("#numChildren").addClass("invalid");
+                $("#numInfants").removeClass("valid");
+                $("#numInfants").addClass("invalid");
+                valid = false;
+            }
+            //Passengers: Infants and children can't travel without adults
+            else if (data.numAdults === 0) {
+                $("#" + "numAdults" + "Error").html("No se pueden viajar sin adultos");
+                $("#numAdults").removeClass("valid");
+                $("#numAdults").addClass("invalid");
+                valid = false;
+            } else {
+                $("#numAdults").removeClass("invalid");
+                $("#numAdults").addClass("valid");
+                $("#numChildren").removeClass("invalid");
+                $("#numChildren").addClass("valid");
+                $("#numInfants").removeClass("invalid");
+                $("#numInfants").addClass("valid");
+                $("#" + "numAdults" + "Error").html("");
+            }
         }
 
         if (!valid) {
@@ -254,6 +334,12 @@ $(function () {
         window.location = "flights.html?from=" + data.from.id + "&to=" + data.to.id + "&dep_date=" + data.departDate.full + "&direction=outbound" + "&adults=" + data.numAdults + "&children=" + data.numChildren + "&infants=" + data.numInfants;
     });
 
+    $("#fromId, #toId, #numAdults, #numChildren, #numInfants, #departDate, #returnDate").change(function(){
+        validateAllFields();
+    });
+    
+    
+
     /***********************************************************************
      *                            Session
      ***********************************************************************/
@@ -264,3 +350,173 @@ $(function () {
     setSessionData(session);
     
 });
+
+
+function isValidId(id) {
+    var session = getSessionData();
+    var cities = session.cities;
+    var airports = session.airports;
+    for(var i=0; i<airports.length; i++){
+        if(airports[i].id==id){
+            return true;
+        }
+    }
+    for(var i=0; i<cities.length; i++){
+        if(cities[i].id==id){
+            return true;
+        }
+    }
+    
+    return false;
+    
+}
+
+function validateAllFields(){
+    
+        
+        var data = {
+            from: {
+                name: $("#from").val(),
+                id: $("#fromId").val()
+            },
+            to: {
+                name: $("#to").val(),
+                id: $("#toId").val()
+            },
+            departDate: {
+                pretty: $("#departDate").val(),
+                full: $("#departDateFull").val()
+            },
+            oneWayTrip: $("#oneWayTrip").is(":checked"),
+            returnDate: $("#oneWayTrip").is(":checked") ? null : {
+                pretty: $("#returnDate").val(),
+                full: $("#returnDateFull").val()
+            },
+            numAdults: Number($("#numAdults").val()),
+            numChildren: Number($("#numChildren").val()),
+            numInfants: Number($("#numInfants").val())
+        };
+       
+        
+        var valid = true;
+        //Origin
+        if ($("#from").val() === "") {
+            
+        } else if(!isValidId(data.from.id)){
+            $("#" + "from" + "Error").html("Ingrese el nombre de un aeropuerto o ciudad valido");
+            $("#from").removeClass("valid");
+            $("#from").addClass("invalid");
+            valid = false;
+        }else{
+            $("#from").removeClass("invalid");
+            $("#from").addClass("valid");
+            $("#" + "from" + "Error").html("");
+        }
+        //Destination
+        if ($("#to").val() === "") {
+            
+        } else if(!isValidId(data.to.id)){
+            $("#" + "to" + "Error").html("Ingrese el nombre de un aeropuerto o ciudad valido");
+            $("#to").removeClass("valid");
+            $("#to").addClass("invalid");
+            valid = false;
+        }else{
+            $("#to").removeClass("invalid");
+            $("#to").addClass("valid");
+            $("#" + "to" + "Error").html("");
+        }
+        
+        if(valid && data.from.id===data.to.id ){
+            $("#" + "from" + "Error").html("El lugar de origen y destino no pueden ser el mismo");
+            $("#from").removeClass("valid");
+            $("#from").addClass("invalid");
+            $("#to").removeClass("valid");
+            $("#to").addClass("invalid");
+            valid = false;
+        }else{
+            if(valid){
+                $("#" + "from" + "Error").html("");
+            }
+        }
+        
+        //Departure date
+        if ($("#departDate").val() === "") {
+            
+        } else {
+            $("#departDate").removeClass("invalid");
+            $("#departDate").addClass("valid");
+            $("#" + "departDate" + "Error").html("");
+        }
+        //Return date
+        if (!data.oneWayTrip) {
+            if ($("#returnDate").val() === "") {
+               
+            } else if ($("#departDate").val() !== "" && new Date(data.returnDate.full) < new Date(data.departDate.full)) {
+                $("#" + "returnDate" + "Error").html("La fecha de vuelta debe ser mayor a la de ida");
+                $("#returnDate").removeClass("valid");
+                $("#returnDate").addClass("invalid");
+                valid = false;
+            } else {
+                $("#returnDate").removeClass("invalid");
+                $("#returnDate").addClass("valid");
+                $("#" + "returnDate" + "Error").html("");
+            }
+        }
+        //Passengers:
+        var isPassengersNumbers=true;
+        if( !/^([0-9]{0,})$/.test(data.numAdults)){
+            $("#" + "numAdults" + "Error").html("Ingrese solo números");
+            isPassengersNumbers=false;
+            valid = false;
+            $("#numAdults").removeClass("valid");
+                $("#numAdults").addClass("invalid");
+               
+        }
+        if( !/^([0-9]{0,})$/.test(data.numChildren)){
+            $("#" + "numChildren" + "Error").html("Ingrese solo números");
+            isPassengersNumbers=false;
+            valid = false;
+           
+                $("#numChildren").removeClass("valid");
+                $("#numChildren").addClass("invalid");
+               
+        }
+        if( !/^([0-9]{0,})$/.test(data.numInfants)){
+            $("#" + "numInfants" + "Error").html("Ingrese solo números");
+            isPassengersNumbers=false;
+            valid = false;
+           
+                $("#numInfants").removeClass("valid");
+                $("#numInfants").addClass("invalid");
+        }
+       
+        if(isPassengersNumbers){
+            //Passengers: At least one must fly
+            if (data.numAdults === 0 && data.numChildren === 0 && data.numInfants === 0) {
+                $("#" + "numAdults" + "Error").html("Por favor ingrese al menos un pasajero (minimo un adulto)");
+                $("#numAdults").removeClass("valid");
+                $("#numAdults").addClass("invalid");
+                $("#numChildren").removeClass("valid");
+                $("#numChildren").addClass("invalid");
+                $("#numInfants").removeClass("valid");
+                $("#numInfants").addClass("invalid");
+                valid = false;
+            }
+            //Passengers: Infants and children can't travel without adults
+            else if (data.numAdults === 0) {
+                $("#" + "numAdults" + "Error").html("No se pueden viajar sin adultos");
+                $("#numAdults").removeClass("valid");
+                $("#numAdults").addClass("invalid");
+                valid = false;
+            } else {
+                $("#numAdults").removeClass("invalid");
+                $("#numAdults").addClass("valid");
+                $("#numChildren").removeClass("invalid");
+                $("#numChildren").addClass("valid");
+                $("#numInfants").removeClass("invalid");
+                $("#numInfants").addClass("valid");
+                $("#" + "numAdults" + "Error").html("");
+            }
+        }
+    
+}

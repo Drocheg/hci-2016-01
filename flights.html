@@ -28,35 +28,68 @@
                                     <div class="row">
                                         <form id="flightSearchForm">
                                             <input type="hidden" id="fromId" value="{{session.search.from.id}}" />
-                                            <div class="input-field col s12">
-                                                <input id="from" type="text" class="validate typeahead" value="{{session.search.from.name}}" placeholder="Cargando..." disabled>
+                                            <div class="input-field col s1">
+                                                <i class="material-icons prefix flightSearchIcon">flight_takeoff</i>
+                                            </div>
+                                            <div class="input-field col s11">
+                                                <input id="from" type="text" class="typeahead" value="{{session.search.from.name}}" placeholder="Cargando..." disabled>
                                                 <label for="from"></label>
+                                                <span id="fromError" class='red-text ' style='position: absolute; margin-top: -1.5%; margin-left: 0%;white-space:nowrap;text-align: left; font-size:12px;'></span>
                                             </div>
                                             <input type="hidden" id="toId" value="{{session.search.to.id}}" />
-                                            <div class="input-field col s12">
-                                                <input id="to" type="text" class="validate typeahead" value="{{session.search.to.name}}" placeholder="Cargando..." disabled>
-                                                <label for="to"></label>
+                                            <div class="input-field col s1">
+                                                <i class="material-icons prefix flightSearchIcon">flight_land</i>
                                             </div>
-                                            <div class="input-field col s12">
+                                            <div class="input-field col s11">
+                                                <input id="to" type="text" class="typeahead" value="{{session.search.to.name}}" placeholder="Cargando..." disabled>
+                                                <label for="to"></label>
+                                                <span id="toError" class='red-text ' style='position: absolute; margin-top: -1.5%; margin-left: 0%;white-space:nowrap;text-align: left; font-size:12px;'></span>
+                                            </div>
+                                            <div class="input-field col s1">
+                                                <i class="material-icons prefix flightSearchIcon">today</i>
+                                            </div>
+                                            <div class="input-field col s11">
+                                               
                                                 <input id="departDate" type="date" class="datepicker" value="{{session.search.departDate.pretty}}">
                                                 <input id="departDateFull" type="hidden" value="{{session.search.departDate.full}}">
                                                 <label for="departDate">Ida</label>
+                                                <span id="departDateError" class='red-text ' style='position: absolute; margin-top: -4.5%; margin-left: 18%;white-space:nowrap;text-align: left; font-size:12px;'></span>
                                             </div>
-                                            <div class="input-field col s12" data-ng-show="!session.search.oneWayTrip">
+                                            <div class="input-field col s1" data-ng-show="!session.search.oneWayTrip">
+                                                <i class="material-icons prefix flightSearchIcon">today</i>
+                                            </div>
+                                            <div class="input-field col s11" data-ng-show="!session.search.oneWayTrip">
+                                               
                                                 <input id="returnDate" type="date" class="datepicker" value="{{session.search.returnDate.pretty|| ''}}">
                                                 <input id="returnDateFull" type="hidden" value="{{session.search.returnDate.full}}">
                                                 <label for="returnDate">Vuelta</label>
+                                                <span id="returnDateError" class='red-text ' style='position: absolute; margin-top: -4.5%; margin-left: 18%;white-space:nowrap;text-align: left; font-size:12px;'></span>
                                             </div>
-                                            <div class="input-field col s12">
-                                                <input id="numAdults" type="text" pattern="[0-9]{1,}" class="validate" value="{{getGETparam('adults')}}">
+                                            <div class="input-field col s1">
+                                                <i class="material-icons prefix flightSearchIcon">account_circle</i>
+                                            </div>
+                                            <div class="input-field col s11">
+                                                <input id="numAdults" type="text" pattern="[0-9]{1,}" placeholder=' ' class="" value="{{getGETparam('adults')}}">
                                                 <label for="numAdults">Adultos (12 o más años)</label>
+                                                
+                                                <label id="numAdultsError" class='red-text ' style='margin-top: 60px;white-space:nowrap;text-align: left;'></label>
                                             </div>
-                                            <div class="input-field col s12">
-                                                <input id="numChildren" type="text" pattern="[0-9]{1,}" class="validate" value="{{getGETparam('children')}}">
+                                            <div class="input-field col s1">
+                                                <i class="material-icons prefix flightSearchIcon">account_circle</i>
+                                            </div>
+                                            <div class="input-field col s11">
+                                                
+                                                <input id="numChildren" type="text" pattern="[0-9]{1,}" placeholder=' ' class="" value="{{getGETparam('children')}}">
+                                                <label id="numChildrenError" class='red-text ' style='margin-top: 60px;white-space:nowrap;text-align: left;'></label>
                                                 <label for="numChildren">Niños (2-11 años)</label>
                                             </div>
-                                            <div class="input-field col s12">
-                                                <input id="numInfants" type="text" pattern="[0-9]{1,}" class="validate" value="{{getGETparam('infants')}}">
+                                            <div class="input-field col s1">
+                                                <i class="material-icons prefix flightSearchIcon">account_circle</i>
+                                            </div>
+                                            <div class="input-field col s11">
+                                                
+                                                <input id="numInfants" type="text" pattern="[0-9]{1,}" placeholder=' ' class="" value="{{getGETparam('infants')}}">
+                                                <label id="numInfantsError" class='red-text ' style='margin-top: 60px;white-space:nowrap;text-align: left;'></label>
                                                 <label for="numInfants">Infantes (0-2 años)</label>
                                             </div>
                                             <button id="searchButton" class="input-field col s8 offset-s2 waves-effect waves-light btn-large" type='button'>
