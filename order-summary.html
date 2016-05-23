@@ -28,7 +28,7 @@
                             </p>
                         </div>
                         <div class="card-content">
-                            <div class="col 12"  style="height: 450px;">
+                            <div class="col 12"  style="height: 515px;">
                                 <p><b>Numero de vuelo</b>: {{getFlightNumber(session.outboundFlight)}}</p>
                                 <p><b>Fecha:</b> {{(getDepartureDateObj(session.outboundFlight)).getDate()}}/{{getDepartureDateObj(session.outboundFlight).getMonth()}}</p>
                                 <p><b>Horario de salida:</b> {{(getDepartureDateObj(session.outboundFlight)).getHours()}}:{{getDepartureDateObj(session.outboundFlight).getMinutes()}}</p>
@@ -57,7 +57,7 @@
                             </p>
                         </div>
                         <div class="card-content">
-                            <div class="col s12" style="height: 450px;">
+                            <div class="col s12" style="height: 515px;">
                                 <p><b>Numero de vuelo:</b> {{getFlightNumber(session.inboundFlight)}}</p>
                                 <p><b>Fecha:</b> {{(getDepartureDateObj(session.inboundFlight)).getDate()}}/{{getDepartureDateObj(session.inboundFlight).getMonth()}}</p>
                                 <p><b>Horario de salida:</b> {{(getDepartureDateObj(session.inboundFlight)).getHours()}}:{{getDepartureDateObj(session.inboundFlight).getMinutes()}}</p>
@@ -87,7 +87,7 @@
                             </p>
                         </div>
                         <div class="card-content">
-                            <div class="col s12">
+                            <div class="col s12" style="height:70px;">
                                 <p><b>Email:</b> {{session.payment.email}}</p>
                                 <div class="row center">
                                     <button id="changeContactBtn" class="waves-effect waves-light btn">Modificar Contacto</button>
@@ -105,7 +105,7 @@
                             </p>
                         </div>
                         <div class="card-content">
-                            <div class="col s12">
+                            <div class="col s12" style="height:375px">
                                 <p><b>Número de tarjeta:</b> {{session.payment.cardNumber}}</p> 
                                 <p><b>Nombre</b> {{session.payment.cardholderFirstName}}</p>
                                 <p><b>Apellido:</b> {{session.payment.cardholderLastName}}</p>
@@ -114,6 +114,7 @@
                                 <p><b>Direccion:</b> {{session.payment.state}} {{session.payment.street}} {{session.payment.streetNumber}} {{session.payment.addressFloor}} {{session.payment.addressApartment}}</p>
                                 <p><b>Numero de telefono:</b> {{session.payment.phone}}</p>
                                 <p><b>Cuotas:</b> {{session.payment.selectedInstallment.quantity}}</p>
+                                <p data-ng-if="session.payment.selectedInstallment.quantity > 1"><b>Precio de la primer cuota:</b> {{toSelectedCurrency(session.payment.selectedInstallment.first)}}<br><b>Precio de las cuotas restantes:</b> {{toSelectedCurrency(session.payment.selectedInstallment.others)}}</p>
                                 <h4 data-ng-if="session.payment.selectedInstallment.quantity > 1" class="center"><b>Total:</b> {{toSelectedCurrency((session.payment.total) * (1 + session.payment.availableInstallments.financial_cost))}}</h4> 
                                 <h4 data-ng-if="session.payment.selectedInstallment.quantity === 1" class="center"><b>Total:</b> {{toSelectedCurrency((session.payment.total))}}</h4> 
                                 <div class="row center">
@@ -132,7 +133,7 @@
                             </p>
                         </div>
                         <div class="card-content">
-                            <div class="col s12">
+                            <div class="col s12" style="height:70px;">
                                 <p><b>Email:</b> {{session.payment.email}}</p>
                                 <div class="row center">
                                     <button id="changeContactBtn" class="waves-effect waves-light btn">Modificar Contacto</button>
@@ -150,7 +151,7 @@
                             </p>
                         </div>
                         <div class="card-content">
-                            <div class="col s12">
+                            <div class="col s12" style="height:375px">
                                 <p><b>Número de tarjeta:</b> {{session.payment.cardNumber}}</p> 
                                 <p><b>Nombre</b> {{session.payment.cardholderFirstName}}</p>
                                 <p><b>Apellido:</b> {{session.payment.cardholderLastName}}</p>
@@ -159,8 +160,9 @@
                                 <p><b>Direccion:</b> {{session.payment.state}} {{session.payment.street}} {{session.payment.streetNumber}} {{session.payment.addressFloor}} {{session.payment.addressApartment}}</p>
                                 <p><b>Numero de telefono:</b> {{session.payment.phone}}</p>
                                 <p><b>Cuotas:</b> {{session.payment.selectedInstallment.quantity}}</p>
+                                <p data-ng-if="session.payment.selectedInstallment.quantity > 1"><b>Precio de la primer cuota:</b> {{toSelectedCurrency(session.payment.selectedInstallment.first)}}<br><b>Precio de las cuotas restantes:</b> {{toSelectedCurrency(session.payment.selectedInstallment.others)}}</p>
                                 <h4 data-ng-if="session.payment.selectedInstallment.quantity > 1" class="center"><b>Total:</b> {{toSelectedCurrency((session.payment.total) * (1 + session.payment.availableInstallments.financial_cost))}}</h4> 
-                                <h4 data-ng-if="session.payment.selectedInstallment.quantity = 1" class="center"><b>Total:</b> {{toSelectedCurrency((session.payment.total))}}</h4> 
+                                <h4 data-ng-if="session.payment.selectedInstallment.quantity === 1" class="center"><b>Total:</b> {{toSelectedCurrency((session.payment.total))}}</h4> 
                                 <div class="row center">
                                     <button id="changePaymentBtn" class="waves-effect waves-light btn">Modificar Pago</button>
                                 </div>
@@ -197,7 +199,7 @@
                                 </div>
                                 <div class="row">
                                     <div data-ng-if="session.passengers.children.length > 0">
-                                        <h4>Niños &nbsp ({{session.passengers.children.length}})</h4>
+                                        <h4 class="center">Niños &nbsp ({{session.passengers.children.length}})</h4>
                                         <div class="col s4" data-ng-repeat="child in session.passengers.children">
                                             <p><b>Nombre:</b> {{child.firstName}} {{child.lastName}}</p>
                                             <p><b>Sexo:</b> {{child.sex}} &nbsp&nbsp&nbsp&nbsp</p>
@@ -209,7 +211,7 @@
                                 </div>
                                 <div class="row">
                                     <div data-ng-if="session.passengers.infants.length > 0">
-                                        <h4>Infantes &nbsp ({{session.passengers.infants.length}})</h4>
+                                        <h4 class="center">Infantes &nbsp ({{session.passengers.infants.length}})</h4>
                                         <div class="col s4" data-ng-repeat="infant in session.passengers.infants">
                                             <p><b>Nombre:</b> {{infant.firstName}} {{infant.lastName}}</p>
                                             <p><b>Sexo:</b> {{infant.sex}} &nbsp&nbsp&nbsp&nbsp</p>
