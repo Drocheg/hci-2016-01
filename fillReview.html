@@ -17,7 +17,7 @@
         </header>
 
         <main>
-            <h1 class="center">Nueva Reseña</h1>
+            <h1 class="center">Nuevo Comentario de {{getGETparam('airlineId')}} #{{getGETparam('flightNum')}}</h1>
             <div class="row">
                 <form id="review-form" class="col s6 offset-s3">
                     <fieldset>
@@ -60,7 +60,7 @@
                         <input type="radio" name="punctuality" value="10" id="punctuality10"/><label for="punctuality10">10</label>
                     </fieldset>
                     <fieldset>
-                        <legend>Programa de viajero frequente (obligatorio)</legend>
+                        <legend>Programa de viajero frecuente (obligatorio)</legend>
                         <input type="radio" class="validate" name="millage_program" value="1" id="millage_program1"/><label for="millage_program1">1</label>
                         <input type="radio" name="millage_program" value="2" id="millage_program2"/><label for="millage_program2">2</label>
                         <input type="radio" name="millage_program" value="3" id="millage_program3"/><label for="millage_program3">3</label>
@@ -86,7 +86,7 @@
                         <input type="radio" name="comfort" value="10" id="comfort10"/><label for="comfort10">10</label>
                     </fieldset>
                     <fieldset>
-                        <legend>Relación Precio a Calidad (obligatorio)</legend>
+                        <legend>Relación Precio-Calidad (obligatorio)</legend>
                         <input type="radio" class="validate" name="quality_price" value="1" id="quality_price1"/><label for="quality_price1">1</label>
                         <input type="radio" name="quality_price" value="2" id="quality_price2"/><label for="quality_price2">2</label>
                         <input type="radio" name="quality_price" value="3" id="quality_price3"/><label for="quality_price3">3</label>
@@ -105,9 +105,9 @@
                     </fieldset>
                     <fieldset>
                         <legend>Comentarios (obligatorio)</legend>
-                        <input class="text required" id="comment" required maxlength="50"/>
+                        <input class="text required" id="comment" maxlength="50" required/>
                     </fieldset>
-                    <button type='submit' class="btn-large waves-effect waves-light col s4 offset-s4" >
+                    <button type='submit' class="btn-large waves-effect waves-light col s4 offset-s4" style="margin-top:10px;">
                         Enviar <i class="material-icons right">send</i>
                     </button>
                 </form>

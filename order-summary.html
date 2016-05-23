@@ -115,7 +115,7 @@
                                 <p><b>Numero de telefono:</b> {{session.payment.phone}}</p>
                                 <p><b>Cuotas:</b> {{session.payment.selectedInstallment.quantity}}</p>
                                 <h4 data-ng-if="session.payment.selectedInstallment.quantity > 1" class="center"><b>Total:</b> {{toSelectedCurrency((session.payment.total) * (1 + session.payment.availableInstallments.financial_cost))}}</h4> 
-                                <h4 data-ng-if="session.payment.selectedInstallment.quantity = 1" class="center"><b>Total:</b> {{toSelectedCurrency((session.payment.total))}}</h4> 
+                                <h4 data-ng-if="session.payment.selectedInstallment.quantity === 1" class="center"><b>Total:</b> {{toSelectedCurrency((session.payment.total))}}</h4> 
                                 <div class="row center">
                                     <button id="changePaymentBtn" class="waves-effect waves-light btn">Modificar Pago</button>
                                 </div>

@@ -208,7 +208,8 @@ $(function () {
         var nextPage = session.state.hasPayment ? "order-summary.html" : "payment.html";
         session.state.hasPassengers = true;
         setSessionData(session);
-        window.location = nextPage;
+//        window.location = nextPage;
+        window.location = "payment.html";
     });
 
     $("#backButton").on("click", function (event) {

@@ -561,7 +561,8 @@ $(function () {
         session.state.hasContact = true;
         setSessionData(session);
         //Done, go to next page
-        window.location = session.state.hasPassengers ? "order-summary.html" : "passengers-information.html";
+//        window.location = session.state.hasPassengers ? "order-summary.html" : "passengers-information.html";
+        window.location = "order-summary.html";
     });
 
     $("#backButton").on("click", function (event) {

@@ -456,7 +456,7 @@ $(function () {
 
     $("#nextStep").on("click", "> button", function () {
         //TODO NOW handle changes (i.e. if came back from order summary and changed outbound, must choose inbound again)
-        window.location = nextPage();
+        window.location = "passengers-information.html";
     });
 });
 
