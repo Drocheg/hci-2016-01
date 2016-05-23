@@ -63,22 +63,23 @@ $(function () {
         $("#to").attr("placeholder", "Destino");
     });
 
-    $('#from').on("change", function () {
-        $("#fromId").val("");
-    });
+//    $('#from').on("change", function () {
+//        $("#fromId").val("");
+//    });
     $('#from').bind('typeahead:select', function (ev, suggestion) {
         $("#fromId").val(suggestion.id);
     });
+    
+//    $('#to').on("change", function () {
+//        $("#toId").val("");
+//    });
     $('#to').bind('typeahead:select', function (ev, suggestion) {
         $("#toId").val(suggestion.id);
     });
-    $('#to').on("change", function () {
-        $("#fromId").val("");
-    });
+    
     $('#from').on('typeahead:change', function(){
        validateAllFields();
     });
-
     $('#to').on('typeahead:change', function(){
        validateAllFields();
     });   
@@ -249,11 +250,11 @@ $(function () {
                 $("#returnDate").removeClass("valid");
                 $("#returnDate").addClass("invalid");
                 valid = false;
-            } else if ($("#departDate").val() !== "" && new Date(data.returnDate.full) < new Date(data.departDate.full)) {
-                $("#" + "returnDate" + "Error").html("La fecha de vuelta debe ser mayor a la de ida");
-                $("#returnDate").removeClass("valid");
-                $("#returnDate").addClass("invalid");
-                valid = false;
+//            } else if ($("#departDate").val() !== "" && new Date(data.returnDate.full) < new Date(data.departDate.full)) {
+//                $("#" + "returnDate" + "Error").html("La fecha de vuelta debe ser mayor a la de ida");
+//                $("#returnDate").removeClass("valid");
+//                $("#returnDate").addClass("invalid");
+//                valid = false;
             } else {
                 $("#returnDate").removeClass("invalid");
                 $("#returnDate").addClass("valid");
@@ -372,7 +373,7 @@ function isValidId(id) {
 }
 
 function validateAllFields(){
-    
+        debugger;
         
         var data = {
             from: {
@@ -451,11 +452,11 @@ function validateAllFields(){
         if (!data.oneWayTrip) {
             if ($("#returnDate").val() === "") {
                
-            } else if ($("#departDate").val() !== "" && new Date(data.returnDate.full) < new Date(data.departDate.full)) {
-                $("#" + "returnDate" + "Error").html("La fecha de vuelta debe ser mayor a la de ida");
-                $("#returnDate").removeClass("valid");
-                $("#returnDate").addClass("invalid");
-                valid = false;
+//            } else if ($("#departDate").val() !== "" && new Date(data.returnDate.full) < new Date(data.departDate.full)) {
+//                $("#" + "returnDate" + "Error").html("La fecha de vuelta debe ser mayor a la de ida");
+//                $("#returnDate").removeClass("valid");
+//                $("#returnDate").addClass("invalid");
+//                valid = false;
             } else {
                 $("#returnDate").removeClass("invalid");
                 $("#returnDate").addClass("valid");

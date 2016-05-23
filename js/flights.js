@@ -341,11 +341,11 @@ $(function () {
                 $("#returnDate").removeClass("valid");
                 $("#returnDate").addClass("invalid");
                 valid = false;
-            } else if ($("#departDate").val() !== "" && new Date(data.returnDate.full) < new Date(data.departDate.full)) {
-                $("#" + "returnDate" + "Error").html("La fecha de vuelta debe ser mayor a la de ida");
-                $("#returnDate").removeClass("valid");
-                $("#returnDate").addClass("invalid");
-                valid = false;
+//            } else if ($("#departDate").val() !== "" && new Date(data.returnDate.full) < new Date(data.departDate.full)) {
+//                $("#" + "returnDate" + "Error").html("La fecha de vuelta debe ser mayor a la de ida");
+//                $("#returnDate").removeClass("valid");
+//                $("#returnDate").addClass("invalid");
+//                valid = false;
             } else {
                 $("#returnDate").removeClass("invalid");
                 $("#returnDate").addClass("valid");
@@ -561,11 +561,11 @@ function validateAllFields(){
         if (!data.oneWayTrip) {
             if ($("#returnDate").val() === "") {
                
-            } else if ($("#departDate").val() !== "" && new Date(data.returnDate.full) < new Date(data.departDate.full)) {
-                $("#" + "returnDate" + "Error").html("La fecha de vuelta debe ser mayor a la de ida");
-                $("#returnDate").removeClass("valid");
-                $("#returnDate").addClass("invalid");
-                valid = false;
+//            } else if ($("#departDate").val() !== "" && new Date(data.returnDate.full) < new Date(data.departDate.full)) {
+//                $("#" + "returnDate" + "Error").html("La fecha de vuelta debe ser mayor a la de ida");
+//                $("#returnDate").removeClass("valid");
+//                $("#returnDate").addClass("invalid");
+//                valid = false;
             } else {
                 $("#returnDate").removeClass("invalid");
                 $("#returnDate").addClass("valid");
