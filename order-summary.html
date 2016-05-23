@@ -20,15 +20,15 @@
             <div class="container">
                 <div class="row"> 
                     <div data-ng-class="['col', 'flightCard', 'black-text', 'card', (session.search.oneWayTrip ? 's6' : 's4')]">
-                        <div class="card-action green lighten-3" style="padding:5px; border-radius:10px 10px 0 0;">
-                            <p style="margin: 0; height:30px; line-height:30px;" class="card-title">                        
+                        <div class="card-action green lighten-3">
+                            <p class="card-title">
                                 <span class="col s2">
                                     Ida
                                 </span>
                             </p>
                         </div>
                         <div class="card-content">
-                            <div class="col 12"  style="height: 515px;">
+                            <div class="col s12 flightContent">
                                 <p><b>Numero de vuelo</b>: {{getFlightNumber(session.outboundFlight)}}</p>
                                 <p><b>Fecha:</b> {{(getDepartureDateObj(session.outboundFlight)).getDate()}}/{{getDepartureDateObj(session.outboundFlight).getMonth()}}</p>
                                 <p><b>Horario de salida:</b> {{(getDepartureDateObj(session.outboundFlight)).getHours()}}:{{getDepartureDateObj(session.outboundFlight).getMinutes()}}</p>
@@ -49,15 +49,15 @@
                         </div>
                     </div>
                     <div class="card col s4 flightCard black-text" data-ng-if="!session.search.oneWayTrip">
-                        <div class="card-action green lighten-3" style="padding:5px; border-radius:10px 10px 0 0;">
-                            <p style="margin: 0; height:30px; line-height:30px;" class="card-title">                        
+                        <div class="card-action green lighten-3">
+                            <p class="card-title">                        
                                 <span class="col s2">
                                     Vuelta
                                 </span>
                             </p>
                         </div>
                         <div class="card-content">
-                            <div class="col s12" style="height: 515px;">
+                            <div class="col s12 flightContent">
                                 <p><b>Numero de vuelo:</b> {{getFlightNumber(session.inboundFlight)}}</p>
                                 <p><b>Fecha:</b> {{(getDepartureDateObj(session.inboundFlight)).getDate()}}/{{getDepartureDateObj(session.inboundFlight).getMonth()}}</p>
                                 <p><b>Horario de salida:</b> {{(getDepartureDateObj(session.inboundFlight)).getHours()}}:{{getDepartureDateObj(session.inboundFlight).getMinutes()}}</p>
@@ -79,15 +79,15 @@
                     </div>
 
                     <div class="card col s6 flightCard black-text" data-ng-if="session.search.oneWayTrip">
-                        <div class="card-action green lighten-3" style="padding:5px; border-radius:10px 10px 0 0;">
-                            <p style="margin: 0; height:30px; line-height:30px;" class="card-title">                        
+                        <div class="card-action green lighten-3">
+                            <p class="card-title">                        
                                 <span class="col s2">
                                     Contacto
                                 </span>
                             </p>
                         </div>
                         <div class="card-content">
-                            <div class="col s12" style="height:70px;">
+                            <div class="col s12 emailContent">
                                 <p><b>Email:</b> {{session.payment.email}}</p>
                                 <div class="row center">
                                     <button id="changeContactBtn" class="waves-effect waves-light btn">Modificar Contacto</button>
@@ -97,15 +97,15 @@
                         </div>
                     </div>
                     <div class="card col s6 flightCard black-text" data-ng-if="session.search.oneWayTrip">
-                        <div class="card-action green lighten-3" style="padding:5px; border-radius:10px 10px 0 0;">
-                            <p style="margin: 0; height:30px; line-height:30px;" class="card-title">                        
+                        <div class="card-action green lighten-3">
+                            <p class="card-title">                        
                                 <span class="col s2">
                                     Pago
                                 </span>
                             </p>
                         </div>
                         <div class="card-content">
-                            <div class="col s12" style="height:375px">
+                            <div class="col s12" id="paymentContent">
                                 <p><b>Número de tarjeta:</b> {{session.payment.cardNumber}}</p> 
                                 <p><b>Nombre</b> {{session.payment.cardholderFirstName}}</p>
                                 <p><b>Apellido:</b> {{session.payment.cardholderLastName}}</p>
@@ -125,15 +125,15 @@
                         </div>
                     </div>
                     <div class="card col s4 flightCard black-text" data-ng-if="!session.search.oneWayTrip">
-                        <div class="card-action green lighten-3" style="padding:5px; border-radius:10px 10px 0 0;">
-                            <p style="margin: 0; height:30px; line-height:30px;" class="card-title">                        
+                        <div class="card-action green lighten-3">
+                            <p class="card-title">                        
                                 <span class="col s2">
                                     Contacto
                                 </span>
                             </p>
                         </div>
                         <div class="card-content">
-                            <div class="col s12" style="height:70px;">
+                            <div class="col s12 emailContent">
                                 <p><b>Email:</b> {{session.payment.email}}</p>
                                 <div class="row center">
                                     <button id="changeContactBtn" class="waves-effect waves-light btn">Modificar Contacto</button>
@@ -143,15 +143,15 @@
                         </div>
                     </div>
                     <div class="card col s4 flightCard black-text" data-ng-if="!session.search.oneWayTrip">
-                        <div class="card-action green lighten-3" style="padding:5px; border-radius:10px 10px 0 0;">
-                            <p style="margin: 0; height:30px; line-height:30px;" class="card-title">                        
+                        <div class="card-action green lighten-3">
+                            <p class="card-title">                        
                                 <span class="col s2">
                                     Pago
                                 </span>
                             </p>
                         </div>
                         <div class="card-content">
-                            <div class="col s12" style="height:375px">
+                            <div class="col s12" id="paymentContent">
                                 <p><b>Número de tarjeta:</b> {{session.payment.cardNumber}}</p> 
                                 <p><b>Nombre</b> {{session.payment.cardholderFirstName}}</p>
                                 <p><b>Apellido:</b> {{session.payment.cardholderLastName}}</p>
@@ -176,8 +176,8 @@
 
                 <div class="row">
                     <div class="card col s12 flightCard black-text">
-                        <div class="card-action green lighten-3" style="padding:5px; border-radius:10px 10px 0 0;">
-                            <p style="margin: 0; height:30px; line-height:30px;" class="card-title">                        
+                        <div class="card-action green lighten-3">
+                            <p class="card-title">                        
                                 <span class="col s2">
                                     Pasajeros
                                 </span>

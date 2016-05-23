@@ -14,29 +14,70 @@ function isValidRadio(radioGroup, helperMsg) {
             return true;
         }
     }
-    Materialize.toast(helperMsg, 5000);
+//    Materialize.toast(helperMsg, 5000);
     radioGroup[0].focus();
     return false;
 }
 
 function radioFormValid(friend, food, punct, mileage, comfort, quality, recommend) {
     var valid = true;
-    var aux = true;
-        valid = isValidRadio(friend, "Campo amabilidad no esta completado");
-        if(!valid) {aux = false;}
-        valid = isValidRadio(food, "Campo comida no esta completado");
-        if(!valid) {aux = false;}
-        valid = isValidRadio(punct, "Campo puntualidad no esta completado");
-        if(!valid) {aux = false;}
-        valid = isValidRadio(mileage, "Campo programa de viajero frequente no esta completado");
-        if(!valid) {aux = false;}
-        valid = isValidRadio(comfort, "Campo comodidad no esta completado");
-        if(!valid) {aux = false;}
-        valid = isValidRadio(quality, "Campo calidad no esta completado");
-        if(!valid) {aux = false;}
-        valid = isValidRadio(recommend, "Campo recomendado no esta completado");
-        if(!valid) {aux = false;}
-        return aux;
+   
+        if(!isValidRadio(friend, "Campo amabilidad no esta completado")){
+            valid = false;
+            $("#friendlinessError").html("Campo amabilidad no esta completado");            
+        }else{
+            $("#friendlinessError").html("");            
+        }
+        if(!isValidRadio(food, "Campo amabilidad no esta completado")){
+            valid = false;
+            $("#foodError").html("Campo comida no esta completado");            
+        }else{
+            $("#foodError").html("");            
+        }
+        if(!isValidRadio(punct, "Campo amabilidad no esta completado")){
+            valid = false;
+            $("#punctualityError").html("Campo puntualidad no esta completado");            
+        }else{
+            $("#punctualityError").html("");            
+        }
+        if(!isValidRadio(mileage, "Campo amabilidad no esta completado")){
+            valid = false;
+            $("#millage_programError").html("Campo programa no esta completado");            
+        }else{
+            $("#millage_programError").html("");            
+        }
+        if(!isValidRadio(comfort, "Campo amabilidad no esta completado")){
+            valid = false;
+            $("#comfortError").html("Campo comodidad no esta completado");            
+        }else{
+            $("#comfortError").html("");            
+        }
+        if(!isValidRadio(quality, "Campo amabilidad no esta completado")){
+            valid = false;
+            $("#quality_priceError").html("Campo calidad no esta completado");            
+        }else{
+            $("#quality_priceError").html("");            
+        }
+         if(!isValidRadio(recommend, "Campo amabilidad no esta completado")){
+            valid = false;
+            $("#recommendError").html("Campo recomendado no esta completado");            
+        }else{
+            $("#recommendError").html("");            
+        }
+        
+        if($("#comment").val()===""){
+            valid = false;
+            $("#comment").removeClass("valid");
+            $("#comment").addClass("invalid");
+             $("#commentError").html("Ingrese un comentario");
+        }else{
+            $("#comment").removeClass("invalid");
+            $("#comment").addClass("valid");
+             $("#commentError").html("");
+        }
+        
+        
+        return valid;
 }
 
 function submitReview(airlineID, flightNum, friend, food, punct, mileage, comfort, quality, recommend, comments) {
@@ -67,10 +108,74 @@ function submitReview(airlineID, flightNum, friend, food, punct, mileage, comfor
 }
 
 $(function () {
+    if(getGETparam("airlineId") === null || getGETparam("flightNum") === null) {
+        window.location = "index.html";
+    }
+    
+
     $(document).ready(function () {
         $('select').material_select();
     });
 
+    $("#review-form>fieldset>input").change(function(){
+       
+   
+        if(!isValidRadio($("input[name=friendliness]"), "Campo amabilidad no esta completado")){
+            valid = false;
+            
+        }else{
+            $("#friendlinessError").html("");            
+        }
+        if(!isValidRadio($("input[name=food]"), "Campo amabilidad no esta completado")){
+            valid = false;
+            
+        }else{
+            $("#foodError").html("");            
+        }
+        if(!isValidRadio($("input[name=punctuality]"), "Campo amabilidad no esta completado")){
+            valid = false;
+             
+        }else{
+            $("#punctualityError").html("");            
+        }
+        if(!isValidRadio($("input[name=millage_program]"), "Campo amabilidad no esta completado")){
+            valid = false;
+                       
+        }else{
+            $("#millage_programError").html("");            
+        }
+        if(!isValidRadio($("input[name=comfort]"), "Campo amabilidad no esta completado")){
+            valid = false;
+                     
+        }else{
+            $("#comfortError").html("");            
+        }
+        if(!isValidRadio($("input[name=quality_price]"), "Campo amabilidad no esta completado")){
+            valid = false;
+                    
+        }else{
+            $("#quality_priceError").html("");            
+        }
+         if(!isValidRadio($("input[name=recommend]"), "Campo amabilidad no esta completado")){
+            valid = false;
+                      
+        }else{
+            $("#recommendError").html("");            
+        }
+        
+        if($("#comment").val()===""){
+            valid = false;
+           
+        }else{
+            $("#comment").removeClass("invalid");
+            $("#comment").addClass("valid");
+             $("#commentError").html("");
+        }
+   
+   
+    
+    
+    });
 
     $("#review-form").on("submit", function (event) {
         event.preventDefault();
@@ -98,3 +203,4 @@ $(function () {
         submitReview(data.id, Number(data.flightNum), Number(data.friendliness), Number(data.food), Number(data.punctuality), Number(data.millage_program), Number(data.comfort), Number(data.quality_price), Boolean(data.recommendation), data.comments);
     });
 });
+

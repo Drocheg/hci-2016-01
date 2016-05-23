@@ -22,17 +22,18 @@
                 <form id="review-form" class="col s6 offset-s3">
                     <fieldset>
                         <legend>Amigabilidad (obligatorio)</legend>
-                        <input type="radio" class="validate" name="friendliness" value="1" id="1"/><label for="1">1</label>
-                        <input type="radio" name="friendliness" value="2" id="2"/><label for="2">2</label>
-                        <input type="radio" name="friendliness" value="3" id="3"/><label for="3">3</label>
-                        <input type="radio" name="friendliness" value="4" id="4"/><label for="4">4</label>
-                        <input type="radio" name="friendliness" value="5" id="5"/><label for="5">5</label>
-                        <input type="radio" name="friendliness" value="6" id="6"/><label for="6">6</label>
-                        <input type="radio" name="friendliness" value="7" id="7"/><label for="7">7</label>
-                        <input type="radio" name="friendliness" value="8" id="8"/><label for="8">8</label>
-                        <input type="radio" name="friendliness" value="9" id="9"/><label for="9">9</label>
-                        <input type="radio" name="friendliness" value="10" id="10"/><label for="10">10</label>
+                        <input type="radio" class="validate" name="friendliness" value="1" id="friendliness1"/><label for="friendliness1">1</label>
+                        <input type="radio" name="friendliness" value="2" id="friendliness2"/><label for="friendliness2">2</label>
+                        <input type="radio" name="friendliness" value="3" id="friendliness3"/><label for="friendliness3">3</label>
+                        <input type="radio" name="friendliness" value="4" id="friendliness4"/><label for="friendliness4">4</label>
+                        <input type="radio" name="friendliness" value="5" id="friendliness5"/><label for="friendliness5">5</label>
+                        <input type="radio" name="friendliness" value="6" id="friendliness6"/><label for="friendliness6">6</label>
+                        <input type="radio" name="friendliness" value="7" id="friendliness7"/><label for="friendliness7">7</label>
+                        <input type="radio" name="friendliness" value="8" id="friendliness8"/><label for="friendliness8">8</label>
+                        <input type="radio" name="friendliness" value="9" id="friendliness9"/><label for="friendliness9">9</label>
+                        <input type="radio" name="friendliness" value="10" id="friendliness10"/><label for="friendliness10">10</label>
                     </fieldset>
+                    <span id="friendlinessError" class = "ErrorMsjReview red-text"></span>
                     <fieldset>
                         <legend>Comida (obligatorio)</legend>
                         <input type="radio" class="validate" name="food" value="1" id="food1"/><label for="food1">1</label>
@@ -46,6 +47,7 @@
                         <input type="radio" name="food" value="9" id="food9"/><label for="food9">9</label>
                         <input type="radio" name="food" value="10" id="food10"/><label for="food10">10</label>
                     </fieldset>
+                    <span id="foodError" class = "ErrorMsjReview red-text"></span>
                     <fieldset>
                         <legend>Puntualidad (obligatorio)</legend>
                         <input type="radio" class="validate" name="punctuality" value="1" id="punctuality1"/><label for="punctuality1">1</label>
@@ -59,6 +61,7 @@
                         <input type="radio" name="punctuality" value="9" id="punctuality9"/><label for="punctuality9">9</label>
                         <input type="radio" name="punctuality" value="10" id="punctuality10"/><label for="punctuality10">10</label>
                     </fieldset>
+                    <span id="punctualityError" class = "ErrorMsjReview red-text"></span>
                     <fieldset>
                         <legend>Programa de viajero frecuente (obligatorio)</legend>
                         <input type="radio" class="validate" name="millage_program" value="1" id="millage_program1"/><label for="millage_program1">1</label>
@@ -72,6 +75,7 @@
                         <input type="radio" name="millage_program" value="9" id="millage_program9"/><label for="millage_program9">9</label>
                         <input type="radio" name="millage_program" value="10" id="millage_program10"/><label for="millage_program10">10</label>
                     </fieldset>
+                    <span id="millage_programError" class = "ErrorMsjReview red-text"></span>
                     <fieldset>
                         <legend>Comodidad (obligatorio)</legend>
                         <input type="radio" class="validate" name="comfort" value="1" id="comfort1"/><label for="comfort1">1</label>
@@ -85,6 +89,7 @@
                         <input type="radio" name="comfort" value="9" id="comfort9"/><label for="comfort9">9</label>
                         <input type="radio" name="comfort" value="10" id="comfort10"/><label for="comfort10">10</label>
                     </fieldset>
+                    <span id="comfortError" class = "ErrorMsjReview red-text"></span>
                     <fieldset>
                         <legend>Relación Precio-Calidad (obligatorio)</legend>
                         <input type="radio" class="validate" name="quality_price" value="1" id="quality_price1"/><label for="quality_price1">1</label>
@@ -98,16 +103,20 @@
                         <input type="radio" name="quality_price" value="9" id="quality_price9"/><label for="quality_price9">9</label>
                         <input type="radio" name="quality_price" value="10" id="quality_price10"/><label for="quality_price10">10</label>
                     </fieldset>
+                    <span id="quality_priceError" class = "ErrorMsjReview red-text"></span>
                     <fieldset>
                         <legend>¿Lo recomendarías? (obligatorio)</legend>
                         <input type="radio" class="validate" name="recommend" value="true" id="recommend1"/><label for="recommend1">Sí</label>
                         <input type="radio" name="recommend" value="false" id="recommend2"/><label for="recommend2">No</label>
                     </fieldset>
+                    <span id="recommendError" class = "ErrorMsjReview red-text"></span>
                     <fieldset>
                         <legend>Comentarios (obligatorio)</legend>
-                        <input class="text required" id="comment" maxlength="50" required/>
+                        <input class="text " id="comment" maxlength="50" />
+                        
                     </fieldset>
-                    <button type='submit' class="btn-large waves-effect waves-light col s4 offset-s4" style="margin-top:10px;">
+                    <span id="commentError" class="red-text diegoSuperCoolLabel4"></span>
+                    <button type='submit' class="btn-large waves-effect waves-light col s4 offset-s4">
                         Enviar <i class="material-icons right">send</i>
                     </button>
                 </form>

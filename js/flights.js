@@ -22,7 +22,7 @@ function markSelectedFlight(flight, direction) {
             console.log("Flight direction not stored in session, I don't know which box to put the flight in. Aborting.");  //TODO validate and remove
             return;
     }
-    var html = '<div class="card-panel green lighten-4" style="height: 70px; padding:2px;">';
+    var html = '<div class="card-panel green lighten-4">';
     //Airline code and flight number        
     html += '<div class="col s2"><p><img src="' + getFlightAirlineLogoURL(flight) + '" />  ' + getFlightAirlineID(flight) + " " + getFlightNumber(flight) + '</p></div>';
     //Departure airport and time, arrival airport and time
@@ -30,36 +30,56 @@ function markSelectedFlight(flight, direction) {
     var arrDate = getArrivalDateObj(flight);
     var depTimeStr = (depDate.getHours() < 10 ? "0" : "") + depDate.getHours() + ":" + (depDate.getMinutes() < 10 ? "0" : "") + depDate.getMinutes();
     var arrTimeStr = (arrDate.getHours() < 10 ? "0" : "") + arrDate.getHours() + ":" + (arrDate.getMinutes() < 10 ? "0" : "") + arrDate.getMinutes();
-    html += '<div class="col s4" style="text-align: center;"><p style="line-height: 35px;">' + depTimeStr + ' - ' + getOriginAirport(flight).id + '  <span class="material-icons">send</span>  ' + arrTimeStr + ' - ' + getDestinationAirport(flight).id + '</p></div>';
+    html += '<div class="col s4 center"><p>' + depTimeStr + ' - ' + getOriginAirport(flight).id + '  <span class="material-icons">send</span>  ' + arrTimeStr + ' - ' + getDestinationAirport(flight).id + '</p></div>';
     //Stopovers
-    html += '<div class="col s2"><p style="line-height: 35px;"><i class="material-icons">flight</i>  ' + (getStopoversCount(flight) === 0 ? 'Directo' : getStopoversCount(flight) + ' Escalas') + '</p></div>';
+    html += '<div class="col s2"><p><i class="material-icons">flight</i>  ' + (getStopoversCount(flight) === 0 ? 'Directo' : getStopoversCount(flight) + ' Escalas') + '</p></div>';
     //Duration
-    html += '<div class="col s2 center"><p style="line-height: 35px;"><i class="material-icons">timer</i>  ' + getFlightDuration(flight) + '</p></div>';
+    html += '<div class="col s2 center"><p><i class="material-icons">timer</i>  ' + getFlightDuration(flight) + '</p></div>';
     //Cost
-    html += '<div class="col s2 center"><p style="line-height: 35px;"><b>' + toSelectedCurrency(getFlightTotal(flight)) + '</b></p></div>';
+    html += '<div class="col s2 center"><p><b>' + toSelectedCurrency(getFlightTotal(flight)) + '</b></p></div>';
     html += '</div>';
     $("#" + id).html(html);
     //Update total (angular isn't picking up the changes)
     $("#total").html(toSelectedCurrency(getSessionData().payment.total));
-    //Enable next step button
-    $("#nextStep button").removeAttr("disabled");
-    $("#nextStep button").removeClass("disabled");
+    enableNextStepBtn();
+}
+
+/**
+ * Enables the button to advance to the next page, if the user's current state
+ * allows it.
+ * 
+ * @returns {undefined}
+ */
+function enableNextStepBtn() {
+    var s = getSessionData();
+    if(s.search.oneWayTrip) {
+        if(s.outboundFlight !== null) {
+            $("#nextStep button").removeAttr("disabled");
+            $("#nextStep button").removeClass("disabled");
+        }
+    }
+    else {
+        if(s.outboundFlight !== null && s.inboundFlight !== null) {
+            $("#nextStep button").removeAttr("disabled");
+            $("#nextStep button").removeClass("disabled");
+        }
+    }
 }
 
 /**
  * Gets the next page the user should visit, given they are on the flights page,
  * based on their current state.
  * 
- * @returns {string} The next page; flights, passenger info, payment or order
- * summary.
+ * @returns {string} The next page; flights or passenger info.
  */
 function nextPage() {
     var session = getSessionData();
     var nextPage = "index.html";        //Fall back to home if nothing is chosen
     if (!session.search.oneWayTrip && session.inboundFlight === null) {
-        nextPage = "flights.html?from=" + session.search.to.id + "&to=" + session.search.from.id + "&dep_date=" + session.search.returnDate.full + "&direction=inbound" + "&adults=" + session.search.numAdults + "&children=" + session.search.numChildren + "&infants=" + session.search.numInfants;
+        nextPage = "flights.html?from=" + getGETparam("to") + "&to=" + getGETparam("from") + "&dep_date=" + session.search.returnDate.full + "&direction=inbound" + "&adults=" + getGETparam("adults") + "&children=" + getGETparam("adults") + "&infants=" + getGETparam("infants");
     } else {
-        nextPage = session.state.hasPassengers ? (session.state.hasPayment ? "order-summary.html" : "payment.html") : "passengers-information.html";
+//        nextPage = session.state.hasPassengers ? (session.state.hasPayment ? "order-summary.html" : "payment.html") : "passengers-information.html";
+        nextPage = "passengers-information.html";
     }
     return nextPage;
 }
@@ -421,18 +441,18 @@ $(function () {
                 departDateChanged = data.departDate.full !== session.search.departDate.full,
                 returnDateChanged = !session.search.oneWayTrip && data.returnDate.full !== session.search.returnDate.full;
        
-        var nextPage = "index.html";
+        var nextPage = "flights.html?";
         if (placesChanged || passengersChanged || departDateChanged) {  //Destinations, passengers or departure date changed, reset everything
             clearOutboundFlight();
             clearInboundFlight();
             if(passengersChanged) {
                 session.state.hasPassengers = false;
             }
-            nextPage = "flights.html?from=" + data.from.id + "&to=" + data.to.id + "&dep_date=" + data.departDate.full + "&direction=outbound" + "&adults=" + data.numAdults + "&children=" + data.numChildren + "&infants=" + data.numInfants;
+            nextPage += "from=" + data.from.id + "&to=" + data.to.id + "&dep_date=" + data.departDate.full + "&direction=outbound" + "&adults=" + data.numAdults + "&children=" + data.numChildren + "&infants=" + data.numInfants;
         }
         else if (returnDateChanged) {       //Inbound trip changed, change only inbound trip
             clearInboundFlight();
-            nextPage = "flights.html?from=" + data.to.id + "&to=" + data.from.id + "&dep_date=" + data.returnDate.full + "&direction=inbound" + "&adults=" + data.numAdults + "&children=" + data.numChildren + "&infants=" + data.numInfants;
+            nextPage += "from=" + data.to.id + "&to=" + data.from.id + "&dep_date=" + data.returnDate.full + "&direction=inbound" + "&adults=" + data.numAdults + "&children=" + data.numChildren + "&infants=" + data.numInfants;
             //TODO if return date is prior to arrival date, change outbound. Or should we just reset everything?            
         } else {  //No change, don't submit
             return;
@@ -456,7 +476,7 @@ $(function () {
 
     $("#nextStep").on("click", "> button", function () {
         //TODO NOW handle changes (i.e. if came back from order summary and changed outbound, must choose inbound again)
-        window.location = "passengers-information.html";
+        window.location = nextPage();
     });
 });
 

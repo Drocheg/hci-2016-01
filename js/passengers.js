@@ -3,7 +3,6 @@
  */
 $(function () {
     var session = getSessionData();
-    
     //Make sure the user is supposed to be here, if not redirect to home
     if(session.outboundFlight === null || (!session.search.oneWayTrip && session.inboundFlight === null)) {
         window.location = "index.html";
@@ -239,23 +238,23 @@ $(function () {
                                     <i  class='material-icons prefix'>account_circle</i>\
                                     <label for=" + prefix + 'firstName' + " class='black-text' data-error='Por favor ingrese el nombre del pasajero'>Nombre</label>\
                                     <input data-field ="+ prefix +" id=" + prefix + 'firstName' + " type='text' pattern='^([A-zÀ-ÿ ]{1,})$' class='field validate'   placeholder=' ' >\
-                                    <label id="+ prefix + 'firstName' + 'Error' + " class='red-text ' style='margin-top: 60px;white-space:nowrap;text-align: left;'></label>\
+                                    <label id="+ prefix + 'firstName' + 'Error' + " class='red-text diegoSuperCoolLabel3'></label>\
                                 </div>\
                                 <div class='input-field col s2'> \
                                     <i class='material-icons prefix'>perm_contact_calendar</i>\
-                                    <label for=" + prefix + 'day' + " class='black-text' data-error='' style='white-space:nowrap; font-size:13px;'>Fecha de nacimiento</label>\
+                                    <label for=" + prefix + 'day' + " class='black-text' data-error='' id='diegoBirthdayLabel'>Fecha de nacimiento</label>\
                                     <input data-field ="+ prefix + " id=" + prefix + 'day' + " type='text' pattern='[0-9]{1,2}' class='field validate'    placeholder='Dia'> \
-                                    <label id="+ prefix + 'day' + 'Error' + " class='red-text ' style='margin-top: 60px;white-space:nowrap;text-align: left;'></label>\
+                                    <label id="+ prefix + 'day' + 'Error' + " class='red-text diegoSuperCoolLabel3'></label>\
                                 </div>\
                                 <div class='input-field col s1'> \
                                     <label for=" + prefix + 'month' + " class='black-text'></label> \
                                     <input  data-field ="+ prefix + " id=" + prefix + 'month' + " type='text' pattern='[0-9]{1,2}' class='validate field'    placeholder='Mes'> \
-                                    <label id="+ prefix + 'month' + 'Error' + " class='red-text ' style='margin-top: 60px;white-space:nowrap;text-align: left;'></label>\
+                                    <label id="+ prefix + 'month' + 'Error' + " class='red-text diegoSuperCoolLabel3'></label>\
                                 </div>\
                                 <div class='input-field col s2'>\
                                     <label for=" + prefix + 'year' + " class='black-text'></label>\
                                     <input  data-field ="+ prefix + "  id=" + prefix + 'year' + " type='text' pattern='[0-9]{4}' class='validate field'    placeholder='Año'>\
-                                    <label id="+ prefix + 'year' + 'Error' + " class='red-text ' style='margin-top: 60px;white-space:nowrap;text-align: left;'></label>\
+                                    <label id="+ prefix + 'year' + 'Error' + " class='red-text diegoSuperCoolLabel3'></label>\
                                 </div>\
                             </div>   \
                             <div class='row'>\
@@ -263,11 +262,11 @@ $(function () {
                                     <i  class='material-icons prefix'>account_circle</i>\
                                     <label for=" + prefix + 'lastName' + " class='black-text' data data-error='Por favor ingrese el apellido del pasajero'>Apellido</label>\
                                     <input data-field ="+ prefix +" id=" + prefix + 'lastName' + " type='text' pattern='^([A-zÀ-ÿ ]{1,})$' class='validate field' placeholder=' '   >\
-                                    <label id="+ prefix + 'lastName' + 'Error' + " class='red-text ' style='margin-top: 60px;white-space:nowrap;text-align: left;'></label>\
+                                    <label id="+ prefix + 'lastName' + 'Error' + " class='red-text diegoSuperCoolLabel3'></label>\
                                 </div>\
                                 <div class='col s5 input-field'>\
-                                    <i style='margin-left:-47%;'  class='material-icons prefix'>perm_identity</i>\
-                                    <label id="+ prefix + 'sex' + 'Error' + " class='red-text ' style='margin-top: 33px;white-space:nowrap;text-align: left; font-size:12px;'></label>\
+                                    <i class='material-icons prefix diegoIcon'>perm_identity</i>\
+                                    <label id="+ prefix + 'sex' + 'Error' + " class='red-text diegoGenderLabel'></label>\
                                     <select data-field ="+ prefix +" id=" + prefix + 'sex' + " class='validate field'   >\
                                         <option value=''>Elegir sexo</option>\
                                         <option value='Masculino'>Masculino</option>\
@@ -277,7 +276,7 @@ $(function () {
                             </div>    \
                             <div class='row'>\
                                 <div class='col s4 input-field'>\
-                                    <i style='margin-left:-45%;'  class='material-icons prefix'>picture_in_picture</i>\
+                                    <i class='material-icons prefix diegoIcon'>picture_in_picture</i>\
                                     <select data-field ="+ prefix +" id=" + prefix + 'documentType' + " class='validate'   >\
                                         <option value='DNI'>DNI</option>\
                                         <option value='Pasaporte'>Pasaporte</option>\
@@ -285,7 +284,7 @@ $(function () {
                                 </div>\
                                 <div class='col s8 input-field'>\
                                     <i  class='material-icons prefix'>picture_in_picture</i>\
-                                    <label id="+ prefix + 'document' + 'Error' + " class='red-text ' style='margin-top: 60px;white-space:nowrap;text-align: left;'></label>\
+                                    <label id="+ prefix + 'document' + 'Error' + " class='red-text diegoSuperCoolLabel3'></label>\
                                     <label for=" + prefix + 'document' + " class='black-text' data-error='Por favor ingrese el documento del pasajero'>Documento</label>\
                                     <input data-field ="+ prefix +" id=" + prefix + 'document' + " type='text' pattern='^([0-9]{1,8})$' class='validate field' placeholder=' '   >\
                                 </div>\
