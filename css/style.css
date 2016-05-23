@@ -46,6 +46,127 @@
     margin-bottom: 5px;
 }
 
+#review-form button[type=submit] {
+    margin-top:10px;
+}
+
+#flightsNav {
+    box-shadow: none;
+    position:fixed;
+    height:65px;
+    z-index: 2;
+}
+
+#flightsMain {
+    margin-top:65px;
+}
+
+#flightsSearchForm {
+    position: fixed;
+}
+
+#flightsSection {
+    z-index:1;
+}
+
+#searchParams {
+    border-radius: 10px;
+}
+
+.diegoSuperCoolLabel1 {
+    position: absolute;
+    margin-top: -1.5%;
+    margin-left: 0;
+    white-space:nowrap;
+    text-align: left;
+    font-size:12px;
+}
+
+.diegoSuperCoolLabel2 {
+    position: absolute;
+    margin-top: -4.5%;
+    margin-left: 18%;
+    white-space:nowrap;
+    text-align: left;
+    font-size:12px;
+}
+
+.diegoSuperCoolLabel3 {
+    margin-top: 60px;
+    white-space:nowrap;
+    text-align: left;
+}
+
+.diegoSuperCoolLabel4 {
+    position: absolute;
+    margin-top: -1.5%;
+    margin-left: 0.7%;
+    white-space:nowrap;
+    text-align: left;
+    font-size:12px;
+}
+
+#diegoBirthdayLabel {
+    white-space:nowrap;
+    font-size:13px;
+}
+
+.diegoIcon {
+    margin-left:-47%;
+}
+
+.diegoGenderLabel {
+    margin-top: 33px;
+    white-space:nowrap;
+    text-align: left;
+    font-size:12px;
+}
+
+#thankYouMessage {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    left:50%; top:40%
+}
+
+#thankYouMessage a span {
+    font-size: xx-large;
+}
+
+.onlyOutboundFlight {
+    margin-top:40px;
+}
+
+.onlyOutboundSection {
+    margin-top: 215px;
+}
+
+.bothWaysSection {
+    margin-top: 245px;
+}
+
+#selectedOutboundFlight .card-panel, #selectedInboundFlight .card-panel {
+    border-color:grey;
+    border-style: dashed;
+    height: 70px;
+    /*padding:20px;*/
+}
+
+#selectedOutboundFlight .card-panel p, #selectedInboundFlight .card-panel p {
+    line-height: 35px;
+}
+
+#fixedTopSection > div:nth-child(2) h5 {
+    margin-top: 35px;
+}
+
+#fixedTopSection .divider {
+    height: 2px;
+}
+
+#searchResults {
+    height: 55px; 
+}
+
 .card-small {
     height: 300px;
     box-shadow: 1px 1px 10px 1px rgba(0, 0, 0, 0.7);
@@ -78,6 +199,10 @@
     font-size: 20px;
 }
 
+.dealPrice {
+    white-space:nowrap;
+}
+
 #searchResults {
     display:inline;
 }
@@ -104,11 +229,69 @@
 }
 
 .flightCard {
-/*    height: 260px;*/
+    /*    height: 260px;*/
     margin-bottom: 5px;
     padding: 0 !important;
     border-radius:10px;
     z-index: 1;
+}
+
+.flightCard .card-action {
+    padding:5px;
+    border-radius:10px 10px 0 0;
+}
+
+.flightCard .card-action .card-title {
+    margin: 0;
+    height:30px;
+    line-height:30px;
+}
+
+.flightCard .card-action .card-title span:first-child {
+    padding-left:0;
+}
+
+.flightCard .card-action .card-title span:last-child {
+    text-align:right;
+}
+
+.flightTotal {
+    font-size: 1.2rem;
+}
+
+.selectFlightBtnContainer {
+    margin-top:10px;
+}
+
+.smallDest {
+    font-size: 1rem;
+    line-height: initial;
+}
+
+.flightArrow {
+    font-size:2.5rem;
+    margin-top:5px;
+    margin-left:42%;
+}
+
+#paginationContainer {
+    margin-top:15px;
+}
+
+.flightContent {
+    height: 515px;
+}
+
+.emailContent {
+    height:70px;
+}
+
+#paymentContent {
+    height:375px
+}
+
+.nav-wrapper a .material-icons {
+    display:inline;
 }
 
 
@@ -121,19 +304,19 @@
 #criteria {
     width: 80px;
     margin-left: 10px;
-     margin-top: -7px;
+    margin-top: -7px;
 }
 
 #order {
     width: 115px;
     margin: 0 10px 0 5px;
-     margin-top: -7.5px;
+    margin-top: -7.5px;
 }
 
 #resultsPerPage {
     width: 50px;
     margin-left: 10px;
-     margin-top: -10px;
+    margin-top: -10px;
 }
 
 /*.center-cropped {

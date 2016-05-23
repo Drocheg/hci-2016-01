@@ -30,13 +30,13 @@ function markSelectedFlight(flight, direction) {
     var arrDate = getArrivalDateObj(flight);
     var depTimeStr = (depDate.getHours() < 10 ? "0" : "") + depDate.getHours() + ":" + (depDate.getMinutes() < 10 ? "0" : "") + depDate.getMinutes();
     var arrTimeStr = (arrDate.getHours() < 10 ? "0" : "") + arrDate.getHours() + ":" + (arrDate.getMinutes() < 10 ? "0" : "") + arrDate.getMinutes();
-    html += '<div class="col s4" style="text-align: center;"><p style="line-height: 35px;">' + depTimeStr + ' - ' + getOriginAirport(flight).id + '  <span class="material-icons">send</span>  ' + arrTimeStr + ' - ' + getDestinationAirport(flight).id + '</p></div>';
+    html += '<div class="col s4 center"><p>' + depTimeStr + ' - ' + getOriginAirport(flight).id + '  <span class="material-icons">send</span>  ' + arrTimeStr + ' - ' + getDestinationAirport(flight).id + '</p></div>';
     //Stopovers
-    html += '<div class="col s2"><p style="line-height: 35px;"><i class="material-icons">flight</i>  ' + (getStopoversCount(flight) === 0 ? 'Directo' : getStopoversCount(flight) + ' Escalas') + '</p></div>';
+    html += '<div class="col s2"><p><i class="material-icons">flight</i>  ' + (getStopoversCount(flight) === 0 ? 'Directo' : getStopoversCount(flight) + ' Escalas') + '</p></div>';
     //Duration
-    html += '<div class="col s2 center"><p style="line-height: 35px;"><i class="material-icons">timer</i>  ' + getFlightDuration(flight) + '</p></div>';
+    html += '<div class="col s2 center"><p><i class="material-icons">timer</i>  ' + getFlightDuration(flight) + '</p></div>';
     //Cost
-    html += '<div class="col s2 center"><p style="line-height: 35px;"><b>' + toSelectedCurrency(getFlightTotal(flight)) + '</b></p></div>';
+    html += '<div class="col s2 center"><p><b>' + toSelectedCurrency(getFlightTotal(flight)) + '</b></p></div>';
     html += '</div>';
     $("#" + id).html(html);
     //Update total (angular isn't picking up the changes)
