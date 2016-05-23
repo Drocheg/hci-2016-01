@@ -64,25 +64,35 @@ $(function () {
         $("#to").attr("placeholder", "Destino");
     });
 
-//    $('#from').on("change", function () {
-//        $("#fromId").val("");
-//    });
+
     $('#from').bind('typeahead:select', function (ev, suggestion) {
         $("#fromId").val(suggestion.id);
+        validateAllFields();
+        $("#fromId").attr("data-change","false");
     });
     
-//    $('#to').on("change", function () {
-//        $("#toId").val("");
-//    });
+
     $('#to').bind('typeahead:select', function (ev, suggestion) {
         $("#toId").val(suggestion.id);
+        validateAllFields();
+        $("#toId").attr("data-change","false"); 
     });
     
     $('#from').on('typeahead:change', function(){
+      
+       if($("#fromId").attr("data-change")==="true"){
+           $("#fromId").val("");
+       } 
        validateAllFields();
+       $("#fromId").attr("data-change","true"); 
     });
+    
     $('#to').on('typeahead:change', function(){
+       if($("#toId").attr("data-change")==="true"){
+           $("#toId").val("");
+       }   
        validateAllFields();
+       $("#toId").attr("data-change","true"); 
     });   
 
     
@@ -269,8 +279,11 @@ $(function () {
             isPassengersNumbers=false;
             valid = false;
             $("#numAdults").removeClass("valid");
-                $("#numAdults").addClass("invalid");
-               
+            $("#numAdults").addClass("invalid");
+        }else{
+            $("#" + "numAdults" + "Error").html("");
+            $("#numAdults").removeClass("invalid");
+            $("#numAdults").addClass("valid");
         }
         if( !/^([0-9]{0,})$/.test(data.numChildren)){
             $("#" + "numChildren" + "Error").html("Ingrese solo números");
@@ -280,6 +293,10 @@ $(function () {
                 $("#numChildren").removeClass("valid");
                 $("#numChildren").addClass("invalid");
                
+        }else{
+            $("#" + "numChildren" + "Error").html("");
+            $("#numChildren").removeClass("invalid");
+            $("#numChildren").addClass("valid");
         }
         if( !/^([0-9]{0,})$/.test(data.numInfants)){
             $("#" + "numInfants" + "Error").html("Ingrese solo números");
@@ -288,6 +305,10 @@ $(function () {
            
                 $("#numInfants").removeClass("valid");
                 $("#numInfants").addClass("invalid");
+        }else{
+            $("#" + "numInfants" + "Error").html("");
+            $("#numInfants").removeClass("invalid");
+            $("#numInfants").addClass("valid");
         }
        
         if(isPassengersNumbers){
@@ -374,7 +395,7 @@ function isValidId(id) {
 }
 
 function validateAllFields(){
-        debugger;
+        
         
         var data = {
             from: {
@@ -403,7 +424,7 @@ function validateAllFields(){
         var valid = true;
         //Origin
         if ($("#from").val() === "") {
-            
+            valid = false;
         } else if(!isValidId(data.from.id)){
             $("#" + "from" + "Error").html("Ingrese el nombre de un aeropuerto o ciudad valido");
             $("#from").removeClass("valid");
@@ -416,7 +437,7 @@ function validateAllFields(){
         }
         //Destination
         if ($("#to").val() === "") {
-            
+            valid = false;
         } else if(!isValidId(data.to.id)){
             $("#" + "to" + "Error").html("Ingrese el nombre de un aeropuerto o ciudad valido");
             $("#to").removeClass("valid");
@@ -471,8 +492,11 @@ function validateAllFields(){
             isPassengersNumbers=false;
             valid = false;
             $("#numAdults").removeClass("valid");
-                $("#numAdults").addClass("invalid");
-               
+            $("#numAdults").addClass("invalid");
+        }else{
+            $("#" + "numAdults" + "Error").html("");
+            $("#numAdults").removeClass("invalid");
+            $("#numAdults").addClass("valid");
         }
         if( !/^([0-9]{0,})$/.test(data.numChildren)){
             $("#" + "numChildren" + "Error").html("Ingrese solo números");
@@ -482,6 +506,10 @@ function validateAllFields(){
                 $("#numChildren").removeClass("valid");
                 $("#numChildren").addClass("invalid");
                
+        }else{
+            $("#" + "numChildren" + "Error").html("");
+            $("#numChildren").removeClass("invalid");
+            $("#numChildren").addClass("valid");
         }
         if( !/^([0-9]{0,})$/.test(data.numInfants)){
             $("#" + "numInfants" + "Error").html("Ingrese solo números");
@@ -490,6 +518,10 @@ function validateAllFields(){
            
                 $("#numInfants").removeClass("valid");
                 $("#numInfants").addClass("invalid");
+        }else{
+            $("#" + "numInfants" + "Error").html("");
+            $("#numInfants").removeClass("invalid");
+            $("#numInfants").addClass("valid");
         }
        
         if(isPassengersNumbers){

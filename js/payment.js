@@ -68,37 +68,31 @@ function validateCard(cardNumber, expiry, cvv) {
                     $("label[for=cardNumber]").attr("data-error", cardMsg);
                     $("#cardNumber").removeClass("valid");
                     $("#cardNumber").addClass("invalid");
-                    $("#cardNumberIcon").removeClass("green-text");
-                    $("#cardNumberIcon").addClass("red-text");
+                   
                 } else {
                     $("#cardNumber").removeClass("invalid");
                     $("#cardNumber").addClass("valid");
-                    $("#cardNumberIcon").removeClass("red-text");
-                    $("#cardNumberIcon").addClass("green-text");
+                    
                 }
                 if (expiryMsg) {
                     $("label[for=cardExpiry]").attr("data-error", expiryMsg);
                     $("#cardExpiry").removeClass("valid");
                     $("#cardExpiry").addClass("invalid");
-                    $("#cardExpiryIcon").removeClass("green-text");
-                    $("#cardExpiryIcon").addClass("red-text");
+                   
                 } else {
                     $("#cardExpiry").removeClass("invalid");
                     $("#cardExpiry").addClass("valid");
-                    $("#cardExpiryIcon").removeClass("red-text");
-                    $("#cardExpiryIcon").addClass("green-text");
+                  
                 }
                 if (cvvMsg) {
                     $("label[for=cvv]").attr("data-error", cvvMsg);
                     $("#cvv").removeClass("valid");
                     $("#cvv").addClass("invalid");
-                    $("#cvvIcon").removeClass("green-text");
-                    $("#cvvIcon").addClass("red-text");
+                   
                 } else {
                     $("#cvv").removeClass("invalid");
                     $("#cvv").addClass("valid");
-                    $("#cvvIcon").removeClass("red-text");
-                    $("#cvvIcon").addClass("green-text");
+                    
                 }
                 resetInstallmentsSelector("Introduzca tarjeta");
                 $("#isValidCard").val(false);
@@ -240,26 +234,26 @@ $(function () {
 //    }
 
     //Try to validate card immediately after typing it
-    $("#cardNumber, #cardExpiry, #cvv").on("change", function (event) {
-        if (cardCanBeValidated()) {
-            validateCard($("#cardNumber").val(), $("#cardExpiry").val(), $("#cvv").val());
-        }
-    });
+//    $("#cardNumber, #cardExpiry, #cvv").on("change", function (event) {
+//        if (cardCanBeValidated()) {
+//            validateCard($("#cardNumber").val(), $("#cardExpiry").val(), $("#cvv").val());
+//        }
+//    });
 
     //Ensure that, if pattern matches, it's a calid date
-    $("#cardExpiry").on("change", function () {
-        var $field = $(this);
-        if (!isValidDate($field.val())) {
-            $("label[for=cardExpiry]").attr("data-error", "Por favor ingrese una fecha valida");
-            $field.removeClass("valid");
-            $field.addClass("invalid");
-        } else {
-            $field.removeClass("invalid");
-            $field.addClass("valid");
-        }
-//        if($field.val().match(/[0-9]{2}\/[0-9]{2}/) !== null) {
+//    $("#cardExpiry").on("change", function () {
+//        var $field = $(this);
+//        if (!isValidDate($field.val())) {
+//            $("label[for=cardExpiry]").attr("data-error", "Por favor ingrese una fecha valida");
+//            $field.removeClass("valid");
+//            $field.addClass("invalid");
+//        } else {
+//            $field.removeClass("invalid");
+//            $field.addClass("valid");
 //        }
-    });
+////        if($field.val().match(/[0-9]{2}\/[0-9]{2}/) !== null) {
+////        }
+//    });
 
       $("#payment-form>div>div>input").change(function(){
         validateAllFields();
@@ -284,12 +278,12 @@ $(function () {
         $submitBtn.html("Validando...");
         
         var data = {
-            cardNumber: Number($("#cardNumber").val()),
+            cardNumber: $("#cardNumber").val(),
             cardExpiry: $("#cardExpiry").val(),
             cardholderFirstName: $("#cardholderFirstName").val(),
             cardholderLastName: $("#cardholderLastName").val(),
-            cvv: Number($("#cvv").val()),
-            id: Number($("#id").val()),
+            cvv:$("#cvv").val(),
+            id: $("#id").val(),
             street: $("#street").val(),
             streetNumber: $("#streetNumber").val(),
             state: $("#state").val(),
@@ -301,7 +295,7 @@ $(function () {
         };
         //Missing info?
         var valid = true;
-        if (data.cardNumber === "" || data.cardNumber === null) {
+        if ($("#cardNumber").val() === "" || $("#cardNumber").val() === null) {
             $("label[for="+"cardNumber"+"]").attr("data-error", "Ingrese el numero de la tarjeta");
             $("#" + "cardNumber" + "").removeClass("valid");
             $("#" + "cardNumber" + "").addClass("invalid");
@@ -331,6 +325,17 @@ $(function () {
             $("#" + "cardExpiry" + "").addClass("valid");
         }
         
+        var field = $("#cardExpiry");
+        if (valid && !isValidDate(field.val())) {
+            $("label[for=cardExpiry]").attr("data-error", "Ingrese una fecha valida");
+            field.removeClass("valid");
+            field.addClass("invalid");
+            valid = false;
+        } else {
+            field.removeClass("invalid");
+            field.addClass("valid");
+        }
+        
         if ($("#cvv").val()=== "" || $("#cvv").val() === null) {
             $("label[for="+"cvv"+"]").attr("data-error", "Ingrese el codigo de seguridad");
             $("#" + "cvv" + "").removeClass("valid");
@@ -347,12 +352,11 @@ $(function () {
         }
         
         //All data is in, validate credit card if needed
+        //All data is in, validate credit card if needed
         if (valid) {
             if ($("#isValidCard").val() !== "true") {
                 validateCard(data.cardNumber, data.cardExpiry, data.cvv, false);    //NOT async
-                if (!$("#isValidCard").val()) {
-                    $submitBtn.html("Confirmar >");
-                    $submitBtn.removeClass("disabled");
+                if ($("#isValidCard").val()==="false") {
                     valid = false;
                 }
             }
@@ -448,7 +452,7 @@ $(function () {
             $("#" + id + "").addClass("invalid");
             valid = false;
         }else if (!/^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/.test(data.email)) {
-            $("label[for="+id+"]").attr("data-error", "Ingrese el e-mail con el formato ejemplo@miMailDeEjemplo.com");
+            $("label[for="+id+"]").attr("data-error", "Ingrese el e-mail con el formato nombre@ejemplo.com");
             $("#"+id+"").removeClass("valid");
             $("#"+id+"").addClass("invalid");
             valid = false;
@@ -523,7 +527,7 @@ $(function () {
         id = "addressFloor";
         if (data.addressFloor === "" || data.addressFloor === null) {
             
-        }else if (!/^([0-9 ]{1,})$/.test(data.addressFloor)) {
+        }else if (!/^([\-0-9 ]{1,})$/.test(data.addressFloor)) {
             $("label[for="+id+"]").attr("data-error", "Ingrese el numero de piso con solo numeros");
             $("#"+id+"").removeClass("valid");
             $("#"+id+"").addClass("invalid");
@@ -546,11 +550,11 @@ $(function () {
             $("#" + ""+id+"" + "").addClass("valid");
         }
    
-
+        $submitBtn.html("Siguiente <i class='material-icons right'>send</i>");
+        $submitBtn.removeClass("disabled");
         //Valid, store
         if (!valid) {
-            $submitBtn.html("Confirmar >");
-            $submitBtn.removeClass("disabled");
+            
             return;
         }
         
@@ -580,12 +584,12 @@ function validateAllFields(){
    
 
     var data = {
-        cardNumber: Number($("#cardNumber").val()),
+        cardNumber:$("#cardNumber").val(),
         cardExpiry: $("#cardExpiry").val(),
         cardholderFirstName: $("#cardholderFirstName").val(),
         cardholderLastName: $("#cardholderLastName").val(),
-        cvv: Number($("#cvv").val()),
-        id: Number($("#id").val()),
+        cvv: $("#cvv").val(),
+        id: $("#id").val(),
         street: $("#street").val(),
         streetNumber: $("#streetNumber").val(),
         state: $("#state").val(),
@@ -597,11 +601,11 @@ function validateAllFields(){
     };
     //Missing info?
     var valid = true;
-    if (data.cardNumber === "" || data.cardNumber === null) {
+     if ($("#cardNumber").val() === "" || $("#cardNumber").val() === null) {
          $("label[for="+id+"]").attr("data-error", "Ingrese el numero de la tarjeta");
         valid = false;
     }else if (!/^([0-9]{13,16})$/.test(data.cardNumber)) {
-        $("label[for=cardNumber]").attr("data-error", "Ingrese la tarjeta con solo numeros");
+        $("label[for=cardNumber]").attr("data-error", "La tarjeta debe tener entre 13 y 16 numeros");
         $("#cardNumber").removeClass("valid");
         $("#cardNumber").addClass("invalid");
         valid = false;
@@ -622,6 +626,17 @@ function validateAllFields(){
         $("#" + "cardExpiry" + "").removeClass("invalid");
         $("#" + "cardExpiry" + "").addClass("valid");
     }
+    
+    var field = $("#cardExpiry");
+        if (valid && !isValidDate(field.val())) {
+            $("label[for=cardExpiry]").attr("data-error", "Ingrese una fecha valida");
+            field.removeClass("valid");
+            field.addClass("invalid");
+            valid = false;
+        } else {
+            field.removeClass("invalid");
+            field.addClass("valid");
+    }
 
     if ($("#cvv").val()=== "" || $("#cvv").val() === null) {
          $("label[for="+"cvv"+"]").attr("data-error", "Ingrese el codigo de seguridad");
@@ -640,9 +655,7 @@ function validateAllFields(){
     if (valid) {
         if ($("#isValidCard").val() !== "true") {
             validateCard(data.cardNumber, data.cardExpiry, data.cvv, false);    //NOT async
-            if (!$("#isValidCard").val()) {
-                $submitBtn.html("Confirmar >");
-                $submitBtn.removeClass("disabled");
+            if ($("#isValidCard").val()==="false") {
                 valid = false;
             }
         }
@@ -697,7 +710,7 @@ function validateAllFields(){
     if (data.street === "" || data.street === null) {
          $("label[for="+id+"]").attr("data-error", "Ingrese la calle del titular");
         valid = false;
-    }else if (!/^([A-zÀ-ÿ ]{1,})$/.test(data.street)) {
+    }else if (!/^([0-9A-zÀ-ÿ ]{1,})$/.test(data.street)) {
         $("label[for="+id+"]").attr("data-error", "Ingrese la calle sin usar caracteres especiales");
         $("#"+id+"").removeClass("valid");
         $("#"+id+"").addClass("invalid");
@@ -726,7 +739,7 @@ function validateAllFields(){
          $("label[for="+id+"]").attr("data-error", "Ingrese el e-mail del titular");
         valid = false;
     }else if (!/^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/.test(data.email)) {
-        $("label[for="+id+"]").attr("data-error", "Ingrese el e-mail con el formato ejemplo@miMailDeEjemplo.com");
+        $("label[for="+id+"]").attr("data-error", "Ingrese el e-mail con el formato nombre@ejemplo.com");
         $("#"+id+"").removeClass("valid");
         $("#"+id+"").addClass("invalid");
         valid = false;
@@ -794,7 +807,7 @@ function validateAllFields(){
     id = "addressFloor";
         if (data.addressFloor === "" || data.addressFloor === null) {
             
-        }else if (!/^([0-9 ]{1,})$/.test(data.addressFloor)) {
+        }else if (!/^([\-0-9 ]{1,})$/.test(data.addressFloor)) {
             $("label[for="+id+"]").attr("data-error", "Ingrese el numero de piso con solo numeros");
             $("#"+id+"").removeClass("valid");
             $("#"+id+"").addClass("invalid");

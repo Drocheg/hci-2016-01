@@ -28,7 +28,7 @@
                                     </div>
                                     <div class="row">
                                         <form id="flightSearchForm">
-                                            <input type="hidden" id="fromId" value="{{session.search.from.id}}" />
+                                            <input type="hidden" id="fromId"  data-change="true" value="{{session.search.from.id}}" />
                                             <div class="input-field col s1">
                                                 <i class="material-icons prefix flightSearchIcon">flight_takeoff</i>
                                             </div>
@@ -37,7 +37,7 @@
                                                 <label for="from"></label>
                                                 <span id="fromError" class="red-text diegoSuperCoolLabel1"></span>
                                             </div>
-                                            <input type="hidden" id="toId" value="{{session.search.to.id}}" />
+                                            <input type="hidden" id="toId"  data-change="true" value="{{session.search.to.id}}" />
                                             <div class="input-field col s1">
                                                 <i class="material-icons prefix flightSearchIcon">flight_land</i>
                                             </div>
@@ -53,7 +53,8 @@
                                                
                                                 <input id="departDate" type="date" class="datepicker" value="{{session.search.departDate.pretty}}">
                                                 <input id="departDateFull" type="hidden" value="{{session.search.departDate.full}}">
-                                                <label for="departDate">Ida</label>
+                                                <label for="departDate"></label>
+                                                <span class="flightLabelDate">Ida</span>
                                                 <span id="departDateError" class="red-text diegoSuperCoolLabel2"></span>
                                             </div>
                                             <div class="input-field col s1" data-ng-show="!session.search.oneWayTrip">
@@ -63,7 +64,8 @@
                                                
                                                 <input id="returnDate" type="date" class="datepicker" value="{{session.search.returnDate.pretty|| ''}}">
                                                 <input id="returnDateFull" type="hidden" value="{{session.search.returnDate.full}}">
-                                                <label for="returnDate">Vuelta</label>
+                                                <label for="returnDate"></label>
+                                                 <span class="flightLabelDate">Vuelta</span>
                                                 <span id="returnDateError" class="red-text diegoSuperCoolLabel2"></span>
                                             </div>
                                             <div class="input-field col s1">
