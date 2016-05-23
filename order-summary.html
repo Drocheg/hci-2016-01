@@ -18,60 +18,93 @@
         <main>  
             <div class="container">
                 <div class="row"> 
-                    <!--/*, (session.search.oneWayTrip ? 'offset-s2' : 'offset-s1')*/-->
-                    <div data-ng-class="['col', (session.search.oneWayTrip ? 's6' : 's4')]">
-                        <div class="card-panel light-green lighten-3 " id="outbound" data-ng-style="session.search.oneWayTrip ? {height: '703px'} : {height: '763px'}">
-                            <h4 class="center">Ida</h4>
-                            <p><b>Numero de vuelo</b>: {{getFlightNumber(session.outboundFlight)}}</p>
-                            <p><b>Fecha:</b> {{(getDepartureDateObj(session.outboundFlight)).getDate()}}/{{getDepartureDateObj(session.outboundFlight).getMonth()}}</p>
-                            <p><b>Horario de salida:</b> {{(getDepartureDateObj(session.outboundFlight)).getHours()}}:{{getDepartureDateObj(session.outboundFlight).getMinutes()}}</p>
-                            <p><b>Horario de llegada:</b> {{(getArrivalDateObj(session.outboundFlight)).getHours()}}:{{getArrivalDateObj(session.outboundFlight).getMinutes()}}</p>
-                            <p><b>Aeropuerto de salida:</b> {{getOriginAirport(session.outboundFlight).description}}</p>
-                            <p><b>Aeropuerto de llegada:</b> {{getDestinationAirport(session.outboundFlight).description}}</p>    
-                            <p><b>Duracion:</b> {{getFlightDuration(session.outboundFlight)}}</p>
-                            <p data-ng-if="session.search.numAdults > 0"> <b>Precio por adultos:</b>  {{toSelectedCurrency(getFlightPriceBreakdown(session.outboundFlight).adults.base_fare)}} x {{session.search.numAdults}}</p>
-                            <p data-ng-if="session.search.numChildren > 0"> <b>Precio por ninios:</b> {{toSelectedCurrency(getFlightPriceBreakdown(session.outboundFlight).children.base_fare)}} x {{session.search.numChildren}}</p>
-                            <p data-ng-if="session.search.numInfants > 0"> <b>Precio por infantes:</b> {{toSelectedCurrency(getFlightPriceBreakdown(session.outboundFlight).infants.base_fare)}} x {{session.search.numInfants}}</p>
-                            <p><b>Cargos e impuestos:</b> {{(session.outboundFlight.price.total.charges + session.outboundFlight.price.total.taxes).toFixed(2)}}</p>
-                            <h5 class="center"><b>Precio:</b> {{toSelectedCurrency(getFlightTotal(session.outboundFlight))}}</h5>
-                            <div class="row center">
-                                <button id="changeOutboundFlightBtn" class="waves-effect waves-light btn">Modificar Ida</button>
+                    <div data-ng-class="['col', 'flightCard', 'black-text', 'card', (session.search.oneWayTrip ? 's6' : 's4')]">
+                        <div class="card-action green lighten-3" style="padding:5px; border-radius:10px 10px 0 0;">
+                            <p style="margin: 0; height:30px; line-height:30px;" class="card-title">                        
+                                <span class="col s2">
+                                    Ida
+                                </span>
+                            </p>
+                        </div>
+                        <div class="card-content">
+                            <div class="col 12"  style="height: 450px;">
+                                <p><b>Numero de vuelo</b>: {{getFlightNumber(session.outboundFlight)}}</p>
+                                <p><b>Fecha:</b> {{(getDepartureDateObj(session.outboundFlight)).getDate()}}/{{getDepartureDateObj(session.outboundFlight).getMonth()}}</p>
+                                <p><b>Horario de salida:</b> {{(getDepartureDateObj(session.outboundFlight)).getHours()}}:{{getDepartureDateObj(session.outboundFlight).getMinutes()}}</p>
+                                <p><b>Horario de llegada:</b> {{(getArrivalDateObj(session.outboundFlight)).getHours()}}:{{getArrivalDateObj(session.outboundFlight).getMinutes()}}</p>
+                                <p><b>Aeropuerto de salida:</b> {{getOriginAirport(session.outboundFlight).description}}</p>
+                                <p><b>Aeropuerto de llegada:</b> {{getDestinationAirport(session.outboundFlight).description}}</p>    
+                                <p><b>Duracion:</b> {{getFlightDuration(session.outboundFlight)}}</p>
+                                <p data-ng-if="session.search.numAdults > 0"> <b>Precio por adultos:</b>  {{toSelectedCurrency(getFlightPriceBreakdown(session.outboundFlight).adults.base_fare)}} x {{session.search.numAdults}}</p>
+                                <p data-ng-if="session.search.numChildren > 0"> <b>Precio por ninios:</b> {{toSelectedCurrency(getFlightPriceBreakdown(session.outboundFlight).children.base_fare)}} x {{session.search.numChildren}}</p>
+                                <p data-ng-if="session.search.numInfants > 0"> <b>Precio por infantes:</b> {{toSelectedCurrency(getFlightPriceBreakdown(session.outboundFlight).infants.base_fare)}} x {{session.search.numInfants}}</p>
+                                <p><b>Cargos e impuestos:</b> {{(session.outboundFlight.price.total.charges + session.outboundFlight.price.total.taxes).toFixed(2)}}</p>
+                                <h5 class="center"><b>Precio:</b> {{toSelectedCurrency(getFlightTotal(session.outboundFlight))}}</h5>
+                                <div class="row center">
+                                    <button id="changeOutboundFlightBtn" class="waves-effect waves-light btn">Modificar Ida</button>
+                                </div>
                             </div>
+
                         </div>
                     </div>
-                    <div data-ng-if="!session.search.oneWayTrip"class="col s4">
-                        <div class="card-panel light-green lighten-3" id="inbound" style="height:723px">
-                            <h4 class="center">Vuelta</h4>
-                            <p><b>Numero de vuelo:</b> {{getFlightNumber(session.inboundFlight)}}</p>
-                            <p><b>Fecha:</b> {{(getDepartureDateObj(session.inboundFlight)).getDate()}}/{{getDepartureDateObj(session.inboundFlight).getMonth()}}</p>
-                            <p><b>Horario de salida:</b> {{(getDepartureDateObj(session.inboundFlight)).getHours()}}:{{getDepartureDateObj(session.inboundFlight).getMinutes()}}</p>
-                            <P><b>Horario de llegada:</b> {{(getArrivalDateObj(session.inboundFlight)).getHours()}}:{{getArrivalDateObj(session.inboundFlight).getMinutes()}}</p>
-                            <p><b>Aeropuerto de salida:</b> {{getOriginAirport(session.inboundFlight).description}}</p>
-                            <p><b>Aeropuerto de llegada:</b> {{getDestinationAirport(session.inboundFlight).description}}</p> 
-                            <p><b>Duracion:</b> {{getFlightDuration(session.inboundFlight)}}</p>
-                            <p data-ng-if="session.search.numAdults > 0"> <b>Precio por adultos:</b>  {{toSelectedCurrency(getFlightPriceBreakdown(session.inboundFlight).adults.base_fare)}} x {{session.search.numAdults}}</p>
-                            <p data-ng-if="session.search.numChildren > 0"> <b>Precio por ninios:</b> {{toSelectedCurrency(getFlightPriceBreakdown(session.inboundFlight).children.base_fare)}} x {{session.search.numChildren}}</p>
-                            <p data-ng-if="session.search.numInfants > 0"> <b>Precio por infantes:</b> {{toSelectedCurrency(getFlightPriceBreakdown(session.inboundFlight).infants.base_fare)}} x {{session.search.numInfants}}</p>
-                            <p><b>Cargos e impuestos:</b> {{(session.inboundFlight.price.total.charges + session.inboundFlight.price.total.taxes).toFixed(2)}}</p>
-                            <h5 class="center"><b>Precio:</b> {{toSelectedCurrency(getFlightTotal(session.inboundFlight))}}</h5>
-                            <div class="row center">
-                                <button id="changeInboundFlightBtn" class="waves-effect waves-light btn">Modificar Vuelta</button>
+                    <div class="card col s4 flightCard black-text" data-ng-if="!session.search.oneWayTrip">
+                        <div class="card-action green lighten-3" style="padding:5px; border-radius:10px 10px 0 0;">
+                            <p style="margin: 0; height:30px; line-height:30px;" class="card-title">                        
+                                <span class="col s2">
+                                    Vuelta
+                                </span>
+                            </p>
+                        </div>
+                        <div class="card-content">
+                            <div class="col s12" style="height: 450px;">
+                                <p><b>Numero de vuelo:</b> {{getFlightNumber(session.inboundFlight)}}</p>
+                                <p><b>Fecha:</b> {{(getDepartureDateObj(session.inboundFlight)).getDate()}}/{{getDepartureDateObj(session.inboundFlight).getMonth()}}</p>
+                                <p><b>Horario de salida:</b> {{(getDepartureDateObj(session.inboundFlight)).getHours()}}:{{getDepartureDateObj(session.inboundFlight).getMinutes()}}</p>
+                                <P><b>Horario de llegada:</b> {{(getArrivalDateObj(session.inboundFlight)).getHours()}}:{{getArrivalDateObj(session.inboundFlight).getMinutes()}}</p>
+                                <p><b>Aeropuerto de salida:</b> {{getOriginAirport(session.inboundFlight).description}}</p>
+                                <p><b>Aeropuerto de llegada:</b> {{getDestinationAirport(session.inboundFlight).description}}</p> 
+                                <p><b>Duracion:</b> {{getFlightDuration(session.inboundFlight)}}</p>
+                                <p data-ng-if="session.search.numAdults > 0"> <b>Precio por adultos:</b>  {{toSelectedCurrency(getFlightPriceBreakdown(session.inboundFlight).adults.base_fare)}} x {{session.search.numAdults}}</p>
+                                <p data-ng-if="session.search.numChildren > 0"> <b>Precio por ninios:</b> {{toSelectedCurrency(getFlightPriceBreakdown(session.inboundFlight).children.base_fare)}} x {{session.search.numChildren}}</p>
+                                <p data-ng-if="session.search.numInfants > 0"> <b>Precio por infantes:</b> {{toSelectedCurrency(getFlightPriceBreakdown(session.inboundFlight).infants.base_fare)}} x {{session.search.numInfants}}</p>
+                                <p><b>Cargos e impuestos:</b> {{(session.inboundFlight.price.total.charges + session.inboundFlight.price.total.taxes).toFixed(2)}}</p>
+                                <h5 class="center"><b>Precio:</b> {{toSelectedCurrency(getFlightTotal(session.inboundFlight))}}</h5>
+                                <div class="row center">
+                                    <button id="changeInboundFlightBtn" class="waves-effect waves-light btn">Modificar Vuelta</button>
+                                </div>
                             </div>
+
                         </div>
                     </div>
-                    <div data-ng-if="session.search.oneWayTrip" class="col s6">
-                        <div class="col s12"> 
-                            <div class="card-panel ligth-green lighten-4" id="contact" style="height:200px"> 
-                                <h4 class="center">Contacto</h4>
+
+                    <div class="card col s6 flightCard black-text" data-ng-if="session.search.oneWayTrip">
+                        <div class="card-action green lighten-3" style="padding:5px; border-radius:10px 10px 0 0;">
+                            <p style="margin: 0; height:30px; line-height:30px;" class="card-title">                        
+                                <span class="col s2">
+                                    Contacto
+                                </span>
+                            </p>
+                        </div>
+                        <div class="card-content">
+                            <div class="col s12">
                                 <p><b>Email:</b> {{session.payment.email}}</p>
                                 <div class="row center">
                                     <button id="changeContactBtn" class="waves-effect waves-light btn">Modificar Contacto</button>
                                 </div>
-                            </div> 
+                            </div>
+
                         </div>
-                        <div class="col s12">
-                            <div class="card-panel light-green lighten-4" id="payment" style="height:480px">
-                                <h4 class="center">Pago</h4> 
+                    </div>
+                    <div class="card col s6 flightCard black-text" data-ng-if="session.search.oneWayTrip">
+                        <div class="card-action green lighten-3" style="padding:5px; border-radius:10px 10px 0 0;">
+                            <p style="margin: 0; height:30px; line-height:30px;" class="card-title">                        
+                                <span class="col s2">
+                                    Pago
+                                </span>
+                            </p>
+                        </div>
+                        <div class="card-content">
+                            <div class="col s12">
                                 <p><b>Número de tarjeta:</b> {{session.payment.cardNumber}}</p> 
                                 <p><b>Nombre</b> {{session.payment.cardholderFirstName}}</p>
                                 <p><b>Apellido:</b> {{session.payment.cardholderLastName}}</p>
@@ -79,27 +112,44 @@
                                 <p><b>Codigo Postal:</b> {{session.payment.zip}}</p>
                                 <p><b>Direccion:</b> {{session.payment.state}} {{session.payment.street}} {{session.payment.streetNumber}} {{session.payment.addressFloor}} {{session.payment.addressApartment}}</p>
                                 <p><b>Numero de telefono:</b> {{session.payment.phone}}</p>
-                                <p><b>Cuotas:</b> {{session.payment.installments}}</p>
-                                <h5 class="center"><b>Total:</b> {{toSelectedCurrency(session.payment.total)}}</h5> 
+                                <p><b>Cuotas:</b> {{session.payment.selectedInstallment.quantity}}</p>
+                                <h4 data-ng-if="session.payment.selectedInstallment.quantity > 1" class="center"><b>Total:</b> {{toSelectedCurrency((session.payment.total) * (1 + session.payment.availableInstallments.financial_cost))}}</h4> 
+                                <h4 data-ng-if="session.payment.selectedInstallment.quantity = 1" class="center"><b>Total:</b> {{toSelectedCurrency((session.payment.total))}}</h4> 
                                 <div class="row center">
                                     <button id="changePaymentBtn" class="waves-effect waves-light btn">Modificar Pago</button>
                                 </div>
                             </div>
+
                         </div>
                     </div>
-                    <div data-ng-if="!session.search.oneWayTrip" class="col s4">
-                        <div class="col s12"> 
-                            <div class="card-panel light-green lighten-4" id="contact" style="height:200px"> 
-                                <h4 class="center">Contacto</h4>
+                    <div class="card col s4 flightCard black-text" data-ng-if="!session.search.oneWayTrip">
+                        <div class="card-action green lighten-3" style="padding:5px; border-radius:10px 10px 0 0;">
+                            <p style="margin: 0; height:30px; line-height:30px;" class="card-title">                        
+                                <span class="col s2">
+                                    Contacto
+                                </span>
+                            </p>
+                        </div>
+                        <div class="card-content">
+                            <div class="col s12">
                                 <p><b>Email:</b> {{session.payment.email}}</p>
                                 <div class="row center">
                                     <button id="changeContactBtn" class="waves-effect waves-light btn">Modificar Contacto</button>
                                 </div>
-                            </div> 
+                            </div>
+
                         </div>
-                        <div class="col s12">
-                            <div class="card-panel light-green lighten-4" id="payment" style="height:540px">
-                                <h4 class="center">Pago</h4> 
+                    </div>
+                    <div class="card col s4 flightCard black-text" data-ng-if="!session.search.oneWayTrip">
+                        <div class="card-action green lighten-3" style="padding:5px; border-radius:10px 10px 0 0;">
+                            <p style="margin: 0; height:30px; line-height:30px;" class="card-title">                        
+                                <span class="col s2">
+                                    Pago
+                                </span>
+                            </p>
+                        </div>
+                        <div class="card-content">
+                            <div class="col s12">
                                 <p><b>Número de tarjeta:</b> {{session.payment.cardNumber}}</p> 
                                 <p><b>Nombre</b> {{session.payment.cardholderFirstName}}</p>
                                 <p><b>Apellido:</b> {{session.payment.cardholderLastName}}</p>
@@ -107,90 +157,76 @@
                                 <p><b>Codigo Postal:</b> {{session.payment.zip}}</p>
                                 <p><b>Direccion:</b> {{session.payment.state}} {{session.payment.street}} {{session.payment.streetNumber}} {{session.payment.addressFloor}} {{session.payment.addressApartment}}</p>
                                 <p><b>Numero de telefono:</b> {{session.payment.phone}}</p>
-                                <p><b>Cuotas:</b> {{session.payment.installments}}</p>
-                                <h5 class="center"><b>Total:</b> {{toSelectedCurrency(session.payment.total)}}</h5> 
+                                <p><b>Cuotas:</b> {{session.payment.selectedInstallment.quantity}}</p>
+                                <h4 data-ng-if="session.payment.selectedInstallment.quantity > 1" class="center"><b>Total:</b> {{toSelectedCurrency((session.payment.total) * (1 + session.payment.availableInstallments.financial_cost))}}</h4> 
+                                <h4 data-ng-if="session.payment.selectedInstallment.quantity = 1" class="center"><b>Total:</b> {{toSelectedCurrency((session.payment.total))}}</h4> 
                                 <div class="row center">
                                     <button id="changePaymentBtn" class="waves-effect waves-light btn">Modificar Pago</button>
                                 </div>
                             </div>
+
                         </div>
                     </div>
+
+
                 </div>
 
-
-                <!--            <div data-ng-if="!session.search.oneWayTrip" class="row">
-                                <div class="col s3 offset-s2">
-                                    <div class="card-panel green lighten-3" id="payment" style="text-align: center;">
-                                        <h4>Pago</h4> 
-                                        <p>Número de tarjeta: {{session.payment.cardNumber}}</p> 
-                                        <p>Nombre de titular: {{session.payment.cardholderName}}</p> 
-                                        <br> 
-                                        <h4><b>Gran total: $27.998</b></h4> 
-                                    </div>
-                                </div>
-                                <div data-ng-if="!session.search.oneWayTrip" class="col s3 offset-s1"> 
-                                    <div class="card-panel green lighten-3" id="contact" style="text-align: center;"> 
-                                        <h4>Contacto</h4>
-                                        <p>Email: {{session.payment.email}}</p>
-                                    </div> 
-                                </div> 
-                            </div>-->
                 <div class="row">
-                    <div class="col s12">
-                        <div class="card-panel light-green lighten-2" id="passengers">
-                            <div class="row">
-                                <h4 class="center">Pasajeros</h4>
-                                <div data-ng-if="session.passengers.adults.length > 0">
-                                    <h4 class="center">Adultos &nbsp ({{session.passengers.adults.length}})</h4>
-                                    <div class="col s4" data-ng-repeat="adult in session.passengers.adults">
-                                        <p><b>Nombre:</b> {{adult.firstName}} {{adult.lastName}}</p>
-                                        <p><b>Sexo:</b> {{adult.sex}} &nbsp&nbsp&nbsp&nbsp</p>
-                                        <p><b>Dni:</b> {{adult.document}}</p>
-                                        <p><b>Fecha de nacimiento:</b> {{adult.birthday| date: 'd/M/yyyy'}}</p>
-                                        <br>
+                    <div class="card col s12 flightCard black-text">
+                        <div class="card-action green lighten-3" style="padding:5px; border-radius:10px 10px 0 0;">
+                            <p style="margin: 0; height:30px; line-height:30px;" class="card-title">                        
+                                <span class="col s2">
+                                    Pasajeros
+                                </span>
+                            </p>
+                        </div>
+                        <div class="card-content">
+                            <div class="col s12">
+                                <div class="row">
+                                    <div data-ng-if="session.passengers.adults.length > 0">
+                                        <h4 class="center">Adultos &nbsp ({{session.passengers.adults.length}})</h4>
+                                        <div class="col s4" data-ng-repeat="adult in session.passengers.adults">
+                                            <p><b>Nombre:</b> {{adult.firstName}} {{adult.lastName}}</p>
+                                            <p><b>Sexo:</b> {{adult.sex}} &nbsp&nbsp&nbsp&nbsp</p>
+                                            <p><b>Dni:</b> {{adult.document}}</p>
+                                            <p><b>Fecha de nacimiento:</b> {{adult.birthday| date: 'd/M/yyyy'}}</p>
+                                            <br>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="row">
-                                <div data-ng-if="session.passengers.children.length > 0">
-                                    <h4>Niños &nbsp ({{session.passengers.children.length}})</h4>
-                                    <div class="col s4" data-ng-repeat="child in session.passengers.children">
-                                        <p><b>Nombre:</b> {{child.firstName}} {{child.lastName}}</p>
-                                        <p><b>Sexo:</b> {{child.sex}} &nbsp&nbsp&nbsp&nbsp</p>
-                                        <p><b>Dni:</b> {{child.document}}</p>
-                                        <p><b>Fecha de nacimiento:</b> {{child.birthday| date: 'd/M/yyyy'}}</p>
-                                        <br>
+                                <div class="row">
+                                    <div data-ng-if="session.passengers.children.length > 0">
+                                        <h4>Niños &nbsp ({{session.passengers.children.length}})</h4>
+                                        <div class="col s4" data-ng-repeat="child in session.passengers.children">
+                                            <p><b>Nombre:</b> {{child.firstName}} {{child.lastName}}</p>
+                                            <p><b>Sexo:</b> {{child.sex}} &nbsp&nbsp&nbsp&nbsp</p>
+                                            <p><b>Dni:</b> {{child.document}}</p>
+                                            <p><b>Fecha de nacimiento:</b> {{child.birthday| date: 'd/M/yyyy'}}</p>
+                                            <br>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="row">
-                                <div data-ng-if="session.passengers.infants.length > 0">
-                                    <h4>Infantes &nbsp ({{session.passengers.infants.length}})</h4>
-                                    <div class="col s4" data-ng-repeat="infant in session.passengers.infants">
-                                        <p><b>Nombre:</b> {{infant.firstName}} {{infant.lastName}}</p>
-                                        <p><b>Sexo:</b> {{infant.sex}} &nbsp&nbsp&nbsp&nbsp</p>
-                                        <p><b>Dni:</b> {{infant.document}}</p>
-                                        <p><b>Fecha de nacimiento:</b> {{infant.birthday|date: 'd/M/yyyy'}}</p>
-                                        <br>
+                                <div class="row">
+                                    <div data-ng-if="session.passengers.infants.length > 0">
+                                        <h4>Infantes &nbsp ({{session.passengers.infants.length}})</h4>
+                                        <div class="col s4" data-ng-repeat="infant in session.passengers.infants">
+                                            <p><b>Nombre:</b> {{infant.firstName}} {{infant.lastName}}</p>
+                                            <p><b>Sexo:</b> {{infant.sex}} &nbsp&nbsp&nbsp&nbsp</p>
+                                            <p><b>Dni:</b> {{infant.document}}</p>
+                                            <p><b>Fecha de nacimiento:</b> {{infant.birthday|date: 'd/M/yyyy'}}</p>
+                                            <br>
+                                        </div>
                                     </div>
                                 </div>
+                                <div class="row center">
+                                    <button id="changePassengersBtn" class="waves-effect waves-light btn">Modificar Pasajeros</button>
+                                </div>
                             </div>
-                            <div class="row center">
-                                <button id="changePassengersBtn" class="waves-effect waves-light btn">Modificar Pasajeros</button>
-                            </div>
+
                         </div>
                     </div>
                 </div>
             </div>
-            <!--            <div class="row" id="summaryActionButtons">
-                            <div class="col s10 offset-s1 center">
-                                <button id="changeOutboundFlightBtn" class="waves-effect waves-light btn">Modificar Ida</button>
-                                <button id="changeInboundFlightBtn" class="waves-effect waves-light btn">Modificar Vuelta</button>
-                                <button id="changePassengersBtn" class="waves-effect waves-light btn">Modificar Pasajeros</button>
-                                <button id="changePaymentBtn" class="waves-effect waves-light btn">Modificar Pago</button>
-                                <button id="changeContactBtn" class="waves-effect waves-light btn">Modificar Contacto</button>
-                            </div>
-                        </div>-->
             <div class="row">
                 <div class="col s10 offset-s1 center">
                     <a class="btn-large waves-effect waves cyan darken-1" href="order-confirmation.html" id="confirmBtn">
