@@ -48,11 +48,9 @@ function submitReview(airlineID, flightNum, friend, food, punct, mileage, comfor
     })
             .done(function (result) {
                 if (result.error) {
-                    Materialize.toast("Error, decile a Juan esto:", 5000);      //TODO remove
-                    Materialize.toast(JSON.stringify(result.error), 5000);
+                    Materialize.toast("Hubo un error al enviar su comentario, disculpe las molestias e intente dentro de 5 minutos", 5000);
                 } else {
                     if (result.review !== true) {
-                        Materialize.toast("Error, decile a Juen");       //TODO remove
                     } else {
                         window.location = "reviews.html?airlineId=" + airlineID + "&flightNum=" + flightNum;
                     }
