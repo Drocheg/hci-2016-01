@@ -28,12 +28,12 @@ function validateCard(cardNumber, expiry, cvv) {
                 $("#cardExpiry").addClass("valid");
                 $("#cvv").removeClass("invalid");
                 $("#cvv").addClass("valid");
-                $("#creditCardIcon").removeClass("red-text");
-                $("#creditCardIcon").addClass("green-text");
-                $("#cardExpiryIcon").removeClass("red-text");
-                $("#cardExpiryIcon").addClass("green-text");
-                $("#cvvIcon").removeClass("red-text");
-                $("#cvvIcon").addClass("green-text");
+//                $("#creditCardIcon").removeClass("red-text");
+//                $("#creditCardIcon").addClass("green-text");
+//                $("#cardExpiryIcon").removeClass("red-text");
+//                $("#cardExpiryIcon").addClass("green-text");
+//                $("#cvvIcon").removeClass("red-text");
+//                $("#cvvIcon").addClass("green-text");
                 getInstallments(cardNumber, "#installments");
             },
             function (errResult) {
@@ -221,23 +221,23 @@ $(function () {
     }
     
     //Autofill data
-    if (session.state.hasPayment) {
-        $("#cardNumber").val(session.payment.cardNumber);
-        $("#cardExpiry").val(session.payment.cardExpiry);
+//    if (session.state.hasPayment) {
+//        $("#cardNumber").val(session.payment.cardNumber);
+//        $("#cardExpiry").val(session.payment.cardExpiry);
         $("#cardholderFirstName").val(session.payment.cardholderFirstName);
         $("#cardholderLastName").val(session.payment.cardholderLastName);
-        $("#cvv").val(session.payment.cvv);
-        $("#dni").val(session.payment.dni);
+//        $("#cvv").val(session.payment.cvv);
+        $("#id").val(session.payment.id);
         $("#zip").val(session.payment.zip);
         $("#street").val(session.payment.street);
         $("#streetNumber").val(session.payment.streetNumber);
-        $("#installments").val(session.payment.installments);
+//        $("#installments").val(session.payment.installments);
         $("#state").val(session.payment.state);
         $("#phone").val(session.payment.phone);
         $("#addressFloor").val(session.payment.addressFloor);
         $("#addressApartment").val(session.payment.addressApartment);
         $("#email").val(session.payment.email);
-    }
+//    }
 
     //Try to validate card immediately after typing it
     $("#cardNumber, #cardExpiry, #cvv").on("change", function (event) {

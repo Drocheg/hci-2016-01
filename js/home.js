@@ -4,6 +4,7 @@ $(function () {
      ***********************************************************************/
     $("#toId").val("");
     $("#fromId").val("");
+    $('#oneWayTrip').prop('checked', false);
   
     //Autocomplete (typeahead.js), cities and airports need to be loaded first
     $.when(citiesPromise, airportsPromise).then(function () {
