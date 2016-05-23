@@ -265,14 +265,19 @@
         line-height:25px;*/
 }
 
-#flightSearchForm {
-    z-index: 1;
-}
 
 #flightSearchForm > div{
     padding-bottom: 3%;
 }
-    
+
+#flightSearchForm {
+    z-index: 1;
+}
+
+
+.errorMsj {
+    white-space:nowrap;
+}
 
 .flight-card {}
 

@@ -261,6 +261,11 @@ $(function () {
 //        }
     });
 
+      $("#payment-form>div>div>input").change(function(){
+        validateAllFields();
+    });
+
+
     //Remove invalid class when losing focus, will validate again when submitting
 //    $("#payment-form input").on("blur", function(){
 //        var id = $(this).attr("id");
@@ -270,6 +275,7 @@ $(function () {
 
     //Handle submit
     $("#payment-form").on("submit", function (event) {
+       
         event.preventDefault();
         var session = getSessionData();
         
@@ -295,16 +301,51 @@ $(function () {
         };
         //Missing info?
         var valid = true;
-        if (isEmpty(data.cardNumber, "cardNumber")) {
+        if (data.cardNumber === "" || data.cardNumber === null) {
+            $("label[for="+"cardNumber"+"]").attr("data-error", "Ingrese el numero de la tarjeta");
+            $("#" + "cardNumber" + "").removeClass("valid");
+            $("#" + "cardNumber" + "").addClass("invalid");
             valid = false;
-        }
-        if (isEmpty(data.cardExpiry, "cardExpiry")) {
+        }else if (!/^([0-9]{13,16})$/.test(data.cardNumber)) {
+            $("label[for=cardNumber]").attr("data-error", "Ingrese la tarjeta con solo numeros");
+            $("#cardNumber").removeClass("valid");
+            $("#cardNumber").addClass("invalid");
             valid = false;
+        } else {
+            $("#" + "cardNumber" + "").removeClass("invalid");
+            $("#" + "cardNumber" + "").addClass("valid");
         }
-        if (isEmpty(data.cvv, "cvv")) {
+        
+        if (data.cardExpiry === "" || data.cardExpiry === null) {
+            $("label[for="+"cardExpiry"+"]").attr("data-error", "Ingrese la fecha de vencimiento");
+            $("#" + "cardExpiry" + "").removeClass("valid");
+            $("#" + "cardExpiry" + "").addClass("invalid");
             valid = false;
+        }else if (!/^([0-9]{2}\/[0-9]{2})$/.test(data.cardExpiry)) {
+            $("label[for=cardExpiry]").attr("data-error", "Ingrese la fecha con el formato MM/AA");
+            $("#cardExpiry").removeClass("valid");
+            $("#cardExpiry").addClass("invalid");
+            valid = false;
+        } else {
+            $("#" + "cardExpiry" + "").removeClass("invalid");
+            $("#" + "cardExpiry" + "").addClass("valid");
         }
-
+        
+        if ($("#cvv").val()=== "" || $("#cvv").val() === null) {
+            $("label[for="+"cvv"+"]").attr("data-error", "Ingrese el codigo de seguridad");
+            $("#" + "cvv" + "").removeClass("valid");
+            $("#" + "cvv" + "").addClass("invalid");
+            valid = false;
+        }else if (!/^([0-9]{3,4})$/.test(data.cvv)) {
+            $("label[for=cvv]").attr("data-error", "Ingrese 3 o 4 numeros para el codigo de seguridad");
+            $("#cvv").removeClass("valid");
+            $("#cvv").addClass("invalid");
+            valid = false;
+        } else {
+            $("#" + "cvv" + "").removeClass("invalid");
+            $("#" + "cvv" + "").addClass("valid");
+        }
+        
         //All data is in, validate credit card if needed
         if (valid) {
             if ($("#isValidCard").val() !== "true") {
@@ -317,56 +358,194 @@ $(function () {
             }
         }
 
-        //No te lo toma ya el html? 
-//        if (!/^([a-zA-Z ]{1,})$/.test(data.cardholderFirstName)) {
-//            $("label[for=cardholderFirstName]").attr("data-error", "Por favor ingrese solo caracters validos");
-//            $("#cardholderFirstName").removeClass("valid");
-//            $("#cardholderFirstName").addClass("invalid");
-//            valid = false;
-//        } else {
-//            $("#cardholderFirstName").removeClass("invalid");
-//            $("#cardholderFirstName").addClass("valid");
-//        }
+        
 
-        if (isEmpty(data.cardholderFirstName, "cardholderFirstName")) {
+        var id = "";
+        if (data.cardholderFirstName === "" || data.cardholderFirstName === null) {
+            $("label[for="+"cardholderFirstName"+"]").attr("data-error", "Ingrese el nombre del titular");
+            $("#" + "cardholderFirstName" + "").removeClass("valid");
+            $("#" + "cardholderFirstName" + "").addClass("invalid");
             valid = false;
-        }
-        if (isEmpty(data.cardholderLastName, "cardholderLastName")) {
+        }else if (!/^([A-zÀ-ÿ ]{1,})$/.test(data.cardholderFirstName)) {
+            $("label[for=cardholderFirstName]").attr("data-error", "Ingrese el nombre sin usar numeros ni caracteres especiales");
+            $("#cardholderFirstName").removeClass("valid");
+            $("#cardholderFirstName").addClass("invalid");
             valid = false;
-        }
-        if(isEmpty(data.id,"id")){
-            valid = false;
-        }
-        if (isEmpty(data.street, "street")) {
-            valid = false;
-        }
-        if (isEmpty(data.zip, "zip")) {
-            valid = false;
-        }
-        if (isEmpty(data.email, "email")) {
-            valid = false;
-        }
-        if (isEmpty(data.installments, "installments")) {
-            valid = false;
-        }
-        if (isEmpty(data.state, "state")) {
-            valid = false;
-        }
-        if (isEmpty(data.streetNumber, "streetNumber")) {
-            valid = false;
-        }
-        if (isEmpty(data.phone, "phone")) {
-            valid = false;
+        } else {
+            $("#" + "cardholderFirstName" + "").removeClass("invalid");
+            $("#" + "cardholderFirstName" + "").addClass("valid");
         }
         
-        //Validate installments separately, if valid, add to data
-        if(isEmpty($("#installments").val(), "installments")) {
+        if (data.cardholderLastName === "" || data.cardholderLastName === null) {
+            $("label[for="+"cardholderLastName"+"]").attr("data-error", "Ingrese el apellido del titular");
+            $("#" + "cardholderLastName" + "").removeClass("valid");
+            $("#" + "cardholderLastName" + "").addClass("invalid");
             valid = false;
+        }else if (!/^([A-zÀ-ÿ ]{1,})$/.test(data.cardholderLastName)) {
+            $("label[for=cardholderLastName]").attr("data-error", "Ingrese el apellido sin usar numeros ni caracteres especiales");
+            $("#cardholderLastName").removeClass("valid");
+            $("#cardholderLastName").addClass("invalid");
+            valid = false;
+        } else {
+            $("#" + "cardholderLastName" + "").removeClass("invalid");
+            $("#" + "cardholderLastName" + "").addClass("valid");
         }
-        else {
+        
+       
+        if ($("#id").val() === "" || $("#id").val() === null) {
+            $("label[for="+"id"+"]").attr("data-error", "Ingrese el documento del titular");
+            $("#" + "id" + "").removeClass("valid");
+            $("#" + "id" + "").addClass("invalid");
+            valid = false;
+        }else if (!/^([0-9]{1,8})$/.test(data.id)) {
+            $("label[for=id]").attr("data-error", "Ingrese el documento compuesto por 1 a 8 numeros");
+            $("#id").removeClass("valid");
+            $("#id").addClass("invalid");
+            valid = false;
+        } else {
+            $("#" + "id" + "").removeClass("invalid");
+            $("#" + "id" + "").addClass("valid");
+        }
+        
+        var id = "";
+        
+        id = "street";
+        if (data.street === "" || data.street === null) {
+            $("label[for="+id+"]").attr("data-error", "Ingrese la calle del titular");
+            $("#" + id + "").removeClass("valid");
+            $("#" + id + "").addClass("invalid");
+            valid = false;
+        }else if (!/^([0-9A-zÀ-ÿ ]{1,})$/.test(data.street)) {
+            $("label[for="+id+"]").attr("data-error", "Ingrese la calle sin usar caracteres especiales");
+            $("#"+id+"").removeClass("valid");
+            $("#"+id+"").addClass("invalid");
+            valid = false;
+        } else {
+            $("#" + ""+id+"" + "").removeClass("invalid");
+            $("#" + ""+id+"" + "").addClass("valid");
+        }
+        
+        id = "zip";
+        if (data.zip === "" || data.zip === null) {
+            $("label[for="+id+"]").attr("data-error", "Ingrese el codigo postal");
+            $("#" + id + "").removeClass("valid");
+            $("#" + id + "").addClass("invalid");
+            valid = false;
+        }else if (!/^([0-9]{1,})$/.test(data.zip)) {
+            $("label[for="+id+"]").attr("data-error", "Ingrese el codigo postal con solo numeros");
+            $("#"+id+"").removeClass("valid");
+            $("#"+id+"").addClass("invalid");
+            valid = false;
+        } else {
+            $("#" + ""+id+"" + "").removeClass("invalid");
+            $("#" + ""+id+"" + "").addClass("valid");
+        }
+        
+        id = "email";
+        if (data.email === "" || data.email === null) {
+            $("label[for="+id+"]").attr("data-error", "Ingrese el e-mail del titular");
+            $("#" + id + "").removeClass("valid");
+            $("#" + id + "").addClass("invalid");
+            valid = false;
+        }else if (!/^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/.test(data.email)) {
+            $("label[for="+id+"]").attr("data-error", "Ingrese el e-mail con el formato ejemplo@miMailDeEjemplo.com");
+            $("#"+id+"").removeClass("valid");
+            $("#"+id+"").addClass("invalid");
+            valid = false;
+        } else {
+           
+            $("#" + ""+id+"" + "").removeClass("invalid");
+            $("#" + ""+id+"" + "").addClass("valid");
+        }
+        
+       
+       
+        id = "phone";
+        if (data.phone === "" || data.phone === null ) {
+            $("label[for="+id+"]").attr("data-error", "Ingrese el numero de telefono del titular");
+            $("#" + id + "").removeClass("valid");
+            $("#" + id + "").addClass("invalid");
+            valid = false;
+        }else if (!/^([0-9]{1,})$/.test(data.phone)) {
+            $("label[for="+id+"]").attr("data-error", "Por favor ingrese el numero de telefono con solo numeros");
+            $("#"+id+"").removeClass("valid");
+            $("#"+id+"").addClass("invalid");
+            valid = false;
+        } else {
+            $("#" + ""+id+"" + "").removeClass("invalid");
+            $("#" + ""+id+"" + "").addClass("valid");
+        }
+       
+        id = "streetNumber";
+        if (data.streetNumber === "" || data.streetNumber === null) {
+            $("label[for="+id+"]").attr("data-error", "Ingrese el numero de la calle del titular");
+            $("#" + id + "").removeClass("valid");
+            $("#" + id + "").addClass("invalid");
+            valid = false;
+        }else if (!/^([0-9]{1,})$/.test(data.streetNumber)) {
+            $("label[for="+id+"]").attr("data-error", "Ingrese el numero de la calle con solo numeros");
+            $("#"+id+"").removeClass("valid");
+            $("#"+id+"").addClass("invalid");
+            valid = false;
+        } else {
+            $("#" + ""+id+"" + "").removeClass("invalid");
+            $("#" + ""+id+"" + "").addClass("valid");
+        }
+        
+        id = "state";
+        if (data.state === "" || data.state === null) {
+            $("label[for="+id+"]").attr("data-error", "Ingrese la ciudad del titular");
+            $("#" + id + "").removeClass("valid");
+            $("#" + id + "").addClass("invalid");
+            valid = false;
+        }else if (!/^([A-zÀ-ÿ ]{1,})$/.test(data.state)) {
+            $("label[for="+id+"]").attr("data-error", "Ingrese la ciudad con solo numeros");
+            $("#"+id+"").removeClass("valid");
+            $("#"+id+"").addClass("invalid");
+            valid = false;
+        } else {
+            $("#" + ""+id+"" + "").removeClass("invalid");
+            $("#" + ""+id+"" + "").addClass("valid");
+        }
+        
+        id = "installments";
+        if ($("#installments").val() === "" || $("#installments").val() === null) {
+            $("label[for="+id+"]").attr("data-error", "Ingrese la cantidad de cuotas");
+            $("#" + id + "").removeClass("valid");
+            $("#" + id + "").addClass("invalid");
+            valid = false;
+        } else {
             data.selectedInstallment = session.payment.availableInstallments.installments[$("#installments").val()];
+            $("#" + ""+id+"" + "").removeClass("invalid");
+            $("#" + ""+id+"" + "").addClass("valid");
         }
-
+        
+        id = "addressFloor";
+        if (data.addressFloor === "" || data.addressFloor === null) {
+            
+        }else if (!/^([0-9 ]{1,})$/.test(data.addressFloor)) {
+            $("label[for="+id+"]").attr("data-error", "Ingrese el numero de piso con solo numeros");
+            $("#"+id+"").removeClass("valid");
+            $("#"+id+"").addClass("invalid");
+            valid = false;
+        } else {
+            $("#" + ""+id+"" + "").removeClass("invalid");
+            $("#" + ""+id+"" + "").addClass("valid");
+        }
+        
+        id = "addressApartment";
+        if (data.addressApartment === "" || data.addressApartment === null) {
+            
+        }else if (!/^([\-A-zÀ-ÿ ]{1,})$/.test(data.addressApartment)) {
+            $("label[for="+id+"]").attr("data-error", "Ingrese el departamento sin numeros ni caracteres especiales");
+            $("#"+id+"").removeClass("valid");
+            $("#"+id+"").addClass("invalid");
+            valid = false;
+        } else {
+            $("#" + ""+id+"" + "").removeClass("invalid");
+            $("#" + ""+id+"" + "").addClass("valid");
+        }
+   
 
         //Valid, store
         if (!valid) {
@@ -391,3 +570,251 @@ $(function () {
         window.history.back();  //Will go back to previous search (inbound trip if user searched for round trip, outbound trip if one way trip)
     });
 });
+
+
+function validateAllFields(){
+    
+    var session = getSessionData();
+    debugger;
+   
+
+    var data = {
+        cardNumber: Number($("#cardNumber").val()),
+        cardExpiry: $("#cardExpiry").val(),
+        cardholderFirstName: $("#cardholderFirstName").val(),
+        cardholderLastName: $("#cardholderLastName").val(),
+        cvv: Number($("#cvv").val()),
+        id: Number($("#id").val()),
+        street: $("#street").val(),
+        streetNumber: $("#streetNumber").val(),
+        state: $("#state").val(),
+        phone: $("#phone").val(),
+        addressFloor: $("#addressFloor").val(),
+        addressApartment: $("#addressApartment").val(),
+        zip: $("#zip").val(),
+        email: $("#email").val()
+    };
+    //Missing info?
+    var valid = true;
+    if (data.cardNumber === "" || data.cardNumber === null) {
+         $("label[for="+id+"]").attr("data-error", "Ingrese el numero de la tarjeta");
+        valid = false;
+    }else if (!/^([0-9]{13,16})$/.test(data.cardNumber)) {
+        $("label[for=cardNumber]").attr("data-error", "Ingrese la tarjeta con solo numeros");
+        $("#cardNumber").removeClass("valid");
+        $("#cardNumber").addClass("invalid");
+        valid = false;
+    } else {
+        $("#" + "cardNumber" + "").removeClass("invalid");
+        $("#" + "cardNumber" + "").addClass("valid");
+    }
+
+    if (data.cardExpiry === "" || data.cardExpiry === null) {
+        $("label[for="+"cardExpiry"+"]").attr("data-error", "Ingrese la fecha de vencimiento");
+        valid = false;
+    }else if (!/^([0-9]{2}\/[0-9]{2})$/.test(data.cardExpiry)) {
+        $("label[for=cardExpiry]").attr("data-error", "Ingrese la fecha con el formato MM/AA");
+        $("#cardExpiry").removeClass("valid");
+        $("#cardExpiry").addClass("invalid");
+        valid = false;
+    } else {
+        $("#" + "cardExpiry" + "").removeClass("invalid");
+        $("#" + "cardExpiry" + "").addClass("valid");
+    }
+
+    if ($("#cvv").val()=== "" || $("#cvv").val() === null) {
+         $("label[for="+"cvv"+"]").attr("data-error", "Ingrese el codigo de seguridad");
+        valid = false;
+    }else if (!/^([0-9]{3,4})$/.test(data.cvv)) {
+        $("label[for=cvv]").attr("data-error", "Ingrese 3 o 4 numeros para el codigo de seguridad");
+        $("#cvv").removeClass("valid");
+        $("#cvv").addClass("invalid");
+        valid = false;
+    } else {
+        $("#" + "cvv" + "").removeClass("invalid");
+        $("#" + "cvv" + "").addClass("valid");
+    }
+
+    //All data is in, validate credit card if needed
+    if (valid) {
+        if ($("#isValidCard").val() !== "true") {
+            validateCard(data.cardNumber, data.cardExpiry, data.cvv, false);    //NOT async
+            if (!$("#isValidCard").val()) {
+                $submitBtn.html("Confirmar >");
+                $submitBtn.removeClass("disabled");
+                valid = false;
+            }
+        }
+    }
+
+
+
+    var id = "";
+    if (data.cardholderFirstName === "" || data.cardholderFirstName === null) {
+         $("label[for="+"cardholderFirstName"+"]").attr("data-error", "Ingrese el nombre del titular");
+        valid = false;
+    }else if (!/^([A-zÀ-ÿ ]{1,})$/.test(data.cardholderFirstName)) {
+        $("label[for=cardholderFirstName]").attr("data-error", "Ingrese el nombre sin usar numeros ni caracteres especiales");
+        $("#cardholderFirstName").removeClass("valid");
+        $("#cardholderFirstName").addClass("invalid");
+        valid = false;
+    } else {
+        $("#" + "cardholderFirstName" + "").removeClass("invalid");
+        $("#" + "cardholderFirstName" + "").addClass("valid");
+    }
+
+    if (data.cardholderLastName === "" || data.cardholderLastName === null) {
+         $("label[for="+"cardholderLastName"+"]").attr("data-error", "Ingrese el apellido del titular");
+        valid = false;
+    }else if (!/^([A-zÀ-ÿ ]{1,})$/.test(data.cardholderLastName)) {
+        $("label[for=cardholderLastName]").attr("data-error", "Ingrese el apellido sin usar numeros ni caracteres especiales");
+        $("#cardholderLastName").removeClass("valid");
+        $("#cardholderLastName").addClass("invalid");
+        valid = false;
+    } else {
+        $("#" + "cardholderLastName" + "").removeClass("invalid");
+        $("#" + "cardholderLastName" + "").addClass("valid");
+    }
+
+
+    if ($("#id").val() === "" || $("#id").val() === null) {
+         $("label[for="+"id"+"]").attr("data-error", "Ingrese el documento del titular");
+        valid = false;
+    }else if (!/^([0-9]{1,8})$/.test(data.id)) {
+        $("label[for=id]").attr("data-error", "Ingrese el documento compuesto por 1 a 8 numeros");
+        $("#id").removeClass("valid");
+        $("#id").addClass("invalid");
+        valid = false;
+    } else {
+        $("#" + "id" + "").removeClass("invalid");
+        $("#" + "id" + "").addClass("valid");
+    }
+
+    var id = "";
+
+    id = "street";
+    if (data.street === "" || data.street === null) {
+         $("label[for="+id+"]").attr("data-error", "Ingrese la calle del titular");
+        valid = false;
+    }else if (!/^([A-zÀ-ÿ ]{1,})$/.test(data.street)) {
+        $("label[for="+id+"]").attr("data-error", "Ingrese la calle sin usar caracteres especiales");
+        $("#"+id+"").removeClass("valid");
+        $("#"+id+"").addClass("invalid");
+        valid = false;
+    } else {
+        $("#" + ""+id+"" + "").removeClass("invalid");
+        $("#" + ""+id+"" + "").addClass("valid");
+    }
+
+    id = "zip";
+    if (data.zip === "" || data.zip === null) {
+        $("label[for="+id+"]").attr("data-error", "Ingrese el codigo postal");
+        valid = false;
+    }else if (!/^([0-9]{1,})$/.test(data.zip)) {
+        $("label[for="+id+"]").attr("data-error", "Ingrese el codigo postal con solo numeros");
+        $("#"+id+"").removeClass("valid");
+        $("#"+id+"").addClass("invalid");
+        valid = false;
+    } else {
+        $("#" + ""+id+"" + "").removeClass("invalid");
+        $("#" + ""+id+"" + "").addClass("valid");
+    }
+    debugger;
+    id = "email";
+    if (data.email === "" || data.email === null) {
+         $("label[for="+id+"]").attr("data-error", "Ingrese el e-mail del titular");
+        valid = false;
+    }else if (!/^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/.test(data.email)) {
+        $("label[for="+id+"]").attr("data-error", "Ingrese el e-mail con el formato ejemplo@miMailDeEjemplo.com");
+        $("#"+id+"").removeClass("valid");
+        $("#"+id+"").addClass("invalid");
+        valid = false;
+    } else {
+        $("label[for="+id+"]").attr("data-error", "Ingrese el e-mail del titular");
+        $("#" + ""+id+"" + "").removeClass("invalid");
+        $("#" + ""+id+"" + "").addClass("valid");
+    }
+
+
+
+    id = "phone";
+    if (data.phone === "" || data.phone === null ) {
+         $("label[for="+id+"]").attr("data-error", "Ingrese el numero de telefono del titular");
+        valid = false;
+    }else if (!/^([0-9]{1,})$/.test(data.phone)) {
+        $("label[for="+id+"]").attr("data-error", "Por favor ingrese el numero de telefono con solo numeros");
+        $("#"+id+"").removeClass("valid");
+        $("#"+id+"").addClass("invalid");
+        valid = false;
+    } else {
+        $("#" + ""+id+"" + "").removeClass("invalid");
+        $("#" + ""+id+"" + "").addClass("valid");
+    }
+
+    id = "streetNumber";
+    if (data.streetNumber === "" || data.streetNumber === null) {
+         $("label[for="+id+"]").attr("data-error", "Ingrese el numero de la calle del titular");
+        valid = false;
+    }else if (!/^([0-9]{1,})$/.test(data.streetNumber)) {
+        $("label[for="+id+"]").attr("data-error", "Ingrese el numero de la calle con solo numeros");
+        $("#"+id+"").removeClass("valid");
+        $("#"+id+"").addClass("invalid");
+        valid = false;
+    } else {
+        $("#" + ""+id+"" + "").removeClass("invalid");
+        $("#" + ""+id+"" + "").addClass("valid");
+    }
+
+    id = "state";
+    if (data.state === "" || data.state === null) {
+         $("label[for="+id+"]").attr("data-error", "Ingrese la ciudad del titular");
+        valid = false;
+    }else if (!/^([A-zÀ-ÿ ]{1,})$/.test(data.state)) {
+        $("label[for="+id+"]").attr("data-error", "Ingrese la ciudad con solo numeros");
+        $("#"+id+"").removeClass("valid");
+        $("#"+id+"").addClass("invalid");
+        valid = false;
+    } else {
+        $("#" + ""+id+"" + "").removeClass("invalid");
+        $("#" + ""+id+"" + "").addClass("valid");
+    }
+
+    id = "installments";
+    if ($("#installments").val() === "" || $("#installments").val() === null) {
+        $("label[for="+id+"]").attr("data-error", "Ingrese la cantidad de cuotas");
+       
+        valid = false;
+    } else {
+        data.selectedInstallment = session.payment.availableInstallments.installments[$("#installments").val()];
+        $("#" + ""+id+"" + "").removeClass("invalid");
+        $("#" + ""+id+"" + "").addClass("valid");
+    }
+    
+    id = "addressFloor";
+        if (data.addressFloor === "" || data.addressFloor === null) {
+            
+        }else if (!/^([0-9 ]{1,})$/.test(data.addressFloor)) {
+            $("label[for="+id+"]").attr("data-error", "Ingrese el numero de piso con solo numeros");
+            $("#"+id+"").removeClass("valid");
+            $("#"+id+"").addClass("invalid");
+            valid = false;
+        } else {
+            $("#" + ""+id+"" + "").removeClass("invalid");
+            $("#" + ""+id+"" + "").addClass("valid");
+        }
+        
+        id = "addressApartment";
+        if (data.addressApartment === "" || data.addressApartment === null) {
+            
+        }else if (!/^([\-A-zÀ-ÿ ]{1,})$/.test(data.addressApartment)) {
+            $("label[for="+id+"]").attr("data-error", "Ingrese el departamento sin numeros ni caracteres especiales");
+            $("#"+id+"").removeClass("valid");
+            $("#"+id+"").addClass("invalid");
+            valid = false;
+        } else {
+            $("#" + ""+id+"" + "").removeClass("invalid");
+            $("#" + ""+id+"" + "").addClass("valid");
+        }
+   
+    
+}
