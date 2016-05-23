@@ -199,7 +199,7 @@
                                 </div>
                                 <div class="row">
                                     <div data-ng-if="session.passengers.children.length > 0">
-                                        <h4>Niños &nbsp ({{session.passengers.children.length}})</h4>
+                                        <h4 class="center">Niños &nbsp ({{session.passengers.children.length}})</h4>
                                         <div class="col s4" data-ng-repeat="child in session.passengers.children">
                                             <p><b>Nombre:</b> {{child.firstName}} {{child.lastName}}</p>
                                             <p><b>Sexo:</b> {{child.sex}} &nbsp&nbsp&nbsp&nbsp</p>
@@ -211,7 +211,7 @@
                                 </div>
                                 <div class="row">
                                     <div data-ng-if="session.passengers.infants.length > 0">
-                                        <h4>Infantes &nbsp ({{session.passengers.infants.length}})</h4>
+                                        <h4 class="center">Infantes &nbsp ({{session.passengers.infants.length}})</h4>
                                         <div class="col s4" data-ng-repeat="infant in session.passengers.infants">
                                             <p><b>Nombre:</b> {{infant.firstName}} {{infant.lastName}}</p>
                                             <p><b>Sexo:</b> {{infant.sex}} &nbsp&nbsp&nbsp&nbsp</p>
