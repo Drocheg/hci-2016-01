@@ -240,23 +240,23 @@ $(function () {
                                 <div class='col s7 input-field'>\
                                     <i  class='material-icons prefix'>account_circle</i>\
                                     <label for=" + prefix + 'firstName' + " class='black-text' data-error='Por favor ingrese el nombre del pasajero'>Nombre</label>\
-                                    <input data-field ="+ prefix +" id=" + prefix + 'firstName' + " type='text' pattern='^([A-zÀ-ÿ ]{1,})$' class='field validate'   placeholder=' ' >\
+                                    <input data-field ="+ prefix +" id=" + prefix + 'firstName' + " type='text' class='field validate'   placeholder=' ' >\
                                     <label id="+ prefix + 'firstName' + 'Error' + " class='red-text diegoSuperCoolLabel3'></label>\
                                 </div>\
                                 <div class='input-field col s2'> \
                                     <i class='material-icons prefix'>perm_contact_calendar</i>\
                                     <label for=" + prefix + 'day' + " class='black-text' data-error='' id='diegoBirthdayLabel'>Fecha de nacimiento</label>\
-                                    <input data-field ="+ prefix + " id=" + prefix + 'day' + " type='text' pattern='[0-9]{1,2}' class='field validate'    placeholder='Dia'> \
+                                    <input data-field ="+ prefix + " id=" + prefix + 'day' + " type='text'  class='field validate'    placeholder='Dia'> \
                                     <label id="+ prefix + 'day' + 'Error' + " class='red-text diegoSuperCoolLabel3'></label>\
                                 </div>\
                                 <div class='input-field col s1'> \
                                     <label for=" + prefix + 'month' + " class='black-text'></label> \
-                                    <input  data-field ="+ prefix + " id=" + prefix + 'month' + " type='text' pattern='[0-9]{1,2}' class='validate field'    placeholder='Mes'> \
+                                    <input  data-field ="+ prefix + " id=" + prefix + 'month' + " type='text'  class='validate field'    placeholder='Mes'> \
                                     <label id="+ prefix + 'month' + 'Error' + " class='red-text diegoSuperCoolLabel3'></label>\
                                 </div>\
                                 <div class='input-field col s2'>\
                                     <label for=" + prefix + 'year' + " class='black-text'></label>\
-                                    <input  data-field ="+ prefix + "  id=" + prefix + 'year' + " type='text' pattern='[0-9]{4}' class='validate field'    placeholder='Año'>\
+                                    <input  data-field ="+ prefix + "  id=" + prefix + 'year' + " type='text'  class='validate field'    placeholder='Año'>\
                                     <label id="+ prefix + 'year' + 'Error' + " class='red-text diegoSuperCoolLabel3'></label>\
                                 </div>\
                             </div>   \
@@ -264,7 +264,7 @@ $(function () {
                                 <div class='col s7 input-field'>\
                                     <i  class='material-icons prefix'>account_circle</i>\
                                     <label for=" + prefix + 'lastName' + " class='black-text' data data-error='Por favor ingrese el apellido del pasajero'>Apellido</label>\
-                                    <input data-field ="+ prefix +" id=" + prefix + 'lastName' + " type='text' pattern='^([A-zÀ-ÿ ]{1,})$' class='validate field' placeholder=' '   >\
+                                    <input data-field ="+ prefix +" id=" + prefix + 'lastName' + " type='text'  class='validate field' placeholder=' '   >\
                                     <label id="+ prefix + 'lastName' + 'Error' + " class='red-text diegoSuperCoolLabel3'></label>\
                                 </div>\
                                 <div class='col s5 input-field'>\
@@ -289,7 +289,7 @@ $(function () {
                                     <i  class='material-icons prefix'>picture_in_picture</i>\
                                     <label id="+ prefix + 'document' + 'Error' + " class='red-text diegoSuperCoolLabel3'></label>\
                                     <label for=" + prefix + 'document' + " class='black-text' data-error='Por favor ingrese el documento del pasajero'>Documento</label>\
-                                    <input data-field ="+ prefix +" id=" + prefix + 'document' + " type='text' pattern='^([0-9]{1,8})$' class='validate field' placeholder=' '   >\
+                                    <input data-field ="+ prefix +" id=" + prefix + 'document' + " type='text' class='validate field' placeholder=' '   >\
                                 </div>\
                             </div>\
                              <div class='row'>\
