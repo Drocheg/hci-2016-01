@@ -179,41 +179,28 @@ $(function () {
 //    $("#fromId").val("");
 
     //Validate entered destinations
-//    $('#from').on("change", function () {
-//        $("#fromId").val("");
-//    });
-   
+    $('#from').on("change", function () {
+        $("#fromId").val("");
+    });
     $('#from').bind('typeahead:select', function (ev, suggestion) {
         $("#fromId").val(suggestion.id);
-        validateAllFields();
-        $("#fromId").attr("data-change","false");
     });
-    
 
     $('#to').bind('typeahead:select', function (ev, suggestion) {
         $("#toId").val(suggestion.id);
+    });
+    $('#to').on("change", function () {
+        $("#fromId").val("");
+    });
+    $('#from').on('typeahead:change', function () {
         validateAllFields();
-        $("#toId").attr("data-change","false"); 
     });
-    
-    $('#from').on('typeahead:change', function(){
-      
-       if($("#fromId").attr("data-change")==="true"){
-           $("#fromId").val("");
-       } 
-       validateAllFields();
-       $("#fromId").attr("data-change","true"); 
+
+    $('#to').on('typeahead:change', function () {
+        validateAllFields();
     });
-    
-    $('#to').on('typeahead:change', function(){
-       if($("#toId").attr("data-change")==="true"){
-           $("#toId").val("");
-       }   
-       validateAllFields();
-       $("#toId").attr("data-change","true"); 
-    });     
-    
-    $("#fromId, #toId, #numAdults, #numChildren, #numInfants, #departDate, #returnDate").change(function(){
+
+    $("#fromId, #toId, #numAdults, #numChildren, #numInfants, #departDate, #returnDate").change(function () {
         validateAllFields();
     });
 
@@ -398,35 +385,24 @@ $(function () {
             valid = false;
             $("#numAdults").removeClass("valid");
             $("#numAdults").addClass("invalid");
-        }else{
-            $("#" + "numAdults" + "Error").html("");
-            $("#numAdults").removeClass("invalid");
-            $("#numAdults").addClass("valid");
+
         }
         if (!/^([0-9]{0,})$/.test(data.numChildren)) {
             $("#" + "numChildren" + "Error").html("Ingrese solo números");
             isPassengersNumbers = false;
             valid = false;
-           
-                $("#numChildren").removeClass("valid");
-                $("#numChildren").addClass("invalid");
-               
-        }else{
-            $("#" + "numChildren" + "Error").html("");
-            $("#numChildren").removeClass("invalid");
-            $("#numChildren").addClass("valid");
+
+            $("#numChildren").removeClass("valid");
+            $("#numChildren").addClass("invalid");
+
         }
         if (!/^([0-9]{0,})$/.test(data.numInfants)) {
             $("#" + "numInfants" + "Error").html("Ingrese solo números");
             isPassengersNumbers = false;
             valid = false;
-           
-                $("#numInfants").removeClass("valid");
-                $("#numInfants").addClass("invalid");
-        }else{
-            $("#" + "numInfants" + "Error").html("");
-            $("#numInfants").removeClass("invalid");
-            $("#numInfants").addClass("valid");
+
+            $("#numInfants").removeClass("valid");
+            $("#numInfants").addClass("invalid");
         }
 
         if (isPassengersNumbers) {
@@ -528,86 +504,86 @@ function isValidId(id) {
 }
 
 
-function validateAllFields(){
-        debugger;
-        var session = getSessionData();
-        var data = {
-            from: {
-                name: $("#from").val(),
-                id: $("#fromId").val()
-            },
-            to: {
-                name: $("#to").val(),
-                id: $("#toId").val()
-            },
-            departDate: {
-                pretty: $("#departDate").val(),
-                full: $("#departDateFull").val()
-            },
-            oneWayTrip: session.search.oneWayTrip,
-            returnDate: session.search.oneWayTrip ? null : {
-                pretty: $("#returnDate").val(),
-                full: $("#returnDateFull").val()
-            },
-            numAdults: Number($("#numAdults").val()),
-            numChildren: Number($("#numChildren").val()),
-            numInfants: Number($("#numInfants").val())
-        };
-       
-        
-        var valid = true;
-        //Origin
-        if ($("#from").val() === "") {
-            valid = false;
-        } else if(!isValidId(data.from.id)){
-            $("#" + "from" + "Error").html("Ingrese el nombre de un aeropuerto o ciudad valido");
-            $("#from").removeClass("valid");
-            $("#from").addClass("invalid");
-            valid = false;
-        }else{
-            $("#from").removeClass("invalid");
-            $("#from").addClass("valid");
+function validateAllFields() {
+    debugger;
+    var session = getSessionData();
+    var data = {
+        from: {
+            name: $("#from").val(),
+            id: $("#fromId").val()
+        },
+        to: {
+            name: $("#to").val(),
+            id: $("#toId").val()
+        },
+        departDate: {
+            pretty: $("#departDate").val(),
+            full: $("#departDateFull").val()
+        },
+        oneWayTrip: session.search.oneWayTrip,
+        returnDate: session.search.oneWayTrip ? null : {
+            pretty: $("#returnDate").val(),
+            full: $("#returnDateFull").val()
+        },
+        numAdults: Number($("#numAdults").val()),
+        numChildren: Number($("#numChildren").val()),
+        numInfants: Number($("#numInfants").val())
+    };
+
+
+    var valid = true;
+    //Origin
+    if ($("#from").val() === "") {
+
+    } else if (!isValidId(data.from.id)) {
+        $("#" + "from" + "Error").html("Ingrese el nombre de un aeropuerto o ciudad valido");
+        $("#from").removeClass("valid");
+        $("#from").addClass("invalid");
+        valid = false;
+    } else {
+        $("#from").removeClass("invalid");
+        $("#from").addClass("valid");
+        $("#" + "from" + "Error").html("");
+    }
+    //Destination
+    if ($("#to").val() === "") {
+
+    } else if (!isValidId(data.to.id)) {
+        $("#" + "to" + "Error").html("Ingrese el nombre de un aeropuerto o ciudad valido");
+        $("#to").removeClass("valid");
+        $("#to").addClass("invalid");
+        valid = false;
+    } else {
+        $("#to").removeClass("invalid");
+        $("#to").addClass("valid");
+        $("#" + "to" + "Error").html("");
+    }
+
+    if (valid && data.from.id === data.to.id) {
+        $("#" + "from" + "Error").html("El lugar de origen y destino no pueden ser el mismo");
+        $("#from").removeClass("valid");
+        $("#from").addClass("invalid");
+        $("#to").removeClass("valid");
+        $("#to").addClass("invalid");
+        valid = false;
+    } else {
+        if (valid) {
             $("#" + "from" + "Error").html("");
         }
-        //Destination
-        if ($("#to").val() === "") {
-            valid = false;
-        } else if(!isValidId(data.to.id)){
-            $("#" + "to" + "Error").html("Ingrese el nombre de un aeropuerto o ciudad valido");
-            $("#to").removeClass("valid");
-            $("#to").addClass("invalid");
-            valid = false;
-        }else{
-            $("#to").removeClass("invalid");
-            $("#to").addClass("valid");
-            $("#" + "to" + "Error").html("");
-        }
-        
-        if(valid && data.from.id===data.to.id ){
-            $("#" + "from" + "Error").html("El lugar de origen y destino no pueden ser el mismo");
-            $("#from").removeClass("valid");
-            $("#from").addClass("invalid");
-            $("#to").removeClass("valid");
-            $("#to").addClass("invalid");
-            valid = false;
-        }else{
-            if(valid){
-                $("#" + "from" + "Error").html("");
-            }
-        }
-        
-        //Departure date
-        if ($("#departDate").val() === "") {
-            
-        } else {
-            $("#departDate").removeClass("invalid");
-            $("#departDate").addClass("valid");
-            $("#" + "departDate" + "Error").html("");
-        }
-        //Return date
-        if (!data.oneWayTrip) {
-            if ($("#returnDate").val() === "") {
-               
+    }
+
+    //Departure date
+    if ($("#departDate").val() === "") {
+
+    } else {
+        $("#departDate").removeClass("invalid");
+        $("#departDate").addClass("valid");
+        $("#" + "departDate" + "Error").html("");
+    }
+    //Return date
+    if (!data.oneWayTrip) {
+        if ($("#returnDate").val() === "") {
+
 //            } else if ($("#departDate").val() !== "" && new Date(data.returnDate.full) < new Date(data.departDate.full)) {
 //                $("#" + "returnDate" + "Error").html("La fecha de vuelta debe ser mayor a la de ida");
 //                $("#returnDate").removeClass("valid");
@@ -654,23 +630,11 @@ function validateAllFields(){
             $("#" + "numAdults" + "Error").html("Por favor ingrese al menos un pasajero (minimo un adulto)");
             $("#numAdults").removeClass("valid");
             $("#numAdults").addClass("invalid");
-        }else{
-            $("#" + "numAdults" + "Error").html("");
-            $("#numAdults").removeClass("invalid");
-            $("#numAdults").addClass("valid");
-        }
-        if( !/^([0-9]{0,})$/.test(data.numChildren)){
-            $("#" + "numChildren" + "Error").html("Ingrese solo números");
-            isPassengersNumbers=false;
+            $("#numChildren").removeClass("valid");
+            $("#numChildren").addClass("invalid");
+            $("#numInfants").removeClass("valid");
+            $("#numInfants").addClass("invalid");
             valid = false;
-           
-                $("#numChildren").removeClass("valid");
-                $("#numChildren").addClass("invalid");
-               
-        }else{
-            $("#" + "numChildren" + "Error").html("");
-            $("#numChildren").removeClass("invalid");
-            $("#numChildren").addClass("valid");
         }
         //Passengers: Infants and children can't travel without adults
         else if (data.numAdults === 0) {
@@ -678,12 +642,14 @@ function validateAllFields(){
             $("#numAdults").removeClass("valid");
             $("#numAdults").addClass("invalid");
             valid = false;
-            $("#numInfants").removeClass("valid");
-            $("#numInfants").addClass("invalid");
-        }else{
-            $("#" + "numInfants" + "Error").html("");
+        } else {
+            $("#numAdults").removeClass("invalid");
+            $("#numAdults").addClass("valid");
+            $("#numChildren").removeClass("invalid");
+            $("#numChildren").addClass("valid");
             $("#numInfants").removeClass("invalid");
             $("#numInfants").addClass("valid");
+            $("#" + "numAdults" + "Error").html("");
         }
     }
 
