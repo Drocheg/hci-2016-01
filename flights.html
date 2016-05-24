@@ -264,7 +264,7 @@
                                                     <p><i class="material-icons">flight</i>  {{getStopoversCount(flight) === 0 ? 'Directo' : getStopoversCount(flight) + ' Escalas'}}</p>
                                                 </div>
                                                 <div class="col s4">
-                                                    <p><a href="reviews.html?airlineId={{getFlightAirlineID(flight)}}&flightNum={{getFlightNumber(flight)}}" target="_blank" class='tooltipped' data-position='bottom' data-tooltip="Click para ver comentarios de {{getFlightAirlineID(flight)}} #{{getFlightNumber(flight)}}"><i class="material-icons">star</i>  {{session.airlines[getFlightAirlineID(flight)].rating || 'N/D'}}</a></p>
+                                                    <p><a href="reviews.html?airlineId={{getFlightAirlineID(flight)}}&flightNum={{getFlightNumber(flight)}}" target="_blank" class='tooltipped' data-position='bottom' data-tooltip="Click para ver comentarios de {{getFlightAirlineID(flight)}} #{{getFlightNumber(flight)}}"><i class="material-icons">star</i>  {{session.airlines[getFlightAirlineID(flight)].rating || 'N/D'}}/10</a></p>
                                                 </div>
                                             </div>
                                         </div>
