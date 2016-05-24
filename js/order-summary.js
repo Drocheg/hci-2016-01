@@ -11,7 +11,7 @@ function bookFlight(monsterObj) {
     })
             .done(function (result) {
                 if (result.error) {
-                    Materialize.toast("Hubo un error al submitear su vuelo ameo", 5000);
+                    Materialize.toast("ups", 5000);
                 } else {
                     magic++;
                     if (magic === expectedMagic) {

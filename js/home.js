@@ -204,7 +204,7 @@ $(function () {
             $("#from").addClass("invalid");
             valid = false;
         } else if(!isValidId(data.from.id)){
-            $("#" + "from" + "Error").html("Ingrese el nombre de un aeropuerto o ciudad valido");
+            $("#" + "from" + "Error").html("Ingrese el nombre de un aeropuerto o ciudad válido");
             $("#from").removeClass("valid");
             $("#from").addClass("invalid");
             valid = false;
@@ -220,7 +220,7 @@ $(function () {
             $("#to").addClass("invalid");
             valid = false;
         } else if(!isValidId(data.to.id)){
-            $("#" + "to" + "Error").html("Ingrese el nombre de un aeropuerto o ciudad valido");
+            $("#" + "to" + "Error").html("Ingrese el nombre de un aeropuerto o ciudad válido");
             $("#to").removeClass("valid");
             $("#to").addClass("invalid");
             valid = false;
@@ -314,7 +314,7 @@ $(function () {
         if(isPassengersNumbers){
             //Passengers: At least one must fly
             if (data.numAdults === 0 && data.numChildren === 0 && data.numInfants === 0) {
-                $("#" + "numAdults" + "Error").html("Por favor ingrese al menos un pasajero (minimo un adulto)");
+                $("#" + "numAdults" + "Error").html("Por favor ingrese al menos un pasajero (mínimo un adulto)");
                 $("#numAdults").removeClass("valid");
                 $("#numAdults").addClass("invalid");
                 $("#numChildren").removeClass("valid");
@@ -426,7 +426,7 @@ function validateAllFields(){
         if ($("#from").val() === "") {
             valid = false;
         } else if(!isValidId(data.from.id)){
-            $("#" + "from" + "Error").html("Ingrese el nombre de un aeropuerto o ciudad valido");
+            $("#" + "from" + "Error").html("Ingrese el nombre de un aeropuerto o ciudad válido");
             $("#from").removeClass("valid");
             $("#from").addClass("invalid");
             valid = false;
@@ -439,7 +439,7 @@ function validateAllFields(){
         if ($("#to").val() === "") {
             valid = false;
         } else if(!isValidId(data.to.id)){
-            $("#" + "to" + "Error").html("Ingrese el nombre de un aeropuerto o ciudad valido");
+            $("#" + "to" + "Error").html("Ingrese el nombre de un aeropuerto o ciudad válido");
             $("#to").removeClass("valid");
             $("#to").addClass("invalid");
             valid = false;
@@ -527,7 +527,7 @@ function validateAllFields(){
         if(isPassengersNumbers){
             //Passengers: At least one must fly
             if (data.numAdults === 0 && data.numChildren === 0 && data.numInfants === 0) {
-                $("#" + "numAdults" + "Error").html("Por favor ingrese al menos un pasajero (minimo un adulto)");
+                $("#" + "numAdults" + "Error").html("Por favor ingrese al menos un pasajero (mínimo un adulto)");
                 $("#numAdults").removeClass("valid");
                 $("#numAdults").addClass("invalid");
                 $("#numChildren").removeClass("valid");

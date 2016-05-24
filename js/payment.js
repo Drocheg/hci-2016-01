@@ -296,12 +296,12 @@ $(function () {
         //Missing info?
         var valid = true;
         if ($("#cardNumber").val() === "" || $("#cardNumber").val() === null) {
-            $("label[for="+"cardNumber"+"]").attr("data-error", "Ingrese el numero de la tarjeta");
+            $("label[for="+"cardNumber"+"]").attr("data-error", "Ingrese el número de la tarjeta");
             $("#" + "cardNumber" + "").removeClass("valid");
             $("#" + "cardNumber" + "").addClass("invalid");
             valid = false;
         }else if (!/^([0-9]{1,})$/.test(data.cardNumber)) {
-            $("label[for=cardNumber]").attr("data-error", "Ingrese la tarjeta con solo numeros");
+            $("label[for=cardNumber]").attr("data-error", "Ingrese la tarjeta con solo números");
             $("#cardNumber").removeClass("valid");
             $("#cardNumber").addClass("invalid");
             valid = false;
@@ -313,7 +313,7 @@ $(function () {
             var number = $("#cardNumber").val();
             var len = number.length;
             if (len < 13) {
-                $("label[for=cardNumber]").attr("data-error", "No corresponde a un tarjeta valida");
+                $("label[for=cardNumber]").attr("data-error", "No corresponde a un tarjeta válida");
                 $("#cardNumber").removeClass("valid");
                 $("#cardNumber").addClass("invalid");
                  valid = false; 
@@ -328,7 +328,7 @@ $(function () {
             } else if (number.charAt(0) === '4' && (len === 13 || len === 16)) {
 //                return "Visa";
             } else {
-                $("label[for=cardNumber]").attr("data-error", "No corresponde a un tarjeta valida");
+                $("label[for=cardNumber]").attr("data-error", "No corresponde a un tarjeta válida");
                 $("#cardNumber").removeClass("valid");
                 $("#cardNumber").addClass("invalid");
                  valid = false;
@@ -353,7 +353,7 @@ $(function () {
         
         var field = $("#cardExpiry");
         if (valid && !isValidDate(field.val())) {
-            $("label[for=cardExpiry]").attr("data-error", "Ingrese una fecha valida");
+            $("label[for=cardExpiry]").attr("data-error", "Ingrese una fecha válida");
             field.removeClass("valid");
             field.addClass("invalid");
             valid = false;
@@ -402,7 +402,7 @@ $(function () {
             $("#" + "cardholderFirstName" + "").addClass("invalid");
             valid = false;
         }else if (!/^([A-zÀ-ÿ ]{1,})$/.test(data.cardholderFirstName)) {
-            $("label[for=cardholderFirstName]").attr("data-error", "Ingrese el nombre sin usar numeros ni caracteres especiales");
+            $("label[for=cardholderFirstName]").attr("data-error", "Ingrese el nombre sin usar números ni caracteres especiales");
             $("#cardholderFirstName").removeClass("valid");
             $("#cardholderFirstName").addClass("invalid");
             valid = false;
@@ -417,7 +417,7 @@ $(function () {
             $("#" + "cardholderLastName" + "").addClass("invalid");
             valid = false;
         }else if (!/^([A-zÀ-ÿ ]{1,})$/.test(data.cardholderLastName)) {
-            $("label[for=cardholderLastName]").attr("data-error", "Ingrese el apellido sin usar numeros ni caracteres especiales");
+            $("label[for=cardholderLastName]").attr("data-error", "Ingrese el apellido sin usar números ni caracteres especiales");
             $("#cardholderLastName").removeClass("valid");
             $("#cardholderLastName").addClass("invalid");
             valid = false;
@@ -433,7 +433,7 @@ $(function () {
             $("#" + "id" + "").addClass("invalid");
             valid = false;
         }else if (!/^([0-9]{1,8})$/.test(data.id)) {
-            $("label[for=id]").attr("data-error", "Ingrese el documento compuesto por 1 a 8 numeros");
+            $("label[for=id]").attr("data-error", "Ingrese el documento compuesto por 1 a 8 números");
             $("#id").removeClass("valid");
             $("#id").addClass("invalid");
             valid = false;
@@ -467,7 +467,7 @@ $(function () {
             $("#" + id + "").addClass("invalid");
             valid = false;
         }else if (!/^([0-9]{1,})$/.test(data.zip)) {
-            $("label[for="+id+"]").attr("data-error", "Ingrese el codigo postal con solo numeros");
+            $("label[for="+id+"]").attr("data-error", "Ingrese el codigo postal con solo números");
             $("#"+id+"").removeClass("valid");
             $("#"+id+"").addClass("invalid");
             valid = false;
@@ -497,12 +497,12 @@ $(function () {
        
         id = "phone";
         if (data.phone === "" || data.phone === null ) {
-            $("label[for="+id+"]").attr("data-error", "Ingrese el numero de telefono del titular");
+            $("label[for="+id+"]").attr("data-error", "Ingrese el número de teléfono del titular");
             $("#" + id + "").removeClass("valid");
             $("#" + id + "").addClass("invalid");
             valid = false;
         }else if (!/^([0-9]{1,})$/.test(data.phone)) {
-            $("label[for="+id+"]").attr("data-error", "Por favor ingrese el numero de telefono con solo numeros");
+            $("label[for="+id+"]").attr("data-error", "Por favor ingrese el número de teléfono con solo números");
             $("#"+id+"").removeClass("valid");
             $("#"+id+"").addClass("invalid");
             valid = false;
@@ -513,12 +513,12 @@ $(function () {
        
         id = "streetNumber";
         if (data.streetNumber === "" || data.streetNumber === null) {
-            $("label[for="+id+"]").attr("data-error", "Ingrese el numero de la calle del titular");
+            $("label[for="+id+"]").attr("data-error", "Ingrese el número de la calle del titular");
             $("#" + id + "").removeClass("valid");
             $("#" + id + "").addClass("invalid");
             valid = false;
         }else if (!/^([0-9]{1,})$/.test(data.streetNumber)) {
-            $("label[for="+id+"]").attr("data-error", "Ingrese el numero de la calle con solo numeros");
+            $("label[for="+id+"]").attr("data-error", "Ingrese el número de la calle con solo números");
             $("#"+id+"").removeClass("valid");
             $("#"+id+"").addClass("invalid");
             valid = false;
@@ -534,7 +534,7 @@ $(function () {
             $("#" + id + "").addClass("invalid");
             valid = false;
         }else if (!/^([A-zÀ-ÿ ]{1,})$/.test(data.state)) {
-            $("label[for="+id+"]").attr("data-error", "Ingrese la ciudad con solo numeros");
+            $("label[for="+id+"]").attr("data-error", "Ingrese la ciudad con solo números");
             $("#"+id+"").removeClass("valid");
             $("#"+id+"").addClass("invalid");
             valid = false;
@@ -559,7 +559,7 @@ $(function () {
         if (data.addressFloor === "" || data.addressFloor === null) {
             
         }else if (!/^([\-0-9 ]{1,})$/.test(data.addressFloor)) {
-            $("label[for="+id+"]").attr("data-error", "Ingrese el numero de piso con solo numeros");
+            $("label[for="+id+"]").attr("data-error", "Ingrese el número de piso con solo números");
             $("#"+id+"").removeClass("valid");
             $("#"+id+"").addClass("invalid");
             valid = false;
@@ -572,7 +572,7 @@ $(function () {
         if (data.addressApartment === "" || data.addressApartment === null) {
             
         }else if (!/^([\-A-zÀ-ÿ ]{1,})$/.test(data.addressApartment)) {
-            $("label[for="+id+"]").attr("data-error", "Ingrese el departamento sin numeros ni caracteres especiales");
+            $("label[for="+id+"]").attr("data-error", "Ingrese el departamento sin números ni caracteres especiales");
             $("#"+id+"").removeClass("valid");
             $("#"+id+"").addClass("invalid");
             valid = false;
@@ -601,9 +601,7 @@ $(function () {
     });
 
     $("#backButton").on("click", function (event) {
-        event.preventDefault();
-        $("#backButton").addClass("disabled");
-        window.history.back();  //Will go back to previous search (inbound trip if user searched for round trip, outbound trip if one way trip)
+        window.location = "passengers-information.html";
     });
 });
 
@@ -633,10 +631,10 @@ function validateAllFields(){
     //Missing info?
     var valid = true;
      if ($("#cardNumber").val() === "" || $("#cardNumber").val() === null) {
-         $("label[for="+id+"]").attr("data-error", "Ingrese el numero de la tarjeta");
+         $("label[for="+id+"]").attr("data-error", "Ingrese el número de la tarjeta");
         valid = false;
     }else if (!/^([0-9]{1,})$/.test(data.cardNumber)) {
-        $("label[for=cardNumber]").attr("data-error", "Ingrese la tarjeta con solo numeros");
+        $("label[for=cardNumber]").attr("data-error", "Ingrese la tarjeta con solo números");
         $("#cardNumber").removeClass("valid");
         $("#cardNumber").addClass("invalid");
         valid = false;
@@ -648,7 +646,7 @@ function validateAllFields(){
         var number = $("#cardNumber").val();
         var len = number.length;
         if (len < 13) {
-            $("label[for=cardNumber]").attr("data-error", "No corresponde a un tarjeta valida");
+            $("label[for=cardNumber]").attr("data-error", "No corresponde a un tarjeta válida");
             $("#cardNumber").removeClass("valid");
             $("#cardNumber").addClass("invalid");
              valid = false; 
@@ -663,7 +661,7 @@ function validateAllFields(){
         } else if (number.charAt(0) === '4' && (len === 13 || len === 16)) {
 //                return "Visa";
         } else {
-            $("label[for=cardNumber]").attr("data-error", "No corresponde a un tarjeta valida");
+            $("label[for=cardNumber]").attr("data-error", "No corresponde a un tarjeta válida");
             $("#cardNumber").removeClass("valid");
             $("#cardNumber").addClass("invalid");
              valid = false;
@@ -686,7 +684,7 @@ function validateAllFields(){
     
     var field = $("#cardExpiry");
         if (valid && !isValidDate(field.val())) {
-            $("label[for=cardExpiry]").attr("data-error", "Ingrese una fecha valida");
+            $("label[for=cardExpiry]").attr("data-error", "Ingrese una fecha válida");
             field.removeClass("valid");
             field.addClass("invalid");
             valid = false;
@@ -696,10 +694,10 @@ function validateAllFields(){
     }
 
     if ($("#cvv").val()=== "" || $("#cvv").val() === null) {
-         $("label[for="+"cvv"+"]").attr("data-error", "Ingrese el codigo de seguridad");
+         $("label[for="+"cvv"+"]").attr("data-error", "Ingrese el código de seguridad");
         valid = false;
     }else if (!/^([0-9]{3,4})$/.test(data.cvv)) {
-        $("label[for=cvv]").attr("data-error", "Ingrese 3 o 4 numeros para el codigo de seguridad");
+        $("label[for=cvv]").attr("data-error", "Ingrese 3 o 4 numeros para el código de seguridad");
         $("#cvv").removeClass("valid");
         $("#cvv").addClass("invalid");
         valid = false;
@@ -725,7 +723,7 @@ function validateAllFields(){
          $("label[for="+"cardholderFirstName"+"]").attr("data-error", "Ingrese el nombre del titular");
         valid = false;
     }else if (!/^([A-zÀ-ÿ ]{1,})$/.test(data.cardholderFirstName)) {
-        $("label[for=cardholderFirstName]").attr("data-error", "Ingrese el nombre sin usar numeros ni caracteres especiales");
+        $("label[for=cardholderFirstName]").attr("data-error", "Ingrese el nombre sin usar números ni caracteres especiales");
         $("#cardholderFirstName").removeClass("valid");
         $("#cardholderFirstName").addClass("invalid");
         valid = false;
@@ -738,7 +736,7 @@ function validateAllFields(){
          $("label[for="+"cardholderLastName"+"]").attr("data-error", "Ingrese el apellido del titular");
         valid = false;
     }else if (!/^([A-zÀ-ÿ ]{1,})$/.test(data.cardholderLastName)) {
-        $("label[for=cardholderLastName]").attr("data-error", "Ingrese el apellido sin usar numeros ni caracteres especiales");
+        $("label[for=cardholderLastName]").attr("data-error", "Ingrese el apellido sin usar números ni caracteres especiales");
         $("#cardholderLastName").removeClass("valid");
         $("#cardholderLastName").addClass("invalid");
         valid = false;
@@ -752,7 +750,7 @@ function validateAllFields(){
          $("label[for="+"id"+"]").attr("data-error", "Ingrese el documento del titular");
         valid = false;
     }else if (!/^([0-9]{1,8})$/.test(data.id)) {
-        $("label[for=id]").attr("data-error", "Ingrese el documento compuesto por 1 a 8 numeros");
+        $("label[for=id]").attr("data-error", "Ingrese el documento compuesto por 1 a 8 números");
         $("#id").removeClass("valid");
         $("#id").addClass("invalid");
         valid = false;
@@ -779,10 +777,10 @@ function validateAllFields(){
 
     id = "zip";
     if (data.zip === "" || data.zip === null) {
-        $("label[for="+id+"]").attr("data-error", "Ingrese el codigo postal");
+        $("label[for="+id+"]").attr("data-error", "Ingrese el código postal");
         valid = false;
     }else if (!/^([0-9]{1,})$/.test(data.zip)) {
-        $("label[for="+id+"]").attr("data-error", "Ingrese el codigo postal con solo numeros");
+        $("label[for="+id+"]").attr("data-error", "Ingrese el código postal con solo números");
         $("#"+id+"").removeClass("valid");
         $("#"+id+"").addClass("invalid");
         valid = false;
@@ -810,10 +808,10 @@ function validateAllFields(){
 
     id = "phone";
     if (data.phone === "" || data.phone === null ) {
-         $("label[for="+id+"]").attr("data-error", "Ingrese el numero de telefono del titular");
+         $("label[for="+id+"]").attr("data-error", "Ingrese el numero de teléfono del titular");
         valid = false;
     }else if (!/^([0-9]{1,})$/.test(data.phone)) {
-        $("label[for="+id+"]").attr("data-error", "Por favor ingrese el numero de telefono con solo numeros");
+        $("label[for="+id+"]").attr("data-error", "Por favor ingrese el número de teléfono con solo números");
         $("#"+id+"").removeClass("valid");
         $("#"+id+"").addClass("invalid");
         valid = false;
@@ -824,10 +822,10 @@ function validateAllFields(){
 
     id = "streetNumber";
     if (data.streetNumber === "" || data.streetNumber === null) {
-         $("label[for="+id+"]").attr("data-error", "Ingrese el numero de la calle del titular");
+         $("label[for="+id+"]").attr("data-error", "Ingrese el número de la calle del titular");
         valid = false;
     }else if (!/^([0-9]{1,})$/.test(data.streetNumber)) {
-        $("label[for="+id+"]").attr("data-error", "Ingrese el numero de la calle con solo numeros");
+        $("label[for="+id+"]").attr("data-error", "Ingrese el número de la calle con solo números");
         $("#"+id+"").removeClass("valid");
         $("#"+id+"").addClass("invalid");
         valid = false;
@@ -841,7 +839,7 @@ function validateAllFields(){
          $("label[for="+id+"]").attr("data-error", "Ingrese la ciudad del titular");
         valid = false;
     }else if (!/^([A-zÀ-ÿ ]{1,})$/.test(data.state)) {
-        $("label[for="+id+"]").attr("data-error", "Ingrese la ciudad con solo numeros");
+        $("label[for="+id+"]").attr("data-error", "Ingrese la ciudad con solo números");
         $("#"+id+"").removeClass("valid");
         $("#"+id+"").addClass("invalid");
         valid = false;
@@ -865,7 +863,7 @@ function validateAllFields(){
         if (data.addressFloor === "" || data.addressFloor === null) {
             
         }else if (!/^([\-0-9 ]{1,})$/.test(data.addressFloor)) {
-            $("label[for="+id+"]").attr("data-error", "Ingrese el numero de piso con solo numeros");
+            $("label[for="+id+"]").attr("data-error", "Ingrese el número de piso con solo números");
             $("#"+id+"").removeClass("valid");
             $("#"+id+"").addClass("invalid");
             valid = false;
@@ -878,7 +876,7 @@ function validateAllFields(){
         if (data.addressApartment === "" || data.addressApartment === null) {
             
         }else if (!/^([\-A-zÀ-ÿ ]{1,})$/.test(data.addressApartment)) {
-            $("label[for="+id+"]").attr("data-error", "Ingrese el departamento sin numeros ni caracteres especiales");
+            $("label[for="+id+"]").attr("data-error", "Ingrese el departamento sin números ni caracteres especiales");
             $("#"+id+"").removeClass("valid");
             $("#"+id+"").addClass("invalid");
             valid = false;

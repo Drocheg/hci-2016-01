@@ -1,13 +1,10 @@
-/* 
- * TODO Todos los campos obligatorios. Msj que se entiendan
- */
 $(function () {
     var session = getSessionData();
     //Make sure the user is supposed to be here, if not redirect to home
-    if(session.outboundFlight === null || (!session.search.oneWayTrip && session.inboundFlight === null)) {
+    if (session.outboundFlight === null || (!session.search.oneWayTrip && session.inboundFlight === null)) {
         window.location = "index.html";
     }
-    
+
 
     //Try to validate date immediately??? TODO Borrar esto o hacerlo. Sirve aca?
 
@@ -34,7 +31,7 @@ $(function () {
 
             for (var i = 0; i < value; i++) {
                 var prefix = groups[index] + "-" + i + "-";
-                
+
 
 
                 var date = {
@@ -50,49 +47,49 @@ $(function () {
                     documentType: $("#" + prefix + "documentType").val()
                 };
                 var isDateRight = true;
-              
-                if(isEmpty(date.day,prefix + "day")){
-                    $( "#" + prefix + 'day'+ 'Error').html("Ingrese la fecha de nacimiento"); 
+
+                if (isEmpty(date.day, prefix + "day")) {
+                    $("#" + prefix + 'day' + 'Error').html("Ingrese la fecha de nacimiento");
                     dataIsValid = false;
                     isDateRight = false;
-                }  else{
-                    if(!/^([0-9]{1,2})$/.test(date.day)){
+                } else {
+                    if (!/^([0-9]{1,2})$/.test(date.day)) {
                         dataIsValid = false;
                         isDateRight = false;
                         $("#" + prefix + 'day').removeClass("valid");
-                        $("#" + prefix + 'day').addClass("invalid"); 
-                        $("#" + prefix + 'day'+ 'Error').html("Ingrese en el formato DD MM AAAA");
+                        $("#" + prefix + 'day').addClass("invalid");
+                        $("#" + prefix + 'day' + 'Error').html("Ingrese en el formato DD MM AAAA");
                     }
                 }
-                if(isEmpty(date.month, prefix + "month")){
-                    $( "#" + prefix + 'day'+ 'Error').html("Ingrese la fecha de nacimiento"); 
+                if (isEmpty(date.month, prefix + "month")) {
+                    $("#" + prefix + 'day' + 'Error').html("Ingrese la fecha de nacimiento");
                     dataIsValid = false;
                     isDateRight = false;
-                }  else{
-                    if(!/^([0-9]{1,2})$/.test(date.month)){
+                } else {
+                    if (!/^([0-9]{1,2})$/.test(date.month)) {
                         dataIsValid = false;
                         isDateRight = false;
                         $("#" + prefix + 'month').removeClass("valid");
-                        $("#" + prefix + 'month').addClass("invalid"); 
-                        $("#" + prefix + 'day'+ 'Error').html("Ingrese en el formato DD MM AAAA");
+                        $("#" + prefix + 'month').addClass("invalid");
+                        $("#" + prefix + 'day' + 'Error').html("Ingrese en el formato DD MM AAAA");
                     }
                 }
-                if(isEmpty(date.year, prefix + "year")){
-                    $( "#" + prefix + 'day'+ 'Error').html("Ingrese la fecha de nacimiento"); 
+                if (isEmpty(date.year, prefix + "year")) {
+                    $("#" + prefix + 'day' + 'Error').html("Ingrese la fecha de nacimiento");
                     dataIsValid = false;
                     isDateRight = false;
-                } else{
-                    if(!/^([0-9]{4})$/.test(date.year)){
+                } else {
+                    if (!/^([0-9]{4})$/.test(date.year)) {
                         dataIsValid = false;
                         isDateRight = false;
                         $("#" + prefix + 'year').removeClass("valid");
-                        $("#" + prefix + 'year').addClass("invalid"); 
-                        $("#" + prefix + 'day'+ 'Error').html("Ingrese en el formato DD MM AAAA");
+                        $("#" + prefix + 'year').addClass("invalid");
+                        $("#" + prefix + 'day' + 'Error').html("Ingrese en el formato DD MM AAAA");
                     }
-                }  
+                }
 
 
-                if(isDateRight){
+                if (isDateRight) {
                     if (!validateDate(date)) { //Valida si es una fecha
                         dataIsValid = false;
                         $("#" + prefix + 'day').removeClass("valid");
@@ -101,7 +98,7 @@ $(function () {
                         $("#" + prefix + 'month').addClass("invalid");
                         $("#" + prefix + 'year').removeClass("valid");
                         $("#" + prefix + 'year').addClass("invalid");
-                        $( "#" + prefix + 'day'+ 'Error').html("No corresponde a una fecha"); 
+                        $("#" + prefix + 'day' + 'Error').html("No corresponde a una fecha");
                     } else {
                         data.birthday = new Date(date.year, date.month - 1, date.day, 0, 0, 0, 0);
                         if (!validateBirthday(data.birthday, index)) { //Valida si los groupos son lo que dice la fecha.
@@ -112,7 +109,7 @@ $(function () {
                             $("#" + prefix + 'month').addClass("invalid");
                             $("#" + prefix + 'year').removeClass("valid");
                             $("#" + prefix + 'year').addClass("invalid");
-                            $( "#" + prefix + 'day'+ 'Error').html("No corresponde a la edad de un "+ spanishGroups[index]); 
+                            $("#" + prefix + 'day' + 'Error').html("No corresponde a la edad de un " + spanishGroups[index]);
                         } else {
                             $("#" + prefix + 'day').removeClass("invalid");
                             $("#" + prefix + 'day').addClass("valid");
@@ -120,68 +117,68 @@ $(function () {
                             $("#" + prefix + 'month').addClass("valid");
                             $("#" + prefix + 'year').removeClass("invalid");
                             $("#" + prefix + 'year').addClass("valid");
-                             $( "#" + prefix + 'day'+ 'Error').html(""); 
+                            $("#" + prefix + 'day' + 'Error').html("");
                         }
                     }
                 }
 
 
 
-                if(isEmpty(data.firstName, prefix + "firstName")){
-                    $( "#" + prefix + 'firstName'+ 'Error').html("Ingrese el nombre del pasajero");
+                if (isEmpty(data.firstName, prefix + "firstName")) {
+                    $("#" + prefix + 'firstName' + 'Error').html("Ingrese el nombre del pasajero");
 
-                    dataIsValid = false;
-                }else{
-                    if (!validateName(data.firstName)) {
-                        dataIsValid = false;
-                        $( "#" + prefix + 'firstName'+ 'Error').html("Ingrese el nombre sin usar números ni caracteres especiales");
-                    }else{
-                        $( "#" + prefix + 'firstName'+ 'Error').html("");  
-                    }
-
-                }
-                 if(isEmpty(data.lastName, prefix + "lastName")){
-                    $( "#" + prefix + 'lastName'+ 'Error').html("Ingrese el apellido del pasajero");
-
-                    dataIsValid = false;
-                }else{
-                    if (!validateName(data.lastName)) {
-                        dataIsValid = false;
-                        $( "#" + prefix + 'lastName'+ 'Error').html("Ingrese el apellido sin usar números ni caracteres especiales");
-                    }else{
-                        $( "#" + prefix + 'lastName'+ 'Error').html("");  
-                    }
-
-                }
-                
-                if(data.sex!=="Masculino" && data.sex!=="Femenino"){
-                     $( "#" + prefix + 'sex'+ 'Error').html("Ingrese el sexo del pasajero");
-                    $("#"+prefix + "sex"+"").removeClass("valid");
-                    $("#"+prefix + "sex"+"").addClass("invalid");
                     dataIsValid = false;
                 } else {
-                    $( "#" + prefix + 'sex'+ 'Error').html("");
-                    $("#"+prefix + "sex"+"").removeClass("invalid");
-                    $("#"+prefix + "sex"+"").addClass("valid");
-                }
-                
-                $("#"+prefix + "sex"+"").material_select();
-                if(isEmpty(data.document, prefix + "document")){
-                     $( "#" + prefix + 'document'+ 'Error').html("Ingrese el documento del pasajero");
-                    dataIsValid = false;
-                }else{
-                    if(!validateDNI(data.document)){
-                         $( "#" + prefix + 'document'+ 'Error').html("El documento debe estar compuesto por entre 1 y 8 números");
-                        dataIsValid=false;
-                    }else{
-                         $( "#" + prefix + 'document'+ 'Error').html("");
+                    if (!validateName(data.firstName)) {
+                        dataIsValid = false;
+                        $("#" + prefix + 'firstName' + 'Error').html("Ingrese el nombre sin usar números ni caracteres especiales");
+                    } else {
+                        $("#" + prefix + 'firstName' + 'Error').html("");
                     }
-                }  
-                if(isEmpty(data.documentType, prefix + "documentType")){
-                    dataIsValid=false;
+
                 }
-                    
-                    
+                if (isEmpty(data.lastName, prefix + "lastName")) {
+                    $("#" + prefix + 'lastName' + 'Error').html("Ingrese el apellido del pasajero");
+
+                    dataIsValid = false;
+                } else {
+                    if (!validateName(data.lastName)) {
+                        dataIsValid = false;
+                        $("#" + prefix + 'lastName' + 'Error').html("Ingrese el apellido sin usar números ni caracteres especiales");
+                    } else {
+                        $("#" + prefix + 'lastName' + 'Error').html("");
+                    }
+
+                }
+
+                if (data.sex !== "Masculino" && data.sex !== "Femenino") {
+                    $("#" + prefix + 'sex' + 'Error').html("Ingrese el sexo del pasajero");
+                    $("#" + prefix + "sex" + "").removeClass("valid");
+                    $("#" + prefix + "sex" + "").addClass("invalid");
+                    dataIsValid = false;
+                } else {
+                    $("#" + prefix + 'sex' + 'Error').html("");
+                    $("#" + prefix + "sex" + "").removeClass("invalid");
+                    $("#" + prefix + "sex" + "").addClass("valid");
+                }
+
+                $("#" + prefix + "sex" + "").material_select();
+                if (isEmpty(data.document, prefix + "document")) {
+                    $("#" + prefix + 'document' + 'Error').html("Ingrese el documento del pasajero");
+                    dataIsValid = false;
+                } else {
+                    if (!validateDNI(data.document)) {
+                        $("#" + prefix + 'document' + 'Error').html("El documento debe estar compuesto por entre 1 y 8 números");
+                        dataIsValid = false;
+                    } else {
+                        $("#" + prefix + 'document' + 'Error').html("");
+                    }
+                }
+                if (isEmpty(data.documentType, prefix + "documentType")) {
+                    dataIsValid = false;
+                }
+
+
 
 
 
@@ -201,23 +198,29 @@ $(function () {
         $submitBtn.html("Siguiente <i class='material-icons right'>send</i>");
         $submitBtn.removeClass("disabled");
         if (!dataIsValid) {
-            
+
             return;
         }
         var nextPage = session.state.hasPayment ? "order-summary.html" : "payment.html";
         session.state.hasPassengers = true;
         setSessionData(session);
 //        window.location = nextPage;
-       
+
         $submitBtn.trigger("focusout");
-    
+
         window.location = "payment.html";
     });
 
     $("#backButton").on("click", function (event) {
-        event.preventDefault();
-        $("#backButton").addClass("disabled");
-        window.history.back();
+        var session = getSessionData();
+        var nextPage = "flights.html?";
+        if (!session.search.oneWayTrip) {
+            nextPage += "from=" + session.search.to.id + "&to=" + session.search.from.id + "&dep_date=" + session.search.returnDate.full + "&direction=inbound" + "&adults=" + session.search.numAdults + "&children=" + session.search.numChildren + "&infants=" + session.search.numInfants;
+        } else {
+            nextPage += "from=" + session.search.from.id + "&to=" + session.search.to.id + "&dep_date=" + session.search.departDate.full + "&direction=outbound" + "&adults=" + session.search.numAdults + "&children=" + session.search.numChildren + "&infants=" + session.search.numInfants;
+        }
+        debugger;   
+        window.location = nextPage;
     });
 
 
@@ -231,11 +234,11 @@ $(function () {
             var prefix = groups[index] + "-" + i + "-";
             //TODO que el select sea required
             //<input type='hidden' id=" + prefix + 'isValidDate' + " value='false' />\
-                                
+
 
             var form = "<div class=card-panel>\
-                            <span class='card-title'>"+spanishGroups[index] + " " + (i + 1) + " de " + value+"</span>\
-                            <input type='hidden' id='"+ prefix +"groupNum' value="+index+" />\
+                            <span class='card-title'>" + spanishGroups[index] + " " + (i + 1) + " de " + value + "</span>\
+                            <input type='hidden' id='" + prefix + "groupNum' value='" + index + "' />\
                             <div class='row'>\
                                 <div class='col s7 input-field'>\
                                     <i  class='material-icons prefix'>account_circle</i>\
@@ -287,7 +290,7 @@ $(function () {
                                 </div>\
                                 <div class='col s8 input-field'>\
                                     <i  class='material-icons prefix'>picture_in_picture</i>\
-                                    <label id="+ prefix + 'document' + 'Error' + " class='red-text diegoSuperCoolLabel3'></label>\
+                                    <label id=" + prefix + 'document' + 'Error' + " class='red-text diegoSuperCoolLabel3'></label>\
                                     <label for=" + prefix + 'document' + " class='black-text' data-error='Por favor ingrese el documento del pasajero'>Documento</label>\
                                     <input data-field ="+ prefix +" id=" + prefix + 'document' + " type='text' class='field' placeholder=' '   >\
                                 </div>\
@@ -298,31 +301,30 @@ $(function () {
                              </div>\
                         </div>\  ";
             miHTML += form;
-            
-           
-            
-           
-            
+
+
+
+
+
         }
     });
 
-    
+
 
     $("#form").html(miHTML);
 
     $('select').val("");
     $("select option:selected").attr('disabled', 'disabled');
-    
+
 //    $([session.search.numAdults, session.search.numChildren, session.search.numInfants]).each(function (index, value) {
 //        for (var i = 0; i < value; i++)
 //        {
 //            
-            
-            $("#form").on("change", ".field", function(){
-                debugger;
-                var prefix = $(this).attr("data-field");
-                var dataIsValid = true;
 
+    $("#form").on("change", ".field", function () {
+        debugger;
+        var prefix = $(this).attr("data-field");
+        var dataIsValid = true;
 
                 var date = {
                     day: $("#" + prefix + "day").val(),
@@ -411,35 +413,42 @@ $(function () {
                 }
 
 
+        if (data.firstName !== "") {
+            if (!validateName(data.firstName)) {
+                dataIsValid = false;
+                var id = prefix + "firstName";
+                $("#" + id + "").removeClass("valid");
+                $("#" + id + "").addClass("invalid");
+                $("#" + prefix + 'firstName' + 'Error').html("Ingrese el nombre sin usar números ni caracteres especiales");
+            } else {
+                $("#" + prefix + 'firstName' + 'Error').html("");
+                var id = prefix + "firstName";
+                $("#" + id + "").removeClass("invalid");
+                $("#" + id + "").addClass("valid");
+            }
 
-                if(data.firstName!==""){
-                    if (!validateName(data.firstName)) {
-                        dataIsValid = false;
-                        var id = prefix + "firstName";
-                        $("#"+id+"").removeClass("valid");
-                         $("#"+id+"").addClass("invalid");
-                        $( "#" + prefix + 'firstName'+ 'Error').html("Ingrese el nombre sin usar números ni caracteres especiales");
-                    }else{
-                        $( "#" + prefix + 'firstName'+ 'Error').html("");  
-                         var id = prefix + "firstName";
-                          $("#"+id+"").removeClass("invalid");
-                         $("#"+id+"").addClass("valid");
-                    }
+        }
+        if (data.lastName !== "") {
+            if (!validateName(data.lastName)) {
+                dataIsValid = false;
+                var id = prefix + "lastName";
+                $("#" + id + "").removeClass("valid");
+                $("#" + id + "").addClass("invalid");
+                $("#" + prefix + 'lastName' + 'Error').html("Ingrese el apellido sin usar números ni caracteres especiales");
+            } else {
+                $("#" + prefix + 'lastName' + 'Error').html("");
+                var id = prefix + "lastName";
+                $("#" + id + "").removeClass("invalid");
+                $("#" + id + "").addClass("valid");
+            }
 
-                }
-                 if(data.lastName!==""){
-                    if (!validateName(data.lastName)) {
-                        dataIsValid = false;
-                       var id = prefix + "lastName";
-                        $("#"+id+"").removeClass("valid");
-                         $("#"+id+"").addClass("invalid");
-                        $( "#" + prefix + 'lastName'+ 'Error').html("Ingrese el apellido sin usar números ni caracteres especiales");
-                    }else{
-                        $( "#" + prefix + 'lastName'+ 'Error').html("");  
-                         var id = prefix + "lastName";
-                          $("#"+id+"").removeClass("invalid");
-                         $("#"+id+"").addClass("valid");
-                    }
+        }
+
+        if (data.sex === "Masculino" || data.sex === "Femenino") {
+            $("#" + prefix + 'sex' + 'Error').html("");
+            $("#" + prefix + "sex" + "").removeClass("invalid");
+            $("#" + prefix + "sex" + "").addClass("valid");
+        }
 
                 }
                 
@@ -465,29 +474,29 @@ $(function () {
 //                    }
 //                }  
 //                $("#"+prefix + "sex"+"").material_select();
-                if(data.document!==""){
-                    if(!validateDNI(data.document)){
-                         $( "#" + prefix + 'document'+ 'Error').html("El documento debe estar compuesto por entre 1 y 8 números");
-                        dataIsValid=false;
-                        var id = prefix + "document";
-                        $("#"+id+"").removeClass("valid");
-                         $("#"+id+"").addClass("invalid");
-                    }else{
-                         $( "#" + prefix + 'document'+ 'Error').html("");
-                          var id = prefix + "document";
-                          $("#"+id+"").removeClass("invalid");
-                         $("#"+id+"").addClass("valid");
-                    }
-                }  
-                
-            });
+        if (data.document !== "") {
+            if (!validateDNI(data.document)) {
+                $("#" + prefix + 'document' + 'Error').html("El documento debe estar compuesto por entre 1 y 8 números");
+                dataIsValid = false;
+                var id = prefix + "document";
+                $("#" + id + "").removeClass("valid");
+                $("#" + id + "").addClass("invalid");
+            } else {
+                $("#" + prefix + 'document' + 'Error').html("");
+                var id = prefix + "document";
+                $("#" + id + "").removeClass("invalid");
+                $("#" + id + "").addClass("valid");
+            }
+        }
+
+    });
 //            $("#form").on("change", "#" + prefix + 'lastName', updateErrors());
 //            $("#form").on("change", "#" + prefix + 'document', updateErrors());
 //            $("#form").on("change", "#" + prefix + 'sex', updateErrors());
 //            $("#form").on("change", "#" + prefix + 'day', updateErrors());
 //            $("#form").on("change", "#" + prefix + 'month', updateErrors());
 //            $("#form").on("change", "#" + prefix + 'year', updateErrors());
-            
+
 //            $("#form").on("change", "#" + prefix + 'firstName', function() {
 //                
 //                var idName = $(this).attr("id");
@@ -553,11 +562,11 @@ $(function () {
 //                    $( "#"+data-field+'day'+ 'Error').html("");
 //                }
 //            }); 
-            
+
 //            
 //       }
 //    });
-    
+
     //Tiene que pasar antes que lo de despues. Semaforos? 
     //$("select[required]").css({display: "inline", height: 0, padding: 0, width: 0}); Ya no sirve creo
 
@@ -628,23 +637,23 @@ function _calculateAge(birthday) { // birthday is a date
     return Math.abs(ageDate.getUTCFullYear() - 1970);
 }
 
-function isEmpty(information, id){
-    if (information === ""){
+function isEmpty(information, id) {
+    if (information === "") {
 //        $("label[for="+id+"]").attr("data-error", "Por favor ingrese solo caracters validos");
-            $("#"+id+"").removeClass("valid");
-            $("#"+id+"").addClass("invalid");
-            return true;
-        } else {
-            $("#"+id+"").removeClass("invalid");
-            $("#"+id+"").addClass("valid");
-            return false;
-        }
+        $("#" + id + "").removeClass("valid");
+        $("#" + id + "").addClass("invalid");
+        return true;
+    } else {
+        $("#" + id + "").removeClass("invalid");
+        $("#" + id + "").addClass("valid");
+        return false;
+    }
 }
 
 
 function validateDNI(DNI) {
     return /^([0-9]{1,8})$/.test(DNI);
-    
+
 }
 
 function validateName(name) {
