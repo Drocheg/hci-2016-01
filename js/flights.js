@@ -452,7 +452,7 @@ $(function () {
         }
         debugger;
         //What did the user change?
-        var passengersChanged = data.numAdults !== session.search.numAdults || data.numChildren !== session.search.numChildren || data.numInfants !== session.search.numChildren,
+        var passengersChanged = data.numAdults !== session.search.numAdults || data.numChildren !== session.search.numChildren || data.numInfants !== session.search.numInfants,
                 placesChanged = data.from.id !== session.search.from.id || data.to.id !== session.search.to.id,
                 departDateChanged = data.departDate.full !== session.search.departDate.full,
                 returnDateChanged = !session.search.oneWayTrip && data.returnDate.full !== session.search.returnDate.full;
