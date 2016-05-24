@@ -194,7 +194,7 @@ app.controller('controller', function ($scope, $http) {
                         setInboundFlight(flight);
                         break;
                     default:
-                        Materialize.toast("Unrecognized state, not setting flight.");   //TODO shouldn't happen
+                        console.log("Unrecognized state, not setting flight.");
                         break;
                 }
                 markSelectedFlight(flight, d);
@@ -257,33 +257,30 @@ app.controller('controller', function ($scope, $http) {
             };
 
             $scope.goToDeal = function (deal, from) {
-                Materialize.toast("Woooh! Look at that deal!!!", 5000);
                 var session = getSessionData();
-                var date = new Date();
-                date.setDate(date.getDate() + 2);
-                var year = date.getFullYear();
-                var month = (1 + date.getMonth()).toString();
-                month = month.length > 1 ? month : '0' + month;
-                var day = date.getDate().toString();
-                day = day.length > 1 ? day : '0' + day;
-                var fullDate = year + "-" + month + "-" + day;
-                session.search.departDate.pretty = "HardcodeadaFecha";
-                session.search.departDate.full = fullDate;
-                session.search.numAdults = 1; //Vamos a tener que cambiar esta parte.
+                session.search.numAdults = 1;
                 session.search.numInfants = 0;
                 session.search.numChildren = 0;
-                session.search.oneWayTrip = true; //Esto esta bien asi.
+                session.search.oneWayTrip = true;
                 session.search.max_price = deal.price;
                 session.search.min_price = deal.price;
-                session.search.to.name = deal.city.name;
-                session.search.to.id = deal.city.id;
-                session.search.from.id = from;
-//                session.search.selectedFlight = null; //Lo maté, no existe más TODO borrar
-//                session.search.direction = "outbound";
-                session.outboundFlight = null;
-                session.inboundFlight = null;
+                session.search.to = {
+                    name: deal.city.name,
+                    id: deal.city.id
+                };
+                session.search.from = {
+                    name: "Buenos Aires, Ciudad de Buenos Aires",
+                    id: from
+                };
+                var today = new Date();
+                today.setDate(today.getDate()+2);
+                var todayStr = today.getFullYear() + "-" + (today.getMonth() + 1 < 10 ? "0" : "") + (today.getMonth() + 1) + "-" + (today.getDate() < 10 ? "0" : "") + today.getDate();
+                session.search.departDate = {
+                    pretty: null,
+                    full: todayStr
+                };
                 setSessionData(session);
-                window.location = "flights-deal.html?direction=outbound";   //TODO Diego maté session.search.direction, pasá todo por GET
+                window.location = "flights-deal.html?from="+from+"&to="+deal.city.id+"&dep_date="+todayStr+"&direction=outbound&adults=1&children=0&infants=0";
             };
 
 
@@ -295,8 +292,6 @@ app.controller('controller', function ($scope, $http) {
                         function (response) {
                             $scope.deals = [];
                             for (var index in response.deals) {
-                                debugger
-                                var session = getSessionData(); //TODO borrar?
                                 var deal = response.deals[index];
                                 var date = new Date();
                                 date.setDate(date.getDate() + 2);
@@ -606,10 +601,8 @@ app.controller('controller', function ($scope, $http) {
                 var nonCompletePage = Number(numberOfPages);
                 numberOfPages = Number(numberOfPages).toFixed(0);
                 if (numberOfPages < nonCompletePage) {
-//                    debugger;  Me sacaron de quicio estos debuggers TODO kill with fire
                     numberOfPages = Number(numberOfPages) + 1;
                 }
-//                debugger;
                 return Number(numberOfPages);
             };
         });

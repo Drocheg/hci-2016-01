@@ -89,7 +89,7 @@ function submitReview(airlineID, flightNum, friend, food, punct, mileage, comfor
     })
             .done(function (result) {
                 if (result.error) {
-                    Materialize.toast("Hubo un error al enviar su comentario, disculpe las molestias e intente dentro de 5 minutos", 5000);
+                    console.log("Error subiendo review: " + JSON.stringify(result.error), 5000);
                 } else {
                     if (result.review !== true) {
                     } else {
@@ -99,7 +99,7 @@ function submitReview(airlineID, flightNum, friend, food, punct, mileage, comfor
             })
             .fail(function (jqXHR, textStatus, errorThrown)
             {
-                Materialize.toast("Connection error, please try again.", 5000); //TODO translate
+                Materialize.toast("Error de conexión, por favor intente de nuevo.", 5000);
                 console.log("Connection error. Error data:");
                 console.log("jqXHR: " + JSON.stringify(jqXHR));
                 console.log("Text status: " + textStatus);

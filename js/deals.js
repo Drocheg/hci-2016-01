@@ -19,7 +19,7 @@ function markSelectedFlight(flight, direction) {
             id = "selectedInboundFlight";
             break;
         default:
-            console.log("Flight direction not stored in session, I don't know which box to put the flight in. Aborting.");  //TODO validate and remove
+            console.log("Flight direction not stored in session, I don't know which box to put the flight in. Aborting.");
             return;
     }
     var html = '<div class="card-panel green lighten-4">';
@@ -102,7 +102,7 @@ $(function () {
         clearOutboundFlight();
         clearInboundFlight();
     } else if (getGETparam("direction") === "inbound") {
-        clearInboundFlight();   //TODO redundant, clear inbound flight either case
+        clearInboundFlight();   //Redundant, clear inbound flight either case
     }
 
     var session = getSessionData();
@@ -124,7 +124,6 @@ $(function () {
     });
 
     $("#nextStep").on("click", "> button", function () {
-        //TODO NOW handle changes (i.e. if came back from order summary and changed outbound, must choose inbound again)
         window.location = nextPage();
     });
 });

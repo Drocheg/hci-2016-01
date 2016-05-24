@@ -291,7 +291,7 @@
 .flightArrow {
     font-size:2.5rem;
     margin-top:5px;
-    margin-left:42%;
+    margin-left:42% !important;
 }
 
 #paginationContainer {

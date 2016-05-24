@@ -8,7 +8,6 @@ var citiesPromise = $.Deferred(),
  * 
  * @returns {Object}
  */
-//TODO move to commonFunctions.js
 function getSessionData() {
     //Initialize the sessionData object with defaults if not present
     if (typeof sessionStorage.sessionData === "undefined") {
@@ -51,7 +50,7 @@ function getSessionData() {
 ////                        sex: null,
 ////                        birthday: null,
 //                          documentType: null
-////                        document: null      //TODO Podria ser otras cosas? Podria ser tipo de documento y despues el numero de ese tipo de documento.
+////                        document: null
 //                    }
                 ], //More if there is more than 1 adult
                 children: [
@@ -61,7 +60,7 @@ function getSessionData() {
 //                        sex: null,
 //                        birthday: null,
 //                        documentType: null
-////                      document: null       //TODO Podria ser otras cosas? Podria ser tipo de documento y despues el numero de ese tipo de documento.
+////                      document: null
 //                    }
                 ], //More if there is more than 1 child
                 infants: [
@@ -71,7 +70,7 @@ function getSessionData() {
 //                        sex: null,
 //                        birthday: null,
 //                        documentType: null
-////                      document: null       //TODO Podria ser otras cosas? Podria ser tipo de documento y despues el numero de ese tipo de documento.
+////                      document: null
 //                    }
                 ]      //More if there is more than 1 infant
             },
@@ -237,9 +236,7 @@ $(function () {  //Document.ready
     //Enable dynamic addition of <select>s
     $('select').material_select();
     //Is there local storage?
-    if (typeof (window.Storage) === "undefined") {
-        //TODO what to do without local storage? Nothing will work
-    }
+    if (typeof (window.Storage) === "undefined") {/*whoops*/}
     var session = getSessionData();
     if (session.airlines === null) {
         getAllAirlines();

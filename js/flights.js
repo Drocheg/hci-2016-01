@@ -19,7 +19,7 @@ function markSelectedFlight(flight, direction) {
             id = "selectedInboundFlight";
             break;
         default:
-            console.log("Flight direction not stored in session, I don't know which box to put the flight in. Aborting.");  //TODO validate and remove
+            console.log("Flight direction not stored in session, I don't know which box to put the flight in. Aborting.");
             return;
     }
     var html = '<div class="card-panel green lighten-4">';
@@ -81,7 +81,7 @@ function nextPage() {
     var session = getSessionData();
     var nextPage = "index.html";        //Fall back to home if nothing is chosen
     if (!session.search.oneWayTrip && session.inboundFlight === null) {
-        nextPage = "flights.html?from=" + getGETparam("to") + "&to=" + getGETparam("from") + "&dep_date=" + session.search.returnDate.full + "&direction=inbound" + "&adults=" + getGETparam("adults") + "&children=" + getGETparam("adults") + "&infants=" + getGETparam("infants");
+        nextPage = "flights.html?from=" + getGETparam("to") + "&to=" + getGETparam("from") + "&dep_date=" + session.search.returnDate.full + "&direction=inbound" + "&adults=" + getGETparam("adults") + "&children=" + getGETparam("children") + "&infants=" + getGETparam("infants");
     } else {
 //        nextPage = session.state.hasPassengers ? (session.state.hasPayment ? "order-summary.html" : "payment.html") : "passengers-information.html";
         nextPage = "passengers-information.html";
@@ -102,7 +102,7 @@ $(function () {
         clearOutboundFlight();
         clearInboundFlight();
     } else if (getGETparam("direction") === "inbound") {
-        clearInboundFlight();   //TODO redundant, clear inbound flight either case
+        clearInboundFlight();   //Redundant, clear inbound flight either case
     }
 
     var session = getSessionData();
@@ -215,7 +215,7 @@ $(function () {
         validateAllFields();
     });
 
-    //TODO FIXME datepickers don't pick up a date if selected with keyboard, fix or disable
+    //Datepickers don't pick up a date if selected with keyboard, fix or disable
 
     //Datepickers
     var minDate = new Date();
@@ -284,6 +284,7 @@ $(function () {
 
     //Handle form submit
     $("#searchButton").on("click", function (event) {
+        debugger;
         event.preventDefault();
         var session = getSessionData();
         var data = {
@@ -449,9 +450,9 @@ $(function () {
         if (!valid) {
             return;
         }
-
+        debugger;
         //What did the user change?
-        var passengersChanged = data.numAdults !== session.search.numAdults || data.numChildren !== session.search.numChildren || data.numInfants !== session.search.numChildren,
+        var passengersChanged = data.numAdults !== session.search.numAdults || data.numChildren !== session.search.numChildren || data.numInfants !== session.search.numInfants,
                 placesChanged = data.from.id !== session.search.from.id || data.to.id !== session.search.to.id,
                 departDateChanged = data.departDate.full !== session.search.departDate.full,
                 returnDateChanged = !session.search.oneWayTrip && data.returnDate.full !== session.search.returnDate.full;
@@ -467,7 +468,7 @@ $(function () {
         } else if (returnDateChanged) {       //Inbound trip changed, change only inbound trip
             clearInboundFlight();
             nextPage += "from=" + data.to.id + "&to=" + data.from.id + "&dep_date=" + data.returnDate.full + "&direction=inbound" + "&adults=" + data.numAdults + "&children=" + data.numChildren + "&infants=" + data.numInfants;
-            //TODO if return date is prior to arrival date, change outbound. Or should we just reset everything?            
+            //If return date is prior to arrival date, change outbound. Or should we just reset everything?            
         } else {  //No change, don't submit
             return;
         }
@@ -489,7 +490,7 @@ $(function () {
     });
 
     $("#nextStep").on("click", "> button", function () {
-        //TODO NOW handle changes (i.e. if came back from order summary and changed outbound, must choose inbound again)
+        //Handle changes (i.e. if came back from order summary and changed outbound, must choose inbound again)
         window.location = nextPage();
     });
 });
