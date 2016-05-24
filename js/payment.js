@@ -534,7 +534,7 @@ $(function () {
             $("#" + id + "").addClass("invalid");
             valid = false;
         }else if (!/^([A-zÀ-ÿ ]{1,})$/.test(data.state)) {
-            $("label[for="+id+"]").attr("data-error", "Ingrese la ciudad con solo números");
+            $("label[for="+id+"]").attr("data-error", "Ingrese una ciudad válida");
             $("#"+id+"").removeClass("valid");
             $("#"+id+"").addClass("invalid");
             valid = false;
@@ -839,7 +839,7 @@ function validateAllFields(){
          $("label[for="+id+"]").attr("data-error", "Ingrese la ciudad del titular");
         valid = false;
     }else if (!/^([A-zÀ-ÿ ]{1,})$/.test(data.state)) {
-        $("label[for="+id+"]").attr("data-error", "Ingrese la ciudad con solo números");
+        $("label[for="+id+"]").attr("data-error", "Ingrese una ciudad válida");
         $("#"+id+"").removeClass("valid");
         $("#"+id+"").addClass("invalid");
         valid = false;
