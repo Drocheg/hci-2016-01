@@ -391,14 +391,25 @@ app.controller('controller', function ($scope, $http) {
                 session.search.numInfants = 0;
                 session.search.numChildren = 0;
                 session.search.oneWayTrip = true;
-                session.search.max_Price = deal.price;
-                session.search.min_Price = deal.price;
-                session.search.to.name = deal.city.name;
-                session.search.to.id = deal.city.id;
-                session.search.from.id = from;
-
+                session.search.max_price = deal.price;
+                session.search.min_price = deal.price;
+                session.search.to = {
+                    name: deal.city.name,
+                    id: deal.city.id
+                };
+                session.search.from = {
+                    name: "Buenos Aires, Ciudad de Buenos Aires",
+                    id: from
+                };
+                var today = new Date();
+                today.setDate(today.getDate()+2);
+                var todayStr = today.getFullYear() + "-" + (today.getMonth() + 1 < 10 ? "0" : "") + (today.getMonth() + 1) + "-" + (today.getDate() < 10 ? "0" : "") + today.getDate();
+                session.search.departDate = {
+                    pretty: null,
+                    full: todayStr
+                };
                 setSessionData(session);
-                window.location = "flights-deal.html";
+                window.location = "flights-deal.html?from="+from+"&to="+deal.city.id+"&dep_date="+todayStr+"&direction=outbound&adults=1&children=0&infants=0";
             };
 
             $scope.getLastMinuteDeals = function (origin) {
