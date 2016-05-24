@@ -81,7 +81,7 @@ function nextPage() {
     var session = getSessionData();
     var nextPage = "index.html";        //Fall back to home if nothing is chosen
     if (!session.search.oneWayTrip && session.inboundFlight === null) {
-        nextPage = "flights.html?from=" + getGETparam("to") + "&to=" + getGETparam("from") + "&dep_date=" + session.search.returnDate.full + "&direction=inbound" + "&adults=" + getGETparam("adults") + "&children=" + getGETparam("adults") + "&infants=" + getGETparam("infants");
+        nextPage = "flights.html?from=" + getGETparam("to") + "&to=" + getGETparam("from") + "&dep_date=" + session.search.returnDate.full + "&direction=inbound" + "&adults=" + getGETparam("adults") + "&children=" + getGETparam("children") + "&infants=" + getGETparam("infants");
     } else {
 //        nextPage = session.state.hasPassengers ? (session.state.hasPayment ? "order-summary.html" : "payment.html") : "passengers-information.html";
         nextPage = "passengers-information.html";
@@ -284,6 +284,7 @@ $(function () {
 
     //Handle form submit
     $("#searchButton").on("click", function (event) {
+        debugger;
         event.preventDefault();
         var session = getSessionData();
         var data = {
@@ -449,7 +450,7 @@ $(function () {
         if (!valid) {
             return;
         }
-
+        debugger;
         //What did the user change?
         var passengersChanged = data.numAdults !== session.search.numAdults || data.numChildren !== session.search.numChildren || data.numInfants !== session.search.numChildren,
                 placesChanged = data.from.id !== session.search.from.id || data.to.id !== session.search.to.id,
