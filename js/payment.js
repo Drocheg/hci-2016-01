@@ -300,7 +300,7 @@ $(function () {
             $("#" + "cardNumber" + "").removeClass("valid");
             $("#" + "cardNumber" + "").addClass("invalid");
             valid = false;
-        }else if (!/^([0-9]{13,16})$/.test(data.cardNumber)) {
+        }else if (!/^([0-9]{1,})$/.test(data.cardNumber)) {
             $("label[for=cardNumber]").attr("data-error", "Ingrese la tarjeta con solo numeros");
             $("#cardNumber").removeClass("valid");
             $("#cardNumber").addClass("invalid");
@@ -308,6 +308,32 @@ $(function () {
         } else {
             $("#" + "cardNumber" + "").removeClass("invalid");
             $("#" + "cardNumber" + "").addClass("valid");
+        }
+        if(valid){
+            var number = $("#cardNumber").val();
+            var len = number.length;
+            if (len < 13) {
+                $("label[for=cardNumber]").attr("data-error", "No corresponde a un tarjeta valida");
+                $("#cardNumber").removeClass("valid");
+                $("#cardNumber").addClass("invalid");
+                 valid = false; 
+            }
+            var firstTwoDigits = number.substr(0, 2);
+            if ((firstTwoDigits === "34" || firstTwoDigits === "37") && len === 15) {
+//                return "American Express";
+            } else if (firstTwoDigits === "36" && len === 14) {
+//                return "Diners";
+            } else if ((firstTwoDigits === "51" || firstTwoDigits === "52" || firstTwoDigits === "53") && len === 16) {
+//                return "MasterCard";
+            } else if (number.charAt(0) === '4' && (len === 13 || len === 16)) {
+//                return "Visa";
+            } else {
+                $("label[for=cardNumber]").attr("data-error", "No corresponde a un tarjeta valida");
+                $("#cardNumber").removeClass("valid");
+                $("#cardNumber").addClass("invalid");
+                 valid = false;
+                 
+            }
         }
         
         if (data.cardExpiry === "" || data.cardExpiry === null) {
@@ -350,6 +376,11 @@ $(function () {
             $("#" + "cvv" + "").removeClass("invalid");
             $("#" + "cvv" + "").addClass("valid");
         }
+        
+        
+        
+        
+        
         
         //All data is in, validate credit card if needed
         //All data is in, validate credit card if needed
@@ -604,14 +635,40 @@ function validateAllFields(){
      if ($("#cardNumber").val() === "" || $("#cardNumber").val() === null) {
          $("label[for="+id+"]").attr("data-error", "Ingrese el numero de la tarjeta");
         valid = false;
-    }else if (!/^([0-9]{13,16})$/.test(data.cardNumber)) {
-        $("label[for=cardNumber]").attr("data-error", "La tarjeta debe tener entre 13 y 16 numeros");
+    }else if (!/^([0-9]{1,})$/.test(data.cardNumber)) {
+        $("label[for=cardNumber]").attr("data-error", "Ingrese la tarjeta con solo numeros");
         $("#cardNumber").removeClass("valid");
         $("#cardNumber").addClass("invalid");
         valid = false;
     } else {
         $("#" + "cardNumber" + "").removeClass("invalid");
         $("#" + "cardNumber" + "").addClass("valid");
+    }
+    if(valid){
+        var number = $("#cardNumber").val();
+        var len = number.length;
+        if (len < 13) {
+            $("label[for=cardNumber]").attr("data-error", "No corresponde a un tarjeta valida");
+            $("#cardNumber").removeClass("valid");
+            $("#cardNumber").addClass("invalid");
+             valid = false; 
+        }
+        var firstTwoDigits = number.substr(0, 2);
+        if ((firstTwoDigits === "34" || firstTwoDigits === "37") && len === 15) {
+//                return "American Express";
+        } else if (firstTwoDigits === "36" && len === 14) {
+//                return "Diners";
+        } else if ((firstTwoDigits === "51" || firstTwoDigits === "52" || firstTwoDigits === "53") && len === 16) {
+//                return "MasterCard";
+        } else if (number.charAt(0) === '4' && (len === 13 || len === 16)) {
+//                return "Visa";
+        } else {
+            $("label[for=cardNumber]").attr("data-error", "No corresponde a un tarjeta valida");
+            $("#cardNumber").removeClass("valid");
+            $("#cardNumber").addClass("invalid");
+             valid = false;
+
+        }
     }
 
     if (data.cardExpiry === "" || data.cardExpiry === null) {
