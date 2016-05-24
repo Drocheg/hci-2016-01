@@ -450,13 +450,9 @@ $(function () {
             $("#" + prefix + "sex" + "").addClass("valid");
         }
 
-                }
                 
-                if(data.sex==="Masculino" || data.sex==="Femenino"){
-                    $( "#" + prefix + 'sex'+ 'Error').html("");
-                    $("#"+prefix + "sex"+"").removeClass("invalid");
-                    $("#"+prefix + "sex"+"").addClass("valid");
-                }
+                
+               
                 
 //                if(isEmpty(data.sex,prefix + "sex")){
 ////                    $( "#" + prefix + 'sex'+ 'Error').html("");

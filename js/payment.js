@@ -335,7 +335,7 @@ $(function () {
                  
             }
         }
-        
+        debugger;
         if (data.cardExpiry === "" || data.cardExpiry === null) {
             $("label[for="+"cardExpiry"+"]").attr("data-error", "Ingrese la fecha de vencimiento");
             $("#" + "cardExpiry" + "").removeClass("valid");
@@ -352,15 +352,18 @@ $(function () {
         }
         
         var field = $("#cardExpiry");
-        if (valid && !isValidDate(field.val())) {
-            $("label[for=cardExpiry]").attr("data-error", "Ingrese una fecha válida");
-            field.removeClass("valid");
-            field.addClass("invalid");
-            valid = false;
-        } else {
-            field.removeClass("invalid");
-            field.addClass("valid");
+        if (valid){
+             if (!isValidDate(field.val())) {
+                $("label[for=cardExpiry]").attr("data-error", "Ingrese una fecha válida");
+                field.removeClass("valid");
+                field.addClass("invalid");
+                valid = false;
+            } else {
+                field.removeClass("invalid");
+                field.addClass("valid");
+            }
         }
+      
         
         if ($("#cvv").val()=== "" || $("#cvv").val() === null) {
             $("label[for="+"cvv"+"]").attr("data-error", "Ingrese el codigo de seguridad");
@@ -671,6 +674,7 @@ function validateAllFields(){
 
     if (data.cardExpiry === "" || data.cardExpiry === null) {
         $("label[for="+"cardExpiry"+"]").attr("data-error", "Ingrese la fecha de vencimiento");
+        
         valid = false;
     }else if (!/^([0-9]{2}\/[0-9]{2})$/.test(data.cardExpiry)) {
         $("label[for=cardExpiry]").attr("data-error", "Ingrese la fecha con el formato MM/AA");
@@ -683,7 +687,8 @@ function validateAllFields(){
     }
     
     var field = $("#cardExpiry");
-        if (valid && !isValidDate(field.val())) {
+    if(valid){
+        if ( !isValidDate(field.val())) {
             $("label[for=cardExpiry]").attr("data-error", "Ingrese una fecha válida");
             field.removeClass("valid");
             field.addClass("invalid");
@@ -691,7 +696,9 @@ function validateAllFields(){
         } else {
             field.removeClass("invalid");
             field.addClass("valid");
+        }
     }
+        
 
     if ($("#cvv").val()=== "" || $("#cvv").val() === null) {
          $("label[for="+"cvv"+"]").attr("data-error", "Ingrese el código de seguridad");
