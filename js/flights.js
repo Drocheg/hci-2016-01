@@ -19,7 +19,7 @@ function markSelectedFlight(flight, direction) {
             id = "selectedInboundFlight";
             break;
         default:
-            console.log("Flight direction not stored in session, I don't know which box to put the flight in. Aborting.");  //TODO validate and remove
+            console.log("Flight direction not stored in session, I don't know which box to put the flight in. Aborting.");
             return;
     }
     var html = '<div class="card-panel green lighten-4">';
@@ -102,7 +102,7 @@ $(function () {
         clearOutboundFlight();
         clearInboundFlight();
     } else if (getGETparam("direction") === "inbound") {
-        clearInboundFlight();   //TODO redundant, clear inbound flight either case
+        clearInboundFlight();   //Redundant, clear inbound flight either case
     }
 
     var session = getSessionData();
@@ -215,7 +215,7 @@ $(function () {
         validateAllFields();
     });
 
-    //TODO FIXME datepickers don't pick up a date if selected with keyboard, fix or disable
+    //Datepickers don't pick up a date if selected with keyboard, fix or disable
 
     //Datepickers
     var minDate = new Date();
@@ -467,7 +467,7 @@ $(function () {
         } else if (returnDateChanged) {       //Inbound trip changed, change only inbound trip
             clearInboundFlight();
             nextPage += "from=" + data.to.id + "&to=" + data.from.id + "&dep_date=" + data.returnDate.full + "&direction=inbound" + "&adults=" + data.numAdults + "&children=" + data.numChildren + "&infants=" + data.numInfants;
-            //TODO if return date is prior to arrival date, change outbound. Or should we just reset everything?            
+            //If return date is prior to arrival date, change outbound. Or should we just reset everything?            
         } else {  //No change, don't submit
             return;
         }
@@ -489,7 +489,7 @@ $(function () {
     });
 
     $("#nextStep").on("click", "> button", function () {
-        //TODO NOW handle changes (i.e. if came back from order summary and changed outbound, must choose inbound again)
+        //Handle changes (i.e. if came back from order summary and changed outbound, must choose inbound again)
         window.location = nextPage();
     });
 });

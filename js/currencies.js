@@ -21,7 +21,7 @@ $(function () {
                 var s = getSessionData();
                 s.preferences.currency = session.currencies[$("#currencies select").val()];
                 setSessionData(s);
-                window.location.reload();       //TODO won't update
+                window.location.reload();
             });
         }, 500);
     });
