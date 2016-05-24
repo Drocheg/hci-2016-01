@@ -235,28 +235,28 @@ $(function () {
 
             var form = "<div class=card-panel>\
                             <span class='card-title'>"+spanishGroups[index] + " " + (i + 1) + " de " + value+"</span>\
-                            <input type='hidden' id='"+ prefix +"groupNum' value='"+index+"' />\
+                            <input type='hidden' id='"+ prefix +"groupNum' value="+index+" />\
                             <div class='row'>\
                                 <div class='col s7 input-field'>\
                                     <i  class='material-icons prefix'>account_circle</i>\
                                     <label for=" + prefix + 'firstName' + " class='black-text' data-error='Por favor ingrese el nombre del pasajero'>Nombre</label>\
-                                    <input data-field ="+ prefix +" id=" + prefix + 'firstName' + " type='text' class='field validate'   placeholder=' ' >\
+                                    <input data-field ="+ prefix +" id=" + prefix + 'firstName' + " type='text' class='field'   placeholder=' ' >\
                                     <label id="+ prefix + 'firstName' + 'Error' + " class='red-text diegoSuperCoolLabel3'></label>\
                                 </div>\
                                 <div class='input-field col s2'> \
                                     <i class='material-icons prefix'>perm_contact_calendar</i>\
                                     <label for=" + prefix + 'day' + " class='black-text' data-error='' id='diegoBirthdayLabel'>Fecha de nacimiento</label>\
-                                    <input data-field ="+ prefix + " id=" + prefix + 'day' + " type='text'  class='field validate'    placeholder='Dia'> \
+                                    <input data-field ="+ prefix + " id=" + prefix + 'day' + " type='text'  class='field'    placeholder='Dia'> \
                                     <label id="+ prefix + 'day' + 'Error' + " class='red-text diegoSuperCoolLabel3'></label>\
                                 </div>\
                                 <div class='input-field col s1'> \
                                     <label for=" + prefix + 'month' + " class='black-text'></label> \
-                                    <input  data-field ="+ prefix + " id=" + prefix + 'month' + " type='text'  class='validate field'    placeholder='Mes'> \
+                                    <input  data-field ="+ prefix + " id=" + prefix + 'month' + " type='text'  class='field'    placeholder='Mes'> \
                                     <label id="+ prefix + 'month' + 'Error' + " class='red-text diegoSuperCoolLabel3'></label>\
                                 </div>\
                                 <div class='input-field col s2'>\
                                     <label for=" + prefix + 'year' + " class='black-text'></label>\
-                                    <input  data-field ="+ prefix + "  id=" + prefix + 'year' + " type='text'  class='validate field'    placeholder='Año'>\
+                                    <input  data-field ="+ prefix + "  id=" + prefix + 'year' + " type='text'  class='field'    placeholder='Año'>\
                                     <label id="+ prefix + 'year' + 'Error' + " class='red-text diegoSuperCoolLabel3'></label>\
                                 </div>\
                             </div>   \
@@ -264,13 +264,13 @@ $(function () {
                                 <div class='col s7 input-field'>\
                                     <i  class='material-icons prefix'>account_circle</i>\
                                     <label for=" + prefix + 'lastName' + " class='black-text' data data-error='Por favor ingrese el apellido del pasajero'>Apellido</label>\
-                                    <input data-field ="+ prefix +" id=" + prefix + 'lastName' + " type='text'  class='validate field' placeholder=' '   >\
+                                    <input data-field ="+ prefix +" id=" + prefix + 'lastName' + " type='text'  class='field' placeholder=' '   >\
                                     <label id="+ prefix + 'lastName' + 'Error' + " class='red-text diegoSuperCoolLabel3'></label>\
                                 </div>\
                                 <div class='col s5 input-field'>\
                                     <i class='material-icons prefix diegoIcon'>perm_identity</i>\
                                     <label id="+ prefix + 'sex' + 'Error' + " class='red-text diegoGenderLabel'></label>\
-                                    <select data-field ="+ prefix +" id=" + prefix + 'sex' + " class='validate field'   >\
+                                    <select data-field ="+ prefix +" id=" + prefix + 'sex' + " class='field'   >\
                                         <option value=''>Elegir sexo</option>\
                                         <option value='Masculino'>Masculino</option>\
                                         <option value='Femenino'>Femenino</option>\
@@ -280,7 +280,7 @@ $(function () {
                             <div class='row'>\
                                 <div class='col s4 input-field'>\
                                     <i class='material-icons prefix diegoIcon'>picture_in_picture</i>\
-                                    <select data-field ="+ prefix +" id=" + prefix + 'documentType' + " class='validate'   >\
+                                    <select data-field ="+ prefix +" id=" + prefix + 'documentType' + " class=''   >\
                                         <option value='DNI'>DNI</option>\
                                         <option value='Pasaporte'>Pasaporte</option>\
                                     </select>\
@@ -289,7 +289,7 @@ $(function () {
                                     <i  class='material-icons prefix'>picture_in_picture</i>\
                                     <label id="+ prefix + 'document' + 'Error' + " class='red-text diegoSuperCoolLabel3'></label>\
                                     <label for=" + prefix + 'document' + " class='black-text' data-error='Por favor ingrese el documento del pasajero'>Documento</label>\
-                                    <input data-field ="+ prefix +" id=" + prefix + 'document' + " type='text' class='validate field' placeholder=' '   >\
+                                    <input data-field ="+ prefix +" id=" + prefix + 'document' + " type='text' class='field' placeholder=' '   >\
                                 </div>\
                             </div>\
                              <div class='row'>\
@@ -336,24 +336,42 @@ $(function () {
                     document: $("#" + prefix + "document").val(),
                     documentType: $("#" + prefix + "documentType").val()
                 };
+                if(date.day!=="" && !/^([0-9]{1,2})$/.test(date.day)){
+                    dataIsValid = false;
+                    $("#" + prefix + 'day').removeClass("valid");
+                    $("#" + prefix + 'day').addClass("invalid"); 
+                    $("#" + prefix + 'day'+ 'Error').html("Ingrese en el formato DD MM AAAA");
+                }else{
+                    if(date.day!==""){
+                        $("#" + prefix + 'day').removeClass("invalid");
+                        $("#" + prefix + 'day').addClass("valid");
+                      }
+                }
+                
                 if(date.year!=="" && !/^([0-9]{4})$/.test(date.year)){
                     dataIsValid = false;
                     $("#" + prefix + 'year').removeClass("valid");
                     $("#" + prefix + 'year').addClass("invalid"); 
                     $("#" + prefix + 'day'+ 'Error').html("Ingrese en el formato DD MM AAAA");
+                }else{
+                    if(date.year!==""){
+                        $("#" + prefix + 'year').removeClass("invalid");
+                        $("#" + prefix + 'year').addClass("valid");
+                    }
                 }
                  if(date.month!=="" && !/^([0-9]{1,2})$/.test(date.month)){
                     dataIsValid = false;
                     $("#" + prefix + 'month').removeClass("valid");
                     $("#" + prefix + 'month').addClass("invalid"); 
                     $("#" + prefix + 'day'+ 'Error').html("Ingrese en el formato DD MM AAAA");
+                }else{
+                    if(date.month!==""){
+                        $("#" + prefix + 'month').removeClass("invalid");
+                        $("#" + prefix + 'month').addClass("valid");
+                    }
+                    
                 }
-                 if(date.day!=="" && !/^([0-9]{1,2})$/.test(date.day)){
-                    dataIsValid = false;
-                    $("#" + prefix + 'day').removeClass("valid");
-                    $("#" + prefix + 'day').addClass("invalid"); 
-                    $("#" + prefix + 'day'+ 'Error').html("Ingrese en el formato DD MM AAAA");
-                }
+                
                 
 
                 if(date.day!=="" && date.month!=="" && date.year!=="" && dataIsValid){
@@ -369,16 +387,17 @@ $(function () {
                         $("#" + prefix + 'day'+ 'Error').html("No corresponde a una fecha"); 
                     } else {
                         data.birthday = new Date(date.year, date.month - 1, date.day, 0, 0, 0, 0);
-                        if (!validateBirthday(data.birthday, $(prefix+"groupNum").val())) { //Valida si los groupos son lo que dice la fecha.
+                        debugger;
+                        console.log($("#" +prefix+"groupNum").val());
+                        if (!validateBirthday(data.birthday, Number($("#" +prefix+"groupNum").val()))) { //Valida si los groupos son lo que dice la fecha.
                             dataIsValid = false;
-                            
                             $("#" + prefix + 'day').removeClass("valid");
                             $("#" + prefix + 'day').addClass("invalid");
                             $("#" + prefix + 'month').removeClass("valid");
                             $("#" + prefix + 'month').addClass("invalid");
                             $("#" + prefix + 'year').removeClass("valid");
                             $("#" + prefix + 'year').addClass("invalid");
-                            $( "#" + prefix + 'day'+ 'Error').html("No corresponde a la edad de un "+ spanishGroups[index]); 
+                            $( "#" + prefix + 'day'+ 'Error').html("No corresponde a la edad de un "+ spanishGroups[Number($("#" +prefix+"groupNum").val())]); 
                         } else {
                             $("#" + prefix + 'day').removeClass("invalid");
                             $("#" + prefix + 'day').addClass("valid");
@@ -424,7 +443,7 @@ $(function () {
 
                 }
                 
-                 if(data.sex==="Masculino" || data.sex==="Femenino"){
+                if(data.sex==="Masculino" || data.sex==="Femenino"){
                     $( "#" + prefix + 'sex'+ 'Error').html("");
                     $("#"+prefix + "sex"+"").removeClass("invalid");
                     $("#"+prefix + "sex"+"").addClass("valid");
