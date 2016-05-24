@@ -81,7 +81,7 @@ function getSessionData() {
                 cardholderFirstName: null,
                 cardholderLastName: null,
                 cvv: null,
-                idNum: null,
+                idNum: 1,
                 id: null,
                 email: null,
                 zip: null,

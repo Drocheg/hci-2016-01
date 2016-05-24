@@ -348,36 +348,6 @@ app.controller('controller', function ($scope, $http) {
                             });
                 }
 
-            }
-
-            $scope.bookFlight = function (firstName, lastName, birthDate, idType, idNumber, installments, state, zip, street, streetNumber, phones, email, addressFloor, addressApartment) {
-                $scope.APIrequest(
-                        "booking",
-                        {method: "getflightdeals",
-                            first_name: firstName,
-                            last_name: lastName,
-                            birthDate: birthDate,
-                            id_type: idType,
-                            id_number: idNumber,
-                            installments: installments,
-                            state: state,
-                            zip_code: zip,
-                            street: street,
-                            number: streetNumber,
-                            phones: phones,
-                            email: email,
-                            floor: (typeof addressFloor === 'undefined' ? null : addressFloor),
-                            apartment: (typeof addressApartment === 'undefined' ? null : addressApartment)},
-                        function (response) {
-                            if (response.data.booking === true) {
-                                Materialize.toast("Reserva completada con éxito", 5000);
-                            } else {
-                                Materialize.toast("Error reservando su vuelo", 5000);
-                            }
-                        },
-                        undefined,
-                        undefined,
-                        "POST");
             };
 
             $scope.buildFlickURL = function (imgObj) {

@@ -39,6 +39,7 @@ function markSelectedFlight(flight, direction) {
     html += '<div class="col s2 center"><p><b>' + toSelectedCurrency(getFlightTotal(flight)) + '</b></p></div>';
     html += '</div>';
     $("#" + id).html(html);
+    $("#" + id + " > div.card-panel").addClass("activated");
     //Update total (angular isn't picking up the changes)
     $("#total").html(toSelectedCurrency(getSessionData().payment.total));
     enableNextStepBtn();
@@ -52,17 +53,21 @@ function markSelectedFlight(flight, direction) {
  */
 function enableNextStepBtn() {
     var s = getSessionData();
-    if(s.search.oneWayTrip) {
-        if(s.outboundFlight !== null) {
-            $("#nextStep button").removeAttr("disabled");
-            $("#nextStep button").removeClass("disabled");
+    var enable = false;
+    if (s.search.oneWayTrip) {
+        if (s.outboundFlight !== null) {
+            enable = true;
+        }
+    } else {
+        if (getGETparam('direction') === 'outbound' && s.outboundFlight !== null) {
+            enable = true;
+        } else if (getGETparam('direction') === 'inbound' /*&& s.outboundFlight !== null*/ && s.inboundFlight !== null) {
+            enable = true;
         }
     }
-    else {
-        if(s.outboundFlight !== null && s.inboundFlight !== null) {
-            $("#nextStep button").removeAttr("disabled");
-            $("#nextStep button").removeClass("disabled");
-        }
+    if (enable) {
+        $("#nextStep button").removeAttr("disabled");
+        $("#nextStep button").removeClass("disabled");
     }
 }
 
@@ -85,24 +90,23 @@ function nextPage() {
 }
 
 $(function () {
-   //Validate GET parameters
-   var requiredParams = ['from', 'to', 'dep_date', 'adults', 'children', 'infants'];
-   for(var index in requiredParams) {
-       if(getGETparam(requiredParams[index]) === null) {        //Redirect users to home on invalid parameters
-           window.location = "index.html";
-       }
-   }
+    //Validate GET parameters
+    var requiredParams = ['from', 'to', 'dep_date', 'adults', 'children', 'infants'];
+    for (var index in requiredParams) {
+        if (getGETparam(requiredParams[index]) === null) {        //Redirect users to home on invalid parameters
+            window.location = "index.html";
+        }
+    }
 
-    if(getGETparam("direction") === "outbound") {       //If there's a flight already selected for this direction, clear it
+    if (getGETparam("direction") === "outbound") {       //If there's a flight already selected for this direction, clear it
         clearOutboundFlight();
         clearInboundFlight();
-    }
-    else if(getGETparam("direction") === "inbound") {
+    } else if (getGETparam("direction") === "inbound") {
         clearInboundFlight();   //TODO redundant, clear inbound flight either case
     }
 
     var session = getSessionData();
-    
+
     //Mark current total
     $("#total").html(toSelectedCurrency(session.payment.total));
 
@@ -173,28 +177,41 @@ $(function () {
 //
 //    $("#toId").val("");
 //    $("#fromId").val("");
-    
+
     //Validate entered destinations
-    $('#from').on("change", function () {
-        $("#fromId").val("");
-    });
+//    $('#from').on("change", function () {
+//        $("#fromId").val("");
+//    });
+   
     $('#from').bind('typeahead:select', function (ev, suggestion) {
         $("#fromId").val(suggestion.id);
+        validateAllFields();
+        $("#fromId").attr("data-change","false");
     });
+    
 
     $('#to').bind('typeahead:select', function (ev, suggestion) {
         $("#toId").val(suggestion.id);
+        validateAllFields();
+        $("#toId").attr("data-change","false"); 
     });
-    $('#to').on("change", function () {
-        $("#fromId").val("");
-    });
+    
     $('#from').on('typeahead:change', function(){
+      
+       if($("#fromId").attr("data-change")==="true"){
+           $("#fromId").val("");
+       } 
        validateAllFields();
+       $("#fromId").attr("data-change","true"); 
     });
-
+    
     $('#to').on('typeahead:change', function(){
+       if($("#toId").attr("data-change")==="true"){
+           $("#toId").val("");
+       }   
        validateAllFields();
-    });   
+       $("#toId").attr("data-change","true"); 
+    });     
     
     $("#fromId, #toId, #numAdults, #numChildren, #numInfants, #departDate, #returnDate").change(function(){
         validateAllFields();
@@ -227,12 +244,12 @@ $(function () {
                 this.close();
             }
         },
-        onOpen: function() {
+        onOpen: function () {
             $("#fixedTopSection").css("z-index", "-1");     //Forcibly put cards behind calendar
             $(".flightCard").css("z-index", "-2");          //Forcibly put cards behind calendar
         },
-        onClose: function() {
-            setTimeout(function() { //Wait for the calendar's black cover to fade out
+        onClose: function () {
+            setTimeout(function () { //Wait for the calendar's black cover to fade out
                 $("#fixedTopSection").css("z-index", "");
                 $(".flightCard").css("z-index", "");
             }, 500);
@@ -242,25 +259,25 @@ $(function () {
     var returnDatePicker = $("#returnDate").pickadate(datePickerBaseOpts).pickadate("picker");  //How to access pickadate API with Materialize: http://stackoverflow.com/a/30324855/2333689
 //    returnDatePicker.set("select", new Date(session.search.returnDate.full));
 //    returnDatePicker.close();
-    
-    
+
+
     var departOptions = datePickerBaseOpts;
-    departOptions.onSet = function(arg) {
+    departOptions.onSet = function (arg) {
         if ('select' in arg) {
-                var depDate = arg.select.obj || new Date(arg.select);
-                var dStr = depDate.getFullYear() + "-" + (depDate.getMonth() + 1 < 10 ? "0" : "") + (depDate.getMonth() + 1) + "-" + (depDate.getDate() < 10 ? "0" : "") + depDate.getDate();
-                $("#" + this.get('id') + "Full").val(dStr);
-                this.close();
-                returnDatePicker.set("min", depDate);       //Set the minimum return date as the same day as departure,
-                returnDatePicker.set("highlight", depDate); //Highlight it,
-                depDate.setDate(depDate.getDate()+1);       //And select the next day
-                returnDatePicker.set("select", depDate);
+            var depDate = arg.select.obj || new Date(arg.select);
+            var dStr = depDate.getFullYear() + "-" + (depDate.getMonth() + 1 < 10 ? "0" : "") + (depDate.getMonth() + 1) + "-" + (depDate.getDate() < 10 ? "0" : "") + depDate.getDate();
+            $("#" + this.get('id') + "Full").val(dStr);
+            this.close();
+            returnDatePicker.set("min", depDate);       //Set the minimum return date as the same day as departure,
+            returnDatePicker.set("highlight", depDate); //Highlight it,
+            depDate.setDate(depDate.getDate() + 1);       //And select the next day
+            returnDatePicker.set("select", depDate);
 //                if(!$("#oneWayTrip").is(":checked")) {      //If NOT on a one-way trip, automatically open the next datepicker
 //                    setTimeout(function() {
 //                        returnDatePicker.open();
 //                    }, 250);
 //                }
-            }
+        }
     };
     var departDatePicker = $("#departDate").pickadate(departOptions).pickadate("picker");
 //    departDatePicker.set("select", new Date(session.search.departDate.full));
@@ -294,8 +311,8 @@ $(function () {
             numInfants: Number($("#numInfants").val())
         };
         //Validate
-        
-        
+
+
         var valid = true;
         //Origin
         if ($("#from").val() === "") {
@@ -303,12 +320,12 @@ $(function () {
             $("#from").removeClass("valid");
             $("#from").addClass("invalid");
             valid = false;
-        } else if(!isValidId(data.from.id)){
+        } else if (!isValidId(data.from.id)) {
             $("#" + "from" + "Error").html("Ingrese el nombre de un aeropuerto o ciudad valido");
             $("#from").removeClass("valid");
             $("#from").addClass("invalid");
             valid = false;
-        }else{
+        } else {
             $("#from").removeClass("invalid");
             $("#from").addClass("valid");
             $("#" + "from" + "Error").html("");
@@ -319,30 +336,30 @@ $(function () {
             $("#to").removeClass("valid");
             $("#to").addClass("invalid");
             valid = false;
-        } else if(!isValidId(data.to.id)){
+        } else if (!isValidId(data.to.id)) {
             $("#" + "to" + "Error").html("Ingrese el nombre de un aeropuerto o ciudad valido");
             $("#to").removeClass("valid");
             $("#to").addClass("invalid");
             valid = false;
-        }else{
+        } else {
             $("#to").removeClass("invalid");
             $("#to").addClass("valid");
             $("#" + "to" + "Error").html("");
         }
-        
-        if(valid && data.from.id===data.to.id ){
+
+        if (valid && data.from.id === data.to.id) {
             $("#" + "from" + "Error").html("El lugar de origen y destino no pueden ser el mismo");
             $("#from").removeClass("valid");
             $("#from").addClass("invalid");
             $("#to").removeClass("valid");
             $("#to").addClass("invalid");
             valid = false;
-        }else{
-            if(valid){
+        } else {
+            if (valid) {
                 $("#" + "from" + "Error").html("");
             }
         }
-        
+
         //Departure date
         if ($("#departDate").val() === "") {
             $("#" + "departDate" + "Error").html("Ingrese la fecha de ida");
@@ -374,34 +391,45 @@ $(function () {
         }
         debugger;
         //Passengers:
-        var isPassengersNumbers=true;
-        if( !/^([0-9]{0,})$/.test(data.numAdults)){
+        var isPassengersNumbers = true;
+        if (!/^([0-9]{0,})$/.test(data.numAdults)) {
             $("#" + "numAdults" + "Error").html("Ingrese solo números");
-            isPassengersNumbers=false;
+            isPassengersNumbers = false;
             valid = false;
             $("#numAdults").removeClass("valid");
-                $("#numAdults").addClass("invalid");
-               
+            $("#numAdults").addClass("invalid");
+        }else{
+            $("#" + "numAdults" + "Error").html("");
+            $("#numAdults").removeClass("invalid");
+            $("#numAdults").addClass("valid");
         }
-        if( !/^([0-9]{0,})$/.test(data.numChildren)){
+        if (!/^([0-9]{0,})$/.test(data.numChildren)) {
             $("#" + "numChildren" + "Error").html("Ingrese solo números");
-            isPassengersNumbers=false;
+            isPassengersNumbers = false;
             valid = false;
            
                 $("#numChildren").removeClass("valid");
                 $("#numChildren").addClass("invalid");
                
+        }else{
+            $("#" + "numChildren" + "Error").html("");
+            $("#numChildren").removeClass("invalid");
+            $("#numChildren").addClass("valid");
         }
-        if( !/^([0-9]{0,})$/.test(data.numInfants)){
+        if (!/^([0-9]{0,})$/.test(data.numInfants)) {
             $("#" + "numInfants" + "Error").html("Ingrese solo números");
-            isPassengersNumbers=false;
+            isPassengersNumbers = false;
             valid = false;
            
                 $("#numInfants").removeClass("valid");
                 $("#numInfants").addClass("invalid");
+        }else{
+            $("#" + "numInfants" + "Error").html("");
+            $("#numInfants").removeClass("invalid");
+            $("#numInfants").addClass("valid");
         }
-       
-        if(isPassengersNumbers){
+
+        if (isPassengersNumbers) {
             //Passengers: At least one must fly
             if (data.numAdults === 0 && data.numChildren === 0 && data.numInfants === 0) {
                 $("#" + "numAdults" + "Error").html("Por favor ingrese al menos un pasajero (minimo un adulto)");
@@ -429,7 +457,7 @@ $(function () {
                 $("#" + "numAdults" + "Error").html("");
             }
         }
-        
+
 
         if (!valid) {
             return;
@@ -440,17 +468,16 @@ $(function () {
                 placesChanged = data.from.id !== session.search.from.id || data.to.id !== session.search.to.id,
                 departDateChanged = data.departDate.full !== session.search.departDate.full,
                 returnDateChanged = !session.search.oneWayTrip && data.returnDate.full !== session.search.returnDate.full;
-       
+
         var nextPage = "flights.html?";
         if (placesChanged || passengersChanged || departDateChanged) {  //Destinations, passengers or departure date changed, reset everything
             clearOutboundFlight();
             clearInboundFlight();
-            if(passengersChanged) {
+            if (passengersChanged) {
                 session.state.hasPassengers = false;
             }
             nextPage += "from=" + data.from.id + "&to=" + data.to.id + "&dep_date=" + data.departDate.full + "&direction=outbound" + "&adults=" + data.numAdults + "&children=" + data.numChildren + "&infants=" + data.numInfants;
-        }
-        else if (returnDateChanged) {       //Inbound trip changed, change only inbound trip
+        } else if (returnDateChanged) {       //Inbound trip changed, change only inbound trip
             clearInboundFlight();
             nextPage += "from=" + data.to.id + "&to=" + data.from.id + "&dep_date=" + data.returnDate.full + "&direction=inbound" + "&adults=" + data.numAdults + "&children=" + data.numChildren + "&infants=" + data.numInfants;
             //TODO if return date is prior to arrival date, change outbound. Or should we just reset everything?            
@@ -485,19 +512,19 @@ function isValidId(id) {
     var session = getSessionData();
     var cities = session.cities;
     var airports = session.airports;
-    for(var i=0; i<airports.length; i++){
-        if(airports[i].id==id){
+    for (var i = 0; i < airports.length; i++) {
+        if (airports[i].id === id) {
             return true;
         }
     }
-    for(var i=0; i<cities.length; i++){
-        if(cities[i].id==id){
+    for (var i = 0; i < cities.length; i++) {
+        if (cities[i].id === id) {
             return true;
         }
     }
-    
+
     return false;
-    
+
 }
 
 
@@ -531,7 +558,7 @@ function validateAllFields(){
         var valid = true;
         //Origin
         if ($("#from").val() === "") {
-            
+            valid = false;
         } else if(!isValidId(data.from.id)){
             $("#" + "from" + "Error").html("Ingrese el nombre de un aeropuerto o ciudad valido");
             $("#from").removeClass("valid");
@@ -544,7 +571,7 @@ function validateAllFields(){
         }
         //Destination
         if ($("#to").val() === "") {
-            
+            valid = false;
         } else if(!isValidId(data.to.id)){
             $("#" + "to" + "Error").html("Ingrese el nombre de un aeropuerto o ciudad valido");
             $("#to").removeClass("valid");
@@ -586,22 +613,51 @@ function validateAllFields(){
 //                $("#returnDate").removeClass("valid");
 //                $("#returnDate").addClass("invalid");
 //                valid = false;
-            } else {
-                $("#returnDate").removeClass("invalid");
-                $("#returnDate").addClass("valid");
-                $("#" + "returnDate" + "Error").html("");
-            }
+        } else {
+            $("#returnDate").removeClass("invalid");
+            $("#returnDate").addClass("valid");
+            $("#" + "returnDate" + "Error").html("");
         }
-        
-         //Passengers:
-        var isPassengersNumbers=true;
-        if( !/^([0-9]{0,})$/.test(data.numAdults)){
-            $("#" + "numAdults" + "Error").html("Ingrese solo números");
-            isPassengersNumbers=false;
-            valid = false;
+    }
+
+    //Passengers:
+    var isPassengersNumbers = true;
+    if (!/^([0-9]{0,})$/.test(data.numAdults)) {
+        $("#" + "numAdults" + "Error").html("Ingrese solo números");
+        isPassengersNumbers = false;
+        valid = false;
+        $("#numAdults").removeClass("valid");
+        $("#numAdults").addClass("invalid");
+
+    }
+    if (!/^([0-9]{0,})$/.test(data.numChildren)) {
+        $("#" + "numChildren" + "Error").html("Ingrese solo números");
+        isPassengersNumbers = false;
+        valid = false;
+
+        $("#numChildren").removeClass("valid");
+        $("#numChildren").addClass("invalid");
+
+    }
+    if (!/^([0-9]{0,})$/.test(data.numInfants)) {
+        $("#" + "numInfants" + "Error").html("Ingrese solo números");
+        isPassengersNumbers = false;
+        valid = false;
+
+        $("#numInfants").removeClass("valid");
+        $("#numInfants").addClass("invalid");
+    }
+
+    if (isPassengersNumbers) {
+        //Passengers: At least one must fly
+        if (data.numAdults === 0 && data.numChildren === 0 && data.numInfants === 0) {
+            $("#" + "numAdults" + "Error").html("Por favor ingrese al menos un pasajero (minimo un adulto)");
             $("#numAdults").removeClass("valid");
-                $("#numAdults").addClass("invalid");
-               
+            $("#numAdults").addClass("invalid");
+        }else{
+            $("#" + "numAdults" + "Error").html("");
+            $("#numAdults").removeClass("invalid");
+            $("#numAdults").addClass("valid");
         }
         if( !/^([0-9]{0,})$/.test(data.numChildren)){
             $("#" + "numChildren" + "Error").html("Ingrese solo números");
@@ -611,43 +667,24 @@ function validateAllFields(){
                 $("#numChildren").removeClass("valid");
                 $("#numChildren").addClass("invalid");
                
+        }else{
+            $("#" + "numChildren" + "Error").html("");
+            $("#numChildren").removeClass("invalid");
+            $("#numChildren").addClass("valid");
         }
-        if( !/^([0-9]{0,})$/.test(data.numInfants)){
-            $("#" + "numInfants" + "Error").html("Ingrese solo números");
-            isPassengersNumbers=false;
+        //Passengers: Infants and children can't travel without adults
+        else if (data.numAdults === 0) {
+            $("#" + "numAdults" + "Error").html("No se pueden viajar sin adultos");
+            $("#numAdults").removeClass("valid");
+            $("#numAdults").addClass("invalid");
             valid = false;
-           
-                $("#numInfants").removeClass("valid");
-                $("#numInfants").addClass("invalid");
+            $("#numInfants").removeClass("valid");
+            $("#numInfants").addClass("invalid");
+        }else{
+            $("#" + "numInfants" + "Error").html("");
+            $("#numInfants").removeClass("invalid");
+            $("#numInfants").addClass("valid");
         }
-       
-        if(isPassengersNumbers){
-            //Passengers: At least one must fly
-            if (data.numAdults === 0 && data.numChildren === 0 && data.numInfants === 0) {
-                $("#" + "numAdults" + "Error").html("Por favor ingrese al menos un pasajero (minimo un adulto)");
-                $("#numAdults").removeClass("valid");
-                $("#numAdults").addClass("invalid");
-                $("#numChildren").removeClass("valid");
-                $("#numChildren").addClass("invalid");
-                $("#numInfants").removeClass("valid");
-                $("#numInfants").addClass("invalid");
-                valid = false;
-            }
-            //Passengers: Infants and children can't travel without adults
-            else if (data.numAdults === 0) {
-                $("#" + "numAdults" + "Error").html("No se pueden viajar sin adultos");
-                $("#numAdults").removeClass("valid");
-                $("#numAdults").addClass("invalid");
-                valid = false;
-            } else {
-                $("#numAdults").removeClass("invalid");
-                $("#numAdults").addClass("valid");
-                $("#numChildren").removeClass("invalid");
-                $("#numChildren").addClass("valid");
-                $("#numInfants").removeClass("invalid");
-                $("#numInfants").addClass("valid");
-                $("#" + "numAdults" + "Error").html("");
-            }
-        }
-    
+    }
+
 }

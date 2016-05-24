@@ -19,6 +19,23 @@
     margin-top: -2.3%; 
     
 }
+.homeLabelDate {
+    font-size: 0.8rem;
+    position: absolute;
+    margin-top: -23%;
+    margin-left: 13%;
+    opacity: 0.5;
+}
+
+.flightLabelDate {
+    font-size: 0.8rem;
+    position: absolute;
+    margin-top: -16%;
+    margin-left: -1%;
+    opacity: 0.5;
+}
+
+
 .reviewCard {
     padding: 0 !important;
     border-radius:10px;
@@ -144,11 +161,14 @@
     margin-top: 245px;
 }
 
+.activated {
+    padding:0;
+}
+
 #selectedOutboundFlight .card-panel, #selectedInboundFlight .card-panel {
     border-color:grey;
     border-style: dashed;
     height: 70px;
-    /*padding:20px;*/
 }
 
 #selectedOutboundFlight .card-panel p, #selectedInboundFlight .card-panel p {
