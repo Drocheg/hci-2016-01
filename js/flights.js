@@ -179,26 +179,37 @@ $(function () {
 //    $("#fromId").val("");
 
     //Validate entered destinations
-    $('#from').on("change", function () {
-        $("#fromId").val("");
-    });
+    
     $('#from').bind('typeahead:select', function (ev, suggestion) {
         $("#fromId").val(suggestion.id);
+        validateAllFields();
+        $("#fromId").attr("data-change","false");
     });
+    
 
     $('#to').bind('typeahead:select', function (ev, suggestion) {
         $("#toId").val(suggestion.id);
-    });
-    $('#to').on("change", function () {
-        $("#fromId").val("");
-    });
-    $('#from').on('typeahead:change', function () {
         validateAllFields();
+        $("#toId").attr("data-change","false"); 
     });
+    
+    $('#from').on('typeahead:change', function(){
+      
+       if($("#fromId").attr("data-change")==="true"){
+           $("#fromId").val("");
+       } 
+       validateAllFields();
+       $("#fromId").attr("data-change","true"); 
+    });
+    
+    $('#to').on('typeahead:change', function(){
+       if($("#toId").attr("data-change")==="true"){
+           $("#toId").val("");
+       }   
+       validateAllFields();
+       $("#toId").attr("data-change","true"); 
+    });   
 
-    $('#to').on('typeahead:change', function () {
-        validateAllFields();
-    });
 
     $("#fromId, #toId, #numAdults, #numChildren, #numInfants, #departDate, #returnDate").change(function () {
         validateAllFields();
