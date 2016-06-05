@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en" data-ng-app="app" data-ng-controller="controller" data-ng-init="searchFlights({sort_key:'total', sort_order:'asc', max_price:session.search.max_price, min_price:session.search.min_price})">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
+        <title>Vuelos - Página de Vuelos</title>
+
+        <!-- CSS  -->
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <link href="css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+        <link href="css/style.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+        <link rel="icon" href="img/favicon.png">
+    </head>
+    <body>
+        <header>
+            <nav id="flightsNav" role="navigation" data-ng-include="'includes/nav.html'" onload="currenciesSelectInFlightsPage()"></nav>
+        </header>
+
+        <main id="flightsMain">
+            <div>
+                <div class="row">
+                    <!--FIXED TOP SECTION-->
+                    <div id="fixedTopSection" class="col s12">
+                        <!--SELECTED FLIGHT(S) BOX(ES)-->
+                        <div id="selectedOutboundFlight" class="col s9" data-ng-class="{onlyOutboundFlight: session.search.oneWayTrip}">
+                            <div class="card-panel grey lighten-1 white-text center">
+                                Ida
+                            </div>
+                        </div>
+                        <div class="col s3 center">
+                            <h5>
+                                <b>Total: <span id="total"></span></b>
+                            </h5>
+                        </div>
+                        <div data-ng-show="!session.search.oneWayTrip" id="selectedInboundFlight" class="col s9">
+                            <div class="card-panel grey lighten-1 white-text center">
+                                Vuelta
+                            </div>
+                        </div>                        
+                        <div class="col s3 center" id="nextStep">
+                            <button class="btn waves-effect waves-light disabled" disabled>{{session.search.oneWayTrip|| session.outboundFlight !== null ? 'Siguiente' : 'Elegir Vuelta'}}<i class="material-icons right">send</i></button>
+                        </div>
+                        <!--END SELECTED FLIGHT(S) BOX(ES)-->
+                        <div class="col s12 center" data-ng-show='flights !== null' id="searchResults">
+                            <span class="bigText">{{flights.total}} vuelo{{flights.total === 1 ? '' : 's'}} de <b>{{getGETparam('from')}}</b> a <b>{{getGETparam('to')}}</b> encontrado{{flights.total === 1 ? '' : 's'}} para el {{getGETparam("dep_date")}}</span>
+                            <div data-ng-show="flights.total > 1">
+                                <span class="bigText">, ordenados por</span>
+                                <div id="criteria" class="input-field">
+                                    <select data-ng-model="criteria">
+                                        <option selected value="total">Precio</option>
+                                        <option value="airline">Aerolínea</option>
+                                        <option value="duration">Duración</option>
+                                    </select>
+                                </div>
+                                <div id="order" class="input-field">
+                                    <select data-ng-model="order">
+                                        <option selected value="asc">Ascendente</option>
+                                        <option value="desc">Descendente</option>
+                                    </select>
+                                </div>
+                                <span class="bigText"> en páginas de </span>
+                                <div id="resultsPerPage" class="input-field">
+                                    <select ng-model="resultsPerPage">
+                                        <option selected value="10">10</option>
+                                        <option value="20">20</option>
+                                        <option value="30">30</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col s12 divider"></div>
+                    </div>
+                    <!--END FIXED TOP SECTION-->
+                    <!--SEARCH RESULTS-->
+                    <div id="flightsSection" class="col s12" data-ng-class="{onlyOutboundSection: session.search.oneWayTrip, bothWaysSection: !session.search.oneWayTrip}">
+                        <div class="col s12">
+                            <!--PRELOADER-->
+                            <div class="row" data-ng-show="flights === null">
+                                <div class="center">
+                                    <h2>Buscando vuelos...</h2>
+                                    <div class="preloader-wrapper big active">
+                                        <div class="spinner-layer spinner-blue">
+                                            <div class="circle-clipper left">
+                                                <div class="circle"></div>
+                                            </div><div class="gap-patch">
+                                                <div class="circle"></div>
+                                            </div><div class="circle-clipper right">
+                                                <div class="circle"></div>
+                                            </div>
+                                        </div>
+
+                                        <div class="spinner-layer spinner-red">
+                                            <div class="circle-clipper left">
+                                                <div class="circle"></div>
+                                            </div><div class="gap-patch">
+                                                <div class="circle"></div>
+                                            </div><div class="circle-clipper right">
+                                                <div class="circle"></div>
+                                            </div>
+                                        </div>
+
+                                        <div class="spinner-layer spinner-yellow">
+                                            <div class="circle-clipper left">
+                                                <div class="circle"></div>
+                                            </div><div class="gap-patch">
+                                                <div class="circle"></div>
+                                            </div><div class="circle-clipper right">
+                                                <div class="circle"></div>
+                                            </div>
+                                        </div>
+
+                                        <div class="spinner-layer spinner-green">
+                                            <div class="circle-clipper left">
+                                                <div class="circle"></div>
+                                            </div><div class="gap-patch">
+                                                <div class="circle"></div>
+                                            </div><div class="circle-clipper right">
+                                                <div class="circle"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <!--END PRELOADER-->
+                            <div id="flights" class="row lighten-4" data-ng-show="flights !== null">
+                                <!--FLIGHT CARDS-->
+                                <div class="card col s12 flightCard black-text" data-ng-show="flights.flights.length > 0" data-ng-repeat="flight in flights.flights">
+                                    <div class="card-action green lighten-4">
+                                        <p class="card-title">
+                                            <span class="col s6">
+                                                <img src="{{getFlightAirlineLogoURL(flight)}}" alt="{{getFlightAirlineName(flight)}}"/>
+                                                {{getFlightAirlineName(flight)}} ({{getFlightAirlineID(flight)}}) #{{getFlightNumber(flight)}}
+                                            </span>
+                                            <span class="col s2">
+                                                {{getGETparam('direction') === "outbound" ? "Ida" : "Vuelta"}}
+                                            </span>
+                                            <span class="col s2 offset-s2">
+                                                <b>{{toSelectedCurrency(getFlightTotal(flight))}}</b>
+                                            </span>
+                                        </p>
+                                    </div>
+                                    <div class="card-content">
+                                        <div class="col s4">
+                                            <div data-ng-show="getGETparam('adults') > 0" class="col s6">Adultos</div>
+                                            <div data-ng-show="getGETparam('adults') > 0" class="col s6">{{toSelectedCurrency(flight.price.adults.base_fare)}} x {{flight.price.adults.quantity}}</div>
+                                            <div data-ng-show="getGETparam('children') > 0" class="col s6">Niños</div>
+                                            <div data-ng-show="getGETparam('children') > 0" class="col s6">{{toSelectedCurrency(flight.price.children.base_fare)}} x {{flight.price.children.quantity}}</div>
+                                            <div data-ng-show="getGETparam('infants') > 0" class="col s6">Infantes</div>
+                                            <div data-ng-show="getGETparam('infants') > 0" class="col s6">{{toSelectedCurrency(flight.price.infants.base_fare)}} x {{flight.price.infants.quantity}}</div>
+                                            <div class="col s6">Cargos</div>
+                                            <div class="col s6">{{toSelectedCurrency(flight.price.total.charges)}}</div>
+                                            <div class="col s6">Impuestos</div>
+                                            <div class="col s6">{{toSelectedCurrency(flight.price.total.taxes)}}</div>
+                                            <div class="divider col s12"></div>
+                                            <div class="col s6 flightTotal"><b>Total</b></div>
+                                            <div class="col s6 flightTotal"><b>{{toSelectedCurrency(getFlightTotal(flight))}}</b></div>
+                                            <div class="col s6 offset-s2 selectFlightBtnContainer">
+                                                <button class="btn-large waves waves-light selectFlightBtn" data-ng-click="selectFlight(flight)">Seleccionar</button>
+                                            </div>
+                                        </div>
+                                        <div class="col s8 card-title center">
+                                            <div class="row">
+                                                <div class="col s4">
+                                                    <p>{{getDepartureDateObj(flight) | date:'HH:mm'}} - {{getOriginAirport(flight).id}}</p>
+                                                    <p class="smallDest">{{getOriginAirport(flight).description}}</p>
+                                                </div>
+                                                <div class="col s4">
+                                                    <i class="material-icons col s1 flightArrow">send</i>
+                                                </div>
+                                                <div class="col s4">
+                                                    <p>{{getArrivalDateObj(flight) | date: 'HH:mm'}} - {{getDestinationAirport(flight).id}} <span data-ng-if='(getArrivalDateObj(flight).getDate() !== getDepartureDateObj(flight).getDate())' class='tooltipped' data-position='bottom' data-tooltip='Llega el día siguiente'> (+1)</span></p>
+                                                    <p class="smallDest">{{getDestinationAirport(flight).description}}</p>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col s4">
+                                                    <p><i class="material-icons">timer</i>  {{getFlightDuration(flight)}}</p>
+                                                </div>
+                                                <div class="col s4">
+                                                    <p><i class="material-icons">flight</i>  {{getStopoversCount(flight) === 0 ? 'Directo' : getStopoversCount(flight) + ' Escalas'}}</p>
+                                                </div>
+                                                <div class="col s4">
+                                                    <p><a href="reviews.html?airlineId={{getFlightAirlineID(flight)}}&flightNum={{getFlightNumber(flight)}}" target="_blank" class='tooltipped' data-position='bottom' data-tooltip="Click para ver comentarios de {{getFlightAirlineID(flight)}} #{{getFlightNumber(flight)}}"><i class="material-icons">star</i>  {{session.airlines[getFlightAirlineID(flight)].rating || 'N/D'}}</a></p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--END FLIGHT CARDS-->
+                            </div>
+                            <!--PAGINATION-->
+                            <div id="paginationContainer" data-ng-if="flightPages.length > 1"> <!-- Only show pagination if there's more than 1 page -->
+                                <ul class="pagination center-align">
+                                    <li data-ng-class="{disabled: currentFlightsPage === 1, 'waves-effect': currentFlightsPage !== 1}" data-ng-click="decrementPage('currentFlightsPage')"><a href="#!"><i class="material-icons">chevron_left</i></a></li>
+                                    <li data-ng-repeat="page in flightPages track by $index" data-ng-class="{active: currentFlightsPage === $index + 1, 'waves-effect': currentFlightsPage !== $index + 1}" data-ng-click="goToPage('currentFlightsPage', $index + 1)" ><a href="#!">{{$index + 1}}</a></li>
+                                    <li data-ng-class="{disabled: currentFlightsPage === flightPages.length, 'waves-effect': currentFlightsPage !== flightPages.length}" data-ng-click="incrementPage('currentFlightsPage', flightPages.length)"><a href="#!"><i class="material-icons">chevron_right</i></a></li>
+                                </ul>
+                            </div>
+                            <!--END PAGINATION-->
+                        </div>
+                    </div>
+                    <!--END SEARCH RESULTS-->
+                </div>
+            </div>
+        </main>
+
+        <footer class="page-footer"  data-ng-include="'includes/footer.html'"></footer>
+
+        <!--  Scripts-->
+        <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+        <script src="js/materialize.js"></script>
+        <script src='js/commonFunctions.js'></script>
+        <script src="js/init.js"></script>
+        <script src='js/angular.min.js'></script>
+        <script src='js/controllers.js'></script>
+        <script src="js/angular-materialize.js"></script>
+        <script src='js/currencies.js'></script>
+
+        <script src='js/deals.js'></script>
+    </body>
+</html></html>
