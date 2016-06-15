@@ -3,6 +3,7 @@ package hci.itba.edu.ar.tpe2.fragment;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ListFragment;
 import android.view.View;
 import android.widget.ListView;
@@ -14,19 +15,17 @@ import java.util.List;
 import hci.itba.edu.ar.tpe2.FlightDetailsActivity;
 import hci.itba.edu.ar.tpe2.FlightsActivity;
 import hci.itba.edu.ar.tpe2.backend.data.Flight;
+import hci.itba.edu.ar.tpe2.backend.data.PersistentData;
 
 /**
  * A fragment representing a list of Flights.
- * <p/><p/>
- * Activities containing this fragment MAY implement the {@link OnFragmentInteractionListener}
- * interface. If not implemented, fragment falls back to standard behavior defined in
- * {@link DefaultInteractionHandler}.
  */
 public class FlightsListFragment extends ListFragment {
     public static final String PARAM_FLIGHTS_LIST = "hci.itba.edu.ar.tpe2.fragment.FlightsListFragment.FLIGHTS_LIST";
 
-    private OnFragmentInteractionListener interactionListener;
+    private FlightAdapter flightAdapter;
     private List<Flight> flights;
+    private Activity activity;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -55,7 +54,8 @@ public class FlightsListFragment extends ListFragment {
                 flights = Collections.EMPTY_LIST;
             }
         }
-        setListAdapter(new FlightAdapter(getActivity(), flights));
+        flightAdapter = new FlightAdapter(activity, flights);
+        setListAdapter(flightAdapter);
     }
 
     @Override
@@ -67,24 +67,57 @@ public class FlightsListFragment extends ListFragment {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        try {
-            interactionListener = (OnFragmentInteractionListener) activity;
-        } catch (ClassCastException e) {
-//            throw new ClassCastException(activity.toString()
-//                    + " must implement OnFragmentInteractionListener");
-            interactionListener = new DefaultInteractionHandler();
-        }
+        this.activity = activity;
+//        try {
+//            interactionListener = (OnFragmentInteractionListener) activity;
+//        } catch (ClassCastException e) {
+////            throw new ClassCastException(activity.toString()
+////                    + " must implement OnFragmentInteractionListener");
+//            interactionListener = this;
+//        }
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        interactionListener = null;
     }
 
     @Override
     public void onListItemClick(ListView listView, View view, int position, long id) {
-        interactionListener.onFlightClicked((Flight) listView.getItemAtPosition(position));
+        onFlightClicked((Flight) listView.getItemAtPosition(position));
+    }
+
+    //    @Override
+    public void onFlightClicked(Flight clickedFlight) {
+        Intent detailsIntent = new Intent(activity, FlightDetailsActivity.class);
+        detailsIntent.putExtra(FlightDetailsActivity.PARAM_FLIGHT, clickedFlight);
+        startActivity(detailsIntent);
+    }
+
+    //    @Override
+    public boolean onFlightStarred(final Flight starredFlight) {
+        PersistentData.getInstance().addFollowedFlight(starredFlight, activity);
+        Snackbar.make(getView(), "Following " + starredFlight.toString(), Snackbar.LENGTH_LONG).setAction("Undo", new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PersistentData.getInstance().removeFollowedFlight(starredFlight, activity);
+                flightAdapter.unstar(starredFlight);
+            }
+        }).show();
+        return true;
+    }
+
+    //    @Override
+    public boolean onFlightUnstarred(final Flight unstarredFlight) {
+        PersistentData.getInstance().removeFollowedFlight(unstarredFlight, activity);
+        Snackbar.make(getView(), "Removed " + unstarredFlight.toString(), Snackbar.LENGTH_LONG).setAction("Undo", new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PersistentData.getInstance().addFollowedFlight(unstarredFlight, activity);
+                flightAdapter.star(unstarredFlight);
+            }
+        }).show();
+        return true;
     }
 
     /**
@@ -99,16 +132,23 @@ public class FlightsListFragment extends ListFragment {
          * @param clickedFlight The clicked flight.
          */
         void onFlightClicked(Flight clickedFlight);
+
+        /**
+         * Called when a flight is starred. Default behavior is to add it to followed flights, and
+         * show a Snackbar. The return value will determine whether the star icon changes or not.
+         *
+         * @param starredFlight The starred flight.
+         * @return {@code true} If the star icon should toggle, {@code false} otherwise.
+         */
+        boolean onFlightStarred(Flight starredFlight);
+
+        /**
+         * Called when a flight is unstarred. Default behavior is to remove it from followed flights,
+         * and show a Snackbar.
+         *
+         * @param unstarredFlight The unstarred flight.
+         * @return {@code true} If the star icon should toggle, {@code false} otherwise.
+         */
+        boolean onFlightUnstarred(Flight unstarredFlight);
     }
-
-    private class DefaultInteractionHandler implements OnFragmentInteractionListener {
-
-        @Override
-        public void onFlightClicked(Flight clickedFlight) {
-            Intent detailsIntent = new Intent(getActivity(), FlightDetailsActivity.class);
-            detailsIntent.putExtra(FlightDetailsActivity.PARAM_FLIGHT, clickedFlight);
-            startActivity(detailsIntent);
-        }
-    }
-
 }

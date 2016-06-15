@@ -34,7 +34,7 @@ import hci.itba.edu.ar.tpe2.backend.network.NetworkRequestCallback;
 import hci.itba.edu.ar.tpe2.fragment.FlightsListFragment;
 
 public class FlightsActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, FlightsListFragment.OnFragmentInteractionListener {
 
     private FlightsListFragment flightsFragment;
 
@@ -279,5 +279,20 @@ public class FlightsActivity extends AppCompatActivity
             ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(this).build();
             ImageLoader.getInstance().init(config);
         }
+    }
+
+    @Override
+    public void onFlightClicked(Flight clickedFlight) {
+        flightsFragment.onFlightClicked(clickedFlight);
+    }
+
+    @Override
+    public boolean onFlightStarred(Flight starredFlight) {
+        return flightsFragment.onFlightStarred(starredFlight);
+    }
+
+    @Override
+    public boolean onFlightUnstarred(Flight unstarredFlight) {
+        return flightsFragment.onFlightUnstarred(unstarredFlight);
     }
 }

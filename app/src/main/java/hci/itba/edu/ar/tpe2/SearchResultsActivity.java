@@ -30,7 +30,7 @@ import hci.itba.edu.ar.tpe2.backend.network.API;
 import hci.itba.edu.ar.tpe2.backend.network.NetworkRequestCallback;
 import hci.itba.edu.ar.tpe2.fragment.FlightsListFragment;
 
-public class SearchResultsActivity extends AppCompatActivity {
+public class SearchResultsActivity extends AppCompatActivity implements FlightsListFragment.OnFragmentInteractionListener {
     public static final String PARAM_FROM = "FROM",
             PARAM_TO = "TO",
             PARAM_DEPARTURE_DATE = "DEP_DATE",
@@ -88,5 +88,20 @@ public class SearchResultsActivity extends AppCompatActivity {
 //        }
 //        flightsAdapter = new FlightAdapter(SearchResultsActivity.this, flights);
 //        flightsListView.setAdapter(flightsAdapter);
+    }
+
+    @Override
+    public void onFlightClicked(Flight clickedFlight) {
+        flightsFragment.onFlightClicked(clickedFlight);
+    }
+
+    @Override
+    public boolean onFlightStarred(Flight starredFlight) {
+        return flightsFragment.onFlightStarred(starredFlight);
+    }
+
+    @Override
+    public boolean onFlightUnstarred(Flight unstarredFlight) {
+        return flightsFragment.onFlightUnstarred(unstarredFlight);
     }
 }
