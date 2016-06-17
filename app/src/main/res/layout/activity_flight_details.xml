@@ -25,34 +25,37 @@
             android:id="@+id/firstPartDetail"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true" />
+            android:layout_alignParentTop="true"
+            android:padding="14dp"/>
         <TextView
             android:id="@+id/originDetail"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true" />
+            android:layout_alignParentTop="true"
+            android:padding="14dp"/>
         <TextView
             android:id="@+id/arrivalDetail"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true" />
+            android:layout_alignParentTop="true"
+            android:padding="14dp"/>
 
-        <TextView
-            android:id="@+id/extraDetail"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true" />
-
-    </RelativeLayout>
-
-    <android.support.design.widget.NavigationView
-        android:id="@+id/nav_view"
+    <TextView
+        android:id="@+id/extraDetail"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_gravity="start"
-        android:fitsSystemWindows="true"
-        app:headerLayout="@layout/nav_header_flight_details"
-        app:menu="@menu/activity_flight_details_drawer" />
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:padding="14dp"/>
 
+</RelativeLayout>
 
-</android.support.v4.widget.DrawerLayout>
+        <android.support.design.widget.NavigationView
+         android:id="@+id/nav_view"
+         android:layout_width="wrap_content"
+         android:layout_height="match_parent"
+         android:layout_gravity="start"
+         android:fitsSystemWindows="true"
+         app:headerLayout="@layout/nav_header_flight_details"
+         app:menu="@menu/activity_flight_details_drawer" />
+ 
+ </android.support.v4.widget.DrawerLayout>
