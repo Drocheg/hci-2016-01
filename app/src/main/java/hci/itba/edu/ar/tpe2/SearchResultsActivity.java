@@ -46,16 +46,16 @@ public class SearchResultsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_results);
+        title = (TextView) findViewById(R.id.search_results_title);
 
         if (savedInstanceState == null) {    //Creating for the first time
-            title = (TextView) findViewById(R.id.search_results_title);
             if (flightsFragment == null) {
                 flightsFragment = FlightsListFragment.newInstance(null);
                 getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, flightsFragment).commit();
             }
         } else {
             flightsFragment = (FlightsListFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_text);
-        }
+            }
 
         //Search with passed parameters
         title.setText("Searching...");

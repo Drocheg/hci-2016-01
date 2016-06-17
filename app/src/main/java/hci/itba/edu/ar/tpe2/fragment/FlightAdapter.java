@@ -37,7 +37,7 @@ public class FlightAdapter extends ArrayAdapter<Flight> {
         final List<Flight> followedFlights = PersistentData.getInstance().getFollowedFlights();
         final Flight flight = getItem(position);
         if (destination == null) {  //Item hasn't been created, inflate it from Android's default layout
-            if (destination.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+            if (getContext().getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
                 destination = LayoutInflater.from(getContext()).inflate(R.layout.activity_flights_list_item, parent, false);
                 //Logo
                 ImageView icon = (ImageView) destination.findViewById(R.id.icon);

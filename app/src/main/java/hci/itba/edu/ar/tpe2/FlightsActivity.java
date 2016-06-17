@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -65,10 +66,17 @@ public class FlightsActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.getMenu().getItem(0).setChecked(true);       //Set the flights option as selected TODO I don't think this is Android standard
 
-        if(!NotificationScheduler.areUpdatesEnabled()) {
+        if (!NotificationScheduler.areUpdatesEnabled()) {
             SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
             NotificationScheduler.setUpdates(this, Long.parseLong(preferences.getString(getString(R.string.pref_key_update_frequency), "-1")));
         }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+
     }
 
     @Override
@@ -153,6 +161,8 @@ public class FlightsActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
+
 
     /**
      * Initializes necessary data. Some data depends on previous data (i.e. cities have countries
